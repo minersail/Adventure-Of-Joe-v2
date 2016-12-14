@@ -3,7 +3,6 @@ package woohoo.framework;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
@@ -21,7 +20,7 @@ public class HexMapLoader
 		int mapHeight = rows.length;		
 		
 		TiledMapTileLayer layer = new TiledMapTileLayer(mapWidth, mapHeight, MSJGame.G_TILE_WIDTH, MSJGame.G_TILE_HEIGHT);
-
+        
 		int i = 0;
 		int j = 0;
 		for (String row : rows)
@@ -43,8 +42,8 @@ public class HexMapLoader
 				StaticTiledMapTile t = new StaticTiledMapTile(texture);
 				t.setId(Integer.parseInt(tile.substring(0, 4), 16));
 				t.getProperties().put("isWall", funcID >= 4 && funcID <= 7); // funcIDs between 4 and 7 represent walls
-				t.setOffsetX(MSJGame.G_TILE_WIDTH * i);
-				t.setOffsetX(MSJGame.G_TILE_HEIGHT * j);
+				//t.setOffsetX(MSJGame.G_TILE_WIDTH * i);
+				//t.setOffsetY(MSJGame.G_TILE_HEIGHT * j);
 					
 				Cell cell = new Cell();
 				cell.setTile(t);

@@ -7,6 +7,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import woohoo.framework.HexMapLoader;
+
 /*
 Anything that is drawn will be managed by this class
 (Currently only the TileMap)
@@ -32,7 +33,7 @@ public class GameRenderer
 		map = new TiledMap();
 		map.getLayers().add(mapLoader.load("maps/test.txt"));
 		
-		renderer = new OrthogonalTiledMapRenderer(map, batcher);
+		renderer = new OrthogonalTiledMapRenderer(map);
     }
     
     public static void scrollCamera(float deltaX, float deltaY)
@@ -65,7 +66,15 @@ public class GameRenderer
 
     public static void render(float runTime)
     {
-		renderer.render();
-		System.out.println(((TiledMapTileLayer)map.getLayers().get(0)).getCell(5, 5).getTile().getOffsetX());
+        cam.update();
+        renderer.setView(cam);
+        renderer.render();
+//        TiledMapTileLayer layer = (TiledMapTileLayer)(map.getLayers().get(0));
+//        
+//        for (int i = 0; i < layer.getHeight(); i++)
+//        {
+//            for (int j = 0; j < layer.getWidth(); j++)
+//                System.out.println(layer.getCell(i, j).getTile().toString());
+//        }
     }
 }

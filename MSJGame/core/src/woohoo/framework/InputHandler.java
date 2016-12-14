@@ -3,6 +3,7 @@ package woohoo.framework;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
+import woohoo.gameworld.GameRenderer;
 import woohoo.gameworld.GameWorld;
 
 public class InputHandler implements InputProcessor
@@ -22,16 +23,16 @@ public class InputHandler implements InputProcessor
     {
         switch (keycode) {
 //            case Keys.LEFT:
-//                GameWorld.getPlayer().movePlayer(3);
+//                GameRenderer.scrollCamera(-1, 0);
 //                return true;
 //            case Keys.RIGHT:
-//                GameWorld.getPlayer().movePlayer(1);
+//                GameRenderer.scrollCamera(1, 0);
 //                return true;
 //            case Keys.UP:
-//                GameWorld.getPlayer().movePlayer(0);
+//                GameRenderer.scrollCamera(0, -1);
 //                return true;
 //            case Keys.DOWN:
-//                GameWorld.getPlayer().movePlayer(2);
+//                GameRenderer.scrollCamera(0, 1);
 //                return true;
         }
         return false;
