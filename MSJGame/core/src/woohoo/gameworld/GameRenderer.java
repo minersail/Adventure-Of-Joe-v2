@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.framework.HexMapLoader;
 
 /*
@@ -15,16 +16,26 @@ Anything that is drawn will be managed by this class
 public class GameRenderer
 {    
     private static OrthographicCamera cam;
+	private static FitViewport viewport;
     private static SpriteBatch batcher;
 	
 	private static HexMapLoader mapLoader;
 	private static OrthogonalTiledMapRenderer renderer;
 	private static TiledMap map;
+	
+	private static final int WORLD_WIDTH = 12; // Arbitrary unit; for this game 1 tile = 64 pixels = 1 meter
+	private static final int WORLD_HEIGHT = 12; // Arbitrary unit; for this game 1 tile = 64 pixels = 1 meter
     
     public static void initialize()
     {
-        cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        cam.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
+		
+        cam = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT * aspectRatio);
+        cam.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT * aspectRatio);
+		cam.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT * aspectRatio / 2, 0);
+		
+		viewport = new FitViewport(120, 120 * aspectRatio, cam);
+		viewport.apply();
 
         batcher = new SpriteBatch();
         batcher.setProjectionMatrix(cam.combined);

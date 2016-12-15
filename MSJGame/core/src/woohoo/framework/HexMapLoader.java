@@ -19,7 +19,7 @@ public class HexMapLoader
 		int mapWidth = rows[0].length() / 5;
 		int mapHeight = rows.length;		
 		
-		TiledMapTileLayer layer = new TiledMapTileLayer(mapWidth, mapHeight, MSJGame.G_TILE_WIDTH, MSJGame.G_TILE_HEIGHT);
+		TiledMapTileLayer layer = new TiledMapTileLayer(mapWidth, mapHeight, 16, 16);
         
 		int i = 0;
 		int j = 0;
