@@ -1,6 +1,7 @@
 package woohoo.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -23,8 +24,8 @@ public class GameRenderer
 	private static OrthogonalTiledMapRenderer renderer;
 	private static TiledMap map;
 	
-	private static final int WORLD_WIDTH = 12; // Arbitrary unit; for this game 1 tile = 64 pixels = 1 meter
-	private static final int WORLD_HEIGHT = 12; // Arbitrary unit; for this game 1 tile = 64 pixels = 1 meter
+	private static final int WORLD_WIDTH = 12; // Arbitrary unit; for this game 1 tile = 64 pixels(desktop) = 1 meter
+	private static final int WORLD_HEIGHT = 12; // Arbitrary unit; for this game 1 tile = 64 pixels(desktop) = 1 meter
     
     public static void initialize()
     {
@@ -32,10 +33,10 @@ public class GameRenderer
 		
         cam = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT * aspectRatio);
         cam.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT * aspectRatio);
-		cam.position.set(WORLD_WIDTH / 2, WORLD_HEIGHT * aspectRatio / 2, 0);
 		
-		viewport = new FitViewport(120, 120 * aspectRatio, cam);
+		viewport = new FitViewport(250, 250 * aspectRatio, cam);
 		viewport.apply();
+		cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
 
         batcher = new SpriteBatch();
         batcher.setProjectionMatrix(cam.combined);
@@ -68,15 +69,17 @@ public class GameRenderer
         batcher.setProjectionMatrix(cam.combined);
     }
     
-    public static void setCamera(float deltaX, float deltaY)
+    public static void setCamera(float newX, float newY)
     {
-        cam.position.set(deltaX, deltaY, 0);
+        cam.position.set(newX, newY, 0);
         cam.update();
         batcher.setProjectionMatrix(cam.combined);        
     }
 
     public static void render(float runTime)
     {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.update();
         renderer.setView(cam);
         renderer.render();
