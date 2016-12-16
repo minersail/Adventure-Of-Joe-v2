@@ -22,18 +22,18 @@ public class InputHandler implements InputProcessor
     public boolean keyDown(int keycode)
     {
         switch (keycode) {
-//            case Keys.LEFT:
-//                GameRenderer.scrollCamera(-1, 0);
-//                return true;
-//            case Keys.RIGHT:
-//                GameRenderer.scrollCamera(1, 0);
-//                return true;
-//            case Keys.UP:
-//                GameRenderer.scrollCamera(0, -1);
-//                return true;
-//            case Keys.DOWN:
-//                GameRenderer.scrollCamera(0, 1);
-//                return true;
+            case Keys.LEFT:
+                GameRenderer.scrollCamera(-1, 0);
+                return true;
+            case Keys.RIGHT:
+                GameRenderer.scrollCamera(1, 0);
+                return true;
+            case Keys.UP:
+                GameRenderer.scrollCamera(0, -1);
+                return true;
+            case Keys.DOWN:
+                GameRenderer.scrollCamera(0, 1);
+                return true;
         }
         return false;
     }

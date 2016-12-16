@@ -4,11 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import woohoo.framework.AssetLoader;
+import woohoo.framework.CustomOrthogonalTiledMapRenderer;
 import woohoo.framework.HexMapLoader;
+import woohoo.gameobjects.Player;
 
 /*
 Anything that is drawn will be managed by this class
@@ -16,16 +22,16 @@ Anything that is drawn will be managed by this class
 */
 public class GameRenderer
 {    
-    private static OrthographicCamera cam;
-	private static FitViewport viewport;
+    private static OrthographicCamera cam; // Manages aspect ratio, zoom, and position of camera
+	private static FitViewport viewport; // Helper class for camera
     private static SpriteBatch batcher;
 	
 	private static HexMapLoader mapLoader;
-	private static OrthogonalTiledMapRenderer renderer;
+	private static CustomOrthogonalTiledMapRenderer renderer;
 	private static TiledMap map;
 	
-	private static final int WORLD_WIDTH = 12; // Arbitrary unit; for this game 1 tile = 64 pixels(desktop) = 1 meter
-	private static final int WORLD_HEIGHT = 12; // Arbitrary unit; for this game 1 tile = 64 pixels(desktop) = 1 meter
+	private static final int WORLD_WIDTH = 16; // Arbitrary unit; how many tiles will fit width-wise on the screen
+	private static final int WORLD_HEIGHT = 16; // Arbitrary unit; how many tiles will fit width-wise
     
     public static void initialize()
     {
@@ -34,7 +40,7 @@ public class GameRenderer
         cam = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT * aspectRatio);
         cam.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT * aspectRatio);
 		
-		viewport = new FitViewport(250, 250 * aspectRatio, cam);
+		viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT * aspectRatio, cam);
 		viewport.apply();
 		cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
 
@@ -45,7 +51,14 @@ public class GameRenderer
 		map = new TiledMap();
 		map.getLayers().add(mapLoader.load("maps/test.txt"));
 		
-		renderer = new OrthogonalTiledMapRenderer(map);
+		Player player = new Player(new TextureRegion(AssetLoader.get("JoeFace")));
+		MapLayer layer = new MapLayer();
+		layer.getObjects().add(player);
+		
+		map.getLayers().add(layer);
+		
+		
+		renderer = new CustomOrthogonalTiledMapRenderer(map, 1.0f / WORLD_WIDTH);
     }
     
     public static void scrollCamera(float deltaX, float deltaY)
@@ -83,12 +96,5 @@ public class GameRenderer
         cam.update();
         renderer.setView(cam);
         renderer.render();
-//        TiledMapTileLayer layer = (TiledMapTileLayer)(map.getLayers().get(0));
-//        
-//        for (int i = 0; i < layer.getHeight(); i++)
-//        {
-//            for (int j = 0; j < layer.getWidth(); j++)
-//                System.out.println(layer.getCell(i, j).getTile().toString());
-//        }
     }
 }

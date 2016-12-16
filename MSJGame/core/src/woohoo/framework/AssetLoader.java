@@ -23,6 +23,7 @@ public class AssetLoader
         loadTexture("Error", "images/error.png");
         loadTexture("Tileset", "images/tileset.png");
         loadTexture("Joe", "images/joe2.png");
+		loadTexture("JoeFace", "images/joeface.png");
 
         dead = Gdx.audio.newSound(Gdx.files.internal("sounds/dead.wav"));
         flap = Gdx.audio.newSound(Gdx.files.internal("sounds/flap.wav"));
