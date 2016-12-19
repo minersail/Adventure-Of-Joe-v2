@@ -1,15 +1,16 @@
 package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
-import woohoo.gameworld.GameRenderer;
-import woohoo.gameworld.GameWorld;
+import com.badlogic.gdx.Screen;
 
 public class InputHandler implements InputProcessor
 {
-    public InputHandler()
+	Screen screen;
+	
+    public InputHandler(Screen scr)
     {
+		screen = scr;
     }
 
     @Override
@@ -22,18 +23,6 @@ public class InputHandler implements InputProcessor
     public boolean keyDown(int keycode)
     {
         switch (keycode) {
-            case Keys.LEFT:
-                GameRenderer.scrollCamera(-1, 0);
-                return true;
-            case Keys.RIGHT:
-                GameRenderer.scrollCamera(1, 0);
-                return true;
-            case Keys.UP:
-                GameRenderer.scrollCamera(0, -1);
-                return true;
-            case Keys.DOWN:
-                GameRenderer.scrollCamera(0, 1);
-                return true;
         }
         return false;
     }

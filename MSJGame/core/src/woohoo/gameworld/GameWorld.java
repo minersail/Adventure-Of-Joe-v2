@@ -1,35 +1,33 @@
 package woohoo.gameworld;
 
-import com.badlogic.gdx.Input;
-import woohoo.framework.InputHandler;
+import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Screen;
+import woohoo.gameobjects.BaseEntity;
 
 /*
 All objects are data that will be drawn by the tiles
 
 Their updates will be called in this class
 */
-public class GameWorld
+public class GameWorld extends Engine
 {
-    private static GameState currentState = GameState.PLAYING;
-    public static float runtime;
-
-    public enum GameState
-    {
-        PLAYING
-    }
+	private Screen screen;
+    public float runtime;
+	
+	public GameWorld(Screen scr)
+	{
+		screen = scr;
+	}
     
-    public static void update(float delta)
+	@Override
+    public void update(float delta)
     {
-//        if (InputHandler.isKeyPressed(Input.Keys.LEFT))
-//            GameRenderer.scrollCamera(-1, 0);
-//        else if (InputHandler.isKeyPressed(Input.Keys.RIGHT))
-//            GameRenderer.scrollCamera(1, 0);
-//        else if (InputHandler.isKeyPressed(Input.Keys.UP))
-//            GameRenderer.scrollCamera(0, -1);
-//        else if (InputHandler.isKeyPressed(Input.Keys.DOWN))
-//            GameRenderer.scrollCamera(0, 1);
-        
-        
         runtime += delta;
+		
+		for (Entity entity : getEntities())
+		{
+			((BaseEntity)entity).update(delta);
+		}
     }
 }

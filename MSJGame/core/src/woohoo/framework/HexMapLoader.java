@@ -1,16 +1,24 @@
 package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import woohoo.msjgame.MSJGame;
+import woohoo.screens.PlayingScreen;
 
 public class HexMapLoader
 {
-	public TiledMapTileLayer load(String filename)
+	Screen screen;
+	public HexMapLoader(Screen scr)
+	{
+		screen = scr;
+	}
+	
+	public TiledMapTileLayer load(String filename, Texture tileset)
 	{		
 		FileHandle mapHandle = Gdx.files.internal(filename);
 		String map = mapHandle.readString();
@@ -30,20 +38,20 @@ public class HexMapLoader
 			{
 				int funcID = Integer.parseInt(tile.substring(0, 2), 16);
 				int tileID = Integer.parseInt(tile.substring(2, 4), 16);
+				int tileWidth = ((PlayingScreen)screen).T_TILE_WIDTH;
+				int tileHeight = ((PlayingScreen)screen).T_TILE_HEIGHT;
 
-				int columns = AssetLoader.get("Tileset").getWidth() / MSJGame.T_TILE_WIDTH;
-				int tileX = (tileID % columns) * MSJGame.T_TILE_WIDTH;
-				int tileY = (tileID / columns) * MSJGame.T_TILE_HEIGHT;
+				int columns = tileset.getWidth() / tileWidth;
+				int tileX = (tileID % columns) * tileWidth;
+				int tileY = (tileID / columns) * tileHeight;
 
-				TextureRegion texture = new TextureRegion(AssetLoader.get("Tileset"), tileX, tileY, 
-														  MSJGame.T_TILE_WIDTH, MSJGame.T_TILE_HEIGHT);
+				TextureRegion texture = new TextureRegion(tileset, tileX, tileY, 
+														  tileWidth, tileHeight);
 				texture.flip(false, true);
 				
 				StaticTiledMapTile t = new StaticTiledMapTile(texture);
 				t.setId(Integer.parseInt(tile.substring(0, 4), 16));
 				t.getProperties().put("isWall", funcID >= 4 && funcID <= 7); // funcIDs between 4 and 7 represent walls
-				//t.setOffsetX(MSJGame.G_TILE_WIDTH * i);
-				//t.setOffsetY(MSJGame.G_TILE_HEIGHT * j);
 					
 				Cell cell = new Cell();
 				cell.setTile(t);
