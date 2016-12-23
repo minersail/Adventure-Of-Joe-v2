@@ -1,16 +1,21 @@
 package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import woohoo.gameobjects.Player;
+import woohoo.gameobjects.components.MapObjectComponent.Direction;
 
 public class InputHandler implements InputProcessor
 {
 	Screen screen;
+	Player player;
 	
-    public InputHandler(Screen scr)
+    public InputHandler(Screen scr, Player p)
     {
 		screen = scr;
+		player = p;
     }
 
     @Override
@@ -23,18 +28,45 @@ public class InputHandler implements InputProcessor
     public boolean keyDown(int keycode)
     {
         switch (keycode) {
+			case Keys.UP:
+				player.move(Direction.Up, true);
+				break;
+			case Keys.DOWN:
+				player.move(Direction.Down, true);
+				break;
+			case Keys.LEFT:
+				player.move(Direction.Left, true);
+				break;
+			case Keys.RIGHT:
+				player.move(Direction.Right, true);
+				break;
         }
         return false;
-    }
-    
-    public static boolean isKeyPressed(int keycode)
-    {
-        return Gdx.input.isKeyPressed(keycode);
     }
 
     @Override
     public boolean keyUp(int keycode)
     {
+		switch (keycode) {
+			case Keys.UP:
+				player.move(Direction.Down, false);
+				break;
+			case Keys.DOWN:
+				player.move(Direction.Up, false);
+				break;
+			case Keys.LEFT:
+				player.move(Direction.Right, false);
+				break;
+			case Keys.RIGHT:
+				player.move(Direction.Left, false);
+				break;
+        }
+		
+		if (!Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.DOWN) &&
+			!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT))
+		{
+			player.stop();
+		}
         return false;
     }
 

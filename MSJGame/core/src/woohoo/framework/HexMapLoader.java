@@ -8,6 +8,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import woohoo.screens.PlayingScreen;
 
 public class HexMapLoader
@@ -18,7 +24,7 @@ public class HexMapLoader
 		screen = scr;
 	}
 	
-	public TiledMapTileLayer load(String filename, Texture tileset)
+	public TiledMapTileLayer load(String filename, Texture tileset, World world)
 	{		
 		FileHandle mapHandle = Gdx.files.internal(filename);
 		String map = mapHandle.readString();
@@ -52,6 +58,25 @@ public class HexMapLoader
 				StaticTiledMapTile t = new StaticTiledMapTile(texture);
 				t.setId(Integer.parseInt(tile.substring(0, 4), 16));
 				t.getProperties().put("isWall", funcID >= 4 && funcID <= 7); // funcIDs between 4 and 7 represent walls
+				
+				if (t.getProperties().get("isWall", Boolean.class))
+				{					
+					BodyDef bodyDef = new BodyDef();
+					bodyDef.type = BodyDef.BodyType.StaticBody;
+					bodyDef.position.set(i + 0.5f, j + 0.5f);
+
+					Body body = world.createBody(bodyDef);
+
+					PolygonShape shape = new PolygonShape();
+					shape.setAsBox(0.5f, 0.5f);
+
+					FixtureDef fixtureDef = new FixtureDef();
+					fixtureDef.shape = shape;
+					fixtureDef.density = 1f;
+					fixtureDef.friction = 0f;
+
+					body.createFixture(fixtureDef);
+				}
 					
 				Cell cell = new Cell();
 				cell.setTile(t);

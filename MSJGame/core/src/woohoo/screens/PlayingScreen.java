@@ -4,14 +4,16 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.assets.loaders.TextureAtlasLoader.TextureAtlasParameter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.framework.HexMapLoader;
 import woohoo.framework.InputHandler;
@@ -28,13 +30,15 @@ public class PlayingScreen implements Screen
 	
 	private OrthographicCamera cam; // Manages aspect ratio, zoom, and position of camera
 	private FitViewport viewport; // Helper class for camera
+	private Box2DDebugRenderer debugRenderer;
 	
 	private AssetManager assets;
 	private InputHandler input;
 	private HexMapLoader mapLoader;
 	private GameRenderer renderer;
-	private GameWorld world;
+	private GameWorld engine;
 	private TiledMap map;
+	private World world;
 		
 	private static final int WORLD_WIDTH = 16; // Arbitrary unit; how many tiles will fit width-wise on the screen
 	private static final int WORLD_HEIGHT = 16; // Arbitrary unit; how many tiles will fit height-wise	
@@ -52,24 +56,26 @@ public class PlayingScreen implements Screen
 		viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT * aspectRatio, cam);
 		viewport.apply();
 		cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
+		debugRenderer = new Box2DDebugRenderer();
 		
 		loadAssets();
-		input = new InputHandler(this);
+		world = new World(new Vector2(0, 0), true);
 		
 		mapLoader = new HexMapLoader(this);
 		map = new TiledMap();
-		map.getLayers().add(mapLoader.load("maps/test.txt", (Texture)assets.get("images/tileset.png")));
+		map.getLayers().add(mapLoader.load("maps/walltest.txt", (Texture)assets.get("images/tileset.png"), world));
 		
-		Player player = new Player((TextureAtlas)assets.get("images/oldman.pack"), 1, 1);
+		Player player = new Player((TextureAtlas)assets.get("images/oldman.pack"), 1, 1, world);
 		MapLayer layer = new MapLayer();
 		layer.getObjects().add(player.getComponent(MapObjectComponent.class));
 		
 		map.getLayers().add(layer);
-		
+				
 		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
-		world = new GameWorld(this);
-		world.addEntity(player);
+		engine = new GameWorld(this, world);
+		engine.addEntity(player);
 
+		input = new InputHandler(this, player);
         Gdx.input.setInputProcessor(input);
     }
 
@@ -81,18 +87,19 @@ public class PlayingScreen implements Screen
         cam.update();
         runTime += delta;
 		
-        world.update(delta);
+		engine.update(delta);
+		world.step(delta, 6, 2);
         renderer.setView(cam);
         renderer.render();
+		debugRenderer.render(world, cam.combined);
     }
 	
 	public void loadAssets()
 	{		
-//		FileHandle data = new FileHandle("images/oldman.pack");
-//		TextureAtlas atlas = new TextureAtlas(data, true);
+		TextureAtlasParameter atlasParam1 = new TextureAtlasParameter(true);
 		
 		assets = new AssetManager();
-		assets.load("images/oldman.pack", TextureAtlas.class);
+		assets.load("images/oldman.pack", TextureAtlas.class, atlasParam1);
 		assets.load("images/tileset.png", Texture.class);
 		assets.load("images/joeface.png", Texture.class);
 		assets.finishLoading();

@@ -3,6 +3,7 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.physics.box2d.World;
 import woohoo.gameobjects.BaseEntity;
 
 /*
@@ -15,7 +16,7 @@ public class GameWorld extends Engine
 	private Screen screen;
     public float runtime;
 	
-	public GameWorld(Screen scr)
+	public GameWorld(Screen scr, World physics)
 	{
 		screen = scr;
 	}

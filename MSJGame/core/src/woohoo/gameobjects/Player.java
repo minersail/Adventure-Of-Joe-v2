@@ -1,54 +1,65 @@
 package woohoo.gameobjects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
-import woohoo.gameobjects.components.MovementComponent;
 
 public class Player extends BaseEntity
 {	
 	private MapObjectComponent mapObject;
-	private MovementComponent movement;
+	private CollisionComponent collision;
 	    
-    public Player(TextureAtlas atlas, int sizeX, int sizeY)
+    public Player(TextureAtlas atlas, int sizeX, int sizeY, World world)
     {
 		mapObject = new MapObjectComponent(atlas, sizeX, sizeY);
-		movement = new MovementComponent(1, 1);
+		collision = new CollisionComponent(this, world);
+		
+		collision.setPosition(new Vector2(5, 5));
 		
 		super.add(mapObject);
-		super.add(movement);
 	}
 	
 	@Override
 	public void update(float delta)
 	{
-		float posX = mapObject.getX();
-		float posY = mapObject.getY();
-		Direction dir = Direction.None;
+		mapObject.setX(collision.getPosition().x - 0.5f);
+		mapObject.setY(collision.getPosition().y - 0.5f);
 		
-		if (Gdx.input.isKeyPressed(Keys.UP))
+		mapObject.update(delta);
+	}
+	
+	public Vector2 getPosition()
+	{
+		return new Vector2(mapObject.getX(), mapObject.getY());
+	}
+	
+	public void move(Direction dir, boolean changeDir)
+	{
+		switch (dir)
 		{
-			mapObject.setY(posY - movement.getSpeed().y * delta);
-			dir = Direction.Up;
-		}
-		else if (Gdx.input.isKeyPressed(Keys.DOWN))
-		{
-			mapObject.setY(posY + movement.getSpeed().y * delta);
-			dir = Direction.Down;
-		}
-		else if (Gdx.input.isKeyPressed(Keys.LEFT))
-		{
-			mapObject.setX(posX - movement.getSpeed().x * delta);			
-			dir = Direction.Left;
-		}
-		else if (Gdx.input.isKeyPressed(Keys.RIGHT))
-		{
-			mapObject.setX(posX + movement.getSpeed().x * delta);			
-			dir = Direction.Right;
+			case Up:
+				collision.addVelocity(0, -1);
+				break;
+			case Down:
+				collision.addVelocity(0, 1);
+				break;
+			case Left:
+				collision.addVelocity(-1, 0);
+				break;
+			case Right:
+				collision.addVelocity(1, 0);
+				break;
 		}
 		
-		mapObject.update(delta, (dir == Direction.None ? mapObject.getDirection() : dir));
+		if (changeDir)
+			mapObject.setDirection(dir);
+	}
+	
+	public void stop()
+	{
+		collision.setVelocity(0, 0);
 	}
 }

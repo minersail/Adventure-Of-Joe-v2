@@ -37,19 +37,18 @@ public class MapObjectComponent extends TextureMapObject implements Component
 		usesAnimation = true;
 		animation = new HashMap<>();
 		
-		addAnimation("Left", new Animation<TextureRegion>(0.333f, atlas.findRegions("left"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Right", new Animation<TextureRegion>(0.333f, atlas.findRegions("right"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Up", new Animation<TextureRegion>(0.333f, atlas.findRegions("up"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Down", new Animation<TextureRegion>(0.333f, atlas.findRegions("down"), Animation.PlayMode.LOOP_PINGPONG));
+		addAnimation("Left", new Animation<TextureRegion>(0.333f, atlas.findRegions("left"), Animation.PlayMode.LOOP));
+		addAnimation("Right", new Animation<TextureRegion>(0.333f, atlas.findRegions("right"), Animation.PlayMode.LOOP));
+		addAnimation("Up", new Animation<TextureRegion>(0.333f, atlas.findRegions("up"), Animation.PlayMode.LOOP));
+		addAnimation("Down", new Animation<TextureRegion>(0.333f, atlas.findRegions("down"), Animation.PlayMode.LOOP));
 		
 		super.setScaleX(sizeX);
 		super.setScaleY(sizeY);
 	}
 	
-	public void update(float delta, Direction newDirection)
+	public void update(float delta)
 	{
 		runTime += delta;
-		setDirection(newDirection);
 	}
 	
 	public void setDirection(Direction dir)
