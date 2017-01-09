@@ -25,10 +25,8 @@ public class Player extends BaseEntity
 	@Override
 	public void update(float delta)
 	{
-		mapObject.setX(collision.getPosition().x - 0.5f);
-		mapObject.setY(collision.getPosition().y - 0.5f);
-		
-		mapObject.update(delta);
+		collision.update(delta);
+		mapObject.update(delta, new Vector2(collision.getPosition().x - 0.5f, collision.getPosition().y - 0.5f));
 	}
 	
 	public Vector2 getPosition()
@@ -38,19 +36,20 @@ public class Player extends BaseEntity
 	
 	public void move(Direction dir, boolean changeDir)
 	{
+		int speed = 1000;
 		switch (dir)
 		{
 			case Up:
-				collision.addVelocity(0, -1);
+				collision.addForce(0, -speed);
 				break;
 			case Down:
-				collision.addVelocity(0, 1);
+				collision.addForce(0, speed);
 				break;
 			case Left:
-				collision.addVelocity(-1, 0);
+				collision.addForce(-speed, 0);
 				break;
 			case Right:
-				collision.addVelocity(1, 0);
+				collision.addForce(speed, 0);
 				break;
 		}
 		
@@ -60,6 +59,6 @@ public class Player extends BaseEntity
 	
 	public void stop()
 	{
-		collision.setVelocity(0, 0);
+		//collision.setVelocity(0, 0);
 	}
 }

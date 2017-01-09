@@ -61,12 +61,12 @@ public class InputHandler implements InputProcessor
 				player.move(Direction.Left, false);
 				break;
         }
-		
-		if (!Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.DOWN) &&
-			!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT))
-		{
-			player.stop();
-		}
+//		
+//		if (!Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.DOWN) &&
+//			!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT))
+//		{
+//			player.stop();
+//		}
         return false;
     }
 

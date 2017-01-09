@@ -11,6 +11,7 @@ import woohoo.gameobjects.Player;
 public class CollisionComponent
 {
 	Body mass;
+	Vector2 force = new Vector2(0, 0);
 	
 	public CollisionComponent(Player player, World world)
 	{
@@ -30,17 +31,30 @@ public class CollisionComponent
 
 		mass.createFixture(fixtureDef);
 		mass.setFixedRotation(true);
+		
+		mass.setLinearDamping(10f);
 	}
 	
-	public void addVelocity(float x, float y)
+	public void update(float delta)
 	{
-		Vector2 v = mass.getLinearVelocity();
-		mass.setLinearVelocity(v.x + x, v.y + y);
+		mass.applyForceToCenter(force.x * delta, force.y * delta, true);
 	}
 	
-	public void setVelocity(float x, float y)
+//	public void addVelocity(float x, float y)
+//	{
+//		Vector2 v = mass.getLinearVelocity();
+//		mass.setLinearVelocity(v.x + x, v.y + y);
+//	}
+//	
+//	public void setVelocity(float x, float y)
+//	{
+//		mass.setLinearVelocity(new Vector2(x, y));
+//	}
+	
+	public void addForce(float x, float y)
 	{
-		mass.setLinearVelocity(new Vector2(x, y));
+		force.x += x;
+		force.y += y;
 	}
 	
 	public Vector2 getVelocity()

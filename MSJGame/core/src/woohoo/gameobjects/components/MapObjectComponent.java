@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
+import com.badlogic.gdx.math.Vector2;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,9 +47,12 @@ public class MapObjectComponent extends TextureMapObject implements Component
 		super.setScaleY(sizeY);
 	}
 	
-	public void update(float delta)
+	public void update(float delta, Vector2 newPosition)
 	{
 		runTime += delta;
+		
+		setX(newPosition.x);
+		setY(newPosition.y);
 	}
 	
 	public void setDirection(Direction dir)
