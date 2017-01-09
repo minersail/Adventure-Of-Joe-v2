@@ -63,8 +63,12 @@ public class PlayingScreen implements Screen
 		
 		mapLoader = new HexMapLoader(this);
 		map = new TiledMap();
-		map.getLayers().add(mapLoader.load("maps/walltest.txt", (Texture)assets.get("images/tileset.png"), world));
-		
+		for (MapLayer layer : mapLoader.load("maps/trees3.txt", (Texture)assets.get("images/tileset.png"), 
+                                             (Texture)assets.get("images/tileset2.png"), world))
+        {
+            map.getLayers().add(layer);
+        }
+        		
 		Player player = new Player((TextureAtlas)assets.get("images/oldman.pack"), 1, 1, world);
 		MapLayer layer = new MapLayer();
 		layer.getObjects().add(player.getComponent(MapObjectComponent.class));
@@ -101,6 +105,7 @@ public class PlayingScreen implements Screen
 		assets = new AssetManager();
 		assets.load("images/oldman.pack", TextureAtlas.class, atlasParam1);
 		assets.load("images/tileset.png", Texture.class);
+		assets.load("images/tileset2.png", Texture.class);
 		assets.load("images/joeface.png", Texture.class);
 		assets.finishLoading();
 	}
