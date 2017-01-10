@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.framework.HexMapLoader;
 import woohoo.framework.InputHandler;
+import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameworld.GameRenderer;
@@ -63,21 +66,24 @@ public class PlayingScreen implements Screen
 		
 		mapLoader = new HexMapLoader(this);
 		map = new TiledMap();
-		for (MapLayer layer : mapLoader.load("maps/trees3.txt", (Texture)assets.get("images/tileset.png"), 
-                                             (Texture)assets.get("images/tileset2.png"), world))
-        {
-            map.getLayers().add(layer);
-        }
-        		
+		MapLayers layers = mapLoader.load("maps/trees3.txt", (Texture)assets.get("images/tileset.png"), 
+                                          (Texture)assets.get("images/tileset2.png"), world);
+        
 		Player player = new Player((TextureAtlas)assets.get("images/oldman.pack"), 1, 1, world);
+        NPC npc = new NPC((Texture)assets.get("images/ginger.png"), 1, 1, world);
+        
 		MapLayer layer = new MapLayer();
 		layer.getObjects().add(player.getComponent(MapObjectComponent.class));
+		layer.getObjects().add(npc.getComponent(MapObjectComponent.class));
 		
+        map.getLayers().add(layers.get(0));
 		map.getLayers().add(layer);
+        map.getLayers().add(layers.get(1));
 				
 		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
 		engine = new GameWorld(this, world);
 		engine.addEntity(player);
+        engine.addEntity(npc);
 
 		input = new InputHandler(this, player);
         Gdx.input.setInputProcessor(input);
@@ -107,6 +113,7 @@ public class PlayingScreen implements Screen
 		assets.load("images/tileset.png", Texture.class);
 		assets.load("images/tileset2.png", Texture.class);
 		assets.load("images/joeface.png", Texture.class);
+        assets.load("images/ginger.png", Texture.class);
 		assets.finishLoading();
 	}
 	

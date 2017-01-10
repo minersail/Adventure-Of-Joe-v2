@@ -15,11 +15,12 @@ public class Player extends BaseEntity
     public Player(TextureAtlas atlas, int sizeX, int sizeY, World world)
     {
 		mapObject = new MapObjectComponent(atlas, sizeX, sizeY);
-		collision = new CollisionComponent(this, world);
+		collision = new CollisionComponent(world);
 		
 		collision.setPosition(new Vector2(5, 5));
 		
 		super.add(mapObject);
+        super.add(collision);
 	}
 	
 	@Override
@@ -55,10 +56,5 @@ public class Player extends BaseEntity
 		
 		if (changeDir)
 			mapObject.setDirection(dir);
-	}
-	
-	public void stop()
-	{
-		//collision.setVelocity(0, 0);
 	}
 }
