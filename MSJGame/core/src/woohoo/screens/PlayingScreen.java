@@ -9,9 +9,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -62,26 +62,29 @@ public class PlayingScreen implements Screen
 		debugRenderer = new Box2DDebugRenderer();
 		
 		loadAssets();
-		world = new World(new Vector2(0, 0), true);
+		world = new World(new Vector2(0, 0), true);		
+		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
+		engine = new GameWorld(this, world);
 		
 		mapLoader = new HexMapLoader(this);
 		map = new TiledMap();
 		MapLayers layers = mapLoader.load("maps/trees3.txt", (Texture)assets.get("images/tileset.png"), 
                                           (Texture)assets.get("images/tileset2.png"), world);
         
-		Player player = new Player((TextureAtlas)assets.get("images/oldman.pack"), 1, 1, world);
-        NPC npc = new NPC((Texture)assets.get("images/ginger.png"), 1, 1, world);
+		Player player = new Player((TextureAtlas)assets.get("images/oldman.pack"), 1, 1, world, engine);
+        NPC npc = new NPC((Texture)assets.get("images/ginger.png"), 1, 1, world, engine);
         
-		MapLayer layer = new MapLayer();
-		layer.getObjects().add(player.getComponent(MapObjectComponent.class));
-		layer.getObjects().add(npc.getComponent(MapObjectComponent.class));
+		MapLayer objects = new MapLayer();
+		objects.getObjects().add(player.getComponent(MapObjectComponent.class));
+		objects.getObjects().add(npc.getComponent(MapObjectComponent.class));
+        
+        MapLayer dialogue = new MapLayer();
 		
         map.getLayers().add(layers.get(0));
-		map.getLayers().add(layer);
+		map.getLayers().add(objects);
         map.getLayers().add(layers.get(1));
-				
-		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
-		engine = new GameWorld(this, world);
+        map.getLayers().add(dialogue);
+		
 		engine.addEntity(player);
         engine.addEntity(npc);
 
@@ -114,8 +117,19 @@ public class PlayingScreen implements Screen
 		assets.load("images/tileset2.png", Texture.class);
 		assets.load("images/joeface.png", Texture.class);
         assets.load("images/ginger.png", Texture.class);
+        assets.load("images/dialoguebox.png", Texture.class);
 		assets.finishLoading();
 	}
+    
+    public <T> T getAsset(String assetPath, Class<T> className)
+    {
+        return assets.get(assetPath, className);
+    }
+    
+    public void addObject(MapObject object, int layer)
+    {
+        map.getLayers().get(layer).getObjects().add(object);
+    }
 	
 	public void scrollCamera(float deltaX, float deltaY)
     {		

@@ -6,9 +6,10 @@ import woohoo.framework.DialogueManager;
 public class DialogueComponent implements Component
 {
     private DialogueManager manager;
+    //private String file
     
-    public DialogueComponent()
+    public DialogueComponent(DialogueManager dm)//, String textfile
     {
-        
+        manager = dm;
     }
 }

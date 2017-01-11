@@ -39,17 +39,6 @@ public class CollisionComponent implements Component
 		mass.applyForceToCenter(force.x * delta, force.y * delta, true);
 	}
 	
-//	public void addVelocity(float x, float y)
-//	{
-//		Vector2 v = mass.getLinearVelocity();
-//		mass.setLinearVelocity(v.x + x, v.y + y);
-//	}
-//	
-//	public void setVelocity(float x, float y)
-//	{
-//		mass.setLinearVelocity(new Vector2(x, y));
-//	}
-	
 	public void addForce(float x, float y)
 	{
 		force.x += x;

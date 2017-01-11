@@ -4,15 +4,19 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.gameobjects.components.CollisionComponent;
+import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.gameworld.GameWorld;
 
 public class Player extends BaseEntity
 {	
-	private MapObjectComponent mapObject;
+    private MapObjectComponent mapObject;
 	private CollisionComponent collision;
+    
+    private GameWorld engine;
 	    
-    public Player(TextureAtlas atlas, int sizeX, int sizeY, World world)
+    public Player(TextureAtlas atlas, int sizeX, int sizeY, World world, GameWorld eng)
     {
 		mapObject = new MapObjectComponent(atlas, sizeX, sizeY);
 		collision = new CollisionComponent(world);
@@ -21,6 +25,8 @@ public class Player extends BaseEntity
 		
 		super.add(mapObject);
         super.add(collision);
+        
+        engine = eng;
 	}
 	
 	@Override
@@ -57,4 +63,17 @@ public class Player extends BaseEntity
 		if (changeDir)
 			mapObject.setDirection(dir);
 	}
+    
+    public void talk()
+    {
+        for (NPC npc : engine.getNPCs())
+        {
+            if (Math.abs(npc.getPosition().x - mapObject.getX()) < 1 ||
+                Math.abs(npc.getPosition().y - mapObject.getY()) < 1)
+            {
+                engine.getManager().setDialogue(npc.getComponent(DialogueComponent.class));
+                engine.setState(GameWorld.GameState.Dialogue);
+            }
+        }
+    }
 }

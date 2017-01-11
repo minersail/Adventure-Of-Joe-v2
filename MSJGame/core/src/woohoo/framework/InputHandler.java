@@ -27,7 +27,8 @@ public class InputHandler implements InputProcessor
     @Override
     public boolean keyDown(int keycode)
     {
-        switch (keycode) {
+        switch (keycode) 
+        {            
 			case Keys.UP:
 				player.move(Direction.Up, true);
 				break;
@@ -40,6 +41,9 @@ public class InputHandler implements InputProcessor
 			case Keys.RIGHT:
 				player.move(Direction.Right, true);
 				break;
+            case Keys.SPACE:
+                player.talk();
+                break;
         }
         return false;
     }
@@ -61,12 +65,6 @@ public class InputHandler implements InputProcessor
 				player.move(Direction.Left, false);
 				break;
         }
-//		
-//		if (!Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.DOWN) &&
-//			!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT))
-//		{
-//			player.stop();
-//		}
         return false;
     }
 
