@@ -3,8 +3,8 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.physics.box2d.World;
 import java.util.ArrayList;
 import woohoo.framework.DialogueManager;
@@ -33,7 +33,10 @@ public class GameWorld extends Engine
 	public GameWorld(PlayingScreen scr, World physics)
 	{
 		screen = scr;
-        dialogueManager = new DialogueManager(new TextureRegion(screen.getAsset("images/dialoguebox.png", Texture.class)));
+        dialogueManager = new DialogueManager(new TextureRegion(screen.getAsset("images/dialoguebox.png", Texture.class)), 
+											  scr.getViewport(),
+											  screen.getAsset("fonts/text.fnt", BitmapFont.class));
+		state = GameState.Playing;
 	}
     
 	@Override
@@ -50,7 +53,7 @@ public class GameWorld extends Engine
         }
         else if (state == GameState.Dialogue)
         {
-            dialogueManager.runDialogue();
+            dialogueManager.runDialogue(delta);
         }
     }
     
@@ -69,13 +72,6 @@ public class GameWorld extends Engine
     public void setState(GameState s)
     {
         state = s;
-        
-        if (s == GameState.Dialogue)
-        {
-            TextureMapObject box = new TextureMapObject();
-            box.setTextureRegion(dialogueManager.getBox());
-            screen.addObject(box, 3);
-        }
     }
     
     public GameState getState()

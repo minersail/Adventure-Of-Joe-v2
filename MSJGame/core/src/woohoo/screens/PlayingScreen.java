@@ -4,10 +4,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.BitmapFontLoader.BitmapFontParameter;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader.TextureAtlasParameter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
@@ -63,13 +65,14 @@ public class PlayingScreen implements Screen
 		
 		loadAssets();
 		world = new World(new Vector2(0, 0), true);		
-		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
-		engine = new GameWorld(this, world);
 		
 		mapLoader = new HexMapLoader(this);
 		map = new TiledMap();
 		MapLayers layers = mapLoader.load("maps/trees3.txt", (Texture)assets.get("images/tileset.png"), 
                                           (Texture)assets.get("images/tileset2.png"), world);
+		
+		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
+		engine = new GameWorld(this, world);
         
 		Player player = new Player((TextureAtlas)assets.get("images/oldman.pack"), 1, 1, world, engine);
         NPC npc = new NPC((Texture)assets.get("images/ginger.png"), 1, 1, world, engine);
@@ -77,13 +80,10 @@ public class PlayingScreen implements Screen
 		MapLayer objects = new MapLayer();
 		objects.getObjects().add(player.getComponent(MapObjectComponent.class));
 		objects.getObjects().add(npc.getComponent(MapObjectComponent.class));
-        
-        MapLayer dialogue = new MapLayer();
 		
-        map.getLayers().add(layers.get(0));
+        //map.getLayers().add(layers.get(0));
 		map.getLayers().add(objects);
-        map.getLayers().add(layers.get(1));
-        map.getLayers().add(dialogue);
+        //map.getLayers().add(layers.get(1));
 		
 		engine.addEntity(player);
         engine.addEntity(npc);
@@ -110,6 +110,8 @@ public class PlayingScreen implements Screen
 	public void loadAssets()
 	{		
 		TextureAtlasParameter atlasParam1 = new TextureAtlasParameter(true);
+		BitmapFontParameter bitmapParam1 = new BitmapFontParameter();
+		bitmapParam1.flip = true;
 		
 		assets = new AssetManager();
 		assets.load("images/oldman.pack", TextureAtlas.class, atlasParam1);
@@ -118,6 +120,7 @@ public class PlayingScreen implements Screen
 		assets.load("images/joeface.png", Texture.class);
         assets.load("images/ginger.png", Texture.class);
         assets.load("images/dialoguebox.png", Texture.class);
+		assets.load("fonts/text.fnt", BitmapFont.class, bitmapParam1);
 		assets.finishLoading();
 	}
     
@@ -125,11 +128,11 @@ public class PlayingScreen implements Screen
     {
         return assets.get(assetPath, className);
     }
-    
-    public void addObject(MapObject object, int layer)
-    {
-        map.getLayers().get(layer).getObjects().add(object);
-    }
+	
+	public FitViewport getViewport()
+	{
+		return viewport;
+	}
 	
 	public void scrollCamera(float deltaX, float deltaY)
     {		
