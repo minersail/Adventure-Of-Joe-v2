@@ -71,7 +71,7 @@ public class Player extends BaseEntity
             if (Math.abs(npc.getPosition().x - mapObject.getX()) < 1 ||
                 Math.abs(npc.getPosition().y - mapObject.getY()) < 1)
             {
-                engine.getManager().setDialogue(npc.getComponent(DialogueComponent.class));
+                engine.getManager().startDialogue(npc.getComponent(DialogueComponent.class));
                 engine.setState(GameWorld.GameState.Dialogue);
             }
         }
