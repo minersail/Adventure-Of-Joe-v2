@@ -55,7 +55,7 @@ public class GameWorld extends Engine
         {
             if (Math.abs(npc.getPosition().x - playerPos.x) < 1 ||
                 Math.abs(npc.getPosition().y - playerPos.y) < 1)
-            {
+            {                
                 screen.getDialogueManager().setDialogue(npc.getComponent(DialogueComponent.class));
 				screen.setState(PlayingScreen.GameState.Dialogue);
 				return true;

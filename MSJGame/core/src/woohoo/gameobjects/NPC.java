@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import java.io.IOException;
 import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
@@ -19,12 +20,13 @@ public class NPC extends BaseEntity
     {
 		mapObject = new MapObjectComponent(new TextureRegion(texture), sizeX, sizeY);
 		collision = new CollisionComponent(world);
-        dialogue = new DialogueComponent();
+        dialogue = new DialogueComponent(0);
 		
 		collision.setPosition(new Vector2(8, 8));
 		
 		super.add(mapObject);
         super.add(collision);
+        super.add(dialogue);
 	}    
 	
 	@Override

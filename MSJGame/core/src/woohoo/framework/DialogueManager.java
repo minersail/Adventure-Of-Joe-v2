@@ -2,14 +2,11 @@ package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
 import woohoo.gameobjects.components.DialogueComponent;
@@ -26,7 +23,7 @@ public class DialogueManager
         displayBox = tr;
 		ui = s;
 		
-		message = new Label("Hello", skin);
+		message = new Label("", skin);
 		message.setWidth(Gdx.graphics.getWidth());
 		message.setHeight(100);
 		message.setPosition(0, 0);
@@ -40,7 +37,7 @@ public class DialogueManager
 			{
                 if (keycode == Keys.SPACE)
 				{
-					message.setText("This is a loooong message John Wolfe sucks too");
+					message.setText(currentDialogue.getNext());
 				}
 				
                 return true;
@@ -51,6 +48,8 @@ public class DialogueManager
     public void setDialogue(DialogueComponent dia)
     {
         currentDialogue = dia;
+        
+        message.setText(dia.getFirst());
 		
 		ui.addActor(message);
 		ui.setKeyboardFocus(message);

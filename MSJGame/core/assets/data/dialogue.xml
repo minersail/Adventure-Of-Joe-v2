@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dialogues>
+	<dialogue id="1">
+		<line character="0" text="Hello" />
+		<line character="1" text="My name is John" />
+		<line character="0" text="Screw you John" />
+	</dialogue>
+	<dialogue id="2">
+		<line character="0" text="Hello" />
+		<line character="1" text="My name is john" />
+		<line character="0" text="Screw you john" />
+	</dialogue>
+</dialogues>
