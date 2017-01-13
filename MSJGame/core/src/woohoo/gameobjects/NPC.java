@@ -19,7 +19,7 @@ public class NPC extends BaseEntity
     {
 		mapObject = new MapObjectComponent(new TextureRegion(texture), sizeX, sizeY);
 		collision = new CollisionComponent(world);
-        dialogue = new DialogueComponent(engine.getManager());
+        dialogue = new DialogueComponent();
 		
 		collision.setPosition(new Vector2(8, 8));
 		

@@ -1,20 +1,20 @@
 package woohoo.framework;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import woohoo.gameobjects.Player;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.screens.PlayingScreen;
 
 public class InputHandler implements InputProcessor
 {
-	Screen screen;
+	PlayingScreen screen;
 	Player player;
 	
     public InputHandler(Screen scr, Player p)
     {
-		screen = scr;
+		screen = (PlayingScreen)scr;
 		player = p;
     }
 
@@ -42,7 +42,7 @@ public class InputHandler implements InputProcessor
 				player.move(Direction.Right, true);
 				break;
             case Keys.SPACE:
-                player.talk();
+                screen.getEngine().checkDialogue(player.getPosition());
                 break;
         }
         return false;

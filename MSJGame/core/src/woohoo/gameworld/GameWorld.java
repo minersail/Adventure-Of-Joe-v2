@@ -2,14 +2,12 @@ package woohoo.gameworld;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import java.util.ArrayList;
-import woohoo.framework.DialogueManager;
 import woohoo.gameobjects.BaseEntity;
 import woohoo.gameobjects.NPC;
+import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.screens.PlayingScreen;
 
 /*
@@ -19,42 +17,24 @@ Their updates will be called in this class
 */
 public class GameWorld extends Engine
 {
-    public enum GameState
-    {
-        Playing, Dialogue
-    }
-    
 	private PlayingScreen screen;
-    private DialogueManager dialogueManager;
-    private GameState state;
     
     public float runtime;
 	
 	public GameWorld(PlayingScreen scr, World physics)
 	{
 		screen = scr;
-        dialogueManager = new DialogueManager(new TextureRegion(screen.getAsset("images/dialoguebox.png", Texture.class)), 
-											  scr.getViewport(),
-											  screen.getAsset("fonts/text.fnt", BitmapFont.class));
-		state = GameState.Playing;
 	}
     
 	@Override
     public void update(float delta)
     {
-        if (state == GameState.Playing)
-        {
-            runtime += delta;
+		runtime += delta;
 
-            for (Entity entity : getEntities())
-            {
-                ((BaseEntity)entity).update(delta);
-            }
-        }
-        else if (state == GameState.Dialogue)
-        {
-            dialogueManager.runDialogue(delta);
-        }
+		for (Entity entity : getEntities())
+		{
+			((BaseEntity)entity).update(delta);
+		}
     }
     
     public ArrayList<NPC> getNPCs()
@@ -68,19 +48,20 @@ public class GameWorld extends Engine
         }
         return npcs;
     }
-    
-    public void setState(GameState s)
-    {
-        state = s;
-    }
-    
-    public GameState getState()
-    {
-        return state;
-    }
-    
-    public DialogueManager getManager()
-    {
-        return dialogueManager;
-    }
+	
+	public boolean checkDialogue(Vector2 playerPos)
+	{
+		for (NPC npc : getNPCs())
+        {
+            if (Math.abs(npc.getPosition().x - playerPos.x) < 1 ||
+                Math.abs(npc.getPosition().y - playerPos.y) < 1)
+            {
+                screen.getDialogueManager().setDialogue(npc.getComponent(DialogueComponent.class));
+				screen.setState(PlayingScreen.GameState.Dialogue);
+				return true;
+            }
+        }
+		
+		return false;
+	}
 }

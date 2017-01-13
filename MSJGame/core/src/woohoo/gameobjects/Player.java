@@ -63,17 +63,4 @@ public class Player extends BaseEntity
 		if (changeDir)
 			mapObject.setDirection(dir);
 	}
-    
-    public void talk()
-    {
-        for (NPC npc : engine.getNPCs())
-        {
-            if (Math.abs(npc.getPosition().x - mapObject.getX()) < 1 ||
-                Math.abs(npc.getPosition().y - mapObject.getY()) < 1)
-            {
-                engine.getManager().startDialogue(npc.getComponent(DialogueComponent.class));
-                engine.setState(GameWorld.GameState.Dialogue);
-            }
-        }
-    }
 }
