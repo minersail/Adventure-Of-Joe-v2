@@ -11,7 +11,7 @@ public class Player extends Character
     {
 		super(atlas, world);
 		
-		collision.setPosition(5, 5);
+		collision.setPosition(1, 1);
 	}
 	
 	@Override

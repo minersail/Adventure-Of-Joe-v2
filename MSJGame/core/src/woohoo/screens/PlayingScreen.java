@@ -58,8 +58,8 @@ public class PlayingScreen implements Screen
 	private World world;
 	private Stage ui;
 		
-	private static final int WORLD_WIDTH = 16; // Arbitrary unit; how many tiles will fit width-wise on the screen
-	private static final int WORLD_HEIGHT = 16; // Arbitrary unit; how many tiles will fit height-wise	
+	public int WORLD_WIDTH = 16; // Arbitrary unit; how many tiles will fit width-wise on the screen
+	public int WORLD_HEIGHT = (int)(WORLD_WIDTH * (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth()); // Arbitrary unit; how many tiles will fit height-wise	
 	
     private float runTime;
 
@@ -69,10 +69,10 @@ public class PlayingScreen implements Screen
 		// Set up camera
         float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
 		
-        cam = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT * aspectRatio);
-        cam.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT * aspectRatio);
+        cam = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
+        cam.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT);
 		
-		viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT * aspectRatio, cam);
+		viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, cam);
 		viewport.apply();
 		cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
 		debugRenderer = new Box2DDebugRenderer();
@@ -171,16 +171,15 @@ public class PlayingScreen implements Screen
 		assets.load("images/tileset.png", Texture.class);
 		assets.load("images/tileset2.png", Texture.class);
 		assets.load("images/joeface.png", Texture.class);
-        assets.load("images/ginger.png", Texture.class);
-        assets.load("images/dialoguebox.png", Texture.class);
-		assets.load("ui/uiskin.atlas", TextureAtlas.class);
+        assets.load("images/ginger.png", Texture.class);		
+        assets.load("ui/uiskin.atlas", TextureAtlas.class);
 		assets.load("ui/uiskin.json", Skin.class, skinParam1);
 		
 		assets.load("images/faces/ginger.png", Texture.class);
 		assets.load("images/faces/oldman.png", Texture.class);
 		assets.finishLoading();
 	}
-	
+    
 	public void setState(GameState s)
 	{
 		state = s;
@@ -201,6 +200,11 @@ public class PlayingScreen implements Screen
     {
         cam.position.set(newX, newY, 0);
         cam.update();     
+    }
+    
+    public OrthographicCamera getCamera()
+    {
+        return cam;
     }
 	
 	public GameWorld getEngine()

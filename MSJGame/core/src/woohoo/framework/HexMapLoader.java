@@ -18,8 +18,8 @@ import woohoo.screens.PlayingScreen;
 
 public class HexMapLoader
 {
-	Screen screen;
-	public HexMapLoader(Screen scr)
+	PlayingScreen screen;
+	public HexMapLoader(PlayingScreen scr)
 	{
 		screen = scr;
 	}
@@ -30,7 +30,7 @@ public class HexMapLoader
 		String map = mapHandle.readString();
 
 		String[] rows = map.split("\n");
-		int mapWidth = rows[0].length() / 5;
+		int mapWidth = rows[0].length() / 9;
 		int mapHeight = rows.length;		
 		
 		TiledMapTileLayer layer1 = new TiledMapTileLayer(mapWidth, mapHeight, 16, 16);
@@ -111,6 +111,12 @@ public class HexMapLoader
 			i = 0;
 		}
         
+        // Center screen        
+        float extraX = (float)(screen.WORLD_WIDTH - mapWidth);
+        float extraY = (float)(screen.WORLD_HEIGHT - mapHeight);
+        screen.setCamera(screen.getCamera().viewportWidth / 2 - Math.max(0, extraX / 2), 
+                         screen.getCamera().viewportHeight / 2 - Math.max(0, extraY / 2));
+                
         MapLayers layers = new MapLayers();
         layers.add(layer1);
         layers.add(layer2);

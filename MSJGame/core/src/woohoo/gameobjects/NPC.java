@@ -17,7 +17,7 @@ public class NPC extends Character
         dialogue = new DialogueComponent(0);
         super.add(dialogue);
 		
-		collision.setPosition(8, 8);
+		collision.setPosition(5, 5);
 	}    
 	
 	@Override
