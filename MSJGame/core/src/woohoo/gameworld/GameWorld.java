@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import java.util.ArrayList;
 import woohoo.gameobjects.BaseEntity;
 import woohoo.gameobjects.NPC;
+import woohoo.gameobjects.Player;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.screens.PlayingScreen;
 
@@ -49,15 +50,16 @@ public class GameWorld extends Engine
         return npcs;
     }
 	
-	public boolean checkDialogue(Vector2 playerPos)
+	/*
+	Check to see if the player is facing an NPC
+	*/
+	public boolean checkDialogue(Player player)
 	{
 		for (NPC npc : getNPCs())
         {
-            if (Math.abs(npc.getPosition().x - playerPos.x) < 1 ||
-                Math.abs(npc.getPosition().y - playerPos.y) < 1)
+            if (player.isFacing(npc))
             {                
-                screen.getDialogueManager().setDialogue(npc.getComponent(DialogueComponent.class));
-				screen.setState(PlayingScreen.GameState.Dialogue);
+                screen.getDialogueManager().startDialogue(npc.getComponent(DialogueComponent.class));
 				return true;
             }
         }

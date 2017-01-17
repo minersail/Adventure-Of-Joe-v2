@@ -13,38 +13,44 @@ public class MapObjectComponent extends TextureMapObject implements Component
 {	
 	public enum Direction
 	{
-		None, Up, Down, Left, Right
+		Up, Down, Left, Right
 	}
 	
+	private Direction direction = Direction.Down;
+	
 	private Map<String, Animation<TextureRegion>> animation;
-	
-	private Direction direction = Direction.Up;
-	private float runTime = 0;
 	private boolean usesAnimation;
+	private boolean isIdle;
 	
-	public MapObjectComponent(TextureRegion spr, int sizeX, int sizeY)
+	private float runTime = 0;
+	
+	private Vector2 size;
+	
+	public MapObjectComponent(TextureRegion spr)
     {
 		usesAnimation = false;
 		spr.flip(false, true);
 		
 		super.setTextureRegion(spr);
 		
-		super.setScaleX(sizeX);
-		super.setScaleY(sizeY);
+		size = new Vector2(1, 1);
 	}
 	
-	public MapObjectComponent(TextureAtlas atlas, int sizeX, int sizeY)
+	public MapObjectComponent(TextureAtlas atlas)
     {
 		usesAnimation = true;
 		animation = new HashMap<>();
 		
-		addAnimation("Left", new Animation<TextureRegion>(0.333f, atlas.findRegions("left"), Animation.PlayMode.LOOP));
-		addAnimation("Right", new Animation<TextureRegion>(0.333f, atlas.findRegions("right"), Animation.PlayMode.LOOP));
-		addAnimation("Up", new Animation<TextureRegion>(0.333f, atlas.findRegions("up"), Animation.PlayMode.LOOP));
-		addAnimation("Down", new Animation<TextureRegion>(0.333f, atlas.findRegions("down"), Animation.PlayMode.LOOP));
+		addAnimation("Left", new Animation<TextureRegion>(0.333f, atlas.findRegions("left"), Animation.PlayMode.LOOP_PINGPONG));
+		addAnimation("Right", new Animation<TextureRegion>(0.333f, atlas.findRegions("right"), Animation.PlayMode.LOOP_PINGPONG));
+		addAnimation("Up", new Animation<TextureRegion>(0.333f, atlas.findRegions("up"), Animation.PlayMode.LOOP_PINGPONG));
+		addAnimation("Down", new Animation<TextureRegion>(0.333f, atlas.findRegions("down"), Animation.PlayMode.LOOP_PINGPONG));
+		addAnimation("Left_Idle", new Animation<TextureRegion>(0.333f, atlas.findRegions("left_idle"), Animation.PlayMode.LOOP_PINGPONG));
+		addAnimation("Right_Idle", new Animation<TextureRegion>(0.333f, atlas.findRegions("right_idle"), Animation.PlayMode.LOOP_PINGPONG));
+		addAnimation("Up_Idle", new Animation<TextureRegion>(0.333f, atlas.findRegions("up_idle"), Animation.PlayMode.LOOP_PINGPONG));
+		addAnimation("Down_Idle", new Animation<TextureRegion>(0.333f, atlas.findRegions("down_idle"), Animation.PlayMode.LOOP_PINGPONG));
 		
-		super.setScaleX(sizeX);
-		super.setScaleY(sizeY);
+		size = new Vector2(1, 1);
 	}
 	
 	public void update(float delta, Vector2 newPosition)
@@ -63,6 +69,26 @@ public class MapObjectComponent extends TextureMapObject implements Component
 	public Direction getDirection()
 	{
 		return direction;
+	}
+	
+	public void setSize(float x, float y)
+	{
+		size = new Vector2(x, y);
+	}
+	
+	public Vector2 getSize()
+	{
+		return size;
+	}
+	
+	public void setIdle(boolean idle)
+	{
+		isIdle = idle;
+	}
+	
+	public boolean isIdle()
+	{
+		return isIdle;
 	}
 	
 	public float getTime()

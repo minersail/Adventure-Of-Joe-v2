@@ -3,30 +3,15 @@ package woohoo.gameobjects;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import woohoo.gameobjects.components.CollisionComponent;
-import woohoo.gameobjects.components.DialogueComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
-import woohoo.gameworld.GameWorld;
 
-public class Player extends BaseEntity
-{	
-    private MapObjectComponent mapObject;
-	private CollisionComponent collision;
-    
-    private GameWorld engine;
-	    
-    public Player(TextureAtlas atlas, int sizeX, int sizeY, World world, GameWorld eng)
+public class Player extends Character
+{		    
+    public Player(TextureAtlas atlas, World world)
     {
-		mapObject = new MapObjectComponent(atlas, sizeX, sizeY);
-		collision = new CollisionComponent(world);
+		super(atlas, world);
 		
-		collision.setPosition(new Vector2(5, 5));
-		
-		super.add(mapObject);
-        super.add(collision);
-        
-        engine = eng;
+		collision.setPosition(5, 5);
 	}
 	
 	@Override
@@ -34,14 +19,29 @@ public class Player extends BaseEntity
 	{
 		collision.update(delta);
 		mapObject.update(delta, new Vector2(collision.getPosition().x - 0.5f, collision.getPosition().y - 0.5f));
+		
+		mapObject.setIdle(collision.isStopped());
+		
+		if (!collision.isStopped())
+		{
+			if (Math.abs(collision.getVelocity().x) > Math.abs(collision.getVelocity().y))
+			{
+				if (collision.getVelocity().x > 0)
+					mapObject.setDirection(Direction.Right);
+				else
+					mapObject.setDirection(Direction.Left);
+			}
+			else
+			{
+				if (collision.getVelocity().y > 0)
+					mapObject.setDirection(Direction.Down);
+				else
+					mapObject.setDirection(Direction.Up);
+			}
+		}
 	}
 	
-	public Vector2 getPosition()
-	{
-		return new Vector2(mapObject.getX(), mapObject.getY());
-	}
-	
-	public void move(Direction dir, boolean changeDir)
+	public void move(Direction dir)
 	{
 		int speed = 1000;
 		switch (dir)
@@ -59,8 +59,10 @@ public class Player extends BaseEntity
 				collision.addForce(speed, 0);
 				break;
 		}
-		
-		if (changeDir)
-			mapObject.setDirection(dir);
+	}
+	
+	public void stop()
+	{
+		collision.setForce(0, 0);
 	}
 }

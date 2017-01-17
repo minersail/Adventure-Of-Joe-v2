@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -21,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import woohoo.framework.CharacterManager;
 import woohoo.framework.DialogueManager;
 import woohoo.framework.HexMapLoader;
 import woohoo.framework.InputHandler;
@@ -47,6 +47,7 @@ public class PlayingScreen implements Screen
 	private FitViewport viewport; // Helper class for camera
 	private Box2DDebugRenderer debugRenderer;
 	
+	private CharacterManager characters;
     private DialogueManager dialogueManager;
 	private AssetManager assets;
 	private InputHandler input;
@@ -77,7 +78,11 @@ public class PlayingScreen implements Screen
 		debugRenderer = new Box2DDebugRenderer();
 		
 		// Load assets
+		assets = new AssetManager();
 		loadAssets();
+		
+		// Define characters
+		characters = new CharacterManager(assets);
 		
 		// Create physics
 		world = new World(new Vector2(0, 0), true);		
@@ -96,11 +101,11 @@ public class PlayingScreen implements Screen
 		engine = new GameWorld(this, world);
 		
 		// Create dialogue
-		dialogueManager = new DialogueManager(ui, (Skin)assets.get("ui/uiskin.json"), new TextureRegion((Texture)assets.get("images/dialoguebox.png")));
+		dialogueManager = new DialogueManager(this, ui, (Skin)assets.get("ui/uiskin.json"));
         
 		// Initialize objects
-		Player player = new Player((TextureAtlas)assets.get("images/oldman.pack"), 1, 1, world, engine);
-        NPC npc = new NPC((Texture)assets.get("images/ginger.png"), 1, 1, world, engine);
+		Player player = new Player((TextureAtlas)assets.get("images/oldman.pack"), world);
+        NPC npc = new NPC((Texture)assets.get("images/ginger.png"), world);
         
 		MapLayer objects = new MapLayer();
 		objects.getObjects().add(player.getComponent(MapObjectComponent.class));
@@ -162,7 +167,6 @@ public class PlayingScreen implements Screen
 		TextureAtlasParameter atlasParam1 = new TextureAtlasParameter(true);
 		SkinParameter skinParam1 = new SkinParameter("ui/uiskin.atlas");
 		
-		assets = new AssetManager();
 		assets.load("images/oldman.pack", TextureAtlas.class, atlasParam1);
 		assets.load("images/tileset.png", Texture.class);
 		assets.load("images/tileset2.png", Texture.class);
@@ -171,12 +175,20 @@ public class PlayingScreen implements Screen
         assets.load("images/dialoguebox.png", Texture.class);
 		assets.load("ui/uiskin.atlas", TextureAtlas.class);
 		assets.load("ui/uiskin.json", Skin.class, skinParam1);
+		
+		assets.load("images/faces/ginger.png", Texture.class);
+		assets.load("images/faces/oldman.png", Texture.class);
 		assets.finishLoading();
 	}
 	
 	public void setState(GameState s)
 	{
 		state = s;
+	}
+	
+	public GameState getState()
+	{
+		return state;
 	}
 	
 	public void scrollCamera(float deltaX, float deltaY)
@@ -199,6 +211,11 @@ public class PlayingScreen implements Screen
 	public DialogueManager getDialogueManager()
 	{
 		return dialogueManager;
+	}
+	
+	public CharacterManager getCharacters()
+	{
+		return characters;
 	}
 
     @Override

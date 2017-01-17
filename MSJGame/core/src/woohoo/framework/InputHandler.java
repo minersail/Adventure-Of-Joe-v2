@@ -1,5 +1,6 @@
 package woohoo.framework;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -27,44 +28,83 @@ public class InputHandler implements InputProcessor
     @Override
     public boolean keyDown(int keycode)
     {
-        switch (keycode) 
-        {            
-			case Keys.UP:
-				player.move(Direction.Up, true);
+		switch (screen.getState())
+		{
+			case Playing:
+				switch (keycode) 
+				{            
+					case Keys.UP:
+						player.move(Direction.Up);
+						break;
+					case Keys.DOWN:
+						player.move(Direction.Down);
+						break;
+					case Keys.LEFT:
+						player.move(Direction.Left);
+						break;
+					case Keys.RIGHT:
+						player.move(Direction.Right);
+						break;
+					case Keys.SPACE:
+						screen.getEngine().checkDialogue(player);
+						break;
+				}
 				break;
-			case Keys.DOWN:
-				player.move(Direction.Down, true);
+			
+			case Dialogue:
+				switch (keycode)
+				{
+					case Keys.SPACE:
+						screen.getDialogueManager().advanceDialogue();
+				}
 				break;
-			case Keys.LEFT:
-				player.move(Direction.Left, true);
-				break;
-			case Keys.RIGHT:
-				player.move(Direction.Right, true);
-				break;
-            case Keys.SPACE:
-                screen.getEngine().checkDialogue(player.getPosition());
-                break;
-        }
+		}
+		
+		if (!Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.DOWN) && 
+			!Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT))
+		{
+			player.stop();
+		}
+			
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode)
     {
-		switch (keycode) {
-			case Keys.UP:
-				player.move(Direction.Down, false);
+		switch (screen.getState())
+		{
+			case Playing:
+				switch (keycode) {
+					case Keys.UP:
+						player.move(Direction.Down);
+						break;
+					case Keys.DOWN:
+						player.move(Direction.Up);
+						break;
+					case Keys.LEFT:
+						player.move(Direction.Right);
+						break;
+					case Keys.RIGHT:
+						player.move(Direction.Left);
+						break;
+				}
 				break;
-			case Keys.DOWN:
-				player.move(Direction.Up, false);
+				
+			case Dialogue:
+				switch(keycode)
+				{
+					
+				}
 				break;
-			case Keys.LEFT:
-				player.move(Direction.Right, false);
-				break;
-			case Keys.RIGHT:
-				player.move(Direction.Left, false);
-				break;
-        }
+		}
+		
+		if (!Gdx.input.isKeyPressed(Keys.UP) && !Gdx.input.isKeyPressed(Keys.DOWN) && 
+			!Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT))
+		{
+			player.stop();
+		}
+		
         return false;
     }
 

@@ -24,12 +24,14 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 			MapObjectComponent obj = (MapObjectComponent)object;
 			if (obj.isAnimated())
 			{
-				batch.draw(obj.getAnimation(obj.getDirection().toString()).getKeyFrame(obj.getTime()),
-						   obj.getX(), obj.getY(), obj.getScaleX(), obj.getScaleY());				
+				String animString = obj.getDirection().toString() + (obj.isIdle() ? "_Idle" : "");
+				
+				batch.draw(obj.getAnimation(animString).getKeyFrame(obj.getTime()),
+						   obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
 			}
 			else
 			{			
-				batch.draw(obj.getTextureRegion(), obj.getX(), obj.getY(), obj.getScaleX(), obj.getScaleY());
+				batch.draw(obj.getTextureRegion(), obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
 			}
 		}
 	}
