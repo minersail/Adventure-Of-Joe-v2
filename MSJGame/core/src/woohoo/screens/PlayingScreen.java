@@ -15,10 +15,12 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.framework.CharacterManager;
 import woohoo.framework.DialogueManager;
@@ -54,12 +56,14 @@ public class PlayingScreen implements Screen
 	private HexMapLoader mapLoader;
 	private GameRenderer renderer;
 	private GameWorld engine;
-	private TiledMap map;
 	private World world;
 	private Stage ui;
 		
 	public int WORLD_WIDTH = 16; // Arbitrary unit; how many tiles will fit width-wise on the screen
-	public int WORLD_HEIGHT = (int)(WORLD_WIDTH * (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth()); // Arbitrary unit; how many tiles will fit height-wise	
+	public int WORLD_HEIGHT = (int)(WORLD_WIDTH * (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth()); // Arbitrary unit; how many tiles will fit height-wise
+	
+	public int mapWidth;
+	public int mapHeight;
 	
     private float runTime;
 
@@ -92,8 +96,8 @@ public class PlayingScreen implements Screen
 		
 		// Create map
 		mapLoader = new HexMapLoader(this);
-		map = new TiledMap();
-		MapLayers layers = mapLoader.load("maps/trees3.txt", (Texture)assets.get("images/tileset.png"), 
+		TiledMap map = new TiledMap();
+		MapLayers layers = mapLoader.load("maps/sandbox.txt", (Texture)assets.get("images/tileset.png"), 
                                           (Texture)assets.get("images/tileset2.png"), world);
 		
 		// Draw and update every frame
@@ -108,12 +112,13 @@ public class PlayingScreen implements Screen
         NPC npc = new NPC((Texture)assets.get("images/ginger.png"), world);
         
 		MapLayer objects = new MapLayer();
+		objects.setName("Objects");
 		objects.getObjects().add(player.getComponent(MapObjectComponent.class));
 		objects.getObjects().add(npc.getComponent(MapObjectComponent.class));
 		
-        map.getLayers().add(layers.get(0));
+        map.getLayers().add(layers.get("Base"));
 		map.getLayers().add(objects);
-        map.getLayers().add(layers.get(1));
+        map.getLayers().add(layers.get("Decorations"));
 		
 		engine.addEntity(player);
         engine.addEntity(npc);
@@ -178,6 +183,31 @@ public class PlayingScreen implements Screen
 		assets.load("images/faces/ginger.png", Texture.class);
 		assets.load("images/faces/oldman.png", Texture.class);
 		assets.finishLoading();
+	}
+	
+	public void switchScreens()
+	{ 
+		Array<Body> bodies = new Array<>();
+		world.getBodies(bodies);
+		
+		for (Body body: bodies)
+		{
+			if (body.getUserData().equals("Wall"))
+				world.destroyBody(body);
+		}
+		
+		TiledMap map = new TiledMap();
+		
+		MapLayers layers = mapLoader.load("maps/trees3.txt", (Texture)assets.get("images/tileset.png"), 
+                                          (Texture)assets.get("images/tileset2.png"), world);		
+		
+		MapLayer objects = renderer.getMap().getLayers().get("Objects");
+		
+        map.getLayers().add(layers.get(0));
+		map.getLayers().add(objects);
+        map.getLayers().add(layers.get(1));
+		
+		renderer.setMap(map);
 	}
     
 	public void setState(GameState s)

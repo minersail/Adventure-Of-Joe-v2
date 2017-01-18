@@ -41,8 +41,8 @@ public class CollisionComponent implements Component
 
 		mass.createFixture(fixtureDef);
 		mass.setFixedRotation(true);
-		
 		mass.setLinearDamping(10f);
+		mass.setUserData("Entity");
 	}
 	
 	public void update(float delta)

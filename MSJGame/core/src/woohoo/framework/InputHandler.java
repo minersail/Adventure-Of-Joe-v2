@@ -48,6 +48,9 @@ public class InputHandler implements InputProcessor
 					case Keys.SPACE:
 						screen.getEngine().checkDialogue(player);
 						break;
+					case Keys.S:
+						screen.switchScreens();
+						break;
 				}
 				break;
 			
@@ -65,6 +68,8 @@ public class InputHandler implements InputProcessor
 		{
 			player.stop();
 		}
+		
+		screen.getEngine().adjustCamera(player);
 			
         return false;
     }

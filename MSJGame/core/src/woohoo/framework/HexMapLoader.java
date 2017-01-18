@@ -1,7 +1,6 @@
 package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -83,6 +82,7 @@ public class HexMapLoader
 					fixtureDef.friction = 0f;
 
 					body.createFixture(fixtureDef);
+					body.setUserData("Wall");
 				}
 					
 				Cell cell = new Cell();
@@ -110,6 +110,9 @@ public class HexMapLoader
 			j++;
 			i = 0;
 		}
+		
+		screen.mapWidth = mapWidth;
+		screen.mapHeight = mapHeight;
         
         // Center screen        
         float extraX = (float)(screen.WORLD_WIDTH - mapWidth);
@@ -118,6 +121,8 @@ public class HexMapLoader
                          screen.getCamera().viewportHeight / 2 - Math.max(0, extraY / 2));
                 
         MapLayers layers = new MapLayers();
+		layer1.setName("Base");
+		layer2.setName("Decorations");
         layers.add(layer1);
         layers.add(layer2);
 		

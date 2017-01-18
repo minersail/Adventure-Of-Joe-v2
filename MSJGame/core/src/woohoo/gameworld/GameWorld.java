@@ -35,6 +35,11 @@ public class GameWorld extends Engine
 		for (Entity entity : getEntities())
 		{
 			((BaseEntity)entity).update(delta);
+			
+			if (entity instanceof Player)
+			{
+				adjustCamera((Player)entity);
+			}
 		}
     }
     
@@ -65,5 +70,23 @@ public class GameWorld extends Engine
         }
 		
 		return false;
+	}
+	
+	public void adjustCamera(Player player)
+	{
+		Vector2 p = player.getPosition();
+		Vector2 newPos = new Vector2(screen.getCamera().position.x, screen.getCamera().position.y);
+				
+		if (p.x > screen.WORLD_WIDTH / 2 && p.x < screen.mapWidth - screen.WORLD_WIDTH / 2)
+		{
+			newPos.x = p.x;
+		}
+		
+		if (p.y > screen.WORLD_HEIGHT / 2 && p.y < screen.mapHeight - screen.WORLD_HEIGHT / 2)
+		{
+			newPos.y = p.y;
+		}
+		
+		screen.setCamera(newPos.x, newPos.y);
 	}
 }
