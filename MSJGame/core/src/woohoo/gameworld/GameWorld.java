@@ -2,6 +2,7 @@ package woohoo.gameworld;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import java.util.ArrayList;
@@ -41,6 +42,18 @@ public class GameWorld extends Engine
 				adjustCamera((Player)entity);
 			}
 		}
+    }
+    
+    public Player getPlayer()
+    {
+        for (Entity entity : getEntities())
+        {
+            if (entity instanceof Player)
+                return (Player)entity;
+        }
+        
+        Gdx.app.log("ERROR", "Player does not exist in GameWorld");
+        return null;
     }
     
     public ArrayList<NPC> getNPCs()

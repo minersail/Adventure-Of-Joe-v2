@@ -99,7 +99,8 @@ public class PlayingScreen implements Screen
 		world = new World(new Vector2(0, 0), true);	
         
         // Create gate sensors
-        gates = new GateManager(this, world);
+        gates = new GateManager(this);        
+        gates.createGates(world, 0);
 		
 		// Create user interface
 		ui = new Stage();
@@ -153,6 +154,7 @@ public class PlayingScreen implements Screen
 
 				engine.update(delta);
 				world.step(delta, 6, 2);
+                gates.updateArea();
 				ui.act();
 				
 				renderer.setView(cam);
@@ -177,7 +179,7 @@ public class PlayingScreen implements Screen
 		}
     }
 	
-	public void loadAssets()
+	private void loadAssets()
 	{		
 		TextureAtlasParameter atlasParam1 = new TextureAtlasParameter(true);
 		SkinParameter skinParam1 = new SkinParameter("ui/uiskin.atlas");
@@ -251,6 +253,26 @@ public class PlayingScreen implements Screen
 	{
 		return engine;
 	}
+    
+    public World getWorld()
+    {
+        return world;
+    }
+    
+    public AssetManager getAssets()
+    {
+        return assets;
+    }
+    
+    public HexMapLoader getMapLoader()
+    {
+        return mapLoader;
+    }
+    
+    public GameRenderer getRenderer()
+    {
+        return renderer;
+    }
 	
 	public DialogueManager getDialogueManager()
 	{

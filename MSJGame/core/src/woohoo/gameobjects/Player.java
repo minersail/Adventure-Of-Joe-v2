@@ -65,4 +65,9 @@ public class Player extends Character
 	{
 		collision.setForce(0, 0);
 	}
+    
+    public void setPosition(int x, int y)
+    {
+        collision.setPosition(x, y);
+    }
 }
