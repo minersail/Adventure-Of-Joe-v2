@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.screens.PlayingScreen;
+import woohoo.screens.PlayingScreen.WBodyType;
 
 public class HexMapLoader
 {
@@ -82,7 +83,7 @@ public class HexMapLoader
 					fixtureDef.friction = 0f;
 
 					body.createFixture(fixtureDef);
-					body.setUserData("Wall");
+					body.setUserData(WBodyType.Wall);
 				}
 					
 				Cell cell = new Cell();

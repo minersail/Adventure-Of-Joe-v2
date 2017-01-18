@@ -49,7 +49,7 @@ public class InputHandler implements InputProcessor
 						screen.getEngine().checkDialogue(player);
 						break;
 					case Keys.S:
-						screen.switchScreens();
+						screen.switchScreens(1);
 						break;
 				}
 				break;

@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.framework.CharacterManager;
 import woohoo.framework.DialogueManager;
+import woohoo.framework.GateManager;
 import woohoo.framework.HexMapLoader;
 import woohoo.framework.InputHandler;
 import woohoo.gameobjects.NPC;
@@ -38,6 +39,11 @@ public class PlayingScreen implements Screen
 	{
 		Playing, Dialogue
 	}	
+    
+    public enum WBodyType
+    {
+        Player, Entity, Wall, Gate
+    }
 	
 	/* Dimensions of tiles on the spritesheet */
     public final int T_TILE_WIDTH = 16;
@@ -49,6 +55,7 @@ public class PlayingScreen implements Screen
 	private FitViewport viewport; // Helper class for camera
 	private Box2DDebugRenderer debugRenderer;
 	
+    private GateManager gates;
 	private CharacterManager characters;
     private DialogueManager dialogueManager;
 	private AssetManager assets;
@@ -89,7 +96,10 @@ public class PlayingScreen implements Screen
 		characters = new CharacterManager(assets);
 		
 		// Create physics
-		world = new World(new Vector2(0, 0), true);		
+		world = new World(new Vector2(0, 0), true);	
+        
+        // Create gate sensors
+        gates = new GateManager(this, world);
 		
 		// Create user interface
 		ui = new Stage();
@@ -97,7 +107,7 @@ public class PlayingScreen implements Screen
 		// Create map
 		mapLoader = new HexMapLoader(this);
 		TiledMap map = new TiledMap();
-		MapLayers layers = mapLoader.load("maps/sandbox.txt", (Texture)assets.get("images/tileset.png"), 
+		MapLayers layers = mapLoader.load("maps/0.txt", (Texture)assets.get("images/tileset.png"), 
                                           (Texture)assets.get("images/tileset2.png"), world);
 		
 		// Draw and update every frame
@@ -185,9 +195,9 @@ public class PlayingScreen implements Screen
 		assets.finishLoading();
 	}
 	
-	public void switchScreens()
+	public void switchScreens(int areaID)
 	{ 
-		Array<Body> bodies = new Array<>();
+        Array<Body> bodies = new Array<>();
 		world.getBodies(bodies);
 		
 		for (Body body: bodies)
@@ -198,7 +208,7 @@ public class PlayingScreen implements Screen
 		
 		TiledMap map = new TiledMap();
 		
-		MapLayers layers = mapLoader.load("maps/trees3.txt", (Texture)assets.get("images/tileset.png"), 
+		MapLayers layers = mapLoader.load("maps/" + areaID + ".txt", (Texture)assets.get("images/tileset.png"), 
                                           (Texture)assets.get("images/tileset2.png"), world);		
 		
 		MapLayer objects = renderer.getMap().getLayers().get("Objects");

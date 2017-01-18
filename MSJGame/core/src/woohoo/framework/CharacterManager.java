@@ -15,8 +15,11 @@ public class CharacterManager
 	{
 		characters = new ArrayList<>();
 		
-		createCharacter(manager, "oldman.png", "Old Man");
-		createCharacter(manager, "ginger.png", "John");
+        for (String name : manager.getAssetNames())
+        {
+            if (name.startsWith("images/faces/"))            
+                createCharacter(manager, name, name.replace("images/faces/", ""));
+        }
 	}
 	
 	public CharacterData getCharacter(int ID)
@@ -30,7 +33,7 @@ public class CharacterManager
 	// Accepts filename path relative to the images/faces folder
 	private void createCharacter(AssetManager manager, String filename, String name)
 	{
-		CharacterData data = new CharacterData(manager.get("images/faces/" + filename, Texture.class), name);
+		CharacterData data = new CharacterData(manager.get(filename, Texture.class), name);
 		characters.add(data);
 	}
 }

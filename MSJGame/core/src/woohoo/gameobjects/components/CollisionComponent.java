@@ -7,13 +7,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import woohoo.screens.PlayingScreen.WBodyType;
 
 public class CollisionComponent implements Component
 {
 	Body mass;
 	Vector2 force = new Vector2(0, 0);
 	
-	public CollisionComponent(World world)
+	public CollisionComponent(World world, boolean isPlayer)
 	{
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -42,7 +43,7 @@ public class CollisionComponent implements Component
 		mass.createFixture(fixtureDef);
 		mass.setFixedRotation(true);
 		mass.setLinearDamping(10f);
-		mass.setUserData("Entity");
+		mass.setUserData(isPlayer ? WBodyType.Player : WBodyType.Entity);
 	}
 	
 	public void update(float delta)

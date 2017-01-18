@@ -22,7 +22,7 @@ public class Character extends BaseEntity
 	public Character(TextureAtlas atlas, World world)
 	{		
 		mapObject = new MapObjectComponent(atlas);
-		collision = new CollisionComponent(world);
+		collision = new CollisionComponent(world, this instanceof Player);
 		
 		super.add(mapObject);
         super.add(collision);
@@ -31,7 +31,7 @@ public class Character extends BaseEntity
 	public Character(TextureRegion region, World world)
 	{		
 		mapObject = new MapObjectComponent(region);
-		collision = new CollisionComponent(world);
+		collision = new CollisionComponent(world, this instanceof Player);
 		
 		super.add(mapObject);
         super.add(collision);
