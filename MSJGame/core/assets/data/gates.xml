@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gates>
 	<area id="0">
-		<gate locX="11" locY="9" destArea="1" destX="0" destY="9" />
-		<gate locX="11" locY="10" destArea="1" destX="0" destY="10" />
+		<gate locX="11" locY="8" sizeX="1" sizeY="3" destArea="1" destX="0" destY="10" />
 	</area>
 	<area id="1">
-		<gate locX="-1" locY="10" destArea="0" destX="9" destY="10" />
+		<gate locX="-1" locY="10" sizeX="1" sizeY="3" destArea="0" destX="10" destY="8" />
 	</area>
 </gates>

@@ -114,13 +114,7 @@ public class HexMapLoader
 		
 		screen.mapWidth = mapWidth;
 		screen.mapHeight = mapHeight;
-        
-        // Center screen        
-        float extraX = (float)(screen.WORLD_WIDTH - mapWidth);
-        float extraY = (float)(screen.WORLD_HEIGHT - mapHeight);
-        screen.setCamera(screen.getCamera().viewportWidth / 2 - Math.max(0, extraX / 2), 
-                         screen.getCamera().viewportHeight / 2 - Math.max(0, extraY / 2));
-                
+                        
         MapLayers layers = new MapLayers();
 		layer1.setName("Base");
 		layer2.setName("Decorations");

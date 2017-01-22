@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dialogues>
 	<dialogue id="0">
+		<line character="1" name="John" text="Hello" />
+		<line character="0" name="Old Man" text="Hello" />
+		<line character="1" name="John" text="My name is John" />
+		<line character="0" name="Old Man" text="*farts*" />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue>
+	<dialogue id="1">
 		<line character="1" name="???" text="Hello" />
 		<line character="0" name="Old Man" text="(grunts)" />
 		<line character="1" name="John" text="My name is John" />
@@ -16,7 +23,7 @@
 		<line character="0" name="Old Man" text="Screw off, ye soulless bastard" />
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
-	<dialogue id="1">
+	<dialogue id="2">
 		<line character="1" name="Mr. Scavilla" text="Hello old man" />
 		<line character="0" name="Old Man" text="Uh" />
 		<line character="1" name="Mr. Scavilla" text="You look rather half baked" />

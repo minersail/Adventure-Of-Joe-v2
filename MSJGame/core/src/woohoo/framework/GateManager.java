@@ -47,11 +47,15 @@ public class GateManager
                     if ((fA.getBody().getUserData() == WBodyType.Gate && fB.getBody().getUserData() == WBodyType.Player))
                     {
                         nextGate = (GateData)fA.getUserData();
+						nextGate.setPlayerOffset(fB.getBody().getPosition().x - nextGate.gatePos().x,
+												 fB.getBody().getPosition().y - nextGate.gatePos().y);
                         switchArea = true;
                     }
                     else if (fB.getBody().getUserData() == WBodyType.Gate && fA.getBody().getUserData() == WBodyType.Player)
                     {
                         nextGate = (GateData)fB.getUserData();
+						nextGate.setPlayerOffset(fA.getBody().getPosition().x - nextGate.gatePos().x,
+												 fA.getBody().getPosition().y - nextGate.gatePos().y);
                         switchArea = true;
                     }
                 }
@@ -83,12 +87,13 @@ public class GateManager
         {
             BodyDef bodyDef = new BodyDef();
             bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set(gate.getInt("locX") + 0.5f, gate.getInt("locY") + 0.5f);
+			// Make it so the XML refers to the top-left coordinate as opposed to center for box2D bodies
+            bodyDef.position.set(gate.getFloat("locX") + gate.getFloat("sizeX") / 2, gate.getFloat("locY") + gate.getFloat("sizeY") / 2);
 
             Body body = world.createBody(bodyDef);
 
             PolygonShape shape = new PolygonShape();
-            shape.setAsBox(0.48f, 0.48f); // Slightly less than 0.5f
+            shape.setAsBox(gate.getFloat("sizeX") / 2 - 0.02f, gate.getFloat("sizeY") / 2 - 0.02f); // subtract 0.02f so slightly smaller than tile
 
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = shape;
@@ -127,8 +132,10 @@ public class GateManager
         map.getLayers().add(layers.get("Decorations"));		
 		screen.getRenderer().setMap(map);
         
-        screen.getEngine().getPlayer().setPosition((int)nextGate.playerPos().x, (int)nextGate.playerPos().y);
+        screen.getEngine().getPlayer().setPosition(nextGate.playerPos().x, nextGate.playerPos().y);
         createGates(screen.getWorld(), nextGate.destArea());
+		
+		screen.getRenderer().skipFrame();
         
         switchArea = false;
 	}
@@ -136,20 +143,35 @@ public class GateManager
     public class GateData
     {
         private final XmlReader.Element gate;
+		private Vector2 playerOffset;
         
         public GateData(XmlReader.Element g)
         {
             gate = g;
+			playerOffset = new Vector2(0, 0);
         }
+		
+		public void setPlayerOffset(float x, float y)
+		{
+			// Took me forever to figure this out
+			// Reposition the character relative to the gate's exit location based on where the player entered the gate's entrance
+			playerOffset = new Vector2(Math.min(Math.max(0, x), gateSize().x - 1), Math.min(Math.max(0, y), gateSize().y - 1));
+		}
         
         public Vector2 gatePos()
         {
-            return new Vector2(gate.getInt("locX"), gate.getInt("locy"));
+			// Return center of top-left block
+            return new Vector2(gate.getFloat("locX") + 0.5f, gate.getFloat("locY") + 0.5f);
         }
+		
+		public Vector2 gateSize()
+		{
+			return new Vector2(gate.getFloat("sizeX"), gate.getFloat("sizeY"));
+		}
         
         public Vector2 playerPos()
         {
-            return new Vector2(gate.getInt("destX"), gate.getInt("destY"));
+            return new Vector2(gate.getFloat("destX") + playerOffset.x, gate.getFloat("destY") + playerOffset.y);
         }
         
         public int destArea()

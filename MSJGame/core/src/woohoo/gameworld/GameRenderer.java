@@ -11,6 +11,8 @@ Anything that is drawn will be managed by this class
 */
 public class GameRenderer extends OrthogonalTiledMapRenderer
 {    
+	private boolean skipNextFrame;
+	
     public GameRenderer(TiledMap map, float scale)
 	{
 		super(map, scale);
@@ -34,5 +36,20 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 				batch.draw(obj.getTextureRegion(), obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
 			}
 		}
+	}
+	
+	@Override
+	public void render()
+	{
+		if (!skipNextFrame)
+			super.render();
+		else
+			skipNextFrame = false;
+	}
+	
+	// Creates a one frame buffer between screens
+	public void skipFrame()
+	{
+		skipNextFrame = true;
 	}
 }
