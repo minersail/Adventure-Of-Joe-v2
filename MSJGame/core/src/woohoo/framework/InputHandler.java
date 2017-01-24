@@ -47,6 +47,7 @@ public class InputHandler implements InputProcessor
 						break;
 					case Keys.SPACE:
 						screen.getEngine().checkDialogue(player);
+						screen.getEngine().checkItems(player);
 						break;
 					case Keys.S:
 						System.out.println(player.getPosition());

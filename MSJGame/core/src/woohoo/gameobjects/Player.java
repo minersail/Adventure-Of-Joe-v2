@@ -1,24 +1,23 @@
 package woohoo.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.screens.PlayingScreen.WBodyType;
 
 public class Player extends Character
 {		    
     public Player(TextureAtlas atlas, World world)
     {
-		super(atlas, world);
+		super(atlas, world, WBodyType.Player);
 		
-		collision.setPosition(1, 1);
+		collision.setPosition(2, 1);
 	}
 	
 	@Override
 	public void update(float delta)
 	{
-		collision.update(delta);
-		mapObject.update(delta, new Vector2(collision.getPosition().x - 0.5f, collision.getPosition().y - 0.5f));
+		super.update(delta);
 		
 		mapObject.setIdle(collision.isStopped());
 		

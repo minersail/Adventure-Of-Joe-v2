@@ -1,5 +1,6 @@
 package woohoo.screens;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -15,21 +16,24 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.framework.CharacterManager;
+import woohoo.framework.ContactManager;
 import woohoo.framework.DialogueManager;
 import woohoo.framework.GateManager;
 import woohoo.framework.HexMapLoader;
 import woohoo.framework.InputHandler;
+import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
+import woohoo.gameobjects.Character;
+import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.SensorComponent;
 import woohoo.gameworld.GameRenderer;
 import woohoo.gameworld.GameWorld;
 
@@ -42,7 +46,7 @@ public class PlayingScreen implements Screen
     
     public enum WBodyType
     {
-        Player, Entity, Wall, Gate
+        Player, Entity, Wall, Gate, Item, NPC
     }
 	
 	/* Dimensions of tiles on the spritesheet */
@@ -55,6 +59,7 @@ public class PlayingScreen implements Screen
 	private FitViewport viewport; // Helper class for camera
 	private Box2DDebugRenderer debugRenderer;
 	
+	private ContactManager contacts;
     private GateManager gates;
 	private CharacterManager characters;
     private DialogueManager dialogueManager;
@@ -78,8 +83,6 @@ public class PlayingScreen implements Screen
     public PlayingScreen(Game game)
     {
 		// Set up camera
-        float aspectRatio = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
-		
         cam = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         cam.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT);
 		
@@ -97,6 +100,7 @@ public class PlayingScreen implements Screen
 		
 		// Create physics
 		world = new World(new Vector2(0, 0), true);	
+		contacts = new ContactManager();
         
         // Create gate sensors
         gates = new GateManager(this);        
@@ -108,24 +112,26 @@ public class PlayingScreen implements Screen
 		// Create map
 		mapLoader = new HexMapLoader(this);
 		TiledMap map = new TiledMap();
-		MapLayers layers = mapLoader.load("maps/0.txt", (Texture)assets.get("images/tileset.png"), 
-                                          (Texture)assets.get("images/tileset2.png"), world);
+		MapLayers layers = mapLoader.load("maps/0.txt", assets.get("images/tileset.png", Texture.class), 
+                                          assets.get("images/tileset2.png", Texture.class), world);
 		
 		// Draw and update every frame
 		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
 		engine = new GameWorld(this, world);
 		
 		// Create dialogue
-		dialogueManager = new DialogueManager(this, ui, (Skin)assets.get("ui/uiskin.json"));
+		dialogueManager = new DialogueManager(this, ui, assets.get("ui/uiskin.json", Skin.class));
         
 		// Initialize objects
-		Player player = new Player((TextureAtlas)assets.get("images/oldman.pack"), world);
-        NPC npc = new NPC((Texture)assets.get("images/ginger.png"), world);
+		Player player = new Player(assets.get("images/oldman.pack", TextureAtlas.class), world);
+        NPC npc = new NPC(assets.get("images/ginger.png", Texture.class), world);
+		Item item = new Item(assets.get("images/stick.png", Texture.class), world);
         
 		MapLayer objects = new MapLayer();
 		objects.setName("Objects");
 		objects.getObjects().add(player.getComponent(MapObjectComponent.class));
 		objects.getObjects().add(npc.getComponent(MapObjectComponent.class));
+		objects.getObjects().add(item.getComponent(MapObjectComponent.class));
 		
         map.getLayers().add(layers.get("Base"));
 		map.getLayers().add(objects);
@@ -133,6 +139,10 @@ public class PlayingScreen implements Screen
 		
 		engine.addEntity(player);
         engine.addEntity(npc);
+		engine.addEntity(item);
+		
+		contacts.addCommand(item.getComponent(SensorComponent.class).getContactCode());
+		contacts.createContactListener(world);
 
 		// Initialize input
 		input = new InputHandler(this, player);
@@ -189,37 +199,30 @@ public class PlayingScreen implements Screen
 		assets.load("images/tileset2.png", Texture.class);
 		assets.load("images/joeface.png", Texture.class);
         assets.load("images/ginger.png", Texture.class);		
+		assets.load("images/stick.png", Texture.class);
         assets.load("ui/uiskin.atlas", TextureAtlas.class);
 		assets.load("ui/uiskin.json", Skin.class, skinParam1);
 		
-		assets.load("images/faces/ginger.png", Texture.class);
-		assets.load("images/faces/oldman.png", Texture.class);
+		// Load faces
+		assets.load("images/faces/000_ginger.png", Texture.class);
+		assets.load("images/faces/001_oldman.png", Texture.class);
 		assets.finishLoading();
 	}
 	
-	public void switchScreens(int areaID)
-	{ 
-        Array<Body> bodies = new Array<>();
-		world.getBodies(bodies);
-		
-		for (Body body: bodies)
+	public void removeEntity(Entity entity)
+	{
+		if (entity instanceof Character)
 		{
-			if (body.getUserData().equals("Wall"))
-				world.destroyBody(body);
+			renderer.getMap().getLayers().get("Objects").getObjects().remove(entity.getComponent(MapObjectComponent.class));
+			entity.getComponent(CollisionComponent.class).removeMass(world);
+			engine.removeEntity(entity);
 		}
-		
-		TiledMap map = new TiledMap();
-		
-		MapLayers layers = mapLoader.load("maps/" + areaID + ".txt", (Texture)assets.get("images/tileset.png"), 
-                                          (Texture)assets.get("images/tileset2.png"), world);		
-		
-		MapLayer objects = renderer.getMap().getLayers().get("Objects");
-		
-        map.getLayers().add(layers.get(0));
-		map.getLayers().add(objects);
-        map.getLayers().add(layers.get(1));
-		
-		renderer.setMap(map);
+		else if (entity instanceof Item)
+		{			
+			renderer.getMap().getLayers().get("Objects").getObjects().remove(entity.getComponent(MapObjectComponent.class));
+			entity.getComponent(SensorComponent.class).removeMass(world);
+			engine.removeEntity(entity);
+		}
 	}
     
 	public void setState(GameState s)
@@ -282,6 +285,11 @@ public class PlayingScreen implements Screen
 	public CharacterManager getCharacters()
 	{
 		return characters;
+	}
+	
+	public ContactManager getContactManager()
+	{
+		return contacts;
 	}
 
     @Override

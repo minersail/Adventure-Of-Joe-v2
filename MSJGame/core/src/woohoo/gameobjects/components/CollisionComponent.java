@@ -1,20 +1,17 @@
 package woohoo.gameobjects.components;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.screens.PlayingScreen.WBodyType;
 
-public class CollisionComponent implements Component
+public class CollisionComponent extends BodyComponent
 {
-	Body mass;
 	Vector2 force = new Vector2(0, 0);
 	
-	public CollisionComponent(World world, boolean isPlayer)
+	public CollisionComponent(World world, WBodyType type)
 	{
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -43,7 +40,7 @@ public class CollisionComponent implements Component
 		mass.createFixture(fixtureDef);
 		mass.setFixedRotation(true);
 		mass.setLinearDamping(10f);
-		mass.setUserData(isPlayer ? WBodyType.Player : WBodyType.Entity);
+		mass.setUserData(type);
 	}
 	
 	public void update(float delta)
@@ -71,16 +68,5 @@ public class CollisionComponent implements Component
 	public boolean isStopped()
 	{
 		return Math.abs(mass.getLinearVelocity().x) < 1 && Math.abs(mass.getLinearVelocity().y) < 1;
-	}
-	
-	// Offsets because box2D has origins at center as opposed to top-left
-	public void setPosition(float x, float y)
-	{
-		mass.setTransform(new Vector2(x + 0.5f, y + 0.5f), 0);
-	}
-	
-	public Vector2 getPosition()
-	{
-		return mass.getPosition();
 	}
 }

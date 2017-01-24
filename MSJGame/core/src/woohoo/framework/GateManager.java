@@ -19,6 +19,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
+import woohoo.framework.contactcommands.GateContact;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.WBodyType;
 
@@ -36,40 +37,7 @@ public class GateManager
     {
         screen = scr;
         
-        scr.getWorld().setContactListener(
-            new ContactListener() 
-            {
-                @Override
-                public void beginContact(Contact contact) {
-                    Fixture fA = contact.getFixtureA();
-                    Fixture fB = contact.getFixtureB();
-                    
-                    if ((fA.getBody().getUserData() == WBodyType.Gate && fB.getBody().getUserData() == WBodyType.Player))
-                    {
-                        nextGate = (GateData)fA.getUserData();
-						nextGate.setPlayerOffset(fB.getBody().getPosition().x - nextGate.gatePos().x,
-												 fB.getBody().getPosition().y - nextGate.gatePos().y);
-                        switchArea = true;
-                    }
-                    else if (fB.getBody().getUserData() == WBodyType.Gate && fA.getBody().getUserData() == WBodyType.Player)
-                    {
-                        nextGate = (GateData)fB.getUserData();
-						nextGate.setPlayerOffset(fA.getBody().getPosition().x - nextGate.gatePos().x,
-												 fA.getBody().getPosition().y - nextGate.gatePos().y);
-                        switchArea = true;
-                    }
-                }
-
-                @Override
-                public void endContact(Contact contact){}
-
-                @Override
-                public void preSolve(Contact contact, Manifold oldManifold) {}
-
-                @Override
-                public void postSolve(Contact contact, ContactImpulse impulse) {}
-            }
-        );
+        scr.getContactManager().addCommand(new GateContact(this));
     }
     
     /*
@@ -138,6 +106,21 @@ public class GateManager
 		screen.getRenderer().skipFrame();
         
         switchArea = false;
+	}
+	
+	public void setNextGate(GateData gate)
+	{
+		nextGate = gate;
+	}
+	
+	public GateData getNextGate()
+	{
+		return nextGate;
+	}
+	
+	public void triggerAreaSwitch()
+	{
+		switchArea = true;
 	}
     
     public class GateData

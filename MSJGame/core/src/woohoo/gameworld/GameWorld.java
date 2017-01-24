@@ -7,9 +7,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import java.util.ArrayList;
 import woohoo.gameobjects.BaseEntity;
+import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
 import woohoo.gameobjects.components.DialogueComponent;
+import woohoo.gameobjects.components.InventoryComponent;
+import woohoo.gameobjects.components.SensorComponent;
 import woohoo.screens.PlayingScreen;
 
 /*
@@ -85,19 +88,49 @@ public class GameWorld extends Engine
 		return false;
 	}
 	
+	public void checkItems(Player player)
+	{
+		for (Entity entity : getEntities())
+		{
+			if (entity instanceof Item)
+			{
+				Item item = (Item)entity;
+				if (item.getComponent(SensorComponent.class).hasContact())
+				{
+					player.getComponent(InventoryComponent.class).addItem(item);
+					screen.removeEntity(item);
+				}
+			}
+		}
+	}
+	
+	/*
+	If map is smaller than screen, center it in screen. If it is larger, pan it based on player's location
+	*/
 	public void adjustCamera(Player player)
 	{
 		Vector2 p = player.getPosition();
-		Vector2 newPos = new Vector2(screen.getCamera().position.x, screen.getCamera().position.y);
+		Vector2 newPos = new Vector2(p);
 				
-		if (p.x > screen.WORLD_WIDTH / 2 && p.x < screen.mapWidth - screen.WORLD_WIDTH / 2)
+		if (screen.mapWidth > screen.WORLD_WIDTH)
 		{
-			newPos.x = p.x;
+			newPos.x = Math.min(Math.max(newPos.x, screen.WORLD_WIDTH / 2), screen.mapWidth - screen.WORLD_WIDTH / 2);
+		}
+		else
+		{
+			float extraX = (float)(screen.WORLD_WIDTH - screen.mapWidth);
+			newPos.x = screen.getCamera().viewportWidth / 2 - Math.max(0, extraX / 2);
 		}
 		
-		if (p.y > screen.WORLD_HEIGHT / 2 && p.y < screen.mapHeight - screen.WORLD_HEIGHT / 2)
+		// Move x and y camera coordinates independently
+		if (screen.mapHeight > screen.WORLD_HEIGHT)
 		{
-			newPos.y = p.y;
+			newPos.y = Math.min(Math.max(newPos.y, screen.WORLD_HEIGHT / 2), screen.mapHeight - screen.WORLD_HEIGHT / 2);
+		}
+		else
+		{
+			float extraY = (float)(screen.WORLD_HEIGHT - screen.mapHeight);
+			newPos.y = screen.getCamera().viewportHeight / 2 - Math.max(0, extraY / 2);
 		}
 		
 		screen.setCamera(newPos.x, newPos.y);

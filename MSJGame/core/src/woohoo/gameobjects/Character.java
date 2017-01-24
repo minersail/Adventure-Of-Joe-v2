@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.gameobjects.components.CollisionComponent;
+import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.screens.PlayingScreen.WBodyType;
 
 /*
 Not to be confused with CharacterData/CharacterManager
@@ -18,23 +20,36 @@ public class Character extends BaseEntity
 {
     protected MapObjectComponent mapObject;
 	protected CollisionComponent collision;
+	protected InventoryComponent inventory;
 	    
-	public Character(TextureAtlas atlas, World world)
+	public Character(TextureAtlas atlas, World world, WBodyType type)
 	{		
 		mapObject = new MapObjectComponent(atlas);
-		collision = new CollisionComponent(world, this instanceof Player);
+		collision = new CollisionComponent(world, type);
+		inventory = new InventoryComponent();
 		
 		super.add(mapObject);
         super.add(collision);
+		super.add(inventory);
 	}
 	
-	public Character(TextureRegion region, World world)
+	public Character(TextureRegion region, World world, WBodyType type)
 	{		
 		mapObject = new MapObjectComponent(region);
-		collision = new CollisionComponent(world, this instanceof Player);
+		collision = new CollisionComponent(world, type);
+		inventory = new InventoryComponent();
 		
 		super.add(mapObject);
         super.add(collision);
+		super.add(inventory);
+	}
+	
+	@Override
+	public void update(float delta)
+	{		
+		collision.update(delta);
+		mapObject.update(delta, collision.getPosition());
+		inventory.update(delta);
 	}
     
     public Vector2 getPosition()
@@ -101,4 +116,6 @@ public class Character extends BaseEntity
 		}
 		return false;
 	}
+	
+	
 }
