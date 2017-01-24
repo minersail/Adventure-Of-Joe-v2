@@ -49,6 +49,9 @@ public class InputHandler implements InputProcessor
 						screen.getEngine().checkDialogue(player);
 						screen.getEngine().checkItems(player);
 						break;
+                    case Keys.ESCAPE:
+                        screen.getInventoryManager().showScreen();
+                        break;
 					case Keys.S:
 						System.out.println(player.getPosition());
 						break;

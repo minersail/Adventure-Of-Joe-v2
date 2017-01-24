@@ -27,6 +27,7 @@ import woohoo.framework.DialogueManager;
 import woohoo.framework.GateManager;
 import woohoo.framework.HexMapLoader;
 import woohoo.framework.InputHandler;
+import woohoo.framework.InventoryManager;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
@@ -59,6 +60,7 @@ public class PlayingScreen implements Screen
 	private FitViewport viewport; // Helper class for camera
 	private Box2DDebugRenderer debugRenderer;
 	
+    private InventoryManager inventoryManager;
 	private ContactManager contacts;
     private GateManager gates;
 	private CharacterManager characters;
@@ -108,6 +110,7 @@ public class PlayingScreen implements Screen
 		
 		// Create user interface
 		ui = new Stage();
+        inventoryManager = new InventoryManager(ui, assets.get("images/ginger.png", Texture.class));
 		
 		// Create map
 		mapLoader = new HexMapLoader(this);
@@ -291,6 +294,11 @@ public class PlayingScreen implements Screen
 	{
 		return contacts;
 	}
+    
+    public InventoryManager getInventoryManager()
+    {
+        return inventoryManager;
+    }
 
     @Override
     public void resize(int width, int height)
