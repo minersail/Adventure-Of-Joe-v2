@@ -14,4 +14,7 @@
 	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		default: { background: default-rect, font: text, fontColor: green }
 	},
+	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+		default: { font: text, fontColor: green }
+	}
 }
