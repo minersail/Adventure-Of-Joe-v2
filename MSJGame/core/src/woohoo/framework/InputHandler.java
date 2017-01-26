@@ -50,7 +50,7 @@ public class InputHandler implements InputProcessor
 						screen.getEngine().checkItems(player);
 						break;
                     case Keys.ESCAPE:
-                        screen.getInventoryManager().showScreen();
+                        screen.getInventoryManager().showInventory();
                         break;
 					case Keys.S:
 						System.out.println(player.getPosition());
@@ -63,6 +63,14 @@ public class InputHandler implements InputProcessor
 				{
 					case Keys.SPACE:
 						screen.getDialogueManager().advanceDialogue();
+				}
+				break;
+			
+			case Inventory:
+				switch (keycode)
+				{
+					case Keys.ESCAPE:
+						screen.getInventoryManager().closeInventory();
 				}
 				break;
 		}

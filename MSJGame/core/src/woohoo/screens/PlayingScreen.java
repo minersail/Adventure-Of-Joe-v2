@@ -42,7 +42,7 @@ public class PlayingScreen implements Screen
 {    
 	public enum GameState
 	{
-		Playing, Dialogue
+		Playing, Dialogue, Inventory
 	}	
     
     public enum WBodyType
@@ -110,7 +110,9 @@ public class PlayingScreen implements Screen
 		
 		// Create user interface
 		ui = new Stage();
-        inventoryManager = new InventoryManager(ui, assets.get("images/ginger.png", Texture.class), assets.get("images/itemframe.png", Texture.class));
+        inventoryManager = new InventoryManager(this, assets.get("images/ginger.png", Texture.class), 
+                                                assets.get("images/itemframe.png", Texture.class),
+                                                assets.get("ui/uiskin.json", Skin.class));
 		
 		// Create map
 		mapLoader = new HexMapLoader(this);
@@ -177,6 +179,20 @@ public class PlayingScreen implements Screen
 				break;
 				
 			case Dialogue:
+				Gdx.gl.glClearColor(0, 0, 0, 1);
+				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+				cam.update();
+				runTime += delta;
+				
+				ui.act();
+
+				renderer.setView(cam);
+				renderer.render();
+				debugRenderer.render(world, cam.combined);
+				ui.draw();
+				break;
+				
+			case Inventory:
 				Gdx.gl.glClearColor(0, 0, 0, 1);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				cam.update();
@@ -279,6 +295,11 @@ public class PlayingScreen implements Screen
     public GameRenderer getRenderer()
     {
         return renderer;
+    }
+    
+    public Stage getUI()
+    {
+        return ui;
     }
 	
 	public DialogueManager getDialogueManager()
