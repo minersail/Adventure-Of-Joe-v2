@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
@@ -25,20 +25,28 @@ public class InventoryManager
     public final int ITEMY = 64;
     
     Stage ui;
-    Table table;
+	Table background;
+    Table items;
 
-    public InventoryManager(Stage s, Texture image) 
+    public InventoryManager(Stage s, Texture image, Texture frame) 
     {
         ui = s;
-        table = new Table();
+        background = new Table();
+		items = new Table();
         DragAndDrop dnd = new DragAndDrop();
+		dnd.setDragActorPosition(30, -30);
         
         for (int i = 0; i < INVENTORY_WIDTH; i++)
         {
             for (int j = 0; j < INVENTORY_HEIGHT; j++)
             {
                 final Image item = new Image(new TextureRegion(image));
-                table.add(item).prefSize(ITEMX, ITEMY);
+				final Image slot = new Image(new TextureRegion(frame));
+                background.add(slot).prefSize(ITEMX, ITEMY);
+                items.add(item).prefSize(ITEMX, ITEMY);
+				
+				item.setUserObject(i * INVENTORY_HEIGHT + j); // Store the index of the slot or item in its user object
+				slot.setUserObject(i * INVENTORY_HEIGHT + j);
                 
                 dnd.addSource(new Source(item)
                 {
@@ -52,7 +60,7 @@ public class InventoryManager
                     }
                 });
                 
-                dnd.addTarget(new Target(item) 
+                dnd.addTarget(new Target(slot) 
                 {
                     @Override
                     public boolean drag(Source source, Payload payload, float x, float y, int pointer) 
@@ -66,20 +74,29 @@ public class InventoryManager
                     @Override
                     public void drop(Source source, Payload payload, float x, float y, int pointer) 
                     {
-                        table.swapActor(payload.getDragActor(), getActor());
+						int draggedIndex = (int)payload.getDragActor().getUserObject();
+						
+						items.addActorAt(draggedIndex, payload.getDragActor());
+                        items.swapActor(payload.getDragActor(), getActor());
+						
+						payload.getDragActor().setPosition(getActor().getX(), getActor().getY());
+						getActor().setPosition(background.getCells().get(draggedIndex).getActorX(), background.getCells().get(draggedIndex).getActorY());
                     }
                 });
             }
-            table.row();
+            background.row();
+			items.row();
         }
         
-        table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        table.align(Align.center);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        background.align(Align.center);
+        items.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        items.align(Align.center);
     }
 
     public void showScreen() 
     {
-        ui.addActor(table);
-        System.out.println(table.getChildren().size);
+        ui.addActor(background);
+		ui.addActor(items);
     }
 }

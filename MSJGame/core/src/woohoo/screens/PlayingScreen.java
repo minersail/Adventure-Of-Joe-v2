@@ -110,7 +110,7 @@ public class PlayingScreen implements Screen
 		
 		// Create user interface
 		ui = new Stage();
-        inventoryManager = new InventoryManager(ui, assets.get("images/ginger.png", Texture.class));
+        inventoryManager = new InventoryManager(ui, assets.get("images/ginger.png", Texture.class), assets.get("images/itemframe.png", Texture.class));
 		
 		// Create map
 		mapLoader = new HexMapLoader(this);
@@ -203,6 +203,7 @@ public class PlayingScreen implements Screen
 		assets.load("images/joeface.png", Texture.class);
         assets.load("images/ginger.png", Texture.class);		
 		assets.load("images/stick.png", Texture.class);
+		assets.load("images/itemframe.png", Texture.class);
         assets.load("ui/uiskin.atlas", TextureAtlas.class);
 		assets.load("ui/uiskin.json", Skin.class, skinParam1);
 		
