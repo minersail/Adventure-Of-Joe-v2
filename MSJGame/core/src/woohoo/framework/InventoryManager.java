@@ -1,11 +1,11 @@
 package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -16,6 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.XmlReader;
+import woohoo.gameobjects.Item;
+import woohoo.gameobjects.Character;
+import woohoo.gameobjects.components.InventoryComponent;
+import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.screens.PlayingScreen;
 
 /*
@@ -28,12 +33,14 @@ public class InventoryManager
     public final int ITEMX = 72;
     public final int ITEMY = 72;
     
-    PlayingScreen screen;
-	Table table;
+    private TextureRegion slotBackground;
+    private PlayingScreen screen;
+	private Table table;
 
-    public InventoryManager(PlayingScreen scr, Texture image, Texture frame, Skin skin) 
+    public InventoryManager(PlayingScreen scr, Texture frame, Skin skin) 
     {
         screen = scr;
+        slotBackground = new TextureRegion(frame);
         table = new Table();
                 
         TextButton closeButton = new TextButton("x", skin);
@@ -49,42 +56,80 @@ public class InventoryManager
                 }
             }        
         );
+    }
+
+    public void showInventory() 
+    {
+        screen.getUI().addActor(table);
+        screen.getUI().getActors().add(table);
+        screen.setState(PlayingScreen.GameState.Inventory);
+    }
+	
+	public void closeInventory()
+	{
+		screen.getUI().getActors().removeValue(table, false);
+        screen.setState(PlayingScreen.GameState.Playing);
+	}
+    
+    public void loadInventory(Character character)
+    {
+        InventoryComponent inventory = character.getComponent(InventoryComponent.class);
+        
+        FileHandle handle = Gdx.files.internal("data/inventory.xml");
+        
+        XmlReader xml = new XmlReader();
+        XmlReader.Element root = xml.parse(handle.readString());    
+        
+        for (XmlReader.Element e : root.getChildrenByName("item"))
+        {
+            inventory.addItem(new Item(screen.getIDManager().getItem(e.getInt("id")).getItem(), screen.getWorld()));
+        }
         
         DragAndDrop dnd = new DragAndDrop();
-		dnd.setDragActorPosition(30, -30);
-        
-        for (int i = 0; i < INVENTORY_WIDTH; i++)
+        dnd.setDragActorPosition(30, -30);
+
+        for (int i = 0; i < INVENTORY_WIDTH; i++) 
         {
             for (int j = 0; j < INVENTORY_HEIGHT; j++)
             {
-				InventorySlot slot = new InventorySlot(new TextureRegion(frame), new TextureRegion(image));
+                InventorySlot slot;
+                int index = i * INVENTORY_HEIGHT + j;
+
+                if (index < inventory.getItems().size()) 
+                {
+                    slot = new InventorySlot(slotBackground, inventory.getItems().get(index).getComponent(MapObjectComponent.class).getTextureRegion());
+                } 
+                else 
+                {
+                    slot = new InventorySlot(slotBackground, slotBackground);
+                }
                 table.add(slot).prefSize(ITEMX, ITEMY);
-                
-                dnd.addSource(new Source(slot)
+
+                dnd.addSource(new Source(slot) 
                 {
                     @Override
-                    public Payload dragStart(InputEvent event, float x, float y, int pointer) 
+                    public Payload dragStart(InputEvent event, float x, float y, int pointer)
                     {
                         InventorySlot slot = (InventorySlot)getActor();
                         slot.setDragged(true);
-                        
+
                         Payload payload = new Payload();
                         payload.setDragActor(slot.getItem());
 
                         return payload;
                     }
-                    
+
                     @Override
-                    public void dragStop (InputEvent event, float x, float y, int pointer, Payload payload, Target target) 
+                    public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) 
                     {
-                        ((InventorySlot)getActor()).setDragged(false);
+                        ((InventorySlot) getActor()).setDragged(false);
                     }
                 });
-                
+
                 dnd.addTarget(new Target(slot) 
                 {
                     @Override
-                    public boolean drag(Source source, Payload payload, float x, float y, int pointer) 
+                    public boolean drag(Source source, Payload payload, float x, float y, int pointer)
                     {
                         return true;
                     }
@@ -95,37 +140,25 @@ public class InventoryManager
                     @Override
                     public void drop(Source source, Payload payload, float x, float y, int pointer) 
                     {
-						InventorySlot sourceSlot = (InventorySlot)source.getActor();
-						InventorySlot targetSlot = (InventorySlot)getActor();
-                        
+                        InventorySlot sourceSlot = (InventorySlot)source.getActor();
+                        InventorySlot targetSlot = (InventorySlot)getActor();
+
                         Image sourceItem = sourceSlot.getItem();
                         Image targetItem = targetSlot.getItem();
-                        
+
                         sourceSlot.setItem(targetItem);
                         targetSlot.setItem(sourceItem);
-                        
+
                         sourceSlot.setDragged(false);
                     }
                 });
             }
             table.row();
         }
-        
+
         table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.align(Align.center);
     }
-
-    public void showInventory() 
-    {
-        screen.getUI().getActors().add(table);
-        screen.setState(PlayingScreen.GameState.Inventory);
-    }
-	
-	public void closeInventory()
-	{
-		screen.getUI().getActors().removeValue(table, false);
-        screen.setState(PlayingScreen.GameState.Playing);
-	}
     
     public class InventorySlot extends Image
     {

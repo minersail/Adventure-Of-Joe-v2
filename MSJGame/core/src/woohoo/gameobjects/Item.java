@@ -1,6 +1,5 @@
 package woohoo.gameobjects;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.gameobjects.components.MapObjectComponent;
@@ -12,9 +11,9 @@ public class Item extends BaseEntity
 	SensorComponent sensor;
 	MapObjectComponent mapObject;
 	
-	public Item(Texture region, World world)
+	public Item(TextureRegion region, World world)
 	{		
-		mapObject = new MapObjectComponent(new TextureRegion(region));
+		mapObject = new MapObjectComponent(region);
 		sensor = new SensorComponent(world, WBodyType.Item);
 		
 		sensor.setPosition(4, 4);

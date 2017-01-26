@@ -106,7 +106,7 @@ public class MapObjectComponent extends TextureMapObject implements Component
 		return animation.get(str);
 	}
 	
-	public void addAnimation(String str, Animation<TextureRegion> anim)
+	private void addAnimation(String str, Animation<TextureRegion> anim)
 	{
 		animation.put(str, anim);
 	}

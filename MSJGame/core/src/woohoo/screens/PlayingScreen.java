@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -21,7 +22,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import woohoo.framework.CharacterManager;
+import woohoo.framework.IDManager;
 import woohoo.framework.ContactManager;
 import woohoo.framework.DialogueManager;
 import woohoo.framework.GateManager;
@@ -63,7 +64,7 @@ public class PlayingScreen implements Screen
     private InventoryManager inventoryManager;
 	private ContactManager contacts;
     private GateManager gates;
-	private CharacterManager characters;
+	private IDManager idManager;
     private DialogueManager dialogueManager;
 	private AssetManager assets;
 	private InputHandler input;
@@ -97,8 +98,8 @@ public class PlayingScreen implements Screen
 		assets = new AssetManager();
 		loadAssets();
 		
-		// Define characters
-		characters = new CharacterManager(assets);
+		// Map ids
+		idManager = new IDManager(assets);
 		
 		// Create physics
 		world = new World(new Vector2(0, 0), true);	
@@ -110,8 +111,7 @@ public class PlayingScreen implements Screen
 		
 		// Create user interface
 		ui = new Stage();
-        inventoryManager = new InventoryManager(this, assets.get("images/ginger.png", Texture.class), 
-                                                assets.get("images/itemframe.png", Texture.class),
+        inventoryManager = new InventoryManager(this, assets.get("images/itemframe.png", Texture.class),
                                                 assets.get("ui/uiskin.json", Skin.class));
 		
 		// Create map
@@ -130,7 +130,7 @@ public class PlayingScreen implements Screen
 		// Initialize objects
 		Player player = new Player(assets.get("images/oldman.pack", TextureAtlas.class), world);
         NPC npc = new NPC(assets.get("images/ginger.png", Texture.class), world);
-		Item item = new Item(assets.get("images/stick.png", Texture.class), world);
+		Item item = new Item(new TextureRegion(assets.get("images/items/000_Stick.png", Texture.class)), world);
         
 		MapLayer objects = new MapLayer();
 		objects.setName("Objects");
@@ -148,6 +148,8 @@ public class PlayingScreen implements Screen
 		
 		contacts.addCommand(item.getComponent(SensorComponent.class).getContactCode());
 		contacts.createContactListener(world);
+        
+        inventoryManager.loadInventory(player);
 
 		// Initialize input
 		input = new InputHandler(this, player);
@@ -217,15 +219,20 @@ public class PlayingScreen implements Screen
 		assets.load("images/tileset.png", Texture.class);
 		assets.load("images/tileset2.png", Texture.class);
 		assets.load("images/joeface.png", Texture.class);
-        assets.load("images/ginger.png", Texture.class);		
-		assets.load("images/stick.png", Texture.class);
+        assets.load("images/ginger.png", Texture.class);	
 		assets.load("images/itemframe.png", Texture.class);
         assets.load("ui/uiskin.atlas", TextureAtlas.class);
 		assets.load("ui/uiskin.json", Skin.class, skinParam1);
 		
 		// Load faces
-		assets.load("images/faces/000_ginger.png", Texture.class);
-		assets.load("images/faces/001_oldman.png", Texture.class);
+		assets.load("images/faces/000_Ginger.png", Texture.class);
+		assets.load("images/faces/001_OldMan.png", Texture.class);
+        
+        // Load items
+        assets.load("images/items/000_Stick.png", Texture.class);
+        assets.load("images/items/001_PurpleStick.png", Texture.class);
+        assets.load("images/items/002_GreenStick.png", Texture.class);
+        
 		assets.finishLoading();
 	}
 	
@@ -307,9 +314,9 @@ public class PlayingScreen implements Screen
 		return dialogueManager;
 	}
 	
-	public CharacterManager getCharacters()
+	public IDManager getIDManager()
 	{
-		return characters;
+		return idManager;
 	}
 	
 	public ContactManager getContactManager()

@@ -53,7 +53,7 @@ public class DialogueManager
     {
         currentDialogue = dia;
 		
-		TextureRegionDrawable faceRegion = new TextureRegionDrawable(screen.getCharacters().getCharacter(dia.getCurrentLine().id()).getFace());
+		TextureRegionDrawable faceRegion = new TextureRegionDrawable(screen.getIDManager().getCharacter(dia.getCurrentLine().id()).getFace());
 		
         message.setText(dia.getCurrentLine().text());
 		name.setText(dia.getCurrentLine().name());
@@ -85,7 +85,7 @@ public class DialogueManager
 			return;
 		}
 		
-		TextureRegionDrawable faceRegion = new TextureRegionDrawable(screen.getCharacters().getCharacter(currentDialogue.getCurrentLine().id()).getFace());
+		TextureRegionDrawable faceRegion = new TextureRegionDrawable(screen.getIDManager().getCharacter(currentDialogue.getCurrentLine().id()).getFace());
 		
 		message.setText(currentDialogue.getCurrentLine().text());
 		name.setText(currentDialogue.getCurrentLine().name());	
