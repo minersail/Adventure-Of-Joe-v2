@@ -4,12 +4,12 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import java.util.ArrayList;
 import woohoo.gameobjects.BaseEntity;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
+import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.SensorComponent;
@@ -26,7 +26,7 @@ public class GameWorld extends Engine
     
     public float runtime;
 	
-	public GameWorld(PlayingScreen scr, World physics)
+	public GameWorld(PlayingScreen scr)
 	{
 		screen = scr;
 	}
@@ -46,6 +46,15 @@ public class GameWorld extends Engine
 			}
 		}
     }
+	
+	@Override
+	public void addEntity(Entity entity)
+	{
+		super.addEntity(entity);
+		
+		if (entity instanceof Character)
+			screen.getInventoryManager().loadInventory((Character)entity);
+	}
     
     public Player getPlayer()
     {

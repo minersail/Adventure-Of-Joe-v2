@@ -55,35 +55,7 @@ public class InventoryManager
                     closeInventory();
                 }
             }        
-        );
-    }
-
-    public void showInventory() 
-    {
-        screen.getUI().addActor(table);
-        screen.getUI().getActors().add(table);
-        screen.setState(PlayingScreen.GameState.Inventory);
-    }
-	
-	public void closeInventory()
-	{
-		screen.getUI().getActors().removeValue(table, false);
-        screen.setState(PlayingScreen.GameState.Playing);
-	}
-    
-    public void loadInventory(Character character)
-    {
-        InventoryComponent inventory = character.getComponent(InventoryComponent.class);
-        
-        FileHandle handle = Gdx.files.internal("data/inventory.xml");
-        
-        XmlReader xml = new XmlReader();
-        XmlReader.Element root = xml.parse(handle.readString());    
-        
-        for (XmlReader.Element e : root.getChildrenByName("item"))
-        {
-            inventory.addItem(new Item(screen.getIDManager().getItem(e.getInt("id")).getItem(), screen.getWorld()));
-        }
+        );		
         
         DragAndDrop dnd = new DragAndDrop();
         dnd.setDragActorPosition(30, -30);
@@ -92,17 +64,7 @@ public class InventoryManager
         {
             for (int j = 0; j < INVENTORY_HEIGHT; j++)
             {
-                InventorySlot slot;
-                int index = i * INVENTORY_HEIGHT + j;
-
-                if (index < inventory.getItems().size()) 
-                {
-                    slot = new InventorySlot(slotBackground, inventory.getItems().get(index).getComponent(MapObjectComponent.class).getTextureRegion());
-                } 
-                else 
-                {
-                    slot = new InventorySlot(slotBackground, slotBackground);
-                }
+                InventorySlot slot = new InventorySlot(slotBackground, slotBackground);
                 table.add(slot).prefSize(ITEMX, ITEMY);
 
                 dnd.addSource(new Source(slot) 
@@ -159,7 +121,58 @@ public class InventoryManager
         table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.align(Align.center);
     }
+
+    public void showInventory() 
+    {
+        screen.getUI().addActor(table);
+        screen.setState(PlayingScreen.GameState.Inventory);
+    }
+	
+	public void closeInventory()
+	{
+		table.remove();
+        screen.setState(PlayingScreen.GameState.Playing);
+	}
     
+	/*
+	Function to load InventoryComponents from XML
+	*/
+    public void loadInventory(Character character)
+    {
+        InventoryComponent inventory = character.getComponent(InventoryComponent.class);
+        
+        FileHandle handle = Gdx.files.internal("data/inventory.xml");
+        
+        XmlReader xml = new XmlReader();
+        XmlReader.Element root = xml.parse(handle.readString());    
+        
+        for (XmlReader.Element e : root.getChildrenByName("item"))
+        {
+            inventory.addItem(new Item(screen.getIDManager().getItem(e.getInt("id")).getItem(), screen.getWorld()));
+        }
+	}
+	
+	/*
+	Function to fill the inventory UI with a character's inventory
+	*/
+	public void fillInventory(Character character)
+	{
+		InventoryComponent inventory = character.getComponent(InventoryComponent.class);
+		
+		// Starts at 1 since first item is "X" button
+		for (int i = 1; i < table.getCells().size; i++)
+		{		
+			if (i > inventory.getItems().size()) break;
+			
+			Item item = inventory.getItems().get(i - 1); // i - 1 because the inventory starts at 0
+			TextureRegion region = item.getComponent(MapObjectComponent.class).getTextureRegion();
+			Image image = new Image(region);
+			image.setSize(ITEMX - 8, ITEMY - 8);
+			
+			((InventorySlot)table.getCells().get(i).getActor()).setItem(image);
+		}
+	}
+	
     public class InventorySlot extends Image
     {
         private Image item;

@@ -122,7 +122,7 @@ public class PlayingScreen implements Screen
 		
 		// Draw and update every frame
 		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
-		engine = new GameWorld(this, world);
+		engine = new GameWorld(this);
 		
 		// Create dialogue
 		dialogueManager = new DialogueManager(this, ui, assets.get("ui/uiskin.json", Skin.class));
@@ -148,9 +148,9 @@ public class PlayingScreen implements Screen
 		
 		contacts.addCommand(item.getComponent(SensorComponent.class).getContactCode());
 		contacts.createContactListener(world);
-        
-        inventoryManager.loadInventory(player);
-
+		
+		inventoryManager.fillInventory(player);
+		
 		// Initialize input
 		input = new InputHandler(this, player);
         Gdx.input.setInputProcessor(new InputMultiplexer(ui, input));
