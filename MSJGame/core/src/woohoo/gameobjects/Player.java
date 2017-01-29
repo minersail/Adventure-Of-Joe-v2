@@ -1,17 +1,15 @@
 package woohoo.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.math.Vector2;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.screens.PlayingScreen.WBodyType;
 
 public class Player extends Character
 {		    
-    public Player(TextureAtlas atlas, World world)
+    public Player(TextureAtlas atlas)
     {
-		super(atlas, world, WBodyType.Player);
-		
-		collision.setPosition(2, 1);
+		super(atlas, WBodyType.Player, new Vector2(2, 1));
 	}
 	
 	@Override

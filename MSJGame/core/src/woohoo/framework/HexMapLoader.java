@@ -4,7 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
@@ -24,7 +25,7 @@ public class HexMapLoader
 		screen = scr;
 	}
 	
-	public MapLayers load(String filename, Texture tileset, Texture decorationTileset, World world)
+	public TiledMap load(String filename, Texture tileset, Texture decorationTileset, World world)
 	{		
 		FileHandle mapHandle = Gdx.files.internal(filename);
 		String map = mapHandle.readString();
@@ -114,13 +115,17 @@ public class HexMapLoader
 		
 		screen.mapWidth = mapWidth;
 		screen.mapHeight = mapHeight;
+		
+		MapLayer objects = new MapLayer();
+		objects.setName("Objects");
                         
-        MapLayers layers = new MapLayers();
+        TiledMap tiledMap = new TiledMap();
 		layer1.setName("Base");
 		layer2.setName("Decorations");
-        layers.add(layer1);
-        layers.add(layer2);
+        tiledMap.getLayers().add(layer1);
+		tiledMap.getLayers().add(objects);
+        tiledMap.getLayers().add(layer2);
 		
-		return layers;
+		return tiledMap;
 	}
 }

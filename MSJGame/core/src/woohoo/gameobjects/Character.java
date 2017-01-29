@@ -3,7 +3,6 @@ package woohoo.gameobjects;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
@@ -22,22 +21,26 @@ public class Character extends BaseEntity
 	protected CollisionComponent collision;
 	protected InventoryComponent inventory;
 	    
-	public Character(TextureAtlas atlas, World world, WBodyType type)
+	public Character(TextureAtlas atlas, WBodyType type, Vector2 position)
 	{		
 		mapObject = new MapObjectComponent(atlas);
-		collision = new CollisionComponent(world, type);
+		collision = new CollisionComponent(type);
 		inventory = new InventoryComponent();
+		
+		collision.setStartPosition(position.x, position.y);
 		
 		super.add(mapObject);
         super.add(collision);
 		super.add(inventory);
 	}
 	
-	public Character(TextureRegion region, World world, WBodyType type)
+	public Character(TextureRegion region, WBodyType type, Vector2 position)
 	{		
 		mapObject = new MapObjectComponent(region);
-		collision = new CollisionComponent(world, type);
+		collision = new CollisionComponent(type);
 		inventory = new InventoryComponent();
+		
+		collision.setStartPosition(position.x, position.y);
 		
 		super.add(mapObject);
         super.add(collision);
@@ -75,6 +78,14 @@ public class Character extends BaseEntity
 	public Vector2 getSize()
 	{
 		return mapObject.getSize();
+	}
+	
+	public float distanceTo(Character other)
+	{
+		float dX = getCenter().x - other.getCenter().x;
+		float dY = getCenter().y - other.getCenter().y;
+		
+		return (float)Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 	}
 	
 	public boolean isFacing(Character other)

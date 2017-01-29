@@ -1,7 +1,6 @@
 package woohoo.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.World;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.SensorComponent;
 import woohoo.screens.PlayingScreen.WBodyType;
@@ -11,12 +10,12 @@ public class Item extends BaseEntity
 	SensorComponent sensor;
 	MapObjectComponent mapObject;
 	
-	public Item(TextureRegion region, World world)
+	public Item(TextureRegion region)
 	{		
 		mapObject = new MapObjectComponent(region);
-		sensor = new SensorComponent(world, WBodyType.Item);
+		sensor = new SensorComponent(WBodyType.Item);
 		
-		sensor.setPosition(4, 4);
+		sensor.setStartPosition(4, 4);
 		
 		super.add(mapObject);
         super.add(sensor);
@@ -32,5 +31,12 @@ public class Item extends BaseEntity
 	public void setPosition(float x, float y)
 	{
 		sensor.setPosition(x, y);
+	}
+	
+	public void flipImage()
+	{
+		TextureRegion texture = mapObject.getTextureRegion();
+		texture.flip(false, true);
+		mapObject.setTextureRegion(texture);
 	}
 }

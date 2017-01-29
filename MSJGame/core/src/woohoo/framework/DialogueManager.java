@@ -2,6 +2,7 @@ package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -25,7 +26,7 @@ public class DialogueManager
     {
 		screen = scr;
 		ui = s;
-		
+				
 		message = new Label("", skin);
 		message.setWidth(Gdx.graphics.getWidth());
 		message.setHeight(100);

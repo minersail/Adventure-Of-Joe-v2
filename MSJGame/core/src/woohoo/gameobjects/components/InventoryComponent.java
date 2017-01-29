@@ -22,6 +22,11 @@ public class InventoryComponent implements Component
 		items.add(item);
 	}
 	
+	public void removeItem(Item item)
+	{
+		items.remove(item);
+	}
+	
 	public ArrayList<Item> getItems()
 	{
 		return items;

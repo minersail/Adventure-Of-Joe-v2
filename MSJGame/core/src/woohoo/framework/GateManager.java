@@ -3,22 +3,17 @@ package woohoo.framework;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
+import java.util.function.Consumer;
 import woohoo.framework.contactcommands.GateContact;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.WBodyType;
@@ -37,7 +32,7 @@ public class GateManager
     {
         screen = scr;
         
-        scr.getContactManager().addCommand(new GateContact(this));
+        scr.getContactManager().addCommand(new GateContact(this), scr.getWorld());
     }
     
     /*
@@ -89,15 +84,16 @@ public class GateManager
 				screen.getWorld().destroyBody(body);
 		}
 		
-		TiledMap map = new TiledMap();
-		
-		MapLayers layers = screen.getMapLoader().load("maps/" + nextGate.destArea() + ".txt", (Texture)screen.getAssets().get("images/tileset.png"), 
-                                                      (Texture)screen.getAssets().get("images/tileset2.png"), screen.getWorld());			
-		MapLayer objects = screen.getRenderer().getMap().getLayers().get("Objects");
-		
-        map.getLayers().add(layers.get("Base"));
-		map.getLayers().add(objects);
-        map.getLayers().add(layers.get("Decorations"));		
+		final TiledMap map = screen.getMapLoader().load("maps/" + nextGate.destArea() + ".txt", (Texture)screen.getAssets().get("images/tileset.png"), 
+                                                  (Texture)screen.getAssets().get("images/tileset2.png"), screen.getWorld());		
+		screen.getRenderer().getMap().getLayers().get("Objects").getObjects().forEach(new Consumer<MapObject>()
+		{
+			@Override
+			public void accept(MapObject obj)
+			{
+				map.getLayers().get("Objects").getObjects().add(obj);
+			}			
+		});		
 		screen.getRenderer().setMap(map);
         
         screen.getEngine().getPlayer().setPosition(nextGate.playerPos().x, nextGate.playerPos().y);

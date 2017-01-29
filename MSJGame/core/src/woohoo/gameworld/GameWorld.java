@@ -87,7 +87,7 @@ public class GameWorld extends Engine
 	{
 		for (NPC npc : getNPCs())
         {
-            if (player.isFacing(npc))
+            if (player.isFacing(npc) && player.distanceTo(npc) < 1.1)
             {                
                 screen.getDialogueManager().startDialogue(npc.getComponent(DialogueComponent.class));
 				return true;
@@ -106,8 +106,8 @@ public class GameWorld extends Engine
 				Item item = (Item)entity;
 				if (item.getComponent(SensorComponent.class).hasContact())
 				{
-					player.getComponent(InventoryComponent.class).addItem(item);
-					screen.removeEntity(item);
+					screen.getInventoryManager().addItem(player, item);					
+					screen.removeEntity(item);					
 				}
 			}
 		}

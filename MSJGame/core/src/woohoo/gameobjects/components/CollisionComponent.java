@@ -11,38 +11,36 @@ public class CollisionComponent extends BodyComponent
 {
 	Vector2 force = new Vector2(0, 0);
 	
-	public CollisionComponent(World world, WBodyType type)
+	public CollisionComponent(WBodyType bodyType)
+	{
+		type = bodyType;
+	}
+	
+	@Override
+	public void createMass(World world)
 	{
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
-
 		mass = world.createBody(bodyDef);
 
 		CircleShape shape = new CircleShape();		
 		shape.setRadius(0.49f);
-		
-//		PolygonShape shape = new PolygonShape();
-//		Vector2[] vertices = {
-//			new Vector2(0, 0.05f), new Vector2(0.05f, 0),
-//			new Vector2(0.95f, 0), new Vector2(1, 0.05f),
-//			new Vector2(1, 0.95f), new Vector2(0.95f, 1),
-//			new Vector2(0.05f, 1), new Vector2(0, 0.95f),
-//		};
-		//shape.set(vertices);
-		//shape.setAsBox(0.49f, 0.49f);
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1f;
 		fixtureDef.friction = 0f;
 		fixtureDef.restitution = 0f;
-
+		
 		mass.createFixture(fixtureDef);
+		mass.setUserData(type);
 		mass.setFixedRotation(true);
 		mass.setLinearDamping(10f);
-		mass.setUserData(type);
+		
+		super.createMass(world);
 	}
 	
+	@Override
 	public void update(float delta)
 	{
 		mass.applyForceToCenter(force.x * delta, force.y * delta, true);

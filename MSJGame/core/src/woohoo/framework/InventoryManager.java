@@ -28,20 +28,38 @@ Note: the UI uses the bottom-left coordinate system
 */
 public class InventoryManager
 {
-    public final int INVENTORY_WIDTH = 8;
+    public final int INVENTORY_WIDTH = 5;
     public final int INVENTORY_HEIGHT = 8;
     public final int ITEMX = 72;
     public final int ITEMY = 72;
+	
+	public final int PADDING_LEFT = 100;
+	// I have no idea why the -6 needs to be there but it does
+	public final int INVENTORY_BOTTOM = -6 + (Gdx.graphics.getHeight() - ((INVENTORY_HEIGHT + 1) * ITEMY)) / 2;
+	public final int INVENTORY_TOP = INVENTORY_BOTTOM + (INVENTORY_HEIGHT * ITEMY);
+	public final int INVENTORY_LEFT = PADDING_LEFT;
+	public final int INVENTORY_RIGHT = INVENTORY_LEFT + (INVENTORY_WIDTH * ITEMX);
+	
+	public final int DRAG_OFFSET_X = 32;
+	public final int DRAG_OFFSET_Y = -32;
+	
+	private final TextureRegion slotBackground;
+	private final TextureRegion blankItem;
     
-    private TextureRegion slotBackground;
+	private InventoryComponent currentInventory;
     private PlayingScreen screen;
 	private Table table;
 
-    public InventoryManager(PlayingScreen scr, Texture frame, Skin skin) 
+	/*
+	Initializes the UI with blank items, to be later filled with fillInventory()
+	*/
+    public InventoryManager(PlayingScreen scr, Texture frame, Texture blank, Skin skin) 
     {
         screen = scr;
-        slotBackground = new TextureRegion(frame);
         table = new Table();
+		
+        slotBackground = new TextureRegion(frame);
+		blankItem = new TextureRegion(blank);
                 
         TextButton closeButton = new TextButton("x", skin);
         table.add(closeButton).prefSize(ITEMX, ITEMY);   
@@ -58,13 +76,14 @@ public class InventoryManager
         );		
         
         DragAndDrop dnd = new DragAndDrop();
-        dnd.setDragActorPosition(30, -30);
+        dnd.setDragActorPosition(DRAG_OFFSET_X, DRAG_OFFSET_Y);
+		dnd.setDragTime(0);
 
-        for (int i = 0; i < INVENTORY_WIDTH; i++) 
+        for (int i = 0; i < INVENTORY_HEIGHT; i++) 
         {
-            for (int j = 0; j < INVENTORY_HEIGHT; j++)
+            for (int j = 0; j < INVENTORY_WIDTH; j++)
             {
-                InventorySlot slot = new InventorySlot(slotBackground, slotBackground);
+                InventorySlot slot = new InventorySlot(slotBackground, blankItem);
                 table.add(slot).prefSize(ITEMX, ITEMY);
 
                 dnd.addSource(new Source(slot) 
@@ -73,10 +92,13 @@ public class InventoryManager
                     public Payload dragStart(InputEvent event, float x, float y, int pointer)
                     {
                         InventorySlot slot = (InventorySlot)getActor();
+						// Can't drag empty frame
+						if (slot.getCount() == 0) return null;
+						
                         slot.setDragged(true);
 
                         Payload payload = new Payload();
-                        payload.setDragActor(slot.getItem());
+                        payload.setDragActor(slot.getImage());
 
                         return payload;
                     }
@@ -84,7 +106,22 @@ public class InventoryManager
                     @Override
                     public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) 
                     {
-                        ((InventorySlot) getActor()).setDragged(false);
+						float X = payload.getDragActor().getX() + DRAG_OFFSET_X;
+						float Y = payload.getDragActor().getY() - DRAG_OFFSET_Y; // I have no idea why this formula works but it does
+						
+						/*
+						Right now assumes that the drop occurs out of player inventory, change later
+						*/
+						if (X < INVENTORY_LEFT || X > INVENTORY_RIGHT ||
+							Y < INVENTORY_BOTTOM || Y > INVENTORY_TOP)
+						{
+							// Remove the item from the inventory and add it to the world
+							Item dropped = ((InventorySlot)getActor()).getItem();
+							
+							dropItem(dropped);
+						}
+						
+                        ((InventorySlot)getActor()).setDragged(false);						
                     }
                 });
 
@@ -99,19 +136,33 @@ public class InventoryManager
                     @Override
                     public void reset(Source source, Payload payload) {}
 
+					/*
+					Switch the images, items, item counts, etc. of the two inventory slots
+					*/
                     @Override
                     public void drop(Source source, Payload payload, float x, float y, int pointer) 
                     {
                         InventorySlot sourceSlot = (InventorySlot)source.getActor();
                         InventorySlot targetSlot = (InventorySlot)getActor();
 
-                        Image sourceItem = sourceSlot.getItem();
-                        Image targetItem = targetSlot.getItem();
-
-                        sourceSlot.setItem(targetItem);
-                        targetSlot.setItem(sourceItem);
-
-                        sourceSlot.setDragged(false);
+                        Image sourceImage = sourceSlot.getImage();
+                        Image targetImage = targetSlot.getImage();
+						
+						Item sourceItem = sourceSlot.getItem();
+						Item targetItem = targetSlot.getItem();
+						
+						// If the image was swapped with an empty slot
+						if (targetSlot.getCount() == 0)
+							sourceSlot.setCount(0);
+						
+						if (targetItem != null)
+							sourceSlot.setItem(targetItem);
+						else
+							sourceSlot.setItem(null);
+						
+						// Switch items
+                        sourceSlot.setImage(targetImage).setDragged(false);
+                        targetSlot.setImage(sourceImage).setItem(sourceItem).setCount(1);
                     }
                 });
             }
@@ -119,7 +170,8 @@ public class InventoryManager
         }
 
         table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        table.align(Align.center);
+        table.align(Align.left);
+		table.padLeft(PADDING_LEFT);
     }
 
     public void showInventory() 
@@ -147,8 +199,8 @@ public class InventoryManager
         XmlReader.Element root = xml.parse(handle.readString());    
         
         for (XmlReader.Element e : root.getChildrenByName("item"))
-        {
-            inventory.addItem(new Item(screen.getIDManager().getItem(e.getInt("id")).getItem(), screen.getWorld()));
+        {	// Absoutely disgusting method chain
+            inventory.addItem(new Item(screen.getIDManager().getItem(e.getInt("id")).getItem()));
         }
 	}
 	
@@ -157,58 +209,145 @@ public class InventoryManager
 	*/
 	public void fillInventory(Character character)
 	{
-		InventoryComponent inventory = character.getComponent(InventoryComponent.class);
+		currentInventory = character.getComponent(InventoryComponent.class);
 		
 		// Starts at 1 since first item is "X" button
 		for (int i = 1; i < table.getCells().size; i++)
 		{		
-			if (i > inventory.getItems().size()) break;
+			if (i > currentInventory.getItems().size()) break;
 			
-			Item item = inventory.getItems().get(i - 1); // i - 1 because the inventory starts at 0
-			TextureRegion region = item.getComponent(MapObjectComponent.class).getTextureRegion();
+			Item item = currentInventory.getItems().get(i - 1); // i - 1 because the inventory starts at 0
+			TextureRegion region = new TextureRegion(item.getComponent(MapObjectComponent.class).getTextureRegion());
 			Image image = new Image(region);
 			image.setSize(ITEMX - 8, ITEMY - 8);
 			
-			((InventorySlot)table.getCells().get(i).getActor()).setItem(image);
+			((InventorySlot)table.getCells().get(i).getActor()).setImage(image).setItem(item).setCount(1);
 		}
 	}
 	
+	/*
+	Function to add a single item into both the inventory of the character passed in and the UI
+	If the item only needs to be added to the character, instead use only InventoryComponent.addItem()
+	
+	Can only be called after fillInventory() has been called at least once
+	*/
+	public void addItem(Character character, Item item)
+	{
+		currentInventory = character.getComponent(InventoryComponent.class);
+		currentInventory.addItem(item);
+		
+		// Starts at 1 since first item is "X" button
+		for (int i = 1; i < table.getCells().size; i++)
+		{		
+			InventorySlot slot = (InventorySlot)table.getCells().get(i).getActor();
+			
+			if (slot.getCount() == 0)
+			{
+				item.flipImage(); // UI is y-up while game world is y-down
+				Image image = new Image(item.getComponent(MapObjectComponent.class).getTextureRegion());
+				slot.setImage(image).setItem(item).setCount(1);
+				return;
+			}
+		}
+		
+		// If the code reaches here the inventory is full
+	}
+	
+	/*
+	Removes an item from both the UI and the current character's inventory
+	(as set by either addItem() or fillInventory())
+	and drops it into the game world
+	*/
+	public void dropItem(Item item)
+	{		
+		// Starts at 1 since first item is "X" button
+		for (int i = 1; i < table.getCells().size; i++)
+		{
+			InventorySlot slot = (InventorySlot)table.getCells().get(i).getActor();
+			
+			if (slot.getItem() != null && slot.getItem().equals(item))
+			{
+				slot.setItem(null).setImage(new Image(blankItem)).setCount(0);
+
+				currentInventory.removeItem(item);
+				screen.addEntity(item);
+
+				item.setPosition(screen.getEngine().getPlayer().getPosition().x, screen.getEngine().getPlayer().getPosition().y);
+				item.update(0);
+				item.flipImage(); // Because the world is in y-down and the UI is in y-up
+				return;
+			}
+		}
+	}
+	
+	/*
+	Stores the image data for a single slot in the inventory UI
+	
+	Setters return this item for method chaining
+	*/
     public class InventorySlot extends Image
     {
-        private Image item;
+		private Item item; // Entity, starts as null
+        private Image itemImage; // Scene2D actor used for payload
         private boolean dragged;
+		private int count;
         
         public InventorySlot(TextureRegion background, TextureRegion itemSprite)
         {
             super(background);
-            item = new Image(itemSprite);
-            item.setSize(64, 64);
+            itemImage = new Image(itemSprite);
+            itemImage.setSize(64, 64);
         }
         
-        public Image getItem()
+        public Image getImage()
         {
-            return item;
+            return itemImage;
         }
+		
+		public Item getItem()
+		{
+			return item;
+		}
         
-        public void setItem(Image image)
+        public InventorySlot setImage(Image image)
         {
-            item = image;
+            itemImage = image;			
+            itemImage.setSize(64, 64);
+			return this;
         }
+		
+		public InventorySlot setItem(Item it)
+		{
+			item = it;
+			return this;
+		}
         
-        public void setDragged(boolean drag)
+        public InventorySlot setDragged(boolean drag)
         {
-            dragged = drag;
+            dragged = drag;			
+			return this;
         }
+		
+		public InventorySlot setCount(int newCount)
+		{
+			count = newCount;
+			return this;
+		}
+		
+		public int getCount()
+		{
+			return count;
+		}
         
         @Override
         public void draw(Batch batch, float parentAlpha)
         {
             super.draw(batch, parentAlpha);            
-            item.draw(batch, parentAlpha);
+            itemImage.draw(batch, parentAlpha);
             
             if (!dragged)
             {            
-                item.setPosition(getX() + 4, getY() + 4);   
+                itemImage.setPosition(getX() + 4, getY() + 4);   
             }
         }
     }

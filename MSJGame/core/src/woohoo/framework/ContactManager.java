@@ -17,7 +17,13 @@ public class ContactManager
 		commands = new ArrayList<>();
 	}
 	
-	public void createContactListener(World world)
+	public void addCommand(ContactCommand command, World world)
+	{
+		commands.add(command);
+		updateContactListener(world);
+	}
+	
+	private void updateContactListener(World world)
 	{
 		world.setContactListener(
             new ContactListener() 
@@ -47,10 +53,5 @@ public class ContactManager
                 public void postSolve(Contact contact, ContactImpulse impulse) {}
             }
         );
-	}
-	
-	public void addCommand(ContactCommand command)
-	{
-		commands.add(command);
 	}
 }

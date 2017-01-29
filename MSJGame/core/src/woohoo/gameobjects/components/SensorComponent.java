@@ -12,28 +12,35 @@ public class SensorComponent extends BodyComponent
 {
 	private Fixture fixture;
 	private boolean hasContact;
-	private SensorContact contactCode;
 	
-	public SensorComponent(World world, WBodyType type)
+	public SensorComponent(WBodyType bodyType)
+	{		
+		type = bodyType;
+		
+		contactData = new SensorContact(this);
+	}
+	
+	@Override
+	public void createMass(World world)
 	{
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.StaticBody;
-
 		mass = world.createBody(bodyDef);
 
 		CircleShape shape = new CircleShape();		
 		shape.setRadius(0.49f);
-		
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = shape;
-		fixtureDef.isSensor = true;
 
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = shape;			
+		fixtureDef.isSensor = true;
+			
 		fixture = mass.createFixture(fixtureDef);
 		mass.setUserData(type);
 		
-		contactCode = new SensorContact(this);
+		super.createMass(world);
 	}
 	
+	@Override	
 	public void update(float delta)
 	{
 	}
@@ -51,10 +58,5 @@ public class SensorComponent extends BodyComponent
 	public Fixture getFixture()
 	{
 		return fixture;
-	}
-	
-	public SensorContact getContactCode()
-	{
-		return contactCode;
 	}
 }

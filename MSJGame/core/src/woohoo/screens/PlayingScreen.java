@@ -13,8 +13,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -112,13 +110,13 @@ public class PlayingScreen implements Screen
 		// Create user interface
 		ui = new Stage();
         inventoryManager = new InventoryManager(this, assets.get("images/itemframe.png", Texture.class),
+                                                assets.get("images/blank_64.png", Texture.class),
                                                 assets.get("ui/uiskin.json", Skin.class));
 		
 		// Create map
 		mapLoader = new HexMapLoader(this);
-		TiledMap map = new TiledMap();
-		MapLayers layers = mapLoader.load("maps/0.txt", assets.get("images/tileset.png", Texture.class), 
-                                          assets.get("images/tileset2.png", Texture.class), world);
+		TiledMap map = mapLoader.load("maps/0.txt", assets.get("images/tileset.png", Texture.class), 
+                                      assets.get("images/tileset2.png", Texture.class), world);
 		
 		// Draw and update every frame
 		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
@@ -128,26 +126,13 @@ public class PlayingScreen implements Screen
 		dialogueManager = new DialogueManager(this, ui, assets.get("ui/uiskin.json", Skin.class));
         
 		// Initialize objects
-		Player player = new Player(assets.get("images/oldman.pack", TextureAtlas.class), world);
-        NPC npc = new NPC(assets.get("images/ginger.png", Texture.class), world);
-		Item item = new Item(new TextureRegion(assets.get("images/items/000_Stick.png", Texture.class)), world);
-        
-		MapLayer objects = new MapLayer();
-		objects.setName("Objects");
-		objects.getObjects().add(player.getComponent(MapObjectComponent.class));
-		objects.getObjects().add(npc.getComponent(MapObjectComponent.class));
-		objects.getObjects().add(item.getComponent(MapObjectComponent.class));
+		Player player = new Player(assets.get("images/oldman.pack", TextureAtlas.class));
+        NPC npc = new NPC(assets.get("images/ginger.png", Texture.class));
+		Item item = new Item(new TextureRegion(assets.get("images/items/000_Stick.png", Texture.class)));
 		
-        map.getLayers().add(layers.get("Base"));
-		map.getLayers().add(objects);
-        map.getLayers().add(layers.get("Decorations"));
-		
-		engine.addEntity(player);
-        engine.addEntity(npc);
-		engine.addEntity(item);
-		
-		contacts.addCommand(item.getComponent(SensorComponent.class).getContactCode());
-		contacts.createContactListener(world);
+		addEntity(player);
+		addEntity(npc);
+		addEntity(item);
 		
 		inventoryManager.fillInventory(player);
 		
@@ -211,7 +196,7 @@ public class PlayingScreen implements Screen
     }
 	
 	private void loadAssets()
-	{		
+	{			
 		TextureAtlasParameter atlasParam1 = new TextureAtlasParameter(true);
 		SkinParameter skinParam1 = new SkinParameter("ui/uiskin.atlas");
 		
@@ -221,6 +206,7 @@ public class PlayingScreen implements Screen
 		assets.load("images/joeface.png", Texture.class);
         assets.load("images/ginger.png", Texture.class);	
 		assets.load("images/itemframe.png", Texture.class);
+		assets.load("images/blank_64.png", Texture.class);
         assets.load("ui/uiskin.atlas", TextureAtlas.class);
 		assets.load("ui/uiskin.json", Skin.class, skinParam1);
 		
@@ -236,18 +222,41 @@ public class PlayingScreen implements Screen
 		assets.finishLoading();
 	}
 	
+	/*
+	Add an entity into the game world
+	*/
+	public void addEntity(Entity entity)
+	{		
+		if (entity instanceof Character)
+		{
+			renderer.getMap().getLayers().get("Objects").getObjects().add(entity.getComponent(MapObjectComponent.class));
+			entity.getComponent(CollisionComponent.class).createMass(world);
+			engine.addEntity(entity);
+		}
+		else if (entity instanceof Item)
+		{
+			renderer.getMap().getLayers().get("Objects").getObjects().add(entity.getComponent(MapObjectComponent.class));
+			entity.getComponent(SensorComponent.class).createMass(world);
+			contacts.addCommand(entity.getComponent(SensorComponent.class).getContactData(), world);
+			engine.addEntity(entity);
+		}
+	}
+	
+	/*
+	Remove an entity from the game world
+	*/
 	public void removeEntity(Entity entity)
-	{
+	{	
 		if (entity instanceof Character)
 		{
 			renderer.getMap().getLayers().get("Objects").getObjects().remove(entity.getComponent(MapObjectComponent.class));
-			entity.getComponent(CollisionComponent.class).removeMass(world);
+			entity.getComponent(CollisionComponent.class).removeMass();
 			engine.removeEntity(entity);
 		}
 		else if (entity instanceof Item)
-		{			
+		{
 			renderer.getMap().getLayers().get("Objects").getObjects().remove(entity.getComponent(MapObjectComponent.class));
-			entity.getComponent(SensorComponent.class).removeMass(world);
+			entity.getComponent(SensorComponent.class).removeMass();
 			engine.removeEntity(entity);
 		}
 	}
