@@ -7,8 +7,9 @@ import woohoo.screens.PlayingScreen.WBodyType;
 
 public class Item extends BaseEntity
 {
-	SensorComponent sensor;
-	MapObjectComponent mapObject;
+	private SensorComponent sensor;
+	private MapObjectComponent mapObject;
+    private boolean isWeapon;
 	
 	public Item(TextureRegion region)
 	{		
@@ -39,4 +40,14 @@ public class Item extends BaseEntity
 		texture.flip(false, true);
 		mapObject.setTextureRegion(texture);
 	}
+    
+    public void setWeapon(boolean weapon)
+    {
+        isWeapon = weapon;
+    }
+    
+    public boolean isWeapon()
+    {
+        return isWeapon;
+    }
 }

@@ -46,7 +46,7 @@ public class PlayingScreen implements Screen
     
     public enum WBodyType
     {
-        Player, Entity, Wall, Gate, Item, NPC
+        Player, Entity, Wall, Gate, Item, NPC, Weapon
     }
 	
 	/* Dimensions of tiles on the spritesheet */

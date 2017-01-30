@@ -2,11 +2,16 @@ package woohoo.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.screens.PlayingScreen.WBodyType;
 
 public class Player extends Character
 {		    
+    private WeaponComponent weapon;
+    
     public Player(TextureAtlas atlas)
     {
 		super(atlas, WBodyType.Player, new Vector2(2, 1));
@@ -57,6 +62,19 @@ public class Player extends Character
 				break;
 		}
 	}
+    
+    public void equip(Item item)
+    {
+        weapon = new WeaponComponent(item);
+        super.add(weapon);
+        
+        RevoluteJointDef jointDef = new RevoluteJointDef();
+        jointDef.bodyA = collision.getMass();
+        jointDef.bodyB = weapon.getMass();
+        
+        collision.getMass().getWorld().createJoint(jointDef);
+        // It crashes pls fix
+    }
 	
 	public void stop()
 	{

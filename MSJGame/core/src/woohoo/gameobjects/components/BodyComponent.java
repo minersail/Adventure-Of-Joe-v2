@@ -34,6 +34,11 @@ public class BodyComponent implements Component
 	{
 		mass.getWorld().destroyBody(mass);
 	}
+    
+    public Body getMass()
+    {
+        return mass;
+    }
 	
 	public void setStartPosition(float x, float y)
 	{
@@ -50,6 +55,11 @@ public class BodyComponent implements Component
 	{
 		return new Vector2(mass.getPosition().x - 0.5f, mass.getPosition().y - 0.5f);
 	}
+    
+    protected void setContactData(ContactCommand command)
+    {
+        contactData = command;
+    }
 	
 	public ContactCommand getContactData()
 	{
