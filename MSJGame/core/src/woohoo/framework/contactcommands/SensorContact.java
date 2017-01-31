@@ -3,16 +3,19 @@ package woohoo.framework.contactcommands;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import woohoo.gameobjects.components.SensorComponent;
-import woohoo.screens.PlayingScreen;
+import woohoo.screens.PlayingScreen.WBodyType;
 
 public class SensorContact implements ContactCommand
 {
 	// The SensorComponent that this ContactCommand will be detecting contact for
-	SensorComponent sensor;
+	private SensorComponent sensor;
+	// What kind of body this sensor is testing for
+	private WBodyType testType;
 	
-	public SensorContact(SensorComponent sc)
+	public SensorContact(SensorComponent sc, WBodyType type)
 	{
 		sensor = sc;
+		testType = type;
 	}
 	
 	@Override
@@ -21,8 +24,8 @@ public class SensorContact implements ContactCommand
 		Fixture fA = contact.getFixtureA();
 		Fixture fB = contact.getFixtureB();
 
-		if (fA.equals(sensor.getFixture()) && fB.getBody().getUserData() == PlayingScreen.WBodyType.Player
-			|| fB.equals(sensor.getFixture()) && fA.getBody().getUserData() == PlayingScreen.WBodyType.Player)
+		if (fA.equals(sensor.getFixture()) && fB.getBody().getUserData() == testType
+			|| fB.equals(sensor.getFixture()) && fA.getBody().getUserData() == testType)
 		{
 			sensor.hasContact(true);
 		}
@@ -34,8 +37,8 @@ public class SensorContact implements ContactCommand
 		Fixture fA = contact.getFixtureA();
 		Fixture fB = contact.getFixtureB();
 
-		if (fA.equals(sensor.getFixture()) && fB.getBody().getUserData() == PlayingScreen.WBodyType.Player
-			|| fB.equals(sensor.getFixture()) && fA.getBody().getUserData() == PlayingScreen.WBodyType.Player)
+		if (fA.equals(sensor.getFixture()) && fB.getBody().getUserData() == testType
+			|| fB.equals(sensor.getFixture()) && fA.getBody().getUserData() == testType)
 		{
 			sensor.hasContact(false);
 		}

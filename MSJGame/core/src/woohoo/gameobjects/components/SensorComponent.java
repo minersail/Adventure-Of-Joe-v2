@@ -5,19 +5,16 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import woohoo.framework.contactcommands.SensorContact;
 import woohoo.screens.PlayingScreen.WBodyType;
 
 public class SensorComponent extends BodyComponent
 {
-	private Fixture fixture;
+	protected Fixture fixture;
 	private boolean hasContact;
 	
 	public SensorComponent(WBodyType bodyType)
 	{		
 		type = bodyType;
-		
-		contactData = new SensorContact(this);
 	}
 	
 	@Override

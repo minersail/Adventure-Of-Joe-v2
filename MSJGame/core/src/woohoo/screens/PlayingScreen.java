@@ -31,6 +31,7 @@ import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
 import woohoo.gameobjects.Character;
+import woohoo.gameobjects.Enemy;
 import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.SensorComponent;
@@ -46,7 +47,7 @@ public class PlayingScreen implements Screen
     
     public enum WBodyType
     {
-        Player, Entity, Wall, Gate, Item, NPC, Weapon
+        Player, Entity, Wall, Gate, Item, NPC, Weapon, Enemy
     }
 	
 	/* Dimensions of tiles on the spritesheet */
@@ -129,10 +130,12 @@ public class PlayingScreen implements Screen
 		Player player = new Player(assets.get("images/oldman.pack", TextureAtlas.class));
         NPC npc = new NPC(assets.get("images/ginger.png", Texture.class));
 		Item item = new Item(new TextureRegion(assets.get("images/items/000_Stick.png", Texture.class)));
+		Enemy enemy = new Enemy(assets.get("images/ginger.png", Texture.class));
 		
 		addEntity(player);
 		addEntity(npc);
 		addEntity(item);
+		addEntity(enemy);
 		
 		inventoryManager.fillInventory(player);
 		
@@ -232,6 +235,7 @@ public class PlayingScreen implements Screen
 			renderer.getMap().getLayers().get("Objects").getObjects().add(entity.getComponent(MapObjectComponent.class));
 			entity.getComponent(CollisionComponent.class).createMass(world);
 			engine.addEntity(entity);
+			inventoryManager.loadInventory((Character)entity);
 		}
 		else if (entity instanceof Item)
 		{

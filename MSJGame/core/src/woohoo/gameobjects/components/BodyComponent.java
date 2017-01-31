@@ -16,7 +16,7 @@ public class BodyComponent implements Component
 	protected ContactCommand contactData;
 	protected WBodyType type;
 	
-	private Vector2 startPosition;
+	private Vector2 startPosition = new Vector2(0, 0);
 	
 	/*
 	Creates mass, overriden by subclasses
@@ -56,7 +56,7 @@ public class BodyComponent implements Component
 		return new Vector2(mass.getPosition().x - 0.5f, mass.getPosition().y - 0.5f);
 	}
     
-    protected void setContactData(ContactCommand command)
+    public void setContactData(ContactCommand command)
     {
         contactData = command;
     }

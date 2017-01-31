@@ -5,7 +5,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -22,6 +21,7 @@ import woohoo.gameobjects.Item;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.screens.PlayingScreen;
 
 /*
@@ -91,6 +91,7 @@ public class InventoryManager
                 {
                     super.drop(source, payload, x, y, pointer);
                     screen.getEngine().getPlayer().equip(((InventorySlot)source.getActor()).getItem());
+					screen.getContactManager().addCommand(screen.getEngine().getPlayer().getComponent(WeaponComponent.class).getContactData(), screen.getWorld());
                 }
                 else
                 {
@@ -167,6 +168,7 @@ public class InventoryManager
 			if (i >= currentInventory.getItems().size() + 2) break;
 			
 			Item item = currentInventory.getItems().get(i - 2); // i - 2 because the inventory starts at 0
+			item.flipImage(); // When MapObjectComponent is initialized textures are flipped by default
 			TextureRegion region = new TextureRegion(item.getComponent(MapObjectComponent.class).getTextureRegion());
 			Image image = new Image(region);
 			image.setSize(ITEMX - 8, ITEMY - 8);

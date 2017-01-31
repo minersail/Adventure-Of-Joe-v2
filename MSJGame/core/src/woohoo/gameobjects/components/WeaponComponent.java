@@ -1,18 +1,22 @@
 package woohoo.gameobjects.components;
 
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.gameobjects.Item;
 import woohoo.screens.PlayingScreen.WBodyType;
 
+/*
+WeaponComponent has two SensorComponents: one by inheritance and one by composition
+
+The item's SensorComponent should be disabled while the weapon's is active, and vice versa
+*/
 public class WeaponComponent extends SensorComponent
 {    
     // Every weapon can also be picked up, put in inventory, etc.
     private Item weaponItem;
-    private Body weaponBody;
     
     public WeaponComponent(Item item) 
     {
@@ -25,29 +29,23 @@ public class WeaponComponent extends SensorComponent
 	public void createMass(World world)
 	{
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.StaticBody;
-		weaponBody = world.createBody(bodyDef);
+		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		mass = world.createBody(bodyDef);
 
-		CircleShape shape = new CircleShape();		
-		shape.setRadius(0.49f);
+		PolygonShape shape = new PolygonShape();	
+		shape.setAsBox(0.5f, 0.125f, new Vector2(0, 0.375f), (float)Math.PI / 2);
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;			
 		fixtureDef.isSensor = true;
+		fixtureDef.density = 0.0001f;
 			
-        mass.createFixture(fixtureDef);
+        fixture = mass.createFixture(fixtureDef);
 		mass.setUserData(type);
-		
-		super.createMass(world);
 	}
     
     public Item getItem()
     {
         return weaponItem;
-    }
-    
-    public Body getWeaponMass()
-    {
-        return weaponBody;
     }
 }

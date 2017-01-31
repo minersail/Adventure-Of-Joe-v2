@@ -1,6 +1,7 @@
 package woohoo.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import woohoo.framework.contactcommands.SensorContact;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.SensorComponent;
 import woohoo.screens.PlayingScreen.WBodyType;
@@ -17,6 +18,7 @@ public class Item extends BaseEntity
 		sensor = new SensorComponent(WBodyType.Item);
 		
 		sensor.setStartPosition(4, 4);
+		sensor.setContactData(new SensorContact(sensor, WBodyType.Player));
 		
 		super.add(mapObject);
         super.add(sensor);

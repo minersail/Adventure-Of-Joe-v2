@@ -11,7 +11,6 @@ import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.DialogueComponent;
-import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.SensorComponent;
 import woohoo.screens.PlayingScreen;
 
@@ -51,9 +50,6 @@ public class GameWorld extends Engine
 	public void addEntity(Entity entity)
 	{
 		super.addEntity(entity);
-		
-		if (entity instanceof Character)
-			screen.getInventoryManager().loadInventory((Character)entity);
 	}
     
     public Player getPlayer()

@@ -2,8 +2,8 @@ package woohoo.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import woohoo.framework.contactcommands.SensorContact;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.screens.PlayingScreen.WBodyType;
@@ -41,6 +41,11 @@ public class Player extends Character
 					mapObject.setDirection(Direction.Up);
 			}
 		}
+		
+		if (weapon != null && weapon.hasContact())
+		{
+			System.out.println("Got eem");
+		}
 	}
 	
 	public void move(Direction dir)
@@ -66,6 +71,8 @@ public class Player extends Character
     public void equip(Item item)
     {
         weapon = new WeaponComponent(item);
+		weapon.createMass(collision.getMass().getWorld());
+		weapon.setContactData(new SensorContact(weapon, WBodyType.Enemy));
         super.add(weapon);
         
         RevoluteJointDef jointDef = new RevoluteJointDef();
@@ -73,7 +80,6 @@ public class Player extends Character
         jointDef.bodyB = weapon.getMass();
         
         collision.getMass().getWorld().createJoint(jointDef);
-        // It crashes pls fix
     }
 	
 	public void stop()
