@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import woohoo.framework.fixturedata.HitData;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.screens.PlayingScreen.WBodyType;
@@ -65,8 +66,11 @@ public class WeaponComponent extends SensorComponent
 		fixtureDef.density = 0.01f;
 			
         fixture = mass.createFixture(fixtureDef);
+		fixture.setUserData(new HitData(this));
+        mass.setFixedRotation(true);
 		mass.setUserData(type);
-		fixture.setUserData(this);
+        
+        isActive = false;
 	}
     
     public Item getItem()

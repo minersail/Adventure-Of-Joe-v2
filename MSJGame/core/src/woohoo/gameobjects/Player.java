@@ -45,7 +45,7 @@ public class Player extends Character
 		if (weapon != null)
 		{
 			weapon.update(delta);
-			weapon.setAngle(mapObject.getDirection());
+			weapon.setAngle(mapObject.getDirection());       
 		}
 	}
 	
@@ -79,11 +79,10 @@ public class Player extends Character
         RevoluteJointDef jointDef = new RevoluteJointDef();
         jointDef.bodyA = collision.getMass();
         jointDef.bodyB = weapon.getMass();
-		//jointDef.lowerAngle = -(float)Math.PI / 3;
-		//jointDef.upperAngle = (float)Math.PI / 3;
-		//jointDef.enableLimit = true;
         
         collision.getMass().getWorld().createJoint(jointDef);
+			
+        weapon.setAngle(mapObject.getDirection());
     }
 	
 	public void attack()

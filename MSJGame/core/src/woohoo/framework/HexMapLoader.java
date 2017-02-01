@@ -11,9 +11,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import woohoo.framework.fixturedata.FixtureData;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.WBodyType;
 
@@ -83,8 +85,9 @@ public class HexMapLoader
 					fixtureDef.density = 1f;
 					fixtureDef.friction = 0f;
 
-					body.createFixture(fixtureDef);
+					Fixture fixture = body.createFixture(fixtureDef);
 					body.setUserData(WBodyType.Wall);
+                    fixture.setUserData(new FixtureData());
 				}
 					
 				Cell cell = new Cell();

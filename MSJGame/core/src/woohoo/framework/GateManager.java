@@ -5,7 +5,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -15,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import java.util.function.Consumer;
 import woohoo.framework.contactcommands.GateContact;
+import woohoo.framework.fixturedata.GateData;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.WBodyType;
 
@@ -118,44 +118,4 @@ public class GateManager
 	{
 		switchArea = true;
 	}
-    
-    public class GateData
-    {
-        private final XmlReader.Element gate;
-		private Vector2 playerOffset;
-        
-        public GateData(XmlReader.Element g)
-        {
-            gate = g;
-			playerOffset = new Vector2(0, 0);
-        }
-		
-		public void setPlayerOffset(float x, float y)
-		{
-			// Took me forever to figure this out
-			// Reposition the character relative to the gate's exit location based on where the player entered the gate's entrance
-			playerOffset = new Vector2(Math.min(Math.max(0, x), gateSize().x - 1), Math.min(Math.max(0, y), gateSize().y - 1));
-		}
-        
-        public Vector2 gatePos()
-        {
-			// Return center of top-left block
-            return new Vector2(gate.getFloat("locX") + 0.5f, gate.getFloat("locY") + 0.5f);
-        }
-		
-		public Vector2 gateSize()
-		{
-			return new Vector2(gate.getFloat("sizeX"), gate.getFloat("sizeY"));
-		}
-        
-        public Vector2 playerPos()
-        {
-            return new Vector2(gate.getFloat("destX") + playerOffset.x, gate.getFloat("destY") + playerOffset.y);
-        }
-        
-        public int destArea()
-        {
-            return gate.getInt("destArea");
-        }
-    }
 }

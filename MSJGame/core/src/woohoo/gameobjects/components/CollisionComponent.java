@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import woohoo.framework.fixturedata.FixtureData;
 import woohoo.screens.PlayingScreen.WBodyType;
 
 public class CollisionComponent extends BodyComponent
@@ -36,9 +37,8 @@ public class CollisionComponent extends BodyComponent
 		Fixture fixture = mass.createFixture(fixtureDef);
 		mass.setUserData(type);
 		mass.setFixedRotation(true);
-		mass.setLinearDamping(0.4f);
-		
-		fixture.setUserData(this);
+		mass.setLinearDamping(0.4f);		
+		fixture.setUserData(new FixtureData());
 		
 		super.createMass(world);
 	}
