@@ -9,8 +9,9 @@ import woohoo.screens.PlayingScreen.WBodyType;
 
 public class SensorComponent extends BodyComponent
 {
+	protected boolean isActive = true;
 	protected Fixture fixture;
-	private boolean hasContact;
+	private Fixture collidedFixture;
 	
 	public SensorComponent(WBodyType bodyType)
 	{		
@@ -32,6 +33,7 @@ public class SensorComponent extends BodyComponent
 		fixtureDef.isSensor = true;
 			
 		fixture = mass.createFixture(fixtureDef);
+		fixture.setUserData(this);
 		mass.setUserData(type);
 		
 		super.createMass(world);
@@ -42,14 +44,24 @@ public class SensorComponent extends BodyComponent
 	{
 	}
 	
-	public boolean hasContact()
+	public void setActive(boolean active)
 	{
-		return hasContact;
+		isActive = active;
 	}
 	
-	public void hasContact(boolean contact)
+	public boolean isActive()
 	{
-		hasContact = contact;
+		return isActive;
+	}
+	
+	public boolean hasContact()
+	{
+		return collidedFixture != null;
+	}
+	
+	public void setCollided(Fixture collided)
+	{
+		collidedFixture = collided;
 	}
 	
 	public Fixture getFixture()

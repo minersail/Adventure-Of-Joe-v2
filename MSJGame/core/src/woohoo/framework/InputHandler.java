@@ -55,6 +55,9 @@ public class InputHandler implements InputProcessor
 					case Keys.S:
 						System.out.println(player.getPosition());
 						break;
+					case Keys.A:
+						player.attack();
+						break;
 				}
 				break;
 			

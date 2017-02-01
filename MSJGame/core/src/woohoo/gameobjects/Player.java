@@ -42,28 +42,29 @@ public class Player extends Character
 			}
 		}
 		
-		if (weapon != null && weapon.hasContact())
+		if (weapon != null)
 		{
-			System.out.println("Got eem");
+			weapon.update(delta);
+			weapon.setAngle(mapObject.getDirection());
 		}
 	}
 	
 	public void move(Direction dir)
 	{
-		int speed = 1000;
+		int speed = 2;
 		switch (dir)
 		{
 			case Up:
-				collision.addForce(0, -speed);
+				collision.addVelocity(0, -speed);
 				break;
 			case Down:
-				collision.addForce(0, speed);
+				collision.addVelocity(0, speed);
 				break;
 			case Left:
-				collision.addForce(-speed, 0);
+				collision.addVelocity(-speed, 0);
 				break;
 			case Right:
-				collision.addForce(speed, 0);
+				collision.addVelocity(speed, 0);
 				break;
 		}
 	}
@@ -78,13 +79,22 @@ public class Player extends Character
         RevoluteJointDef jointDef = new RevoluteJointDef();
         jointDef.bodyA = collision.getMass();
         jointDef.bodyB = weapon.getMass();
+		//jointDef.lowerAngle = -(float)Math.PI / 3;
+		//jointDef.upperAngle = (float)Math.PI / 3;
+		//jointDef.enableLimit = true;
         
         collision.getMass().getWorld().createJoint(jointDef);
     }
 	
+	public void attack()
+	{
+		if (weapon != null)
+			weapon.swing();	
+	}
+	
 	public void stop()
 	{
-		collision.setForce(0, 0);
+		collision.setVelocity(0, 0);
 	}
     
     public void setPosition(float x, float y)

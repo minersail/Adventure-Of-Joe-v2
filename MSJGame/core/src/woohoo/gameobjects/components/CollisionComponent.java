@@ -3,13 +3,14 @@ package woohoo.gameobjects.components;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.screens.PlayingScreen.WBodyType;
 
 public class CollisionComponent extends BodyComponent
 {
-	Vector2 force = new Vector2(0, 0);
+	Vector2 velocity = new Vector2(0, 0);
 	
 	public CollisionComponent(WBodyType bodyType)
 	{
@@ -28,14 +29,16 @@ public class CollisionComponent extends BodyComponent
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.density = 1f;
+		fixtureDef.density = 100f;
 		fixtureDef.friction = 0f;
 		fixtureDef.restitution = 0f;
 		
-		mass.createFixture(fixtureDef);
+		Fixture fixture = mass.createFixture(fixtureDef);
 		mass.setUserData(type);
 		mass.setFixedRotation(true);
-		mass.setLinearDamping(10f);
+		mass.setLinearDamping(0.4f);
+		
+		fixture.setUserData(this);
 		
 		super.createMass(world);
 	}
@@ -43,19 +46,19 @@ public class CollisionComponent extends BodyComponent
 	@Override
 	public void update(float delta)
 	{
-		mass.applyForceToCenter(force.x * delta, force.y * delta, true);
+		mass.setLinearVelocity(velocity);
 	}
 	
-	public void addForce(float x, float y)
+	public void addVelocity(float x, float y)
 	{
-		force.x += x;
-		force.y += y;
+		velocity.x += x;
+		velocity.y += y;
 	}
 	
-	public void setForce(float x, float y)
+	public void setVelocity(float x, float y)
 	{
-		force.x = x;
-		force.y = y;
+		velocity.x = x;
+		velocity.y = y;
 	}
 	
 	public Vector2 getVelocity()
@@ -63,8 +66,13 @@ public class CollisionComponent extends BodyComponent
 		return mass.getLinearVelocity();
 	}
 	
+	public void addImpulse(float x, float y)
+	{
+		mass.applyLinearImpulse(new Vector2(x, y), mass.getLocalCenter(), true);
+	}
+	
 	public boolean isStopped()
 	{
-		return Math.abs(mass.getLinearVelocity().x) < 1 && Math.abs(mass.getLinearVelocity().y) < 1;
+		return Math.abs(mass.getLinearVelocity().x) < 0.5f && Math.abs(mass.getLinearVelocity().y) < 0.5f;
 	}
 }

@@ -9,6 +9,14 @@ import woohoo.screens.PlayingScreen.WBodyType;
 
 /*
 Base component class for box2d-based components
+
+Notes on user data:
+Body user data is always WBodyType
+
+Fixture user data can be:
+	- Gate: GateData
+	- BodyComponent: BodyComponent (or derived)
+	- Maybe write some base class FixtureData
 */
 public class BodyComponent implements Component
 {

@@ -149,11 +149,11 @@ public class PlayingScreen implements Screen
     @Override
     public void render(float delta)
     {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		switch (state)
 		{
 			case Playing:				
-				Gdx.gl.glClearColor(0, 0, 0, 1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				cam.update();
 				runTime += delta;
 
@@ -169,8 +169,6 @@ public class PlayingScreen implements Screen
 				break;
 				
 			case Dialogue:
-				Gdx.gl.glClearColor(0, 0, 0, 1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				cam.update();
 				runTime += delta;
 				
@@ -183,8 +181,6 @@ public class PlayingScreen implements Screen
 				break;
 				
 			case Inventory:
-				Gdx.gl.glClearColor(0, 0, 0, 1);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 				cam.update();
 				runTime += delta;
 				
@@ -236,6 +232,12 @@ public class PlayingScreen implements Screen
 			entity.getComponent(CollisionComponent.class).createMass(world);
 			engine.addEntity(entity);
 			inventoryManager.loadInventory((Character)entity);
+			
+			if (entity instanceof Enemy)
+			{
+				entity.getComponent(SensorComponent.class).createMass(world);
+				contacts.addCommand(entity.getComponent(SensorComponent.class).getContactData(), world);				
+			}
 		}
 		else if (entity instanceof Item)
 		{
