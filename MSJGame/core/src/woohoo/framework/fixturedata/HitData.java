@@ -1,10 +1,11 @@
 package woohoo.framework.fixturedata;
 
+import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.gameobjects.components.WeaponComponent;
 
 public class HitData extends SensorData
 {
-    WeaponComponent weapon;
+    private WeaponComponent weapon;
     
     public HitData(WeaponComponent w)
     {
@@ -12,4 +13,9 @@ public class HitData extends SensorData
         
         weapon = (WeaponComponent)w;
     }
+	
+	public Direction getDirection()
+	{
+		return weapon.getDirection();
+	}
 }

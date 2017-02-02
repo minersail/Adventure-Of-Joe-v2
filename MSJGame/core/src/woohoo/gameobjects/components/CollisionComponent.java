@@ -66,7 +66,7 @@ public class CollisionComponent extends BodyComponent
 		return mass.getLinearVelocity();
 	}
 	
-	public void addImpulse(float x, float y)
+	public void applyImpulse(float x, float y)
 	{
 		mass.applyLinearImpulse(new Vector2(x, y), mass.getLocalCenter(), true);
 	}

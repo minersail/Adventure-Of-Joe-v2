@@ -48,26 +48,6 @@ public class Player extends Character
 			weapon.setAngle(mapObject.getDirection());       
 		}
 	}
-	
-	public void move(Direction dir)
-	{
-		int speed = 2;
-		switch (dir)
-		{
-			case Up:
-				collision.addVelocity(0, -speed);
-				break;
-			case Down:
-				collision.addVelocity(0, speed);
-				break;
-			case Left:
-				collision.addVelocity(-speed, 0);
-				break;
-			case Right:
-				collision.addVelocity(speed, 0);
-				break;
-		}
-	}
     
     public void equip(Item item)
     {
@@ -90,14 +70,4 @@ public class Player extends Character
 		if (weapon != null)
 			weapon.swing();	
 	}
-	
-	public void stop()
-	{
-		collision.setVelocity(0, 0);
-	}
-    
-    public void setPosition(float x, float y)
-    {
-        collision.setPosition(x, y);
-    }
 }

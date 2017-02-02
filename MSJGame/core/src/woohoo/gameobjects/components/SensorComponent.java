@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import woohoo.framework.fixturedata.FixtureData;
 import woohoo.framework.fixturedata.SensorData;
 import woohoo.screens.PlayingScreen.WBodyType;
 
@@ -68,5 +69,10 @@ public class SensorComponent extends BodyComponent
 	public Fixture getFixture()
 	{
 		return fixture;
+	}
+	
+	public FixtureData getContact()
+	{
+		return (FixtureData)collidedFixture.getUserData();
 	}
 }

@@ -9,7 +9,6 @@ import woohoo.gameobjects.BaseEntity;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
-import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.SensorComponent;
 import woohoo.screens.PlayingScreen;

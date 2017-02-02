@@ -20,6 +20,7 @@ public class WeaponComponent extends SensorComponent
     // Every weapon can also be picked up, put in inventory, etc.
     private Item weaponItem;
 	private float weaponAngle; // Radians
+	Direction weaponDirection;
     
     public WeaponComponent(Item item) 
     {
@@ -104,5 +105,12 @@ public class WeaponComponent extends SensorComponent
 				weaponAngle = (float)Math.PI / 6;
 				break;
 		}
+		
+		weaponDirection = dir;
+	}
+	
+	public Direction getDirection()
+	{
+		return weaponDirection;
 	}
 }

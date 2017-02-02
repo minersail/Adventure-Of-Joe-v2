@@ -20,6 +20,8 @@ public class Character extends BaseEntity
     protected MapObjectComponent mapObject;
 	protected CollisionComponent collision;
 	protected InventoryComponent inventory;
+	
+	protected float speed = 2;
 	    
 	public Character(TextureAtlas atlas, WBodyType type, Vector2 position)
 	{		
@@ -59,6 +61,10 @@ public class Character extends BaseEntity
     {
         return new Vector2(mapObject.getX(), mapObject.getY());
     }
+    public void setPosition(float x, float y)
+    {
+        collision.setPosition(x, y);
+    }
 	
 	public Direction getDirection()
 	{
@@ -78,6 +84,30 @@ public class Character extends BaseEntity
 	public Vector2 getSize()
 	{
 		return mapObject.getSize();
+	}
+	
+	public void move(Direction dir)
+	{
+		switch (dir)
+		{
+			case Up:
+				collision.addVelocity(0, -speed);
+				break;
+			case Down:
+				collision.addVelocity(0, speed);
+				break;
+			case Left:
+				collision.addVelocity(-speed, 0);
+				break;
+			case Right:
+				collision.addVelocity(speed, 0);
+				break;
+		}
+	}
+	
+	public void stop()
+	{
+		collision.setVelocity(0, 0);
 	}
 	
 	public float distanceTo(Character other)

@@ -32,6 +32,7 @@ import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.Enemy;
+import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.SensorComponent;
@@ -236,7 +237,8 @@ public class PlayingScreen implements Screen
 			if (entity instanceof Enemy)
 			{
 				entity.getComponent(SensorComponent.class).createMass(world);
-				contacts.addCommand(entity.getComponent(SensorComponent.class).getContactData(), world);				
+				entity.getComponent(AIComponent.class).setPlayer(engine.getPlayer());
+				contacts.addCommand(entity.getComponent(SensorComponent.class).getContactData(), world);
 			}
 		}
 		else if (entity instanceof Item)
