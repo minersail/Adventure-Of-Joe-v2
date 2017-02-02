@@ -18,4 +18,9 @@ public class HitData extends SensorData
 	{
 		return weapon.getDirection();
 	}
+    
+    public float getDamage()
+    {
+        return weapon.getWeaponDamage();
+    }
 }

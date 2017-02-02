@@ -41,7 +41,9 @@ public class Enemy extends Character
 		
 		if (hitBox.hasContact())
 		{
-			switch(((HitData)hitBox.getContact()).getDirection())
+            HitData hit = (HitData)hitBox.getContact();
+            
+			switch(hit.getDirection())
 			{
 				case Up:
 					collision.applyImpulse(0, -500);
@@ -56,7 +58,7 @@ public class Enemy extends Character
 					collision.applyImpulse(500, 0);
 					break;
 			}
-            healthBar.damage(1);
+            healthBar.damage(hit.getDamage());
 		}
 	}
 }

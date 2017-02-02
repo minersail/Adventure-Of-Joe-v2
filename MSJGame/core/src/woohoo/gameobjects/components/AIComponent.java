@@ -10,6 +10,7 @@ public class AIComponent implements Component
 	// Reference to player, change later to reference of viable targets to follow
 	private Player player;
 	private Direction nextDirection;
+    private boolean lockDirection;
 	
 	public AIComponent()
 	{		
@@ -21,6 +22,8 @@ public class AIComponent implements Component
 	
 	public Direction calculateDirection(Vector2 pos)
 	{
+        if (lockDirection) return nextDirection;
+        
 		Vector2 playerPos = player.getPosition();
 		
 		float dX = pos.x - playerPos.x;
@@ -28,16 +31,22 @@ public class AIComponent implements Component
 		
 		if (Math.abs(dX) > Math.abs(dY))
 		{
-			return dX > 0 ? Direction.Left : Direction.Right;
+			nextDirection = dX > 0 ? Direction.Left : Direction.Right;
 		}
 		else
 		{
-			return dY > 0 ? Direction.Up : Direction.Down;
+			nextDirection = dY > 0 ? Direction.Up : Direction.Down;
 		}
+        return nextDirection;
 	}
 	
 	public void setPlayer(Player player)
 	{
 		this.player = player;
 	}
+    
+    public void lock(boolean lock)
+    {
+        lockDirection = lock;
+    }
 }

@@ -20,13 +20,15 @@ public class WeaponComponent extends SensorComponent
     // Every weapon can also be picked up, put in inventory, etc.
     private Item weaponItem;
 	private float weaponAngle; // Radians
-	Direction weaponDirection;
+    private float weaponDamage;
+	private Direction weaponDirection;
     
     public WeaponComponent(Item item) 
     {
         super(WBodyType.Weapon);
         
         weaponItem = item;
+        weaponDamage = item.getMetaData().getFloat("damage");
     }    
 	
 	@Override
@@ -113,4 +115,9 @@ public class WeaponComponent extends SensorComponent
 	{
 		return weaponDirection;
 	}
+    
+    public float getWeaponDamage()
+    {
+        return weaponDamage;
+    }
 }

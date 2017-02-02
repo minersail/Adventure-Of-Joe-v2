@@ -148,9 +148,15 @@ public class InventoryManager
         
         for (XmlReader.Element e : root.getChildrenByName("item"))
         {	
-            // Absoutely disgusting method chain
-            Item item = new Item(screen.getIDManager().getItem(e.getInt("id")).getItem());
-            item.setWeapon(e.get("type").equals("weapon"));
+            Item item;
+            if (e.getChildByName("metadata") == null)
+            {   // Absoutely disgusting method chain
+                item = new Item(screen.getIDManager().getItem(e.getInt("id")).getItem());
+            }
+            else
+            {   
+                item = new Item(screen.getIDManager().getItem(e.getInt("id")).getItem(), e.getChildByName("metadata"));
+            } 
             inventory.addItem(item);
         }
 	}

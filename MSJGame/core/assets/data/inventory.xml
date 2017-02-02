@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <inventory>
-	<item id="0" count="1" type="item" />
-	<item id="1" count="1" type="item" />
-	<item id="2" count="1" type="weapon" />
+	<item id="0" count="1"></item>
+	<item id="1" count="1"></item>
+	<item id="2" count="1">
+		<metadata type="weapon" damage="1" />
+	</item>
 </inventory>
