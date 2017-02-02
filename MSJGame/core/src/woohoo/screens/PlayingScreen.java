@@ -34,6 +34,7 @@ import woohoo.gameobjects.Character;
 import woohoo.gameobjects.Enemy;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.CollisionComponent;
+import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.SensorComponent;
 import woohoo.gameworld.GameRenderer;
@@ -207,6 +208,8 @@ public class PlayingScreen implements Screen
         assets.load("images/ginger.png", Texture.class);	
 		assets.load("images/itemframe.png", Texture.class);
 		assets.load("images/blank_64.png", Texture.class);
+		assets.load("images/green.png", Texture.class);
+		assets.load("images/red.png", Texture.class);
         assets.load("ui/uiskin.atlas", TextureAtlas.class);
 		assets.load("ui/uiskin.json", Skin.class, skinParam1);
 		
@@ -230,9 +233,12 @@ public class PlayingScreen implements Screen
 		if (entity instanceof Character)
 		{
 			renderer.getMap().getLayers().get("Objects").getObjects().add(entity.getComponent(MapObjectComponent.class));
+			renderer.getMap().getLayers().get("Objects").getObjects().add(entity.getComponent(HealthBarComponent.class));
 			entity.getComponent(CollisionComponent.class).createMass(world);
 			engine.addEntity(entity);
 			inventoryManager.loadInventory((Character)entity);
+            entity.getComponent(HealthBarComponent.class).initializeHealthBar(assets.get("images/green.png", Texture.class), 
+                                                                              assets.get("images/red.png", Texture.class));
 			
 			if (entity instanceof Enemy)
 			{

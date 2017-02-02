@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import woohoo.gameobjects.components.CollisionComponent;
+import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
@@ -20,6 +21,7 @@ public class Character extends BaseEntity
     protected MapObjectComponent mapObject;
 	protected CollisionComponent collision;
 	protected InventoryComponent inventory;
+    protected HealthBarComponent healthBar;
 	
 	protected float speed = 2;
 	    
@@ -28,12 +30,14 @@ public class Character extends BaseEntity
 		mapObject = new MapObjectComponent(atlas);
 		collision = new CollisionComponent(type);
 		inventory = new InventoryComponent();
+        healthBar = new HealthBarComponent(10);
 		
 		collision.setStartPosition(position.x, position.y);
 		
 		super.add(mapObject);
         super.add(collision);
 		super.add(inventory);
+        super.add(healthBar);
 	}
 	
 	public Character(TextureRegion region, WBodyType type, Vector2 position)
@@ -41,12 +45,14 @@ public class Character extends BaseEntity
 		mapObject = new MapObjectComponent(region);
 		collision = new CollisionComponent(type);
 		inventory = new InventoryComponent();
+        healthBar = new HealthBarComponent(10);
 		
 		collision.setStartPosition(position.x, position.y);
 		
 		super.add(mapObject);
         super.add(collision);
 		super.add(inventory);
+        super.add(healthBar);
 	}
 	
 	@Override
@@ -55,6 +61,7 @@ public class Character extends BaseEntity
 		collision.update(delta);
 		mapObject.update(delta, collision.getPosition());
 		inventory.update(delta);
+        healthBar.update(delta, collision.getPosition());
 	}
     
     public Vector2 getPosition()
@@ -157,6 +164,9 @@ public class Character extends BaseEntity
 		}
 		return false;
 	}
-	
-	
+    
+    public void applyDamage(int damage)
+    {
+        healthBar.damage(damage);
+    }
 }

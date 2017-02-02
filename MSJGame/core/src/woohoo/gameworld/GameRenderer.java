@@ -3,6 +3,7 @@ package woohoo.gameworld;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 
 /*
@@ -36,6 +37,12 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 				batch.draw(obj.getTextureRegion(), obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
 			}
 		}
+        else if (object instanceof HealthBarComponent)
+        {
+            HealthBarComponent healthBar = (HealthBarComponent)object;
+            
+            healthBar.draw(batch);
+        }
 	}
 	
 	@Override

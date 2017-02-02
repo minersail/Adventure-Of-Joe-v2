@@ -16,6 +16,8 @@ public class NPC extends Character
 		
         dialogue = new DialogueComponent(0);
         super.add(dialogue);
+        
+        healthBar.setInvulnerable(true);
 	}    
 	
 	@Override

@@ -56,6 +56,7 @@ public class Enemy extends Character
 					collision.applyImpulse(500, 0);
 					break;
 			}
+            healthBar.damage(1);
 		}
 	}
 }
