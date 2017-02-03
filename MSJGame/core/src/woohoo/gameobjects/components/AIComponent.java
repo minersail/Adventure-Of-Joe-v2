@@ -11,6 +11,7 @@ public class AIComponent implements Component
 	private Player player;
 	private Direction nextDirection;
     private boolean lockDirection;
+	private float timer;
 	
 	public AIComponent()
 	{		
@@ -18,6 +19,13 @@ public class AIComponent implements Component
 	
 	public void update(float delta)
 	{
+		timer += delta;
+		
+		if (timer > 0.5) // How often the AI should switch directions
+		{
+			timer = 0;
+			lockDirection = false;
+		}
 	}
 	
 	public Direction calculateDirection(Vector2 pos)
@@ -37,6 +45,8 @@ public class AIComponent implements Component
 		{
 			nextDirection = dY > 0 ? Direction.Up : Direction.Down;
 		}
+		
+		lockDirection = true;
         return nextDirection;
 	}
 	
@@ -44,9 +54,4 @@ public class AIComponent implements Component
 	{
 		this.player = player;
 	}
-    
-    public void lock(boolean lock)
-    {
-        lockDirection = lock;
-    }
 }

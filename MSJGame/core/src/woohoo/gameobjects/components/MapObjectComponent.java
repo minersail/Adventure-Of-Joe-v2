@@ -21,6 +21,7 @@ public class MapObjectComponent extends TextureMapObject implements Component
 	private Map<String, Animation<TextureRegion>> animation;
 	private boolean usesAnimation;
 	private boolean isIdle;
+	private boolean isFighting;
 	
 	private float runTime = 0;
 	
@@ -49,6 +50,10 @@ public class MapObjectComponent extends TextureMapObject implements Component
 		addAnimation("Right_Idle", new Animation<TextureRegion>(0.333f, atlas.findRegions("right_idle"), Animation.PlayMode.LOOP_PINGPONG));
 		addAnimation("Up_Idle", new Animation<TextureRegion>(0.333f, atlas.findRegions("up_idle"), Animation.PlayMode.LOOP_PINGPONG));
 		addAnimation("Down_Idle", new Animation<TextureRegion>(0.333f, atlas.findRegions("down_idle"), Animation.PlayMode.LOOP_PINGPONG));
+		addAnimation("Left_Fight", new Animation<TextureRegion>(0.333f, atlas.findRegions("left_fight"), Animation.PlayMode.NORMAL));
+		addAnimation("Right_Fight", new Animation<TextureRegion>(0.333f, atlas.findRegions("right_fight"), Animation.PlayMode.NORMAL));
+		addAnimation("Up_Fight", new Animation<TextureRegion>(0.333f, atlas.findRegions("up_fight"), Animation.PlayMode.NORMAL));
+		addAnimation("Down_Fight", new Animation<TextureRegion>(0.333f, atlas.findRegions("down_fight"), Animation.PlayMode.NORMAL));
 		
 		size = new Vector2(1, 1);
 	}
@@ -89,6 +94,16 @@ public class MapObjectComponent extends TextureMapObject implements Component
 	public boolean isIdle()
 	{
 		return isIdle;
+	}
+	
+	public void setFighting(boolean fighting)
+	{
+		isFighting = fighting;
+	}
+	
+	public boolean isFighting()
+	{
+		return isFighting;
 	}
 	
 	public float getTime()

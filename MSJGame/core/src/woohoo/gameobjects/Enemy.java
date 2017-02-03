@@ -11,8 +11,8 @@ import woohoo.screens.PlayingScreen.WBodyType;
 
 public class Enemy extends Character
 {    
-	SensorComponent hitBox;
-	AIComponent brain;
+	private SensorComponent hitBox;
+	private AIComponent brain;
 	
     public Enemy(Texture texture)
     {
@@ -34,6 +34,8 @@ public class Enemy extends Character
 	{
 		super.update(delta);
 		
+		brain.update(delta);
+		
 		stop();
 		move(brain.calculateDirection(collision.getPosition()));
 		
@@ -42,20 +44,22 @@ public class Enemy extends Character
 		if (hitBox.hasContact())
 		{
             HitData hit = (HitData)hitBox.getContact();
+			
+			float knockback = hit.getKnockback() * 1000;
             
 			switch(hit.getDirection())
 			{
 				case Up:
-					collision.applyImpulse(0, -500);
+					collision.applyImpulse(0, -knockback);
 					break;
 				case Down:
-					collision.applyImpulse(0, 500);
+					collision.applyImpulse(0, knockback);
 					break;
 				case Left:
-					collision.applyImpulse(-500, 0);
+					collision.applyImpulse(-knockback, 0);
 					break;
 				case Right:
-					collision.applyImpulse(500, 0);
+					collision.applyImpulse(knockback, 0);
 					break;
 			}
             healthBar.damage(hit.getDamage());

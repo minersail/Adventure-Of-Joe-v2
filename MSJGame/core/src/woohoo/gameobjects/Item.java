@@ -52,6 +52,8 @@ public class Item extends BaseEntity
 	@Override
 	public void update(float delta)
 	{
+		super.update(delta);
+		
 		sensor.update(delta);
 		mapObject.update(delta, sensor.getPosition());
 	}

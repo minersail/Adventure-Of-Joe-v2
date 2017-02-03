@@ -2,6 +2,7 @@ package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -50,6 +51,8 @@ public class InventoryManager
 	private InventoryComponent currentInventory;
     private PlayingScreen screen;
 	private Table table;
+	private TextButton closeButton;
+	private InventorySlot weaponSlot;
 
 	/*
 	Initializes the UI with blank items, to be later filled with fillInventory()
@@ -62,9 +65,9 @@ public class InventoryManager
         slotBackground = new TextureRegion(frame);
 		blankItem = new TextureRegion(blank);
                 
-        TextButton closeButton = new TextButton("x", skin);
-        table.debugTable();
-        InventorySlot weaponSlot = new InventorySlot(slotBackground, blankItem);
+        closeButton = new TextButton("x", skin);
+        weaponSlot = new InventorySlot(slotBackground, blankItem);
+		weaponSlot.setWeaponSlot(true);
         table.add(closeButton).prefSize(ITEMX, ITEMY);   
         table.add(weaponSlot).prefSize(ITEMX, ITEMY);
         table.row();
@@ -80,7 +83,7 @@ public class InventoryManager
         );		
         
         DragAndDrop dnd = new DragAndDrop();
-        
+		
         dnd.addSource(new InventorySource(weaponSlot));
         dnd.addTarget(new InventoryTarget(weaponSlot)
         {
@@ -89,14 +92,15 @@ public class InventoryManager
             {
                 if (((InventorySlot)source.getActor()).getItem().isWeapon())
                 {
-                    super.drop(source, payload, x, y, pointer);
                     screen.getEngine().getPlayer().equip(((InventorySlot)source.getActor()).getItem());
 					screen.getContactManager().addCommand(screen.getEngine().getPlayer().getComponent(WeaponComponent.class).getContactData(), screen.getWorld());
+					
+                    super.drop(source, payload, x, y, pointer);
                 }
                 else
                 {
-                    // figure out why it's being dropped
-                    // look into invalid target maybe
+					((InventorySlot)source.getActor()).setDragged(false);
+					weaponSlot.setColor(Color.WHITE);
                 }
             }
         });
@@ -218,8 +222,8 @@ public class InventoryManager
 	*/
 	public void dropItem(Item item)
 	{		
-		// Starts at 2 since first two items are "X" button and item slot
-		for (int i = 2; i < table.getCells().size; i++)
+		// Starts at 1 since first item is "X" button
+		for (int i = 1; i < table.getCells().size; i++)
 		{
 			InventorySlot slot = (InventorySlot)table.getCells().get(i).getActor();
 			
@@ -249,6 +253,8 @@ public class InventoryManager
         private Image itemImage; // Scene2D actor used for payload
         private boolean dragged;
 		private int count;
+		
+		private boolean isWeaponSlot;
         
         public InventorySlot(TextureRegion background, TextureRegion itemSprite)
         {
@@ -286,10 +292,26 @@ public class InventoryManager
 			return this;
         }
 		
+		public InventorySlot setWeaponSlot(boolean weapon)
+		{
+			isWeaponSlot = true;
+			return this;
+		}
+		
 		public InventorySlot setCount(int newCount)
 		{
 			count = newCount;
 			return this;
+		}
+		
+		public boolean isDragged()
+		{
+			return dragged;
+		}
+		
+		public boolean isWeaponSlot()
+		{
+			return isWeaponSlot;
 		}
 		
 		public int getCount()
@@ -320,6 +342,9 @@ public class InventoryManager
             super(slot);
         }
 
+		/*
+		Called when a drag is started
+		*/
         @Override
         public Payload dragStart(InputEvent event, float x, float y, int pointer)
         {
@@ -327,7 +352,12 @@ public class InventoryManager
             // Can't drag empty frame
             if (slot.getCount() == 0) return null;
 
-            slot.setDragged(true);
+            slot.setDragged(true); // Let the item be freely dragged
+			
+			if (!slot.getItem().isWeapon()) // Grey out boxes this item can't be placed in
+			{
+				weaponSlot.setColor(Color.DARK_GRAY);
+			}
 
             Payload payload = new Payload();
             payload.setDragActor(slot.getImage());
@@ -335,9 +365,14 @@ public class InventoryManager
             return payload;
         }
 
+		/*
+		Called when item is dropped outside of inventory
+		*/
         @Override
         public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) 
         {
+            if (!((InventorySlot)getActor()).isDragged()) return;
+			
             float X = payload.getDragActor().getX() + DRAG_OFFSET_X;
             float Y = payload.getDragActor().getY() - DRAG_OFFSET_Y; // I have no idea why this formula works but it does
 
@@ -350,10 +385,16 @@ public class InventoryManager
                 // Remove the item from the inventory and add it to the world
                 Item dropped = ((InventorySlot)getActor()).getItem();
 
+				if (((InventorySlot)getActor()).isWeaponSlot())
+				{
+					screen.getEngine().getPlayer().unequip();
+				}
+				
                 dropItem(dropped);
             }
 
-            ((InventorySlot)getActor()).setDragged(false);						
+            ((InventorySlot)getActor()).setDragged(false);
+			weaponSlot.setColor(Color.WHITE);
         }
     }
     
@@ -374,13 +415,28 @@ public class InventoryManager
         public void reset(Source source, Payload payload) {}
 
         /*
+		Called when the payload is dropped inside the inventory
+		
 		Switch the images, items, item counts, etc. of the two inventory slots
         */
         @Override
         public void drop(Source source, Payload payload, float x, float y, int pointer) 
-        {
+        {			
             InventorySlot sourceSlot = (InventorySlot)source.getActor();
             InventorySlot targetSlot = (InventorySlot)getActor();
+			
+			if (sourceSlot.isWeaponSlot()) // If the item was dragged from the weapon slot
+			{
+				if (targetSlot.getItem() != null)
+				{	// Prevent non-weapons from going into weapon slot if weapon switches with them
+					sourceSlot.setDragged(false);
+					return;
+				}
+				else
+				{
+					screen.getEngine().getPlayer().unequip();
+				}
+			}
 
             Image sourceImage = sourceSlot.getImage();
             Image targetImage = targetSlot.getImage();
@@ -406,6 +462,8 @@ public class InventoryManager
             // Switch items
             sourceSlot.setImage(targetImage).setDragged(false);
             targetSlot.setImage(sourceImage).setItem(sourceItem).setCount(1);
+			
+			weaponSlot.setColor(Color.WHITE);
         }
     }
 }

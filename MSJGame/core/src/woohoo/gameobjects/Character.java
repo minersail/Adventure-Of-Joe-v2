@@ -58,6 +58,8 @@ public class Character extends BaseEntity
 	@Override
 	public void update(float delta)
 	{		
+		super.update(delta);
+		
 		collision.update(delta);
 		mapObject.update(delta, collision.getPosition());
 		inventory.update(delta);
@@ -68,6 +70,7 @@ public class Character extends BaseEntity
     {
         return new Vector2(mapObject.getX(), mapObject.getY());
     }
+	
     public void setPosition(float x, float y)
     {
         collision.setPosition(x, y);

@@ -246,6 +246,10 @@ public class PlayingScreen implements Screen
 				entity.getComponent(AIComponent.class).setPlayer(engine.getPlayer());
 				contacts.addCommand(entity.getComponent(SensorComponent.class).getContactData(), world);
 			}
+			else if (entity instanceof NPC)
+			{
+				((NPC)entity).freeze();
+			}
 		}
 		else if (entity instanceof Item)
 		{

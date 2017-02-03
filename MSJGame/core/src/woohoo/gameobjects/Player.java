@@ -45,7 +45,8 @@ public class Player extends Character
 		if (weapon != null)
 		{
 			weapon.update(delta);
-			weapon.setAngle(mapObject.getDirection());       
+			weapon.setAngle(mapObject.getDirection());    
+			mapObject.setFighting(weapon.isActive());
 		}
 	}
     
@@ -64,6 +65,12 @@ public class Player extends Character
 			
         weapon.setAngle(mapObject.getDirection());
     }
+	
+	public void unequip()
+	{
+		weapon.removeMass();
+		weapon = null;
+	}
 	
 	public void attack()
 	{

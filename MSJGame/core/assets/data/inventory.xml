@@ -3,6 +3,6 @@
 	<item id="0" count="1"></item>
 	<item id="1" count="1"></item>
 	<item id="2" count="1">
-		<metadata type="weapon" damage="1" />
+		<metadata type="weapon" damage="0.25" knockback="1"/>
 	</item>
 </inventory>
