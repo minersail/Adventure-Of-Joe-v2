@@ -3,6 +3,7 @@ package woohoo.gameobjects.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.framework.contactcommands.ContactCommand;
 import woohoo.screens.PlayingScreen.WBodyType;
@@ -24,14 +25,11 @@ public class BodyComponent implements Component
 	protected ContactCommand contactData;
 	protected WBodyType type;
 	
-	private Vector2 startPosition = new Vector2(0, 0);
-	
 	/*
 	Creates mass, overriden by subclasses
 	*/
 	public void createMass(World world)
 	{
-		mass.setTransform(startPosition, 0);
 	}
 	
 	public void update(float delta)
@@ -48,9 +46,9 @@ public class BodyComponent implements Component
         return mass;
     }
 	
-	public void setStartPosition(float x, float y)
+	public void setImmovable(boolean move)
 	{
-		startPosition = new Vector2(x + 0.5f, y + 0.5f);
+		mass.setType(move ? BodyType.StaticBody : BodyType.DynamicBody);
 	}
 	
 	// Offsets because box2D has origins at center as opposed to top-left

@@ -1,7 +1,6 @@
 package woohoo.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import woohoo.framework.contactcommands.SensorContact;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
@@ -14,7 +13,7 @@ public class Player extends Character
     
     public Player(TextureAtlas atlas)
     {
-		super(atlas, WBodyType.Player, new Vector2(2, 1));
+		super(atlas, WBodyType.Player);
 	}
 	
 	@Override

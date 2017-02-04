@@ -1,7 +1,7 @@
 package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.utils.XmlReader.Element;
+import com.badlogic.gdx.utils.ObjectMap;
 
 public class ItemDataComponent implements Component
 {    
@@ -11,26 +11,20 @@ public class ItemDataComponent implements Component
     }
     
     private ItemType type;
-    private Element metaData;
+    private ObjectMap metaData;
     
-    public ItemDataComponent()
+    public ItemDataComponent(ObjectMap element)
     {
-        metaData = null;
-        type = ItemType.Item;
-    }
-    
-    public ItemDataComponent(Element element)
-    {
-        metaData = element;
-        switch (element.get("type"))
-        {
-            case "weapon":
-                type = ItemType.Weapon;
-                break;
-            default:
-                type = ItemType.Item;
-                break;
-        }
+		if (element == null)
+		{
+			metaData = new ObjectMap();
+			type = ItemType.Item;
+		}
+		else
+		{
+			metaData = element;
+			setType((String)element.get("type"));
+		}
     }
     
     public ItemType getType()
@@ -41,9 +35,25 @@ public class ItemDataComponent implements Component
     public void setType(ItemType type)
     {
         this.type = type;
+		
+		metaData.put("type", type);
+    }
+	
+	public void setType(String str)
+    {
+        switch (str.toLowerCase())
+		{
+			case "weapon":
+				setType(ItemType.Weapon);
+				break;
+			case "item":
+			default:
+				setType(ItemType.Item);
+				break;
+		}
     }
     
-    public Element getMetaData()
+    public ObjectMap getMetaData()
     {
         return metaData;
     }            

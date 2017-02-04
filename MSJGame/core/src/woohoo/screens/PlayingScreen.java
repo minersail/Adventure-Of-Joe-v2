@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -29,12 +29,12 @@ import woohoo.framework.InputHandler;
 import woohoo.framework.InventoryManager;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
-import woohoo.gameobjects.Player;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.Enemy;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
+import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.SensorComponent;
 import woohoo.gameworld.GameRenderer;
@@ -108,7 +108,7 @@ public class PlayingScreen implements Screen
         
         // Create gate sensors
         gates = new GateManager(this);        
-        gates.createGates(world, 0);
+        gates.createGates(0);
 		
 		// Create user interface
 		ui = new Stage();
@@ -129,20 +129,10 @@ public class PlayingScreen implements Screen
 		dialogueManager = new DialogueManager(this, ui, assets.get("ui/uiskin.json", Skin.class));
         
 		// Initialize objects
-		Player player = new Player(assets.get("images/oldman.pack", TextureAtlas.class));
-        NPC npc = new NPC(assets.get("images/ginger.png", Texture.class));
-		Item item = new Item(new TextureRegion(assets.get("images/items/000_Stick.png", Texture.class)));
-		Enemy enemy = new Enemy(assets.get("images/ginger.png", Texture.class));
-		
-		addEntity(player);
-		addEntity(npc);
-		addEntity(item);
-		addEntity(enemy);
-		
-		inventoryManager.fillInventory(player);
+		engine.loadEntities(0);
 		
 		// Initialize input
-		input = new InputHandler(this, player);
+		input = new InputHandler(this);
         Gdx.input.setInputProcessor(new InputMultiplexer(ui, input));
 		
 		state = GameState.Playing;
@@ -198,18 +188,18 @@ public class PlayingScreen implements Screen
 	
 	private void loadAssets()
 	{			
-		TextureAtlasParameter atlasParam1 = new TextureAtlasParameter(true);
+		TextureAtlasParameter flipParam = new TextureAtlasParameter(true);
 		SkinParameter skinParam1 = new SkinParameter("ui/uiskin.atlas");
 		
-		assets.load("images/oldman.pack", TextureAtlas.class, atlasParam1);
+		assets.load("images/oldman.pack", TextureAtlas.class, flipParam);
+		assets.load("images/healthbar.pack", TextureAtlas.class, flipParam);
 		assets.load("images/tileset.png", Texture.class);
 		assets.load("images/tileset2.png", Texture.class);
 		assets.load("images/joeface.png", Texture.class);
         assets.load("images/ginger.png", Texture.class);	
+        assets.load("images/scav.png", Texture.class);	
 		assets.load("images/itemframe.png", Texture.class);
 		assets.load("images/blank_64.png", Texture.class);
-		assets.load("images/green.png", Texture.class);
-		assets.load("images/red.png", Texture.class);
         assets.load("ui/uiskin.atlas", TextureAtlas.class);
 		assets.load("ui/uiskin.json", Skin.class, skinParam1);
 		
@@ -227,37 +217,39 @@ public class PlayingScreen implements Screen
 	
 	/*
 	Add an entity into the game world
+	
+	Initializes everything necessary for an entity to function
+	
+	Can be used in conjuction with removeEntity() to repeatedly add and remove the same entity
 	*/
 	public void addEntity(Entity entity)
 	{		
+		MapObjects objects = renderer.getMap().getLayers().get("Objects").getObjects();
+		
 		if (entity instanceof Character)
 		{
-			renderer.getMap().getLayers().get("Objects").getObjects().add(entity.getComponent(MapObjectComponent.class));
-			renderer.getMap().getLayers().get("Objects").getObjects().add(entity.getComponent(HealthBarComponent.class));
+			entity.getComponent(MapObjectComponent.class).addTo(objects);
+			entity.getComponent(HealthBarComponent.class).addTo(objects).initializeHealthBar(assets.get("images/healthbar.pack", TextureAtlas.class));
 			entity.getComponent(CollisionComponent.class).createMass(world);
-			engine.addEntity(entity);
-			inventoryManager.loadInventory((Character)entity);
-            entity.getComponent(HealthBarComponent.class).initializeHealthBar(assets.get("images/green.png", Texture.class), 
-                                                                              assets.get("images/red.png", Texture.class));
+			inventoryManager.loadInventory(entity.getComponent(InventoryComponent.class));
 			
 			if (entity instanceof Enemy)
 			{
-				entity.getComponent(SensorComponent.class).createMass(world);
+				entity.getComponent(SensorComponent.class).initializeCommand(contacts, world).createMass(world);
 				entity.getComponent(AIComponent.class).setPlayer(engine.getPlayer());
-				contacts.addCommand(entity.getComponent(SensorComponent.class).getContactData(), world);
 			}
 			else if (entity instanceof NPC)
 			{
-				((NPC)entity).freeze();
+				entity.getComponent(CollisionComponent.class).setImmovable(true);
 			}
 		}
 		else if (entity instanceof Item)
 		{
-			renderer.getMap().getLayers().get("Objects").getObjects().add(entity.getComponent(MapObjectComponent.class));
-			entity.getComponent(SensorComponent.class).createMass(world);
-			contacts.addCommand(entity.getComponent(SensorComponent.class).getContactData(), world);
-			engine.addEntity(entity);
+			entity.getComponent(MapObjectComponent.class).addTo(objects);
+			entity.getComponent(SensorComponent.class).initializeCommand(contacts, world).createMass(world);
 		}
+		
+		engine.addEntity(entity);
 	}
 	
 	/*
@@ -265,18 +257,26 @@ public class PlayingScreen implements Screen
 	*/
 	public void removeEntity(Entity entity)
 	{	
+		MapObjects objects = renderer.getMap().getLayers().get("Objects").getObjects();
+		
 		if (entity instanceof Character)
 		{
-			renderer.getMap().getLayers().get("Objects").getObjects().remove(entity.getComponent(MapObjectComponent.class));
+			entity.getComponent(MapObjectComponent.class).removeFrom(objects);
+			entity.getComponent(HealthBarComponent.class).removeFrom(objects);
 			entity.getComponent(CollisionComponent.class).removeMass();
-			engine.removeEntity(entity);
+			
+			if (entity instanceof Enemy)
+			{
+				entity.getComponent(SensorComponent.class).removeMass();
+			}
 		}
 		else if (entity instanceof Item)
 		{
-			renderer.getMap().getLayers().get("Objects").getObjects().remove(entity.getComponent(MapObjectComponent.class));
+			entity.getComponent(MapObjectComponent.class).removeFrom(objects);
 			entity.getComponent(SensorComponent.class).removeMass();
-			engine.removeEntity(entity);
 		}
+		
+		engine.removeEntity(entity);
 	}
     
 	public void setState(GameState s)

@@ -38,7 +38,7 @@ public class GateManager
     /*
     Creates all gates for a single area
     */
-    public void createGates(World world, int area)
+    public void createGates(int area)
     {        
         FileHandle handle = Gdx.files.internal("data/gates.xml");
         
@@ -53,7 +53,7 @@ public class GateManager
 			// Make it so the XML refers to the top-left coordinate as opposed to center for box2D bodies
             bodyDef.position.set(gate.getFloat("locX") + gate.getFloat("sizeX") / 2, gate.getFloat("locY") + gate.getFloat("sizeY") / 2);
 
-            Body body = world.createBody(bodyDef);
+            Body body = screen.getWorld().createBody(bodyDef);
 
             PolygonShape shape = new PolygonShape();
             shape.setAsBox(gate.getFloat("sizeX") / 2 - 0.02f, gate.getFloat("sizeY") / 2 - 0.02f); // subtract 0.02f so slightly smaller than tile
@@ -97,7 +97,7 @@ public class GateManager
 		screen.getRenderer().setMap(map);
         
         screen.getEngine().getPlayer().setPosition(nextGate.playerPos().x, nextGate.playerPos().y);
-        createGates(screen.getWorld(), nextGate.destArea());
+        createGates(nextGate.destArea());
 		
 		screen.getRenderer().skipFrame();
         

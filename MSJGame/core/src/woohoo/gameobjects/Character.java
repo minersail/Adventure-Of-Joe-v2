@@ -25,14 +25,12 @@ public class Character extends BaseEntity
 	
 	protected float speed = 2;
 	    
-	public Character(TextureAtlas atlas, WBodyType type, Vector2 position)
+	public Character(TextureAtlas atlas, WBodyType type)
 	{		
 		mapObject = new MapObjectComponent(atlas);
 		collision = new CollisionComponent(type);
 		inventory = new InventoryComponent();
         healthBar = new HealthBarComponent(10);
-		
-		collision.setStartPosition(position.x, position.y);
 		
 		super.add(mapObject);
         super.add(collision);
@@ -40,14 +38,12 @@ public class Character extends BaseEntity
         super.add(healthBar);
 	}
 	
-	public Character(TextureRegion region, WBodyType type, Vector2 position)
+	public Character(TextureRegion region, WBodyType type)
 	{		
 		mapObject = new MapObjectComponent(region);
 		collision = new CollisionComponent(type);
 		inventory = new InventoryComponent();
         healthBar = new HealthBarComponent(10);
-		
-		collision.setStartPosition(position.x, position.y);
 		
 		super.add(mapObject);
         super.add(collision);
@@ -166,6 +162,11 @@ public class Character extends BaseEntity
 				break;
 		}
 		return false;
+	}
+	
+	public void changeMaxHealth(float newMax)
+	{
+		healthBar.changeMax(newMax);
 	}
     
     public void applyDamage(int damage)

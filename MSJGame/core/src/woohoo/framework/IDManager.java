@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /*
 Class managing data for a character
@@ -14,8 +15,8 @@ Think of it like an imdb style list of all characters
  */
 public class IDManager
 {
-	public ArrayList<CharacterData> characters;
-	public ArrayList<ItemData> items;
+	private ArrayList<CharacterData> characters;
+	private ArrayList<ItemData> items;
 	
 	public IDManager(AssetManager manager)
 	{
@@ -30,6 +31,10 @@ public class IDManager
             if (name.startsWith("images/items/"))            
                 createItem(manager, name, name.replaceAll(".+_(.+)\\..*", "$1"));
         }
+		
+		// For some reason they start backwards
+		Collections.reverse(characters);
+		Collections.reverse(items);		
 	}
 	
 	public CharacterData getCharacter(int ID)
@@ -117,7 +122,7 @@ public class IDManager
             name = s;
         }
 
-        public TextureRegion getItem()
+        public TextureRegion getItemTexture()
         {
             return item;
         }

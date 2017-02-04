@@ -141,10 +141,8 @@ public class InventoryManager
 	/*
 	Function to load InventoryComponents from XML
 	*/
-    public void loadInventory(Character character)
-    {
-        InventoryComponent inventory = character.getComponent(InventoryComponent.class);
-        
+    public void loadInventory(InventoryComponent inventory)
+    {        
         FileHandle handle = Gdx.files.internal("data/inventory.xml");
         
         XmlReader xml = new XmlReader();
@@ -155,11 +153,11 @@ public class InventoryManager
             Item item;
             if (e.getChildByName("metadata") == null)
             {   // Absoutely disgusting method chain
-                item = new Item(screen.getIDManager().getItem(e.getInt("id")).getItem());
+                item = new Item(screen.getIDManager().getItem(e.getInt("id")).getItemTexture());
             }
             else
             {   
-                item = new Item(screen.getIDManager().getItem(e.getInt("id")).getItem(), e.getChildByName("metadata"));
+                item = new Item(screen.getIDManager().getItem(e.getInt("id")).getItemTexture(), e.getChildByName("metadata").getAttributes());
             } 
             inventory.addItem(item);
         }

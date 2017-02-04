@@ -13,10 +13,10 @@ public class InputHandler implements InputProcessor
 	PlayingScreen screen;
 	Player player;
 	
-    public InputHandler(Screen scr, Player p)
+    public InputHandler(Screen scr)
     {
 		screen = (PlayingScreen)scr;
-		player = p;
+		player = screen.getEngine().getPlayer();
     }
 
     @Override

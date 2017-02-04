@@ -3,9 +3,15 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.XmlReader;
 import java.util.ArrayList;
 import woohoo.gameobjects.BaseEntity;
+import woohoo.gameobjects.Enemy;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
@@ -49,6 +55,50 @@ public class GameWorld extends Engine
 	public void addEntity(Entity entity)
 	{
 		super.addEntity(entity);
+	}
+	
+	public void loadEntities(int area)
+	{
+		FileHandle handle = Gdx.files.internal("data/entities.xml");
+        
+        XmlReader xml = new XmlReader();
+        XmlReader.Element root = xml.parse(handle.readString());       
+        XmlReader.Element entities = root.getChild(area);  
+        
+        for (XmlReader.Element entity : entities.getChildrenByName("entity"))
+        {
+			String eClass = entity.get("class");
+			
+			switch (eClass)
+			{
+				case "player":
+					Player player = new Player(screen.getAssets().get("images/" + entity.get("texture"), TextureAtlas.class));
+					screen.addEntity(player);
+					player.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
+					screen.getInventoryManager().fillInventory(player);
+					break;
+				case "npc":
+					NPC npc = new NPC(screen.getAssets().get("images/" + entity.get("texture"), Texture.class), entity.getInt("id"));
+					screen.addEntity(npc);
+					npc.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
+					break;
+				case "item":
+					Item item = new Item(screen.getIDManager().getItem(entity.getInt("id")).getItemTexture());
+					screen.addEntity(item);
+					item.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
+					item.setType(entity.get("type"));
+					item.flipImage();
+					break;
+				case "enemy":
+					Enemy enemy = new Enemy(screen.getAssets().get("images/" + entity.get("texture"), Texture.class));
+					screen.addEntity(enemy);
+					enemy.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
+					enemy.changeMaxHealth(entity.getFloat("health"));
+					break;
+				default:
+					break;
+			}
+		}
 	}
     
     public Player getPlayer()

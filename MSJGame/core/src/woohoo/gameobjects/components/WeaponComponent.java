@@ -116,11 +116,11 @@ public class WeaponComponent extends SensorComponent
     
     public float getWeaponDamage()
     {
-        return weaponItem.getMetaData().getFloat("damage");
+		return Float.parseFloat((String)weaponItem.getMetaData().get("damage", "0.25f"));
     }
 	
 	public float getWeaponKnockback()
 	{
-		return weaponItem.getMetaData().getFloat("knockback");
+		return Float.parseFloat((String)weaponItem.getMetaData().get("knockback", "1"));
 	}
 }

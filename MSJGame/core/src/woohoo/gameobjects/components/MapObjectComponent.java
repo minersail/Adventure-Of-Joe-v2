@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Vector2;
 import java.util.HashMap;
@@ -56,6 +57,18 @@ public class MapObjectComponent extends TextureMapObject implements Component
 		addAnimation("Down_Fight", new Animation<TextureRegion>(0.333f, atlas.findRegions("down_fight"), Animation.PlayMode.NORMAL));
 		
 		size = new Vector2(1, 1);
+	}
+	
+	public MapObjectComponent addTo(MapObjects objects)
+	{
+		objects.add(this);
+		return this;
+	}
+	
+	public MapObjectComponent removeFrom(MapObjects objects)
+	{
+		objects.remove(this);
+		return this;
 	}
 	
 	public void update(float delta, Vector2 newPosition)

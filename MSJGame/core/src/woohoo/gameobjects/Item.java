@@ -1,7 +1,8 @@
 package woohoo.gameobjects;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.XmlReader.Element;
+import com.badlogic.gdx.utils.ObjectMap;
 import woohoo.framework.contactcommands.SensorContact;
 import woohoo.gameobjects.components.ItemDataComponent;
 import woohoo.gameobjects.components.ItemDataComponent.ItemType;
@@ -14,39 +15,39 @@ public class Item extends BaseEntity
 	private SensorComponent sensor;
 	private MapObjectComponent mapObject;
     private ItemDataComponent itemData;
-    
-    /*
-    For items created without metadata
-    */
-    public Item(TextureRegion region)
-	{		
-		mapObject = new MapObjectComponent(region);
-		sensor = new SensorComponent(WBodyType.Item);
-        itemData = new ItemDataComponent();
-		
-		sensor.setStartPosition(4, 4);
-		sensor.setContactData(new SensorContact(sensor, WBodyType.Player));
-		
-		super.add(mapObject);
-        super.add(sensor);
-        super.add(itemData);
-	}
 	
     /*
     For items created with metadata
     */
-	public Item(TextureRegion region, Element data)
+	public Item(TextureRegion region, ObjectMap data)
 	{		
 		mapObject = new MapObjectComponent(region);
 		sensor = new SensorComponent(WBodyType.Item);
         itemData = new ItemDataComponent(data);
 		
-		sensor.setStartPosition(4, 4);
 		sensor.setContactData(new SensorContact(sensor, WBodyType.Player));
 		
 		super.add(mapObject);
         super.add(sensor);
         super.add(itemData);
+	} 
+	
+	/*
+    For items created without metadata
+    */
+    public Item(TextureRegion region)
+	{		
+		this(region, null);
+	}
+	
+    public Item(Texture texture)
+	{		
+		this(new TextureRegion(texture));
+	}
+	
+	public Item(Texture texture, ObjectMap data)
+	{		
+		this(new TextureRegion(texture), data);
 	}
 	
 	@Override
@@ -74,8 +75,13 @@ public class Item extends BaseEntity
     {
         return itemData.getType() == ItemType.Weapon;
     }
+	
+	public void setType(String str)
+	{
+		itemData.setType(str);
+	}
     
-    public Element getMetaData()
+    public ObjectMap getMetaData()
     {
         return itemData.getMetaData();
     }

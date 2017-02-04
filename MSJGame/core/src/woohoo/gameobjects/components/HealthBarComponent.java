@@ -1,9 +1,10 @@
 package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Vector2;
 
@@ -22,20 +23,35 @@ public class HealthBarComponent extends TextureMapObject implements Component
         // Maybe use texturemapobject's setTexture to set border
     }
     
-    public void initializeHealthBar(Texture g, Texture r)
+    public HealthBarComponent initializeHealthBar(TextureAtlas healthBar)
     {
-        green = new TextureRegion(g);
-        red = new TextureRegion(r);
-        
-        green.flip(false, true);
-        red.flip(false, true);
+        green = new TextureRegion(healthBar.findRegion("green"));
+        red = new TextureRegion(healthBar.findRegion("red"));
+		return this;
     }
+	
+	public HealthBarComponent addTo(MapObjects objects)
+	{
+		objects.add(this);
+		return this;
+	}
+	
+	public HealthBarComponent removeFrom(MapObjects objects)
+	{
+		objects.remove(this);
+		return this;
+	}
     
     public void update(float delta, Vector2 newPosition)
     {   
         setX(newPosition.x);
         setY(newPosition.y);
     }
+	
+	public void changeMax(float maxHealth)
+	{
+        health = max = maxHealth;
+	}
     
     public void setInvulnerable(boolean invulnerable)
     {
