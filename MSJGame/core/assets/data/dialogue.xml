@@ -5,7 +5,7 @@
 		<line character="0" name="Old Man" text="Hello" />
 		<line character="1" name="John" text="My name is John" />
 		<line character="0" name="Old Man" text="*farts*" />
-		<line character="-1" name="Command" text="LOOP" />
+		<line character="-1" name="Command" text="BREAK" />
 	</dialogue>
 	<dialogue id="1">
 		<line character="1" name="???" text="Hello" />

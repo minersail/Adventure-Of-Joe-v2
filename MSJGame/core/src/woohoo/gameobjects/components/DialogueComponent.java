@@ -33,7 +33,7 @@ public class DialogueComponent implements Component
         if (index < sequence.size())
             return sequence.get(index);
         else
-            return sequence.get(sequence.size() - 1);
+            return null; //sequence.get(sequence.size() - 1);
     }
 	
 	public void advance()

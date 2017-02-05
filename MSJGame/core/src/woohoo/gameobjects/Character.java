@@ -124,6 +124,14 @@ public class Character extends BaseEntity
 		return (float)Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 	}
 	
+	public float distanceTo(Vector2 position)
+	{
+		float dX = getCenter().x - position.x;
+		float dY = getCenter().y - position.y;
+		
+		return (float)Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+	}
+	
 	public boolean isFacing(Character other)
 	{
 		switch (getDirection())
