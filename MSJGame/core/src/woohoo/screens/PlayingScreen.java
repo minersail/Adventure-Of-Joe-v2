@@ -112,14 +112,13 @@ public class PlayingScreen implements Screen
 		
 		// Create user interface
 		ui = new Stage();
-        inventoryManager = new InventoryManager(this, assets.get("images/itemframe.png", Texture.class),
-                                                assets.get("images/blank_64.png", Texture.class),
+        inventoryManager = new InventoryManager(this, assets.get("ui/inventory.pack", TextureAtlas.class),
                                                 assets.get("ui/uiskin.json", Skin.class));
 		
 		// Create map
 		mapLoader = new HexMapLoader(this);
-		TiledMap map = mapLoader.load("maps/0.txt", assets.get("images/tileset.png", Texture.class), 
-                                      assets.get("images/tileset2.png", Texture.class), world);
+		TiledMap map = mapLoader.load("maps/0.txt", assets.get("images/tilesets/tileset.png", Texture.class), 
+                                      assets.get("images/tilesets/tileset2.png", Texture.class), world);
 		
 		// Draw and update every frame
 		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
@@ -191,15 +190,15 @@ public class PlayingScreen implements Screen
 		TextureAtlasParameter flipParam = new TextureAtlasParameter(true);
 		SkinParameter skinParam1 = new SkinParameter("ui/uiskin.atlas");
 		
-		assets.load("images/oldman.pack", TextureAtlas.class, flipParam);
-		assets.load("images/healthbar.pack", TextureAtlas.class, flipParam);
-		assets.load("images/tileset.png", Texture.class);
-		assets.load("images/tileset2.png", Texture.class);
-		assets.load("images/joeface.png", Texture.class);
-        assets.load("images/ginger.png", Texture.class);	
-        assets.load("images/scav.png", Texture.class);	
-		assets.load("images/itemframe.png", Texture.class);
-		assets.load("images/blank_64.png", Texture.class);
+		assets.load("images/entities/oldman.pack", TextureAtlas.class, flipParam);
+		assets.load("images/entities/youngjoe.pack", TextureAtlas.class, flipParam);
+		assets.load("images/entities/joeface.png", Texture.class);
+        assets.load("images/entities/ginger.png", Texture.class);	
+        assets.load("images/entities/scav.png", Texture.class);	
+		assets.load("images/tilesets/tileset.png", Texture.class);
+		assets.load("images/tilesets/tileset2.png", Texture.class);
+		assets.load("ui/inventory.pack", TextureAtlas.class, flipParam);
+		assets.load("ui/healthbar.pack", TextureAtlas.class, flipParam);
         assets.load("ui/uiskin.atlas", TextureAtlas.class);
 		assets.load("ui/uiskin.json", Skin.class, skinParam1);
 		
@@ -229,7 +228,7 @@ public class PlayingScreen implements Screen
 		if (entity instanceof Character)
 		{
 			entity.getComponent(MapObjectComponent.class).addTo(objects);
-			entity.getComponent(HealthBarComponent.class).addTo(objects).initializeHealthBar(assets.get("images/healthbar.pack", TextureAtlas.class));
+			entity.getComponent(HealthBarComponent.class).addTo(objects).initializeHealthBar(assets.get("ui/healthbar.pack", TextureAtlas.class));
 			entity.getComponent(CollisionComponent.class).createMass(world);
 			inventoryManager.loadInventory(entity.getComponent(InventoryComponent.class));
 			

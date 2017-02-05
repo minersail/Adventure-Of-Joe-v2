@@ -3,8 +3,8 @@ package woohoo.framework;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -57,13 +57,13 @@ public class InventoryManager
 	/*
 	Initializes the UI with blank items, to be later filled with fillInventory()
 	*/
-    public InventoryManager(PlayingScreen scr, Texture frame, Texture blank, Skin skin) 
+    public InventoryManager(PlayingScreen scr, TextureAtlas atlas, Skin skin) 
     {
         screen = scr;
         table = new Table();
 		
-        slotBackground = new TextureRegion(frame);
-		blankItem = new TextureRegion(blank);
+        slotBackground = atlas.findRegion("itemframe");
+		blankItem = atlas.findRegion("blank");
                 
         closeButton = new TextButton("x", skin);
         weaponSlot = new InventorySlot(slotBackground, blankItem);

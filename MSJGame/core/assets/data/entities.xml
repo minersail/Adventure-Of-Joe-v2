@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <entities>
 	<area id="0">
-		<entity class="player" locX="1" locY="1" texture="oldman.pack" />
+		<entity class="player" locX="1" locY="1" texture="youngjoe.pack" />
 		<entity class="npc" locX="5" locY="5" texture="ginger.png" id="0" />
 		<entity class="item" locX="3" locY="3" id="0" type="weapon" />
-		<entity class="enemy" locX="7" locY="3" texture="ginger.png" health="10" />
+		<!--entity class="enemy" locX="7" locY="3" texture="ginger.png" health="10" />
 		<entity class="enemy" locX="7" locY="4" texture="ginger.png" health="10" />
 		<entity class="enemy" locX="7" locY="5" texture="joeface.png" health="10" />
-		<entity class="enemy" locX="7" locY="6" texture="scav.png" health="100" />
+		<entity class="enemy" locX="7" locY="6" texture="scav.png" health="100" /-->
 	</area>
 	<area id="1">
 	</area>

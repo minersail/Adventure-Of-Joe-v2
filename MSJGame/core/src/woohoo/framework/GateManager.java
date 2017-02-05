@@ -84,8 +84,8 @@ public class GateManager
 				screen.getWorld().destroyBody(body);
 		}
 		
-		final TiledMap map = screen.getMapLoader().load("maps/" + nextGate.destArea() + ".txt", (Texture)screen.getAssets().get("images/tileset.png"), 
-                                                  (Texture)screen.getAssets().get("images/tileset2.png"), screen.getWorld());		
+		final TiledMap map = screen.getMapLoader().load("maps/" + nextGate.destArea() + ".txt", (Texture)screen.getAssets().get("images/tilesets/tileset.png"), 
+                                                  (Texture)screen.getAssets().get("images/tilesets/tileset2.png"), screen.getWorld());		
 		screen.getRenderer().getMap().getLayers().get("Objects").getObjects().forEach(new Consumer<MapObject>()
 		{
 			@Override

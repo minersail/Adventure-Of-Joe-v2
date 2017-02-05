@@ -7,7 +7,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import java.util.ArrayList;
 import woohoo.gameobjects.BaseEntity;
@@ -72,13 +71,13 @@ public class GameWorld extends Engine
 			switch (eClass)
 			{
 				case "player":
-					Player player = new Player(screen.getAssets().get("images/" + entity.get("texture"), TextureAtlas.class));
+					Player player = new Player(screen.getAssets().get("images/entities/" + entity.get("texture"), TextureAtlas.class));
 					screen.addEntity(player);
 					player.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
 					screen.getInventoryManager().fillInventory(player);
 					break;
 				case "npc":
-					NPC npc = new NPC(screen.getAssets().get("images/" + entity.get("texture"), Texture.class), entity.getInt("id"));
+					NPC npc = new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class), entity.getInt("id"));
 					screen.addEntity(npc);
 					npc.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
 					break;
@@ -90,7 +89,7 @@ public class GameWorld extends Engine
 					item.flipImage();
 					break;
 				case "enemy":
-					Enemy enemy = new Enemy(screen.getAssets().get("images/" + entity.get("texture"), Texture.class));
+					Enemy enemy = new Enemy(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class));
 					screen.addEntity(enemy);
 					enemy.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
 					enemy.changeMaxHealth(entity.getFloat("health"));
