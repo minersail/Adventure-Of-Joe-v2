@@ -6,10 +6,6 @@ import woohoo.framework.GateManager;
 import woohoo.framework.fixturedata.GateData;
 import woohoo.screens.PlayingScreen;
 
-/**
- * Contains all the code for when the player interacts with a gate
- * @author jordan
- */
 public class GateContact implements ContactCommand
 {
 	GateManager manager;

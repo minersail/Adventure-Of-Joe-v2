@@ -2,6 +2,7 @@ package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -69,11 +70,6 @@ public class DialogueManager
 	public void advanceDialogue()
 	{
 		currentDialogue.advance();
-		if (currentDialogue.getCurrentLine() == null)
-		{
-			endDialogue();
-			return;
-		}
 		
 		if (currentDialogue.getCurrentLine().id() == -1)
 		{

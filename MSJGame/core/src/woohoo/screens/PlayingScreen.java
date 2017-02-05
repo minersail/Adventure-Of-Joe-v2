@@ -23,7 +23,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.framework.IDManager;
 import woohoo.framework.ContactManager;
 import woohoo.framework.DialogueManager;
-import woohoo.framework.EventManager;
 import woohoo.framework.GateManager;
 import woohoo.framework.HexMapLoader;
 import woohoo.framework.InputHandler;
@@ -63,7 +62,6 @@ public class PlayingScreen implements Screen
 	private FitViewport viewport; // Helper class for camera
 	private Box2DDebugRenderer debugRenderer;
 	
-	private EventManager events;
     private InventoryManager inventoryManager;
 	private ContactManager contacts;
     private GateManager gates;
@@ -82,8 +80,6 @@ public class PlayingScreen implements Screen
 	
 	public int mapWidth;
 	public int mapHeight;
-	
-	public int currentArea;
 	
     private float runTime;
 
@@ -112,7 +108,7 @@ public class PlayingScreen implements Screen
         
         // Create gate sensors
         gates = new GateManager(this);        
-        gates.createGates(currentArea);
+        gates.createGates(0);
 		
 		// Create user interface
 		ui = new Stage();
@@ -132,11 +128,7 @@ public class PlayingScreen implements Screen
 		dialogueManager = new DialogueManager(this, ui, assets.get("ui/uiskin.json", Skin.class));
         
 		// Initialize objects
-		engine.loadEntities(currentArea);
-		
-		// Create event manager
-		events = new EventManager(this);
-		events.createEvents();
+		engine.loadEntities(0);
 		
 		// Initialize input
 		input = new InputHandler(this);

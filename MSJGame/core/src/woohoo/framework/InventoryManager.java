@@ -25,10 +25,9 @@ import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.screens.PlayingScreen;
 
-/**
- * Note: the UI uses the bottom-left coordinate system
- * @author jordan
- */
+/*
+Note: the UI uses the bottom-left coordinate system
+*/
 public class InventoryManager
 {
     public final int INVENTORY_WIDTH = 5;
@@ -55,12 +54,9 @@ public class InventoryManager
 	private TextButton closeButton;
 	private InventorySlot weaponSlot;
 
-	/**
-	 * Initializes the UI with blank items, to be later filled with fillInventory()
-	 * @param scr Reference to the game screen
-	 * @param atlas Atlas containing backgrounds and borders for the inventory
-	 * @param skin Really only necessary to get the font. (Can change later)
-	 */
+	/*
+	Initializes the UI with blank items, to be later filled with fillInventory()
+	*/
     public InventoryManager(PlayingScreen scr, TextureAtlas atlas, Skin skin) 
     {
         screen = scr;
@@ -142,10 +138,9 @@ public class InventoryManager
         screen.setState(PlayingScreen.GameState.Playing);
 	}
     
-	/**
-	 * Function to load InventoryComponents from XML
-	 * @param inventory InventoryComponent to load
-	 */
+	/*
+	Function to load InventoryComponents from XML
+	*/
     public void loadInventory(InventoryComponent inventory)
     {        
         FileHandle handle = Gdx.files.internal("data/inventory.xml");
@@ -168,10 +163,9 @@ public class InventoryManager
         }
 	}
 	
-	/**
-	 * Function to fill the inventory UI with a character's inventory
-	 * @param character Character to fill inventory UI with
-	 */
+	/*
+	Function to fill the inventory UI with a character's inventory
+	*/
 	public void fillInventory(Character character)
 	{
 		currentInventory = character.getComponent(InventoryComponent.class);
@@ -191,14 +185,12 @@ public class InventoryManager
 		}
 	}
 	
-	/**
-	 * Function to add a single item into both the inventory of the character passed in and the UI
-	 * If the item only needs to be added to the character, instead use only InventoryComponent.addItem()
-	 * 
-	 * Can only be called after fillInventory() has been called at least once
-	 * @param character Character whose inventory item will be added to
-	 * @param item The item to be added
-	 */
+	/*
+	Function to add a single item into both the inventory of the character passed in and the UI
+	If the item only needs to be added to the character, instead use only InventoryComponent.addItem()
+	
+	Can only be called after fillInventory() has been called at least once
+	*/
 	public void addItem(Character character, Item item)
 	{
 		currentInventory = character.getComponent(InventoryComponent.class);
@@ -221,12 +213,11 @@ public class InventoryManager
 		// If the code reaches here the inventory is full
 	}
 	
-	/**
-	 * Removes an item from both the UI and the current character's inventory
-	 * (as set by either addItem() or fillInventory())
-	 * and drops it into the game world
-	 * @param item item to be dropped
-	 */
+	/*
+	Removes an item from both the UI and the current character's inventory
+	(as set by either addItem() or fillInventory())
+	and drops it into the game world
+	*/
 	public void dropItem(Item item)
 	{		
 		// Starts at 1 since first item is "X" button
@@ -249,11 +240,11 @@ public class InventoryManager
 		}
 	}
 	
-	/**
-	 * Stores the image data for a single slot in the inventory UI
-	 * 
-	 * Setters return this item for method chaining
-	 */
+	/*
+	Stores the image data for a single slot in the inventory UI
+	
+	Setters return this item for method chaining
+	*/
     public class InventorySlot extends Image
     {
 		private Item item; // Entity, starts as null
@@ -339,9 +330,9 @@ public class InventoryManager
         }
     }
     
-    /**
-     * Could be an anonymous but looks cleaner in its own class
-     */
+    /*
+    Could be a lambda but looks cleaner in its own class
+    */
     private class InventorySource extends Source
     {
         public InventorySource(InventorySlot slot)

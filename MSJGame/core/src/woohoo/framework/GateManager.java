@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import java.util.function.Consumer;
@@ -73,8 +74,7 @@ public class GateManager
 	{ 
         if (!switchArea) return; // Boolean check instead of instantaneous call is necessary so
                                 // that the area switching does not take place during world.step();
-                   
-		// Clear all gates and walls (Change in future to clear all bodies except player as well)
+                                        
         Array<Body> bodies = new Array<>();
 		screen.getWorld().getBodies(bodies);
 		
@@ -84,9 +84,8 @@ public class GateManager
 				screen.getWorld().destroyBody(body);
 		}
 		
-		// Just fancy way to move all objects from old map to new map (Change in future to just player)
-		final TiledMap map = screen.getMapLoader().load("maps/" + nextGate.destArea() + ".txt", screen.getAssets().get("images/tilesets/tileset.png", Texture.class), 
-														screen.getAssets().get("images/tilesets/tileset2.png", Texture.class), screen.getWorld());		
+		final TiledMap map = screen.getMapLoader().load("maps/" + nextGate.destArea() + ".txt", (Texture)screen.getAssets().get("images/tilesets/tileset.png"), 
+                                                  (Texture)screen.getAssets().get("images/tilesets/tileset2.png"), screen.getWorld());		
 		screen.getRenderer().getMap().getLayers().get("Objects").getObjects().forEach(new Consumer<MapObject>()
 		{
 			@Override
@@ -97,12 +96,9 @@ public class GateManager
 		});		
 		screen.getRenderer().setMap(map);
         
-		// Move the player to the entrance of the new map based on where he exited previous map (Took forever to figure out)
         screen.getEngine().getPlayer().setPosition(nextGate.playerPos().x, nextGate.playerPos().y);
         createGates(nextGate.destArea());
-		screen.currentArea = nextGate.destArea();
 		
-		// There's one frame where new map is not quite loaded, so skip the frame. Nobody will even notice
 		screen.getRenderer().skipFrame();
         
         switchArea = false;

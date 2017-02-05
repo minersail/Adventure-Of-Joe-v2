@@ -81,7 +81,7 @@ project(":html") {
 
 project(":core") {
     apply plugin: "java"
-    apply plugin: "scala"
+
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -89,7 +89,6 @@ project(":core") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        compile "org.scala-lang:scala-library:2.11.7"
     }
 }
 
