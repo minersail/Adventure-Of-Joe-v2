@@ -13,7 +13,7 @@ public class NPC extends Character
     {
 		super(new TextureRegion(texture), WBodyType.NPC);
 		
-        dialogue = new DialogueComponent(ID);
+        dialogue = new DialogueComponent(ID, false);
         super.add(dialogue);
         
         healthBar.setInvulnerable(true);

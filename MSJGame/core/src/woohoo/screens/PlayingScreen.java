@@ -136,7 +136,7 @@ public class PlayingScreen implements Screen
 		
 		// Create event manager
 		events = new EventManager(this);
-		events.createEvents();
+		events.createEvents(currentArea);
 		
 		// Initialize input
 		input = new InputHandler(this);

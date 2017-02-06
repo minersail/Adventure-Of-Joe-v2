@@ -26,15 +26,15 @@ public class IDManager
         for (String name : manager.getAssetNames())
         {
             if (name.startsWith("images/faces/"))            
-                createCharacter(manager, name, name.replaceAll(".+_(.+)\\..*", "$1")); // Regex to remove .png and file path
+                createCharacter(manager, name); // Regex to remove .png and file path
             
             if (name.startsWith("images/items/"))            
-                createItem(manager, name, name.replaceAll(".+_(.+)\\..*", "$1"));
+                createItem(manager, name);
         }
 		
 		// For some reason they start backwards
-		Collections.reverse(characters);
-		Collections.reverse(items);		
+		Collections.sort(characters);
+		Collections.sort(items);		
 	}
 	
 	public CharacterData getCharacter(int ID)
@@ -57,9 +57,9 @@ public class IDManager
         return null;
 	}
     
-	private void createCharacter(AssetManager manager, String filename, String name)
+	private void createCharacter(AssetManager manager, String filename)
 	{
-		CharacterData data = new CharacterData(manager.get(filename, Texture.class), name);
+		CharacterData data = new CharacterData(manager.get(filename, Texture.class), filename);
 		characters.add(data);
 	}
     
@@ -83,21 +83,23 @@ public class IDManager
         return null;
 	}
     
-	private void createItem(AssetManager manager, String filename, String name)
+	private void createItem(AssetManager manager, String filename)
 	{
-		ItemData data = new ItemData(manager.get(filename, Texture.class), name);
+		ItemData data = new ItemData(manager.get(filename, Texture.class), filename);
 		items.add(data);
 	}
     
-    public class CharacterData 
+    public class CharacterData implements Comparable<CharacterData>
     {
         private TextureRegion face;
         private String name;
+		private int ID;
 
-        public CharacterData(Texture t, String s)
+        public CharacterData(Texture texture, String str)
         {
-            face = new TextureRegion(t);
-            name = s;
+            face = new TextureRegion(texture);
+            name = str.replaceAll(".+_(.+)\\..*", "$1"); // Remove file path and extension
+			ID = Integer.parseInt(str.replaceAll("\\D+","")); // Get only numbers in string
         }
 
         public TextureRegion getFace()
@@ -109,17 +111,30 @@ public class IDManager
         {
             return name;
         }
+		
+		public int getID()
+		{
+			return ID;
+		}
+
+		@Override
+		public int compareTo(CharacterData o)
+		{
+			return getID() - o.getID();
+		}
     }
     
-    public class ItemData 
+    public class ItemData implements Comparable<ItemData>
     {
         private TextureRegion item;
         private String name;
+		private int ID;
 
-        public ItemData(Texture t, String s)
+        public ItemData(Texture texture, String str)
         {
-            item = new TextureRegion(t);
-            name = s;
+            item = new TextureRegion(texture);
+            name = str.replaceAll(".+_(.+)\\..*", "$1"); // Remove file path and extension
+			ID = Integer.parseInt(str.replaceAll("\\D+","")); // Get only numbers in string
         }
 
         public TextureRegion getItemTexture()
@@ -131,5 +146,16 @@ public class IDManager
         {
             return name;
         }
+		
+		public int getID()
+		{
+			return ID;
+		}
+
+		@Override
+		public int compareTo(ItemData o)
+		{
+			return getID() - o.getID();
+		}
     }
 }

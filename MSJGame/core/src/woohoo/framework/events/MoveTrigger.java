@@ -6,32 +6,26 @@ import woohoo.gameobjects.BaseEntity;
 import woohoo.gameobjects.Character;
 
 /** 
- * Implementation of Event with check() implemented. 
- * activate() must be implemented by an anonymous class or subclass.
+ * Implementation of EventTrigger based on movement to a location
  *
  * @author jordan
  */
-public class MoveEvent implements Event
+public class MoveTrigger implements EventTrigger
 {
 	EventManager manager;
 	
 	private Vector2 position;
 	private float distanceTo;
-	private int gameArea;
 	
 	/**
 	 * Note: MoveEvents only work with entities inheriting off of {@link Character}
 	 * @param pos Target location
 	 * @param dist Distance from target location when event should be triggered
-	 * @param area Game area that this listener is active in
-	 * @param em Remove this eventually
 	 */
-	public MoveEvent(Vector2 pos, float dist, int area, EventManager em)
+	public MoveTrigger(Vector2 pos, float dist)
 	{
 		position = pos;
 		distanceTo = dist;
-		gameArea = area;
-		manager = em;
 	}
 	
 	/**
@@ -44,15 +38,6 @@ public class MoveEvent implements Event
 	{		
 		Character character = (Character) entity;
 
-		return character.distanceTo(position) < distanceTo && manager.getCurrentGameArea() == gameArea;
-	}
-
-	/**
-	 * This should be overridden when implemented
-	 */
-	@Override
-	public void activate()
-	{
-		System.out.println("Event happening");
+		return character.distanceTo(position) < distanceTo;
 	}
 }
