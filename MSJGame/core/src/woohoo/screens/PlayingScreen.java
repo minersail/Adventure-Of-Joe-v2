@@ -121,8 +121,7 @@ public class PlayingScreen implements Screen
 		
 		// Create map
 		mapLoader = new HexMapLoader(this);
-		TiledMap map = mapLoader.load("maps/0.txt", assets.get("images/tilesets/tileset.png", Texture.class), 
-                                      assets.get("images/tilesets/tileset2.png", Texture.class), world);
+		TiledMap map = mapLoader.load(currentArea);
 		
 		// Draw and update every frame
 		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
@@ -203,8 +202,10 @@ public class PlayingScreen implements Screen
 		assets.load("images/entities/joeface.png", Texture.class);
         assets.load("images/entities/ginger.png", Texture.class);	
         assets.load("images/entities/scav.png", Texture.class);	
-		assets.load("images/tilesets/tileset.png", Texture.class);
+		assets.load("images/tilesets/tileset1.png", Texture.class);
+		assets.load("images/tilesets/d_tileset1.png", Texture.class);
 		assets.load("images/tilesets/tileset2.png", Texture.class);
+		assets.load("images/tilesets/d_tileset2.png", Texture.class);
 		assets.load("ui/inventory.pack", TextureAtlas.class, flipParam);
 		assets.load("ui/healthbar.pack", TextureAtlas.class, flipParam);
         assets.load("ui/uiskin.atlas", TextureAtlas.class);

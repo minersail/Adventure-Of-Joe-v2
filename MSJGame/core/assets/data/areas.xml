@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<areas>
+	<area id="0" tileset="1"/>
+	<area id="1" tileset="2" />
+</areas>

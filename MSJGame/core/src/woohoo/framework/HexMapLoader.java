@@ -14,7 +14,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.fixturedata.FixtureData;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.WBodyType;
@@ -27,9 +28,19 @@ public class HexMapLoader
 		screen = scr;
 	}
 	
-	public TiledMap load(String filename, Texture tileset, Texture decorationTileset, World world)
+	public TiledMap load(int area)
 	{		
-		FileHandle mapHandle = Gdx.files.internal(filename);
+        FileHandle handle = Gdx.files.internal("data/areas.xml");
+        
+        XmlReader xml = new XmlReader();
+        Element root = xml.parse(handle.readString());       
+        Element areaData = root.getChild(area);  
+        int tilesetNum = areaData.getInt("tileset");
+        
+        Texture tileset = screen.getAssets().get("images/tilesets/tileset" + tilesetNum + ".png", Texture.class);
+        Texture decorationTileset = screen.getAssets().get("images/tilesets/d_tileset" + tilesetNum + ".png", Texture.class);
+        
+		FileHandle mapHandle = Gdx.files.internal("maps/" + area + ".txt");
 		String map = mapHandle.readString();
 
 		String[] rows = map.split("\n");
@@ -75,7 +86,7 @@ public class HexMapLoader
 					bodyDef.type = BodyDef.BodyType.StaticBody;
 					bodyDef.position.set(i + 0.5f, j + 0.5f);
 
-					Body body = world.createBody(bodyDef);
+					Body body = screen.getWorld().createBody(bodyDef);
 
 					PolygonShape shape = new PolygonShape();
 					shape.setAsBox(0.5f, 0.5f);

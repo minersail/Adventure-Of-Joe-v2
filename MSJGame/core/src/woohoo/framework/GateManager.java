@@ -85,8 +85,7 @@ public class GateManager
 		}
 		
 		// Just fancy way to move all objects from old map to new map (Change in future to just player)
-		final TiledMap map = screen.getMapLoader().load("maps/" + nextGate.destArea() + ".txt", screen.getAssets().get("images/tilesets/tileset.png", Texture.class), 
-														screen.getAssets().get("images/tilesets/tileset2.png", Texture.class), screen.getWorld());		
+		final TiledMap map = screen.getMapLoader().load(nextGate.destArea());		
 		screen.getRenderer().getMap().getLayers().get("Objects").getObjects().forEach(new Consumer<MapObject>()
 		{
 			@Override
