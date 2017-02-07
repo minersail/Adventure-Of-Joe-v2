@@ -74,12 +74,14 @@ public class GameWorld extends Engine
 					Player player = new Player(screen.getAssets().get("images/entities/" + entity.get("texture"), TextureAtlas.class));
 					screen.addEntity(player);
 					player.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
+					player.setName(entity.get("name", ""));
 					screen.getInventoryManager().fillInventory(player);
 					break;
 				case "npc":
 					NPC npc = new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class), entity.getInt("id"));
 					screen.addEntity(npc);
 					npc.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
+					npc.setName(entity.get("name", ""));
 					break;
 				case "item":
 					Item item = new Item(screen.getIDManager().getItem(entity.getInt("id")).getItemTexture());
@@ -87,12 +89,15 @@ public class GameWorld extends Engine
 					item.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
 					item.setType(entity.get("type"));
 					item.flipImage();
+					item.setName(entity.get("name", ""));
 					break;
 				case "enemy":
 					Enemy enemy = new Enemy(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class));
 					screen.addEntity(enemy);
 					enemy.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
 					enemy.changeMaxHealth(entity.getFloat("health"));
+					enemy.setAIMode(entity.get("mode"));
+					enemy.setName(entity.get("name", ""));
 					break;
 				default:
 					break;
@@ -111,6 +116,18 @@ public class GameWorld extends Engine
         Gdx.app.log("ERROR", "Player does not exist in GameWorld");
         return null;
     }
+	
+	public BaseEntity getEntity(String name)
+	{
+		for (Entity entity : getEntities())
+        {
+            if (((BaseEntity)entity).getName().equals(name))
+                return (BaseEntity)entity;
+        }
+		
+        Gdx.app.log("ERROR", "Entity does not exist in GameWorld");
+        return null;
+	}
     
     public ArrayList<NPC> getNPCs()
     {

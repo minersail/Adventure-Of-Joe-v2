@@ -9,8 +9,10 @@ import woohoo.framework.events.DialogueEvent;
 import woohoo.framework.events.Event;
 import woohoo.framework.events.EventListener;
 import woohoo.framework.events.EventTrigger;
+import woohoo.framework.events.MoveEvent;
 import woohoo.framework.events.MoveTrigger;
 import woohoo.gameobjects.components.DialogueComponent;
+import woohoo.gameobjects.Character;
 import woohoo.screens.PlayingScreen;
 
 public class EventManager
@@ -47,13 +49,17 @@ public class EventManager
 				trigger = null;
 			}
 			
-			if (eventEl.get("type").equals("dialogue"))
+			switch (eventEl.get("type"))
 			{
-				event = new DialogueEvent(screen.getDialogueManager(), new DialogueComponent(eventEl.getInt("id"), true));
-			}
-			else
-			{
-				event = null;
+				case "dialogue":
+					event = new DialogueEvent(screen.getDialogueManager(), new DialogueComponent(eventEl.getInt("id"), true));
+					break;
+				case "goto":
+					event = new MoveEvent((Character)screen.getEngine().getEntity(eventEl.get("entity")), new Vector2(eventEl.getFloat("locX"), eventEl.getFloat("locY")));
+					break;
+				default:
+					event = null;
+					break;
 			}
 			
 			screen.getEngine().getPlayer().addListener(new EventListener(trigger, event));

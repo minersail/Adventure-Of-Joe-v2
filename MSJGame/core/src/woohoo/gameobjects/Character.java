@@ -94,6 +94,8 @@ public class Character extends BaseEntity
 	
 	public void move(Direction dir)
 	{
+		if (dir == null) return;
+		
 		switch (dir)
 		{
 			case Up:

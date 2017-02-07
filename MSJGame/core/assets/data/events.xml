@@ -5,6 +5,10 @@
 			<trigger type="move" locX="8.5" locY="8.5" dist="1" />
 			<event type="dialogue" id="0"/>
 		</eventlistener>
+		<eventlistener>
+			<trigger type="move" locX="8.5" locY="8.5" dist="1" />
+			<event type="goto" entity="betterginger" locX="1" locY="1" />
+		</eventlistener>
 	</area>
 	<area id="1">
 	</area>

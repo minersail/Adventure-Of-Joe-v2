@@ -9,6 +9,7 @@ public class BaseEntity extends Entity
 {
 	protected ArrayList<EventListener> listeners = new ArrayList<>();
 	protected float elapsedTime;
+	protected String name = "";
 	
 	public void update(float delta)
 	{
@@ -29,5 +30,15 @@ public class BaseEntity extends Entity
 	public void removeListener(EventListener listener)
 	{
 		listeners.remove(listener);
+	}
+	
+	public void setName(String n)
+	{
+		name = n;
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 }
