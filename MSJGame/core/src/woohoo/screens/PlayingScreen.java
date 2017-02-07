@@ -83,7 +83,7 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	public int currentArea;
+	private int currentArea = 0;
 	
     private float runTime;
 
@@ -131,6 +131,7 @@ public class PlayingScreen implements Screen
 		dialogueManager = new DialogueManager(this, ui, assets.get("ui/uiskin.json", Skin.class));
         
 		// Initialize objects
+		engine.loadPlayer();
 		engine.loadEntities(currentArea);
 		
 		// Create event manager
@@ -212,8 +213,8 @@ public class PlayingScreen implements Screen
 		assets.load("ui/uiskin.json", Skin.class, skinParam1);
 		
 		// Load faces
-		assets.load("images/faces/000_Ginger.png", Texture.class);
-		assets.load("images/faces/001_OldMan.png", Texture.class);
+		assets.load("images/faces/000_youngjoe.png", Texture.class);
+		assets.load("images/faces/001_ginger.png", Texture.class);
         
         // Load items
         assets.load("images/items/000_Stick.png", Texture.class);
@@ -292,6 +293,11 @@ public class PlayingScreen implements Screen
 		state = s;
 	}
 	
+	public void setArea(int area)
+	{
+		currentArea = area;
+	}
+	
 	public GameState getState()
 	{
 		return state;
@@ -363,6 +369,11 @@ public class PlayingScreen implements Screen
     {
         return inventoryManager;
     }
+	
+	public EventManager getEventManager()
+	{
+		return events;
+	}
 
     @Override
     public void resize(int width, int height)

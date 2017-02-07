@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dialogues>
 	<dialogue id="0">
-		<line character="1" name="John" text="Hello" />
-		<line character="0" name="Old Man" text="Hello" />
-		<line character="1" name="John" text="My name is John" />
-		<line character="0" name="Old Man" text="Well hello, ginger boy" />
+		<line character="1" name="John" text="You can't go outside now" />
+		<line character="0" name="Joe" text="Why not?" />
+		<line character="1" name="John" text="It's scary out there" />
+		<line character="0" name="Joe" text="What's the worst that could happen?" />
+		<line character="1" name="John" text="There's wild gingers out there" />
+		<line character="0" name="Joe" text="Welp, I'm not going outside today" />
 		<line character="-1" name="Command" text="BREAK" />
 	</dialogue>
 	<dialogue id="1">

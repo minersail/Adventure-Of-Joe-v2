@@ -65,9 +65,4 @@ public class EventManager
 			screen.getEngine().getPlayer().addListener(new EventListener(trigger, event));
 		}
 	}
-	
-	public int getCurrentGameArea()
-	{
-		return screen.currentArea;
-	}
 }

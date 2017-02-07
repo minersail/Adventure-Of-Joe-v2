@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <events>
 	<area id="0">
-		<eventlistener>
-			<trigger type="move" locX="8.5" locY="8.5" dist="1" />
-			<event type="dialogue" id="0"/>
-		</eventlistener>
-		<eventlistener>
-			<trigger type="move" locX="8.5" locY="8.5" dist="1" />
-			<event type="goto" entity="betterginger" locX="1" locY="1" />
-		</eventlistener>
 	</area>
 	<area id="1">
+		<eventlistener>
+			<trigger type="move" locX="14" locY="2" dist="1" />
+			<event type="dialogue" id="0"/>
+		</eventlistener>
+		<!--eventlistener>
+			<trigger type="move" locX="8.5" locY="8.5" dist="1" />
+			<event type="goto" entity="ginger" locX="1" locY="1" />
+		</eventlistener-->
 	</area>
 </events>

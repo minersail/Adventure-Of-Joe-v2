@@ -1,32 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dialogues>
 	<dialogue id="0">
-		<line character="1" name="John" text="Hello" />
-		<line character="0" name="Old Man" text="Hello" />
-		<line character="1" name="John" text="My name is John" />
-		<line character="0" name="Old Man" text="*farts*" />
-		<line character="-1" name="Command" text="BREAK" />
-	</dialogue>
-	<dialogue id="1">
-		<line character="1" name="???" text="Hello" />
-		<line character="0" name="Old Man" text="(grunts)" />
-		<line character="1" name="John" text="My name is John" />
-		<line character="0" name="Fake Dementor" text="I'm a dementor" />
-		<line character="0" name="Fake Dementor" text="I'll suck your soul out if you don't go away" />
-		<line character="1" name="John" text="Ha, I'm immune" />
-		<line character="0" name="Old Man" text="Well, damn" />
-		<line character="-1" name="Command" text="BREAK" />
-		<line character="0" name="Old Man" text="What do you want now?" />
-		<line character="1" name="John" text="RETARDSAYSWHAT" />
-		<line character="0" name="Old Man" text="What?" />
-		<line character="1" name="John" text="GOT EEM" />
-		<line character="0" name="Old Man" text="Screw off, ye soulless bastard" />
+		<line character="1" name="John" text="Hello Joe" />
+		<line character="0" name="Joe" text="Shut up, John" />
+		<line character="1" name="John" text="Why so crabby?" />
+		<line character="0" name="Joe" text="*farts loudly to drown out John's voice*" />
 		<line character="-1" name="Command" text="LOOP" />
-	</dialogue>
-	<dialogue id="2">
-		<line character="1" name="Mr. Scavilla" text="Hello old man" />
-		<line character="0" name="Old Man" text="Uh" />
-		<line character="1" name="Mr. Scavilla" text="You look rather half baked" />
-		<line character="0" name="Old Man" text="Uh" />
 	</dialogue>
 </dialogues>

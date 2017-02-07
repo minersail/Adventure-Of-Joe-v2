@@ -1,9 +1,9 @@
 package woohoo.framework;
 
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -11,9 +11,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
-import java.util.function.Consumer;
+import java.util.ArrayList;
 import woohoo.framework.contactcommands.GateContact;
 import woohoo.framework.fixturedata.GateData;
+import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.WBodyType;
 
@@ -74,7 +75,7 @@ public class GateManager
         if (!switchArea) return; // Boolean check instead of instantaneous call is necessary so
                                 // that the area switching does not take place during world.step();
                    
-		// Clear all gates and walls (Change in future to clear all bodies except player as well)
+		// Clear all walls and gates
         Array<Body> bodies = new Array<>();
 		screen.getWorld().getBodies(bodies);
 		
@@ -84,22 +85,33 @@ public class GateManager
 				screen.getWorld().destroyBody(body);
 		}
 		
-		// Just fancy way to move all objects from old map to new map (Change in future to just player)
-		final TiledMap map = screen.getMapLoader().load(nextGate.destArea());		
-		screen.getRenderer().getMap().getLayers().get("Objects").getObjects().forEach(new Consumer<MapObject>()
+		// Remove all entities from game world
+		ArrayList<Entity> entities = new ArrayList<>();
+		
+		// Can't use the same iterator so a new list must be created
+		for (Entity entity : screen.getEngine().getEntities())
 		{
-			@Override
-			public void accept(MapObject obj)
+			entities.add(entity);
+		}
+		
+		for (Entity entity : entities)
+		{
+			if (entity != screen.getEngine().getPlayer())
 			{
-				map.getLayers().get("Objects").getObjects().add(obj);
-			}			
-		});		
+				screen.removeEntity(entity);
+			}
+		}
+		
+		// Just fancy way to move all objects from old map to new map (Change in future to just player)
+		final TiledMap map = screen.getMapLoader().load(nextGate.destArea());
+		map.getLayers().get("Objects").getObjects().add(screen.getEngine().getPlayer().getComponent(MapObjectComponent.class));
 		screen.getRenderer().setMap(map);
         
 		// Move the player to the entrance of the new map based on where he exited previous map (Took forever to figure out)
         screen.getEngine().getPlayer().setPosition(nextGate.playerPos().x, nextGate.playerPos().y);
         createGates(nextGate.destArea());
-		screen.currentArea = nextGate.destArea();
+		screen.getEngine().loadEntities(nextGate.destArea());
+		screen.getEventManager().createEvents(nextGate.destArea());
 		
 		// There's one frame where new map is not quite loaded, so skip the frame. Nobody will even notice
 		screen.getRenderer().skipFrame();

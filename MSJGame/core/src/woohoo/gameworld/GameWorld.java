@@ -56,6 +56,15 @@ public class GameWorld extends Engine
 		super.addEntity(entity);
 	}
 	
+	public void loadPlayer()
+	{
+		Player player = new Player(screen.getAssets().get("images/entities/youngjoe.pack", TextureAtlas.class));
+		screen.addEntity(player);
+		player.setPosition(1, 5);
+		player.setName("player");
+		screen.getInventoryManager().fillInventory(player);	
+	}
+	
 	public void loadEntities(int area)
 	{
 		FileHandle handle = Gdx.files.internal("data/entities.xml");
@@ -70,13 +79,6 @@ public class GameWorld extends Engine
 			
 			switch (eClass)
 			{
-				case "player":
-					Player player = new Player(screen.getAssets().get("images/entities/" + entity.get("texture"), TextureAtlas.class));
-					screen.addEntity(player);
-					player.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
-					player.setName(entity.get("name", ""));
-					screen.getInventoryManager().fillInventory(player);
-					break;
 				case "npc":
 					NPC npc = new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class), entity.getInt("id"));
 					screen.addEntity(npc);
