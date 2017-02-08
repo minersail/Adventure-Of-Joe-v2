@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dialogues>
 	<dialogue id="0">
-		<line character="1" name="John" text="You can't go outside now" />
-		<line character="0" name="Joe" text="Why not?" />
-		<line character="1" name="John" text="It's scary out there" />
-		<line character="0" name="Joe" text="What's the worst that could happen?" />
-		<line character="1" name="John" text="There's wild gingers out there" />
-		<line character="0" name="Joe" text="Welp, I'm not going outside today" />
+		<line character="0" name="Joe" text="Ugh..." />
+		<line character="1" name="???" text="*SCREAM*" />
+		<line character="0" name="Joe" text="Whoah.." />
+		<line character="0" name="Joe" text="Hey MA, what's going on?" />
 		<line character="-1" name="Command" text="BREAK" />
 	</dialogue>
 	<dialogue id="1">
-		<line character="1" name="Mr. Scavilla" text="Hello old man" />
-		<line character="0" name="Old Man" text="Uh" />
-		<line character="1" name="Mr. Scavilla" text="You look rather half baked" />
-		<line character="0" name="Old Man" text="Uh" />
+		<line character="1" name="Ma" text="...*sniff*..." />
+		<line character="1" name="Ma" text="Son, come here." />
+		<line character="2" name="Robert" text="Hello, Joseph." />
+		<line character="1" name="Ma" text="Your...*sniff*...y-your.." />
+		<line character="1" name="Ma" text="Your father has passed away." />
+		<line character="2" name="Robert" text="He died honorably in battle." />
+		<line character="2" name="Robert" text="He died fighting for the kingdom. He was a man with much valor." />
+		<line character="-1" name="Command" text="BREAK" />
 	</dialogue>
 </dialogues>

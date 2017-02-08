@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dialogues>
 	<dialogue id="0">
-		<line character="1" name="John" text="Hello Joe" />
+		<line character="1" name="John" text="*sniff*" />
+		<line character="0" name="Joe" text="Shut up, John" />
+		<line character="1" name="John" text="Why so crabby?" />
+		<line character="0" name="Joe" text="*farts loudly to drown out John's voice*" />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue>
+	<dialogue id="1">
+		<line character="1" name="John" text="*sniff*" />
 		<line character="0" name="Joe" text="Shut up, John" />
 		<line character="1" name="John" text="Why so crabby?" />
 		<line character="0" name="Joe" text="*farts loudly to drown out John's voice*" />

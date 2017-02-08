@@ -163,7 +163,7 @@ public class PlayingScreen implements Screen
 				
 				renderer.setView(cam);
 				renderer.render();
-				debugRenderer.render(world, cam.combined);
+				//debugRenderer.render(world, cam.combined);
 				ui.draw();
 				break;
 				
@@ -175,7 +175,7 @@ public class PlayingScreen implements Screen
 
 				renderer.setView(cam);
 				renderer.render();
-				debugRenderer.render(world, cam.combined);
+				//debugRenderer.render(world, cam.combined);
 				ui.draw();
 				break;
 				
@@ -201,7 +201,9 @@ public class PlayingScreen implements Screen
 		assets.load("images/entities/oldman.pack", TextureAtlas.class, flipParam);
 		assets.load("images/entities/youngjoe.pack", TextureAtlas.class, flipParam);
 		assets.load("images/entities/joeface.png", Texture.class);
-        assets.load("images/entities/ginger.png", Texture.class);	
+        assets.load("images/entities/ginger.png", Texture.class);
+        assets.load("images/entities/mother.png", Texture.class);	
+        assets.load("images/entities/robert.png", Texture.class);	
         assets.load("images/entities/scav.png", Texture.class);	
 		assets.load("images/tilesets/tileset1.png", Texture.class);
 		assets.load("images/tilesets/d_tileset1.png", Texture.class);
@@ -214,7 +216,8 @@ public class PlayingScreen implements Screen
 		
 		// Load faces
 		assets.load("images/faces/000_youngjoe.png", Texture.class);
-		assets.load("images/faces/001_ginger.png", Texture.class);
+		assets.load("images/faces/001_mother.png", Texture.class);
+		assets.load("images/faces/002_robert.png", Texture.class);
         
         // Load items
         assets.load("images/items/000_Stick.png", Texture.class);

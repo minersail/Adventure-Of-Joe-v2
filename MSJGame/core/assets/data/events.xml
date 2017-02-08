@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <events>
 	<area id="0">
+		<eventlistener>
+			<trigger type="move" locX="3" locY="5" dist="1" />
+			<event type="dialogue" id="0"/>
+		</eventlistener>
 	</area>
 	<area id="1">
 		<eventlistener>
-			<trigger type="move" locX="14" locY="2" dist="1" />
-			<event type="dialogue" id="0"/>
+			<trigger type="move" locX="2" locY="7" dist="2" />
+			<event type="dialogue" id="1"/>
 		</eventlistener>
 		<!--eventlistener>
 			<trigger type="move" locX="8.5" locY="8.5" dist="1" />
