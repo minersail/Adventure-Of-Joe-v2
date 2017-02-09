@@ -2,7 +2,7 @@ package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
-import woohoo.gameobjects.Player;
+import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 
 public class AIComponent implements Component
@@ -13,16 +13,18 @@ public class AIComponent implements Component
 	}
 	
 	// Reference to player, change later to reference of viable targets to follow
-	private Player player;
+	private Character targetChar;
 	private Vector2 targetPos;
 	private Direction nextDirection;
     private boolean lockDirection;
+	private boolean active;
 	private float timer;
 	private AIMode mode;
 	
 	public AIComponent()
 	{		
 		mode = AIMode.Stay;
+		active = true;
 	}
 	
 	public void update(float delta)
@@ -61,7 +63,7 @@ public class AIComponent implements Component
 		switch(mode)
 		{
 			case Follow:
-				return getDirection(current, player.getPosition());
+				return getDirection(current, targetChar.getPosition());
 			case MoveTo:				
 				float dX = current.x - targetPos.x;
 				float dY = current.y - targetPos.y;
@@ -73,13 +75,13 @@ public class AIComponent implements Component
 			case Stay:
 				return null;
 			default:
-				return getDirection(current, player.getPosition());				
+				return getDirection(current, targetChar.getPosition());				
 		}
 	}
 	
-	public void setPlayer(Player player)
+	public void setTargetCharacter(Character character)
 	{
-		this.player = player;
+		targetChar = character;
 	}
 	
 	public AIMode getAIMode()
@@ -95,5 +97,15 @@ public class AIComponent implements Component
 	public void setTargetPosition(Vector2 position)
 	{
 		targetPos = position;
+	}
+	
+	public void enable(boolean enable)
+	{
+		active = enable;
+	}
+	
+	public boolean isActive()
+	{
+		return active;
 	}
 }

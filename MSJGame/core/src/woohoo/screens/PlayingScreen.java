@@ -149,48 +149,33 @@ public class PlayingScreen implements Screen
     public void render(float delta)
     {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
+		cam.update();
+		runTime += delta;
 		switch (state)
 		{
-			case Playing:				
-				cam.update();
-				runTime += delta;
-
+			case Playing:			
 				engine.update(delta);
 				world.step(delta, 6, 2);
                 gates.updateArea();
 				ui.act();
-				
-				renderer.setView(cam);
-				renderer.render();
-				//debugRenderer.render(world, cam.combined);
-				ui.draw();
 				break;
 				
-			case Dialogue:
-				cam.update();
-				runTime += delta;
-				
+			case Dialogue:		
+				engine.updateCutscene(delta);
+				world.step(delta, 6, 2);
 				ui.act();
-
-				renderer.setView(cam);
-				renderer.render();
-				//debugRenderer.render(world, cam.combined);
-				ui.draw();
 				break;
 				
-			case Inventory:
-				cam.update();
-				runTime += delta;
-				
+			case Inventory:				
 				ui.act();
-
-				renderer.setView(cam);
-				renderer.render();
-				debugRenderer.render(world, cam.combined);
-				ui.draw();
 				break;
 		}
+		
+		renderer.setView(cam);
+		renderer.render();
+		//debugRenderer.render(world, cam.combined);
+		ui.draw();
     }
 	
 	private void loadAssets()
@@ -248,7 +233,7 @@ public class PlayingScreen implements Screen
 			if (entity instanceof Enemy)
 			{
 				entity.getComponent(SensorComponent.class).initializeCommand(contacts, world).createMass(world);
-				entity.getComponent(AIComponent.class).setPlayer(engine.getPlayer());
+				entity.getComponent(AIComponent.class).setTargetCharacter(engine.getPlayer());
 			}
 			else if (entity instanceof NPC)
 			{
@@ -289,11 +274,13 @@ public class PlayingScreen implements Screen
 		}
 		
 		engine.removeEntity(entity);
+		engine.removeFromCutscene(entity);
 	}
     
 	public void setState(GameState s)
 	{
 		state = s;
+		if (state == GameState.Dialogue) engine.stopAll();
 	}
 	
 	public void setArea(int area)

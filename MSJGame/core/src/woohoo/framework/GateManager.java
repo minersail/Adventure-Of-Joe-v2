@@ -1,7 +1,6 @@
 package woohoo.framework;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -85,22 +84,17 @@ public class GateManager
 				screen.getWorld().destroyBody(body);
 		}
 		
-		// Remove all entities from game world
-		ArrayList<Entity> entities = new ArrayList<>();
-		
-		// Can't use the same iterator so a new list must be created
-		for (Entity entity : screen.getEngine().getEntities())
-		{
-			entities.add(entity);
-		}
-		
-		for (Entity entity : entities)
+		// Remove all entities from game world		
+		for (Entity entity : screen.getEngine().getDuplicateList())
 		{
 			if (entity != screen.getEngine().getPlayer())
 			{
 				screen.removeEntity(entity);
 			}
 		}
+		
+		// Remove event handlers from old screen
+		screen.getEngine().getPlayer().clearListeners();
 		
 		// Just fancy way to move all objects from old map to new map (Change in future to just player)
 		final TiledMap map = screen.getMapLoader().load(nextGate.destArea());

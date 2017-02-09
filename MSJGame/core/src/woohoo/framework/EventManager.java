@@ -55,14 +55,17 @@ public class EventManager
 					event = new DialogueEvent(screen.getDialogueManager(), new DialogueComponent(eventEl.getInt("id"), true));
 					break;
 				case "goto":
-					event = new MoveEvent((Character)screen.getEngine().getEntity(eventEl.get("entity")), new Vector2(eventEl.getFloat("locX"), eventEl.getFloat("locY")));
+					Character character = (Character)screen.getEngine().getEntity(eventEl.get("entity"));
+					screen.getEngine().addToCutscene(character);
+					character.setSpeed(eventEl.getFloat("speed"));
+					event = new MoveEvent(character, new Vector2(eventEl.getFloat("locX"), eventEl.getFloat("locY")));
 					break;
 				default:
 					event = null;
 					break;
 			}
 			
-			screen.getEngine().getPlayer().addListener(new EventListener(trigger, event));
+			screen.getEngine().getEntity(eventListener.get("entity")).addListener(new EventListener(trigger, event));
 		}
 	}
 }

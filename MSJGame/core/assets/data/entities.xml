@@ -12,6 +12,6 @@
 	</area>
 	<area id="1">
 		<entity class="npc" locX="7" locY="6" texture="mother.png" name="mother" id="0" />
-		<entity class="npc" locX="11" locY="2" texture="robert.png" name="robert" id="1" />
+		<entity class="npc" locX="8" locY="6" texture="robert.png" name="robert" id="1" />
 	</area>
 </entities>

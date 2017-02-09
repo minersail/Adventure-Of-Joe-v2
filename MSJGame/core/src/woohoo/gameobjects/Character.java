@@ -3,6 +3,8 @@ package woohoo.gameobjects;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import woohoo.gameobjects.components.AIComponent;
+import woohoo.gameobjects.components.AIComponent.AIMode;
 import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
@@ -22,6 +24,7 @@ public class Character extends BaseEntity
 	protected CollisionComponent collision;
 	protected InventoryComponent inventory;
     protected HealthBarComponent healthBar;
+	protected AIComponent brain;
 	
 	protected float speed = 2;
 	    
@@ -31,11 +34,13 @@ public class Character extends BaseEntity
 		collision = new CollisionComponent(type);
 		inventory = new InventoryComponent();
         healthBar = new HealthBarComponent(10);
+		brain = new AIComponent();
 		
 		super.add(mapObject);
         super.add(collision);
 		super.add(inventory);
         super.add(healthBar);
+		super.add(brain);
 	}
 	
 	public Character(TextureRegion region, WBodyType type)
@@ -44,11 +49,13 @@ public class Character extends BaseEntity
 		collision = new CollisionComponent(type);
 		inventory = new InventoryComponent();
         healthBar = new HealthBarComponent(10);
+		brain = new AIComponent();
 		
 		super.add(mapObject);
         super.add(collision);
 		super.add(inventory);
         super.add(healthBar);
+		super.add(brain);
 	}
 	
 	@Override
@@ -60,6 +67,15 @@ public class Character extends BaseEntity
 		mapObject.update(delta, collision.getPosition());
 		inventory.update(delta);
         healthBar.update(delta, collision.getPosition());
+		brain.update(delta);
+		
+		if (brain.isActive())
+		{
+			collision.setImmovable(brain.getAIMode() == AIMode.Stay);
+			
+			stop();
+			move(brain.calculateDirection(collision.getPosition()));
+		}		
 	}
     
     public Vector2 getPosition()
@@ -90,6 +106,16 @@ public class Character extends BaseEntity
 	public Vector2 getSize()
 	{
 		return mapObject.getSize();
+	}
+	
+	public void setSpeed(float newSpeed)
+	{
+		speed = newSpeed;
+	}
+	
+	public float getSpeed()
+	{
+		return speed;
 	}
 	
 	public void move(Direction dir)

@@ -14,6 +14,8 @@ public class Player extends Character
     public Player(TextureAtlas atlas)
     {
 		super(atlas, WBodyType.Player);
+		
+		brain.enable(false);
 	}
 	
 	@Override
@@ -75,5 +77,12 @@ public class Player extends Character
 	{
 		if (weapon != null)
 			weapon.swing();	
+	}
+	
+	@Override
+	public void move(Direction dir)
+	{
+		if (!brain.isActive())
+			super.move(dir);
 	}
 }

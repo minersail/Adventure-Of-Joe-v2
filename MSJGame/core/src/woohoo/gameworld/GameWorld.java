@@ -14,6 +14,7 @@ import woohoo.gameobjects.Enemy;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
+import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.SensorComponent;
 import woohoo.screens.PlayingScreen;
@@ -26,12 +27,14 @@ Their updates will be called in this class
 public class GameWorld extends Engine
 {
 	private PlayingScreen screen;
+	private ArrayList<Entity> cutsceneEntities;
     
     public float runtime;
 	
 	public GameWorld(PlayingScreen scr)
 	{
 		screen = scr;
+		cutsceneEntities = new ArrayList<>();
 	}
     
 	@Override
@@ -39,7 +42,7 @@ public class GameWorld extends Engine
     {
 		runtime += delta;
 
-		for (Entity entity : getEntities())
+		for (Entity entity : getDuplicateList())
 		{
 			((BaseEntity)entity).update(delta);
 			
@@ -49,6 +52,35 @@ public class GameWorld extends Engine
 			}
 		}
     }
+	
+	/**
+	 * Updates only those entities that are free to move in the current cutscene
+	 * @param delta elapsed time since last frame
+	 */
+	public void updateCutscene(float delta)
+	{
+		runtime += delta;
+
+		for (Entity entity : cutsceneEntities)
+		{
+			((BaseEntity)entity).update(delta);
+			
+			if (entity instanceof Player)
+			{
+				adjustCamera((Player)entity);
+			}
+		}
+	}
+	
+	public void addToCutscene(Entity entity)
+	{
+		cutsceneEntities.add(entity);
+	}
+	
+	public void removeFromCutscene(Entity entity)
+	{
+		cutsceneEntities.remove(entity);
+	}
 	
 	@Override
 	public void addEntity(Entity entity)
@@ -143,6 +175,17 @@ public class GameWorld extends Engine
         return npcs;
     }
 	
+	public void stopAll()
+	{
+		for (Entity entity : getDuplicateList())
+		{
+			if (entity instanceof Character)
+			{
+				((Character)entity).stop();
+			}
+		}
+	}
+	
 	/*
 	Check to see if the player is facing an NPC
 	*/
@@ -206,5 +249,16 @@ public class GameWorld extends Engine
 		}
 		
 		screen.setCamera(newPos.x, newPos.y);
+	}
+	
+	public ArrayList<BaseEntity> getDuplicateList()
+	{
+		ArrayList<BaseEntity> list = new ArrayList<>();
+		for (Entity entity : getEntities())
+		{
+			list.add((BaseEntity)entity);
+		}
+		
+		return list;
 	}
 }

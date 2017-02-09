@@ -12,7 +12,6 @@ import woohoo.screens.PlayingScreen.WBodyType;
 public class Enemy extends Character
 {    
 	private SensorComponent hitBox;
-	private AIComponent brain;
 	
     public Enemy(Texture texture)
     {
@@ -33,11 +32,6 @@ public class Enemy extends Character
 	public void update(float delta)
 	{
 		super.update(delta);
-		
-		brain.update(delta);
-		
-		stop();
-		move(brain.calculateDirection(collision.getPosition()));
 		
 		hitBox.setPosition(collision.getPosition().x, collision.getPosition().y);
 		

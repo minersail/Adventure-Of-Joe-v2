@@ -12,8 +12,6 @@ import woohoo.gameobjects.Character;
  */
 public class MoveTrigger implements EventTrigger
 {
-	EventManager manager;
-	
 	private Vector2 position;
 	private float distanceTo;
 	

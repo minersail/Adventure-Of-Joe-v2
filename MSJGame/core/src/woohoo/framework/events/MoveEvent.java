@@ -23,6 +23,9 @@ public class MoveEvent implements Event
 	@Override
 	public void activate()
 	{
+		System.out.println("hi");
+		
+		character.getComponent(AIComponent.class).enable(true);
 		character.getComponent(AIComponent.class).setAIMode(AIComponent.AIMode.MoveTo);
 		character.getComponent(AIComponent.class).setTargetPosition(position);
 	}

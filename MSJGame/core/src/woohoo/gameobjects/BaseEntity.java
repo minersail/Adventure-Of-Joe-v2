@@ -32,6 +32,11 @@ public class BaseEntity extends Entity
 		listeners.remove(listener);
 	}
 	
+	public void clearListeners()
+	{
+		listeners.clear();
+	}
+	
 	public void setName(String n)
 	{
 		name = n;
