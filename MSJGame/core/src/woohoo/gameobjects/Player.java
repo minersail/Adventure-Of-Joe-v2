@@ -78,11 +78,4 @@ public class Player extends Character
 		if (weapon != null)
 			weapon.swing();	
 	}
-	
-	@Override
-	public void move(Direction dir)
-	{
-		if (!brain.isActive())
-			super.move(dir);
-	}
 }

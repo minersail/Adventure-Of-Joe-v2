@@ -1,7 +1,6 @@
 package woohoo.framework.events;
 
 import com.badlogic.gdx.math.Vector2;
-import woohoo.framework.EventManager;
 import woohoo.gameobjects.BaseEntity;
 import woohoo.gameobjects.Character;
 
@@ -34,7 +33,7 @@ public class MoveTrigger implements EventTrigger
 	@Override
 	public boolean check(BaseEntity entity)
 	{		
-		Character character = (Character) entity;
+		Character character = (Character)entity;
 
 		return character.distanceTo(position) < distanceTo;
 	}

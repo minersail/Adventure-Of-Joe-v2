@@ -74,7 +74,8 @@ public class GameWorld extends Engine
 	
 	public void addToCutscene(Entity entity)
 	{
-		cutsceneEntities.add(entity);
+        if (!cutsceneEntities.contains(entity)) // Don't put it in more than once
+            cutsceneEntities.add(entity);
 	}
 	
 	public void removeFromCutscene(Entity entity)
