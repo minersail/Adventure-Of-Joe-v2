@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <events>
 	<area id="0">
-		<eventlistener entity="player">
+		<!--eventlistener entity="player">
 			<trigger type="move" locX="3" locY="5" dist="1" />
 			<event type="dialogue" id="0"/>
-		</eventlistener>
+		</eventlistener-->
 	</area>
 	<area id="1">
-		<eventlistener entity="player">
+		<!--eventlistener entity="player">
 			<trigger type="move" locX="2" locY="7" dist="2" />
 			<event type="dialogue" id="1"/>
 		</eventlistener>
@@ -22,6 +22,6 @@
 		<eventlistener entity="player">
 			<trigger type="move" locX="3" locY="1" dist="2" />
 			<event type="goto" entity="player" locX="16" locY="2" speed="5" />
-		</eventlistener>
+		</eventlistener-->
 	</area>
 </events>

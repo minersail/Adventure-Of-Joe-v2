@@ -27,14 +27,12 @@ Their updates will be called in this class
 public class GameWorld extends Engine
 {
 	private PlayingScreen screen;
-	private ArrayList<Entity> cutsceneEntities;
     
     public float runtime;
 	
 	public GameWorld(PlayingScreen scr)
 	{
 		screen = scr;
-		cutsceneEntities = new ArrayList<>();
 	}
     
 	@Override
@@ -52,36 +50,6 @@ public class GameWorld extends Engine
 			}
 		}
     }
-	
-	/**
-	 * Updates only those entities that are free to move in the current cutscene
-	 * @param delta elapsed time since last frame
-	 */
-	public void updateCutscene(float delta)
-	{
-		runtime += delta;
-
-		for (Entity entity : cutsceneEntities)
-		{
-			((BaseEntity)entity).update(delta);
-			
-			if (entity instanceof Player)
-			{
-				adjustCamera((Player)entity);
-			}
-		}
-	}
-	
-	public void addToCutscene(Entity entity)
-	{
-        if (!cutsceneEntities.contains(entity)) // Don't put it in more than once
-            cutsceneEntities.add(entity);
-	}
-	
-	public void removeFromCutscene(Entity entity)
-	{
-		cutsceneEntities.remove(entity);
-	}
 	
 	@Override
 	public void addEntity(Entity entity)

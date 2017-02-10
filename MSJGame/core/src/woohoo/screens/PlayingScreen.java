@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.framework.IDManager;
 import woohoo.framework.ContactManager;
+import woohoo.framework.CutsceneManager;
 import woohoo.framework.DialogueManager;
 import woohoo.framework.EventManager;
 import woohoo.framework.GateManager;
@@ -45,7 +46,7 @@ public class PlayingScreen implements Screen
 {    
 	public enum GameState
 	{
-		Playing, Dialogue, Inventory
+		Playing, Dialogue, Inventory, Cutscene
 	}	
     
     public enum WBodyType
@@ -59,23 +60,24 @@ public class PlayingScreen implements Screen
 	
 	private GameState state;
 	
-	private OrthographicCamera cam; // Manages aspect ratio, zoom, and position of camera
-	private FitViewport viewport; // Helper class for camera
-	private Box2DDebugRenderer debugRenderer;
+	final private OrthographicCamera cam; // Manages aspect ratio, zoom, and position of camera
+	final private FitViewport viewport; // Helper class for camera
+	final private Box2DDebugRenderer debugRenderer;
 	
-	private EventManager events;
-    private InventoryManager inventoryManager;
-	private ContactManager contacts;
-    private GateManager gates;
-	private IDManager idManager;
-    private DialogueManager dialogueManager;
-	private AssetManager assets;
-	private InputHandler input;
-	private HexMapLoader mapLoader;
-	private GameRenderer renderer;
-	private GameWorld engine;
-	private World world;
-	private Stage ui;
+    final private CutsceneManager cutscenes;
+	final private EventManager events;
+    final private InventoryManager inventoryManager;
+	final private ContactManager contacts;
+    final private GateManager gates;
+	final private IDManager idManager;
+    final private DialogueManager dialogueManager;
+	final private AssetManager assets;
+	final private InputHandler input;
+	final private HexMapLoader mapLoader;
+	final private GameRenderer renderer;
+	final private GameWorld engine;
+	final private World world;
+	final private Stage ui;
 		
 	public int WORLD_WIDTH = 16; // Arbitrary unit; how many tiles will fit width-wise on the screen
 	public int WORLD_HEIGHT = (int)(WORLD_WIDTH * (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth()); // Arbitrary unit; how many tiles will fit height-wise
@@ -129,6 +131,7 @@ public class PlayingScreen implements Screen
 		
 		// Create dialogue
 		dialogueManager = new DialogueManager(this, ui, assets.get("ui/uiskin.json", Skin.class));
+        cutscenes = new CutsceneManager(this);
         
 		// Initialize objects
 		engine.loadPlayer();
@@ -161,12 +164,13 @@ public class PlayingScreen implements Screen
 				ui.act();
 				break;
 				
-			case Dialogue:		
-				engine.updateCutscene(delta);
+			case Cutscene:		
+				cutscenes.update(delta);
 				world.step(delta, 6, 2);
 				ui.act();
 				break;
 				
+            case Dialogue:
 			case Inventory:				
 				ui.act();
 				break;
@@ -274,7 +278,6 @@ public class PlayingScreen implements Screen
 		}
 		
 		engine.removeEntity(entity);
-		engine.removeFromCutscene(entity);
 	}
     
 	public void setState(GameState s)
@@ -363,6 +366,11 @@ public class PlayingScreen implements Screen
 	public EventManager getEventManager()
 	{
 		return events;
+	}
+	
+	public CutsceneManager getCutsceneManager()
+	{
+		return cutscenes;
 	}
 
     @Override

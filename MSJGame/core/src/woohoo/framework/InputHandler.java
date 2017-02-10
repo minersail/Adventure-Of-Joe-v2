@@ -58,6 +58,9 @@ public class InputHandler implements InputProcessor
 					case Keys.A:
 						player.attack();
 						break;
+					case Keys.NUM_0:
+						screen.getCutsceneManager().startCutscene(0);
+						break;
 				}
 				break;
 			

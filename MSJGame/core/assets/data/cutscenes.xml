@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cutscenes>
+	<cutscene id="0">
+		<entity name="player" />
+		<action type="move" name="player" locX="3" locY="3" />
+		<action type="dialogue" id="0" />
+		<action type="move" name="player" locX="13" locY="3" />
+	</cutscene>
+	<cutscene id="1">
+	</cutscene>
+</cutscenes>

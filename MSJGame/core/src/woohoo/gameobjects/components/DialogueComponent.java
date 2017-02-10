@@ -16,13 +16,13 @@ public class DialogueComponent implements Component
 	 * Holds all the dialogue component for an NPC, unless event tag is true.
 	 * If event tag is true, holds all the dialogue for an event.
 	 * @param id ID to locate the dialogue in XML
-	 * @param event Whether this is for an NPC or an event
+	 * @param cutscene Whether this is for an NPC or an event
 	 */
-	public DialogueComponent(int id, boolean event)
+	public DialogueComponent(int id, boolean cutscene)
     {
         sequence = new ArrayList<>();
         
-        FileHandle handle = Gdx.files.internal(event ? "data/eventdialogue.xml" : "data/dialogue.xml");
+        FileHandle handle = Gdx.files.internal(cutscene ? "data/cutscenedialogue.xml" : "data/dialogue.xml");
         
         XmlReader xml = new XmlReader();
         Element root = xml.parse(handle.readString());       

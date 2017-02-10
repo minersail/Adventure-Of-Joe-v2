@@ -56,7 +56,6 @@ public class EventManager
 					break;
 				case "goto":
 					Character character = (Character)screen.getEngine().getEntity(eventEl.get("entity"));
-					screen.getEngine().addToCutscene(character);
 					character.setSpeed(eventEl.getFloat("speed"));
 					event = new MoveEvent(character, new Vector2(eventEl.getFloat("locX"), eventEl.getFloat("locY")));
 					break;
