@@ -1,8 +1,11 @@
 package woohoo.gameobjects;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import woohoo.framework.contactcommands.SensorContact;
+import woohoo.gameobjects.components.AIComponent.AIMode;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.screens.PlayingScreen.WBodyType;
@@ -15,7 +18,14 @@ public class Player extends Character
     {
 		super(atlas, WBodyType.Player);
 		
-		brain.enable(false);
+		brain.setAIMode(AIMode.Input);
+	}
+	
+    public Player(Texture region)
+    {
+		super(new TextureRegion(region), WBodyType.Player);
+		
+		brain.setAIMode(AIMode.Input);
 	}
 	
 	@Override

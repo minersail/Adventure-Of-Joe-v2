@@ -2,4 +2,5 @@
 <areas>
 	<area id="0" tileset="2"/>
 	<area id="1" tileset="2" />
+	<area id="1" tileset="1" />
 </areas>

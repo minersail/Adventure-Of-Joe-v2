@@ -1,27 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <events>
 	<area id="0">
-		<!--eventlistener entity="player">
+		<eventlistener entity="player">
 			<trigger type="move" locX="3" locY="5" dist="1" />
-			<event type="dialogue" id="0"/>
-		</eventlistener-->
+			<event type="cutscene" id="0"/>
+		</eventlistener>
 	</area>
 	<area id="1">
-		<!--eventlistener entity="player">
-			<trigger type="move" locX="2" locY="7" dist="2" />
-			<event type="dialogue" id="1"/>
-		</eventlistener>
 		<eventlistener entity="player">
 			<trigger type="move" locX="2" locY="7" dist="2" />
-			<event type="goto" entity="robert" locX="8" locY="8" speed="0.5" />
+			<event type="cutscene" id="1"/>
 		</eventlistener>
-		<eventlistener entity="robert">
-			<trigger type="move" locX="8.5" locY="8.5" dist="0.5" />
-			<event type="goto" entity="player" locX="3" locY="2" speed="5" />
-		</eventlistener>
-		<eventlistener entity="player">
-			<trigger type="move" locX="3" locY="1" dist="2" />
-			<event type="goto" entity="player" locX="16" locY="2" speed="5" />
-		</eventlistener-->
+	</area>
+	<area id="2">
 	</area>
 </events>

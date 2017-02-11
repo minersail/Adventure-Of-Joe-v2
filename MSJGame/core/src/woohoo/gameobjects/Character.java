@@ -67,12 +67,12 @@ public class Character extends BaseEntity
 		mapObject.update(delta, collision.getPosition());
 		inventory.update(delta);
         healthBar.update(delta, collision.getPosition());
-		brain.update(delta);
+		brain.update(delta, collision.getPosition());
 		
-		if (brain.isActive())
+		collision.setImmovable(brain.getAIMode() == AIMode.Stay);
+		
+		if (brain.getAIMode() != AIMode.Input)
 		{
-			collision.setImmovable(brain.getAIMode() == AIMode.Stay);
-			
 			stop();
 			move(brain.calculateDirection(collision.getPosition()));
 		}		

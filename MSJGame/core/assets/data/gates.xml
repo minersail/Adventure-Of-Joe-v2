@@ -5,5 +5,8 @@
 	</area>
 	<area id="1">
 		<gate locX="1" locY="10" sizeX="3" sizeY="1" destArea="0" destX="1" destY="0" />
+		<gate locX="15" locY="1" sizeX="1" sizeY="3" destArea="2" destX="0" destY="1" />
+	</area>
+	<area id="2">
 	</area>
 </gates>

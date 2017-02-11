@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <cutscenes>
 	<cutscene id="0">
-		<entity name="player" />
-		<action type="move" name="player" locX="3" locY="3" />
-		<action type="dialogue" id="0" />
-		<action type="move" name="player" locX="13" locY="3" />
+		<action type="dialogue" />
 	</cutscene>
 	<cutscene id="1">
+		<entity name="player" />
+		<action type="dialogue" />
+		<action type="move" name="player" locX="2" locY="2" speed="5"/>
+		<action type="move" name="player" locX="16" locY="2" speed="5"/>
+		<action type="dialogue" />
 	</cutscene>
 </cutscenes>

@@ -74,6 +74,8 @@ public class CutsceneManager
         {
             cutsceneEntities.add(screen.getEngine().getEntity(e.get("name")));
         }
+		
+		DialogueComponent component = new DialogueComponent(cutsceneID, true);
         
         for (Element e : cutscene.getChildrenByName("action"))
         {
@@ -81,23 +83,32 @@ public class CutsceneManager
             
             if (e.get("type").equals("move"))
             {
-                action = new MovementAction(e.get("name"), e.getFloat("locX"), e.getFloat("locY"));
+                action = new MovementAction(e.get("name"), e.getFloat("locX"), e.getFloat("locY"), e.getFloat("speed"));
                 cutsceneActions.add(action);
             }
             else if (e.get("type").equals("dialogue"))
             {
-                action = new DialogueAction(e.getInt("id"));
+                action = new DialogueAction(component);
                 cutsceneActions.add(action);
             }
         }
         
+        screen.setState(GameState.Cutscene);
         currentAction = cutsceneActions.get(0);
         currentAction.start();
-        screen.setState(GameState.Cutscene);
     }
     
     public void endCutscene()
     {
+		for (BaseEntity entity : cutsceneEntities)
+		{
+			if (entity instanceof Player)
+			{
+				entity.getComponent(AIComponent.class).setAIMode(AIComponent.AIMode.Input);
+				((Player)entity).stop();
+			}
+		}
+		
         cutsceneEntities.clear();
         cutsceneActions.clear();
         screen.setState(GameState.Playing);
@@ -118,25 +129,36 @@ public class CutsceneManager
     {
         private Character character;
         private Vector2 targetPosition;
+		private float oldSpeed; // original speed;
+		private float tempSpeed; // temporary speed; allows entities to move faster during cutscenes
         
-        public MovementAction(String characterName, float targetX, float targetY)
+        public MovementAction(String characterName, float targetX, float targetY, float speed)
         {
             character = (Character)screen.getEngine().getEntity(characterName);
             targetPosition = new Vector2(targetX, targetY);
+			oldSpeed = character.getSpeed();
+			tempSpeed = speed;
         }
         
         @Override
         public void start()
         {
-            character.getComponent(AIComponent.class).enable(true);
             character.getComponent(AIComponent.class).setAIMode(AIComponent.AIMode.MoveTo);
             character.getComponent(AIComponent.class).setTargetPosition(targetPosition);
+            character.getComponent(AIComponent.class).setTimeStep(0.05f);
+			character.setSpeed(tempSpeed);
         }
         
         @Override
         public boolean isDone() 
         {
-            return character.getComponent(AIComponent.class).getAIMode() == AIComponent.AIMode.Stay;
+			if (character.getComponent(AIComponent.class).getAIMode() == AIComponent.AIMode.Stay)
+			{
+				character.setSpeed(oldSpeed);
+				character.getComponent(AIComponent.class).resetTimeStep();
+				return true;
+			}
+			return false;
         }   
     }
     
@@ -144,9 +166,9 @@ public class CutsceneManager
     {
         private DialogueComponent dialogue;
         
-        public DialogueAction(int dialogueID)
+        public DialogueAction(DialogueComponent component)
         {
-            dialogue = new DialogueComponent(dialogueID, true);
+            dialogue = component;
         }
         
         @Override
@@ -158,7 +180,8 @@ public class CutsceneManager
         @Override
         public boolean isDone() 
         {
-            return dialogue.getCurrentLine().id() == -1;
+			// GameState gets switched to Dialogue during start(), then goes back to cutscene during endDialogue()
+            return screen.getState() == GameState.Cutscene;
         }   
     }
 }

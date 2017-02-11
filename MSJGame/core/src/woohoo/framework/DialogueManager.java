@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.screens.PlayingScreen;
+import woohoo.screens.PlayingScreen.GameState;
 
 public class DialogueManager
 {
@@ -63,7 +64,7 @@ public class DialogueManager
 		ui.getActors().add(name);
 		ui.getActors().add(face);
 		
-		screen.setState(PlayingScreen.GameState.Dialogue);
+		screen.setState(GameState.Dialogue);
     }
 	
 	public void advanceDialogue()
@@ -71,7 +72,7 @@ public class DialogueManager
 		currentDialogue.advance();
 		if (currentDialogue.getCurrentLine() == null)
 		{
-			endDialogue();
+			endDialogue(GameState.Playing);
 			return;
 		}
 		
@@ -80,12 +81,17 @@ public class DialogueManager
 			if (currentDialogue.getCurrentLine().text().equals("LOOP"))
 			{
 				currentDialogue.loop();
-				endDialogue();
+				endDialogue(GameState.Playing);
 			}
 			else if (currentDialogue.getCurrentLine().text().equals("BREAK"))
 			{
 				currentDialogue.advance();
-				endDialogue();
+				endDialogue(GameState.Playing);
+			}
+			else if (currentDialogue.getCurrentLine().text().equals("CUTSCENE"))
+			{
+				currentDialogue.advance();
+				endDialogue(GameState.Cutscene);
 			}
 			return;
 		}
@@ -97,12 +103,12 @@ public class DialogueManager
 		face.setDrawable(faceRegion);
 	}
 	
-	public void endDialogue()
+	public void endDialogue(GameState newState)
 	{
 		ui.getActors().removeValue(message, false);
 		ui.getActors().removeValue(name, false);
 		ui.getActors().removeValue(face, false);
 		
-		screen.setState(PlayingScreen.GameState.Playing);
+		screen.setState(newState);
 	}
 }

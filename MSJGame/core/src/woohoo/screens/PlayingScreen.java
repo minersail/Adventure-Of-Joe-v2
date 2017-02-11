@@ -194,6 +194,7 @@ public class PlayingScreen implements Screen
         assets.load("images/entities/mother.png", Texture.class);	
         assets.load("images/entities/robert.png", Texture.class);	
         assets.load("images/entities/scav.png", Texture.class);	
+        assets.load("images/entities/fitz.png", Texture.class);	
 		assets.load("images/tilesets/tileset1.png", Texture.class);
 		assets.load("images/tilesets/d_tileset1.png", Texture.class);
 		assets.load("images/tilesets/tileset2.png", Texture.class);

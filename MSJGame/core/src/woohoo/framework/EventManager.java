@@ -5,13 +5,12 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import woohoo.framework.events.DialogueEvent;
+import woohoo.framework.events.CutsceneEvent;
 import woohoo.framework.events.Event;
 import woohoo.framework.events.EventListener;
 import woohoo.framework.events.EventTrigger;
 import woohoo.framework.events.MoveEvent;
 import woohoo.framework.events.MoveTrigger;
-import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.Character;
 import woohoo.screens.PlayingScreen;
 
@@ -51,13 +50,8 @@ public class EventManager
 			
 			switch (eventEl.get("type"))
 			{
-				case "dialogue":
-					event = new DialogueEvent(screen.getDialogueManager(), new DialogueComponent(eventEl.getInt("id"), true));
-					break;
-				case "goto":
-					Character character = (Character)screen.getEngine().getEntity(eventEl.get("entity"));
-					character.setSpeed(eventEl.getFloat("speed"));
-					event = new MoveEvent(character, new Vector2(eventEl.getFloat("locX"), eventEl.getFloat("locY")));
+				case "cutscene":
+					event = new CutsceneEvent(screen.getCutsceneManager(), eventEl.getInt("id"));
 					break;
 				default:
 					event = null;

@@ -9,37 +9,52 @@ public class AIComponent implements Component
 {
 	public enum AIMode
 	{
-		Follow, Stay, MoveTo
+		Follow, Stay, MoveTo, Input
 	}
 	
 	// Reference to player, change later to reference of viable targets to follow
 	private Character targetChar;
 	private Vector2 targetPos;
+	
 	private Direction nextDirection;
     private boolean lockDirection;
-	private boolean active;
 	private float timer;
+	private float timeStep; // How often the AI should switch directions
+	
+	private final float DEFAULT_TIMESTEP = 0.5f;
+	
 	private AIMode mode;
 	
 	public AIComponent()
 	{		
 		mode = AIMode.Stay;
-		active = true;
+		timeStep = DEFAULT_TIMESTEP;
 	}
 	
-	public void update(float delta)
+	public void update(float delta, Vector2 currentPos)
 	{
 		timer += delta;
 		
-		if (timer > 0.5) // How often the AI should switch directions
+		if (timer > timeStep)
 		{
 			timer = 0;
 			lockDirection = false;
+		}
+		
+		// If moving towards a certain spot
+		if (mode == AIMode.MoveTo)
+		{
+			float dX = currentPos.x - targetPos.x;
+			float dY = currentPos.y - targetPos.y;
+
+			if (Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2)) < 0.25f)
+				mode = AIMode.Stay;
 		}
 	}
 	
 	private Direction getDirection(Vector2 current, Vector2 target)
 	{
+		// If timer is not up yet, return previous direction
         if (lockDirection) return nextDirection;
         		
 		float dX = current.x - target.x;
@@ -64,13 +79,7 @@ public class AIComponent implements Component
 		{
 			case Follow:
 				return getDirection(current, targetChar.getPosition());
-			case MoveTo:				
-				float dX = current.x - targetPos.x;
-				float dY = current.y - targetPos.y;
-
-				if (Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2)) < 0.25f)
-					mode = AIMode.Stay;
-				
+			case MoveTo:								
 				return getDirection(current, targetPos);
 			case Stay:
 				return null;
@@ -99,13 +108,13 @@ public class AIComponent implements Component
 		targetPos = position;
 	}
 	
-	public void enable(boolean enable)
+	public void setTimeStep(float newStep)
 	{
-		active = enable;
+		timeStep = newStep;
 	}
 	
-	public boolean isActive()
+	public void resetTimeStep()
 	{
-		return active;
+		timeStep = DEFAULT_TIMESTEP;
 	}
 }
