@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import woohoo.gameobjects.Player;
+import woohoo.gameobjects.components.CollisionComponent.Movement;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.screens.PlayingScreen;
 
@@ -34,19 +35,19 @@ public class InputHandler implements InputProcessor
 				switch (keycode) 
 				{            
 					case Keys.UP:
-						player.setMovement(Player.Movement.Vertical);
+						player.setMovement(Movement.Vertical);
 						player.move(Direction.Up);
 						break;
 					case Keys.DOWN:
-						player.setMovement(Player.Movement.Vertical);
+						player.setMovement(Movement.Vertical);
 						player.move(Direction.Down);
 						break;
 					case Keys.LEFT:
-						player.setMovement(Player.Movement.Horizontal);
+						player.setMovement(Movement.Horizontal);
 						player.move(Direction.Left);
 						break;
 					case Keys.RIGHT:
-						player.setMovement(Player.Movement.Horizontal);
+						player.setMovement(Movement.Horizontal);
 						player.move(Direction.Right);
 						break;
 					case Keys.SPACE:
@@ -86,13 +87,13 @@ public class InputHandler implements InputProcessor
 			!Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT))
 		{
 			player.stop();
-			player.setMovement(Player.Movement.None);
+			player.setMovement(Movement.None);
 		}
 		
 		if (Gdx.input.isKeyPressed(Keys.UP) && Gdx.input.isKeyPressed(Keys.DOWN) && 
 			Gdx.input.isKeyPressed(Keys.RIGHT) && Gdx.input.isKeyPressed(Keys.LEFT))
 		{
-			player.setMovement(Player.Movement.None);
+			player.setMovement(Movement.None);
 		}
 			
         return false;
@@ -108,22 +109,22 @@ public class InputHandler implements InputProcessor
 					case Keys.UP:
 						player.move(Direction.Down);
 						if (xor(Keys.RIGHT, Keys.LEFT))
-							player.setMovement(Player.Movement.Horizontal);
+							player.setMovement(Movement.Horizontal);
 						break;
 					case Keys.DOWN:
 						player.move(Direction.Up);
 						if (xor(Keys.RIGHT, Keys.LEFT))
-							player.setMovement(Player.Movement.Horizontal);
+							player.setMovement(Movement.Horizontal);
 						break;
 					case Keys.LEFT:
 						player.move(Direction.Right);
 						if (xor(Keys.UP, Keys.DOWN))
-							player.setMovement(Player.Movement.Vertical);
+							player.setMovement(Movement.Vertical);
 						break;
 					case Keys.RIGHT:
 						player.move(Direction.Left);
 						if (xor(Keys.UP, Keys.DOWN))
-							player.setMovement(Player.Movement.Vertical);
+							player.setMovement(Movement.Vertical);
 						break;
 				}
 				break;
@@ -140,13 +141,13 @@ public class InputHandler implements InputProcessor
 			!Gdx.input.isKeyPressed(Keys.RIGHT) && !Gdx.input.isKeyPressed(Keys.LEFT))
 		{
 			player.stop();
-			player.setMovement(Player.Movement.None);
+			player.setMovement(Movement.None);
 		}
 		
 		if (Gdx.input.isKeyPressed(Keys.UP) && Gdx.input.isKeyPressed(Keys.DOWN) && 
 			Gdx.input.isKeyPressed(Keys.RIGHT) && Gdx.input.isKeyPressed(Keys.LEFT))
 		{
-			player.setMovement(Player.Movement.None);
+			player.setMovement(Movement.None);
 		}
 		
         return false;

@@ -11,11 +11,19 @@ import woohoo.screens.PlayingScreen.WBodyType;
 
 public class CollisionComponent extends BodyComponent
 {
-	Vector2 velocity = new Vector2(0, 0);
+	// Only really used for player movement
+	public enum Movement
+	{
+		None, Horizontal, Vertical
+	}
+	
+	private Vector2 velocity = new Vector2(0, 0);
+	private Movement movement;
 	
 	public CollisionComponent(WBodyType bodyType)
 	{
 		type = bodyType;
+		movement = Movement.None;
 	}
 	
 	@Override
@@ -46,7 +54,18 @@ public class CollisionComponent extends BodyComponent
 	@Override
 	public void update(float delta)
 	{
-		mass.setLinearVelocity(velocity);
+		switch (movement)
+		{
+			case Vertical:
+				mass.setLinearVelocity(new Vector2(0, velocity.y));				
+				break;
+			case Horizontal:
+				mass.setLinearVelocity(new Vector2(velocity.x, 0));				
+				break;
+			case None:
+				mass.setLinearVelocity(velocity);
+				break;
+		}
 	}
 	
 	public void addVelocity(float x, float y)
@@ -74,5 +93,15 @@ public class CollisionComponent extends BodyComponent
 	public boolean isStopped()
 	{
 		return Math.abs(mass.getLinearVelocity().x) < 0.5f && Math.abs(mass.getLinearVelocity().y) < 0.5f;
+	}
+	
+	public void setMovement(Movement move)
+	{
+		movement = move;
+	}
+	
+	public Movement getMovement()
+	{
+		return movement;
 	}
 }

@@ -3,23 +3,16 @@ package woohoo.gameobjects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import woohoo.framework.contactcommands.SensorContact;
 import woohoo.gameobjects.components.AIComponent.AIMode;
+import woohoo.gameobjects.components.CollisionComponent.Movement;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.screens.PlayingScreen.WBodyType;
 
 public class Player extends Character
-{		    
-	public enum Movement
-	{
-		None, Horizontal, Vertical
-	}
-	
-	private Movement movement;
-	private Vector2 suppression = new Vector2(0, 0);
+{		  	
     private WeaponComponent weapon;
 	    
     public Player(TextureAtlas atlas)
@@ -27,7 +20,6 @@ public class Player extends Character
 		super(atlas, WBodyType.Player);
 		
 		brain.setAIMode(AIMode.Input);
-		movement = Movement.None;
 	}
 	
     public Player(Texture region)
@@ -35,7 +27,6 @@ public class Player extends Character
 		super(new TextureRegion(region), WBodyType.Player);
 		
 		brain.setAIMode(AIMode.Input);
-		movement = Movement.None;
 	}
 	
 	@Override
@@ -99,38 +90,13 @@ public class Player extends Character
 			weapon.swing();	
 	}
 	
-	public void setMovement(Movement move)
+	public void setMovement(Movement movement)
 	{
-		if (movement == Movement.Horizontal && move == Movement.Vertical)
-			collision.addVelocity(0, suppression.y);
-		if (movement == Movement.Vertical && move == Movement.Horizontal)
-			collision.addVelocity(suppression.x, 0);
-		
-		movement = move;
+		collision.setMovement(movement);
 	}
 	
 	public Movement getMovement()
 	{
-		return movement;
-	}
-	
-	@Override
-	public void move(Direction dir)
-	{
-		super.move(dir);
-		
-		switch(movement)
-		{
-			case Vertical:
-				suppression.x = collision.getVelocity().x;
-				collision.setVelocity(0, collision.getVelocity().y);
-				break;
-			case Horizontal:
-				suppression.y = collision.getVelocity().y;
-				collision.setVelocity(collision.getVelocity().x, 0);
-				break;
-			case None:
-				break;
-		}
+		return collision.getMovement();
 	}
 }

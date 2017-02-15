@@ -23,6 +23,8 @@ public class DialogueManager
 	private Stage ui;
 	
 	private final int MARGIN = 100;
+	private final int NAMEWIDTH = 100;
+	private final int NAMEHEIGHT = 100;
     
     public DialogueManager(PlayingScreen scr, Stage s, Skin skin)
     {
@@ -30,20 +32,20 @@ public class DialogueManager
 		ui = s;
 				
 		message = new Label("", skin);
-		message.setWidth(Gdx.graphics.getWidth() - MARGIN * 2);
+		message.setWidth(Gdx.graphics.getWidth() - MARGIN * 2 - NAMEWIDTH);
 		message.setHeight(100);
-		message.setPosition(MARGIN, 0);
+		message.setPosition(MARGIN + NAMEWIDTH, 0);
 		message.setAlignment(Align.center);
 		message.setWrap(true);
 		message.setFontScale(0.5f);
 		
-		name = new Label("", new LabelStyle(skin.getFont("text"), Color.GREEN));
-		name.setWidth(100);
-		name.setHeight(30);
+		name = new Label("", skin);
+		name.setWidth(NAMEWIDTH);
+		name.setHeight(NAMEHEIGHT);
 		name.setPosition(MARGIN, 0);
-		name.setAlignment(Align.center);
+		name.setAlignment(Align.bottom);
 		name.setWrap(true);	
-		name.setFontScale(0.2f);
+		name.setFontScale(0.3f);
 		
 		face = new Image();
 		face.setWidth(64);
