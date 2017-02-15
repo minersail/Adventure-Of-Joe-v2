@@ -8,7 +8,7 @@
 	</area>
 	<area id="1">
 		<eventlistener entity="player">
-			<trigger type="move" locX="2" locY="7" dist="2" />
+			<trigger type="move" locX="2" locY="7.5" dist="2" />
 			<event type="cutscene" id="1"/>
 		</eventlistener>
 	</area>

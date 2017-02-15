@@ -37,6 +37,7 @@ public class InventoryManager
     public final int ITEMY = 72;
 	
 	public final int PADDING_LEFT = 100;
+	public final int PADDING_RIGHT = 100;
 	// I have no idea why the -6 needs to be there but it does
 	public final int INVENTORY_BOTTOM = -6 + (Gdx.graphics.getHeight() - ((INVENTORY_HEIGHT + 1) * ITEMY)) / 2;
 	public final int INVENTORY_TOP = INVENTORY_BOTTOM + (INVENTORY_HEIGHT * ITEMY);
@@ -52,6 +53,7 @@ public class InventoryManager
 	private InventoryComponent currentInventory;
     private PlayingScreen screen;
 	private Table table;
+	private Table table2;
 	private TextButton closeButton;
 	private InventorySlot weaponSlot;
 
@@ -65,6 +67,7 @@ public class InventoryManager
     {
         screen = scr;
         table = new Table();
+        table2 = new Table();
 		
         slotBackground = atlas.findRegion("itemframe");
 		blankItem = atlas.findRegion("blank");
@@ -89,7 +92,7 @@ public class InventoryManager
         DragAndDrop dnd = new DragAndDrop();
 		
         dnd.addSource(new InventorySource(weaponSlot));
-        dnd.addTarget(new InventoryTarget(weaponSlot)
+        dnd.addTarget(new InventoryTarget(weaponSlot) // Weapon slot has special function when dropped to
         {
             @Override
             public void drop(Source source, Payload payload, float x, float y, int pointer) 
@@ -121,24 +124,37 @@ public class InventoryManager
 
                 dnd.addSource(new InventorySource(slot));
                 dnd.addTarget(new InventoryTarget(slot));
+				
+                InventorySlot slot2 = new InventorySlot(slotBackground, blankItem);
+                table2.add(slot2).prefSize(ITEMX, ITEMY);
+
+                dnd.addSource(new InventorySource(slot));
+                dnd.addTarget(new InventoryTarget(slot));
             }
             table.row();
+			table2.row();
         }
 
         table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.align(Align.left);
 		table.padLeft(PADDING_LEFT);
+		
+		table2.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        table2.align(Align.right);
+		table2.padRight(PADDING_RIGHT);
     }
 
     public void showInventory() 
     {
         screen.getUI().addActor(table);
+        screen.getUI().addActor(table2);
         screen.setState(PlayingScreen.GameState.Inventory);
     }
 	
 	public void closeInventory()
 	{
 		table.remove();
+		table2.remove();
         screen.setState(PlayingScreen.GameState.Playing);
 	}
     

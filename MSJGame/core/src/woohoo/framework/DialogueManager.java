@@ -21,6 +21,8 @@ public class DialogueManager
 	private Label message;
 	private Label name;
 	private Stage ui;
+	
+	private final int MARGIN = 100;
     
     public DialogueManager(PlayingScreen scr, Stage s, Skin skin)
     {
@@ -28,9 +30,9 @@ public class DialogueManager
 		ui = s;
 				
 		message = new Label("", skin);
-		message.setWidth(Gdx.graphics.getWidth());
+		message.setWidth(Gdx.graphics.getWidth() - MARGIN * 2);
 		message.setHeight(100);
-		message.setPosition(0, 0);
+		message.setPosition(MARGIN, 0);
 		message.setAlignment(Align.center);
 		message.setWrap(true);
 		message.setFontScale(0.5f);
@@ -38,7 +40,7 @@ public class DialogueManager
 		name = new Label("", new LabelStyle(skin.getFont("text"), Color.GREEN));
 		name.setWidth(100);
 		name.setHeight(30);
-		name.setPosition(0, 0);
+		name.setPosition(MARGIN, 0);
 		name.setAlignment(Align.center);
 		name.setWrap(true);	
 		name.setFontScale(0.2f);
@@ -46,7 +48,7 @@ public class DialogueManager
 		face = new Image();
 		face.setWidth(64);
 		face.setHeight(64);
-		face.setPosition(18, 30);
+		face.setPosition(MARGIN + 18, 30);
 		face.setAlign(Align.center);
     }
     
