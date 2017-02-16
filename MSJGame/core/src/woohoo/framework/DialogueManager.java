@@ -1,11 +1,9 @@
 package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -37,7 +35,7 @@ public class DialogueManager
 		message.setPosition(MARGIN + NAMEWIDTH, 0);
 		message.setAlignment(Align.center);
 		message.setWrap(true);
-		message.setFontScale(0.5f);
+		message.setFontScale(0.75f);
 		
 		name = new Label("", skin);
 		name.setWidth(NAMEWIDTH);
@@ -45,7 +43,7 @@ public class DialogueManager
 		name.setPosition(MARGIN, 0);
 		name.setAlignment(Align.bottom);
 		name.setWrap(true);	
-		name.setFontScale(0.3f);
+		name.setFontScale(0.4f);
 		
 		face = new Image();
 		face.setWidth(64);

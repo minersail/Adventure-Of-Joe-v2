@@ -80,8 +80,10 @@ public class GameWorld extends Engine
 			
 			switch (eClass)
 			{
-				case "npc":
-					NPC npc = new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class), entity.getInt("id"));
+				case "npc":					
+					NPC npc = entity.getBoolean("animated", false) ? 
+						new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), TextureAtlas.class), entity.getInt("id")) :
+						new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class), entity.getInt("id")); 
 					screen.addEntity(npc);
 					npc.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
 					npc.setName(entity.get("name", ""));

@@ -2,9 +2,8 @@
 <dialogues>
 	<dialogue id="0">
 		<line character="0" name="Joe" text="Ugh..." />
-		<line character="1" name="???" text="*SCREAM*" />
-		<line character="0" name="Joe" text="Whoah.." />
-		<line character="0" name="Joe" text="Hey MA, what's going on?" />
+		<line character="1" name="Ma" text="*SCREAM*" />
+		<line character="0" name="Joe" text="What's that all about?" />
 		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
 	<dialogue id="1">
@@ -13,9 +12,9 @@
 		<line character="2" name="Robert" text="Hello, Joseph." />
 		<line character="1" name="Ma" text="Your...*sniff*...y-your.." />
 		<line character="1" name="Ma" text="Your father has passed away." />
-		<line character="2" name="Robert" text="He died honorably in battle." />
-		<line character="2" name="Robert" text="He died fighting for the kingdom. He was a man with much valor." />
-		<line character="0" name="Joe" text="NOOOOOOOOOOOOOOOOOOOOOOO" />
+		<line character="2" name="Robert" text="He died honorably in the battlefield." />
+		<line character="2" name="Robert" text="He died to protect you and your mother." />
+		<line character="0" name="Joe" text="NOOOOOO" />
 		<line character="-1" name="Command" text="CUTSCENE" />
 		<line character="1" name="Ma" text="Joseph! Please come back..." />
 		<line character="-1" name="Command" text="CUTSCENE" />

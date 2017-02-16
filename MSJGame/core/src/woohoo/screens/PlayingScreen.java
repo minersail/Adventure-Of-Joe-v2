@@ -188,9 +188,11 @@ public class PlayingScreen implements Screen
 		SkinParameter skinParam1 = new SkinParameter("ui/uiskin.atlas");
 		
 		assets.load("images/entities/oldman.pack", TextureAtlas.class, flipParam);
+		assets.load("images/entities/mother.pack", TextureAtlas.class, flipParam);
 		assets.load("images/entities/youngjoe.pack", TextureAtlas.class, flipParam);
 		assets.load("images/entities/joeface.png", Texture.class);
         assets.load("images/entities/ginger.png", Texture.class);
+        assets.load("images/entities/robber.png", Texture.class);
         assets.load("images/entities/mother.png", Texture.class);	
         assets.load("images/entities/robert.png", Texture.class);	
         assets.load("images/entities/scav.png", Texture.class);	

@@ -11,9 +11,11 @@
 	<area id="0">
 	</area>
 	<area id="1">
-		<entity class="npc" locX="7" locY="6" texture="mother.png" name="mother" id="0" />
-		<entity class="npc" locX="8" locY="6" texture="robert.png" name="robert" id="1" />
+		<entity class="npc" locX="7" locY="6" texture="mother.pack" name="mother" id="0" animated="true"/>
+		<entity class="npc" locX="8" locY="6" texture="robert.png" name="robert" id="0" animated="false"/>
 	</area>
 	<area id="2">
+		<entity class="npc" locX="18" locY="1" texture="robber.png" id="0" />
+		<entity class="npc" locX="18" locY="3" texture="robber.png" id="0" />
 	</area>
 </entities>

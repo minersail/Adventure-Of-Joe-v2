@@ -43,20 +43,21 @@ public class MapObjectComponent extends TextureMapObject implements Component
 		usesAnimation = true;
 		animation = new HashMap<>();
 		
-		addAnimation("Left", new Animation<TextureRegion>(0.166f, atlas.findRegions("left"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Right", new Animation<TextureRegion>(0.166f, atlas.findRegions("right"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Up", new Animation<TextureRegion>(0.166f, atlas.findRegions("up"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Down", new Animation<TextureRegion>(0.166f, atlas.findRegions("down"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Left_Idle", new Animation<TextureRegion>(0.166f, atlas.findRegions("left_idle"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Right_Idle", new Animation<TextureRegion>(0.166f, atlas.findRegions("right_idle"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Up_Idle", new Animation<TextureRegion>(0.166f, atlas.findRegions("up_idle"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Down_Idle", new Animation<TextureRegion>(0.166f, atlas.findRegions("down_idle"), Animation.PlayMode.LOOP_PINGPONG));
-		addAnimation("Left_Fight", new Animation<TextureRegion>(0.166f, atlas.findRegions("left_fight"), Animation.PlayMode.NORMAL));
-		addAnimation("Right_Fight", new Animation<TextureRegion>(0.166f, atlas.findRegions("right_fight"), Animation.PlayMode.NORMAL));
-		addAnimation("Up_Fight", new Animation<TextureRegion>(0.166f, atlas.findRegions("up_fight"), Animation.PlayMode.NORMAL));
-		addAnimation("Down_Fight", new Animation<TextureRegion>(0.166f, atlas.findRegions("down_fight"), Animation.PlayMode.NORMAL));
+		addAnimation("Left", "left", atlas, 0.166f, Animation.PlayMode.LOOP_PINGPONG);
+		addAnimation("Right", "right", atlas, 0.166f, Animation.PlayMode.LOOP_PINGPONG);
+		addAnimation("Up", "up", atlas, 0.166f, Animation.PlayMode.LOOP_PINGPONG);
+		addAnimation("Down", "down", atlas, 0.166f, Animation.PlayMode.LOOP_PINGPONG);
+		addAnimation("Left_Idle", "left_idle", atlas, 0.166f, Animation.PlayMode.LOOP_PINGPONG);
+		addAnimation("Right_Idle", "right_idle", atlas, 0.166f, Animation.PlayMode.LOOP_PINGPONG);
+		addAnimation("Up_Idle", "up_idle", atlas, 0.166f, Animation.PlayMode.LOOP_PINGPONG);
+		addAnimation("Down_Idle", "down_idle", atlas, 0.166f, Animation.PlayMode.LOOP_PINGPONG);
+		addAnimation("Left_Fight", "left_fight", atlas, 0.166f, Animation.PlayMode.NORMAL);
+		addAnimation("Right_Fight", "right_fight", atlas, 0.166f, Animation.PlayMode.NORMAL);
+		addAnimation("Up_Fight", "up_fight", atlas, 0.166f, Animation.PlayMode.NORMAL);
+		addAnimation("Down_Fight", "down_fight", atlas, 0.166f, Animation.PlayMode.NORMAL);
 		
 		size = new Vector2(1, 1);
+		isIdle = true;
 	}
 	
 	public MapObjectComponent addTo(MapObjects objects)
@@ -134,8 +135,9 @@ public class MapObjectComponent extends TextureMapObject implements Component
 		return animation.get(str);
 	}
 	
-	private void addAnimation(String str, Animation<TextureRegion> anim)
+	private void addAnimation(String name, String region, TextureAtlas atlas, float frameTime, Animation.PlayMode mode)
 	{
-		animation.put(str, anim);
+		if (atlas.findRegions(region) != null)
+			animation.put(name, new Animation<TextureRegion>(frameTime, atlas.findRegions(region), mode));
 	}
 }

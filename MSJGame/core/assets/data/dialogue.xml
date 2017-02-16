@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dialogues>
+	<!-- Dialogue 0 is reserved for NPCs that do not speak -->
 	<dialogue id="0">
-		<line character="1" name="John" text="*sniff*" />
-		<line character="0" name="Joe" text="Shut up, John" />
-		<line character="1" name="John" text="Why so crabby?" />
-		<line character="0" name="Joe" text="*farts loudly to drown out John's voice*" />
+		<line character="0" name="Joe" text="I don't want to talk to that person." />
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 	<dialogue id="1">
-		<line character="1" name="John" text="*sniff*" />
-		<line character="0" name="Joe" text="Shut up, John" />
-		<line character="1" name="John" text="Why so crabby?" />
-		<line character="0" name="Joe" text="*farts loudly to drown out John's voice*" />
-		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 </dialogues>
