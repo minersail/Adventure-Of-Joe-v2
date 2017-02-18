@@ -143,9 +143,8 @@ public class CutsceneManager
         @Override
         public void start()
         {
-            character.getComponent(AIComponent.class).setAIMode(AIComponent.AIMode.MoveTo);
-            character.getComponent(AIComponent.class).setTargetPosition(targetPosition);
             character.getComponent(AIComponent.class).setTimeStep(0.05f);
+            character.setTarget(targetPosition);
 			character.setSpeed(tempSpeed);
         }
         

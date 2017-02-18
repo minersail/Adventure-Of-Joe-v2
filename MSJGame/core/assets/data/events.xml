@@ -8,10 +8,14 @@
 	</area>
 	<area id="1">
 		<eventlistener entity="player">
-			<trigger type="move" locX="2" locY="7.5" dist="2" />
+			<trigger type="move" locX="2.5" locY="7.5" dist="2" />
 			<event type="cutscene" id="1"/>
 		</eventlistener>
 	</area>
 	<area id="2">
+		<eventlistener entity="player">
+			<trigger type="move" locX="2.5" locY="6.5" dist=".5" />
+			<event type="cutscene" id="2"/>
+		</eventlistener>
 	</area>
 </events>

@@ -2,7 +2,6 @@ package woohoo.framework.events;
 
 import com.badlogic.gdx.math.Vector2;
 import woohoo.gameobjects.Character;
-import woohoo.gameobjects.components.AIComponent;
 
 public class MoveEvent implements Event
 {
@@ -23,7 +22,6 @@ public class MoveEvent implements Event
 	@Override
 	public void activate()
 	{
-		character.getComponent(AIComponent.class).setAIMode(AIComponent.AIMode.MoveTo);
-		character.getComponent(AIComponent.class).setTargetPosition(position);
+		character.setTarget(position);
 	}
 }

@@ -11,11 +11,14 @@
 	<area id="0">
 	</area>
 	<area id="1">
-		<entity class="npc" locX="7" locY="6" texture="mother.pack" name="mother" id="0" animated="true"/>
-		<entity class="npc" locX="8" locY="6" texture="robert.png" name="robert" id="0" animated="false"/>
+		<entity class="npc" locX="7" locY="6" texture="mother.pack" name="mother" id="1" animated="true"/>
+		<entity class="npc" locX="8" locY="6" texture="robert.png" name="robert" id="2" animated="false"/>
 	</area>
 	<area id="2">
-		<entity class="npc" locX="18" locY="1" texture="robber.png" id="0" />
-		<entity class="npc" locX="18" locY="3" texture="robber.png" id="0" />
+		<entity class="npc" locX="-2" locY="2" texture="mother.pack" name="mother" id="1" animated="true"/>
+		<entity class="npc" locX="-3" locY="2" texture="robert.png" name="robert" id="2" animated="false"/>
+		<entity class="npc" locX="1" locY="5" texture="robber.png" name="robber1" id="3" />
+		<entity class="npc" locX="3" locY="5" texture="robber.png" name="robber2" id="4" />
+		<entity class="enemy" locX="1" locY="12" texture="joeface.png" health="10" mode="follow" />
 	</area>
 </entities>

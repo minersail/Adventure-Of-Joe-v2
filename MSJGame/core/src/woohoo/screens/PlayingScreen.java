@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import woohoo.framework.AIManager;
 import woohoo.framework.IDManager;
 import woohoo.framework.ContactManager;
 import woohoo.framework.CutsceneManager;
@@ -64,6 +65,7 @@ public class PlayingScreen implements Screen
 	final private FitViewport viewport; // Helper class for camera
 	final private Box2DDebugRenderer debugRenderer;
 	
+	final private AIManager aimanager;
     final private CutsceneManager cutscenes;
 	final private EventManager events;
     final private InventoryManager inventoryManager;
@@ -85,7 +87,7 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	private int currentArea = 0;
+	private int currentArea = 2;
 	
     private float runTime;
 
@@ -136,6 +138,9 @@ public class PlayingScreen implements Screen
 		// Initialize objects
 		engine.loadPlayer();
 		engine.loadEntities(currentArea);
+		
+		aimanager = new AIManager(this);
+		aimanager.initializePathfinding();
 		
 		// Create event manager
 		events = new EventManager(this);
@@ -210,6 +215,7 @@ public class PlayingScreen implements Screen
 		assets.load("images/faces/000_youngjoe.png", Texture.class);
 		assets.load("images/faces/001_mother.png", Texture.class);
 		assets.load("images/faces/002_robert.png", Texture.class);
+		assets.load("images/faces/003_robber.png", Texture.class);
         
         // Load items
         assets.load("images/items/000_Stick.png", Texture.class);
@@ -240,7 +246,6 @@ public class PlayingScreen implements Screen
 			if (entity instanceof Enemy)
 			{
 				entity.getComponent(SensorComponent.class).initializeCommand(contacts, world).createMass(world);
-				entity.getComponent(AIComponent.class).setTargetCharacter(engine.getPlayer());
 			}
 			else if (entity instanceof NPC)
 			{

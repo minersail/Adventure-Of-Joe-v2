@@ -75,7 +75,25 @@ public class Character extends BaseEntity
 		{
 			stop();
 			move(brain.calculateDirection(collision.getPosition()));
-		}		
+		}				
+		
+		if (!collision.isStopped())
+		{
+			if (Math.abs(collision.getVelocity().x) > Math.abs(collision.getVelocity().y))
+			{
+				if (collision.getVelocity().x > 0)
+					mapObject.setDirection(Direction.Right);
+				else
+					mapObject.setDirection(Direction.Left);
+			}
+			else
+			{
+				if (collision.getVelocity().y > 0)
+					mapObject.setDirection(Direction.Down);
+				else
+					mapObject.setDirection(Direction.Up);
+			}
+		}
 	}
     
     public Vector2 getPosition()
@@ -209,4 +227,29 @@ public class Character extends BaseEntity
     {
         healthBar.damage(damage);
     }
+	
+	public void setAIMode(AIMode mode)
+	{
+		brain.setAIMode(mode);
+	}
+	
+	/**
+	 * Sets a position for the character to start moving towards
+	 * @param position target location
+	 */
+	public void setTarget(Vector2 position)
+	{
+		brain.setTargetPosition(collision.getPosition(), position);
+		brain.setAIMode(AIMode.MoveTo);
+	}
+	
+	/**
+	 * Sets a character for the character to start following
+	 * @param character target character
+	 */
+	public void setTarget(Character character)
+	{
+		brain.setTargetCharacter(collision.getPosition(), character);
+		brain.setAIMode(AIMode.Follow);
+	}
 }

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Each dialogue represents an encounter with an NPC per game area -->
 <dialogues>
 	<!-- Dialogue 0 is reserved for NPCs that do not speak -->
 	<dialogue id="0">
@@ -6,5 +7,20 @@
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 	<dialogue id="1">
+		<line character="1" name="Ma" text="*Sobs*" />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue>
+	<dialogue id="2">
+		<line character="2" name="Robert" text="Your father was a man of many talents." />
+		<line character="2" name="Robert" text="He will be missed." />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue>
+	<dialogue id="3">
+		<line character="3" name="Robber 1" text="Hey, watch it." />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue>
+	<dialogue id="4">
+		<line character="3" name="Robber 2" text="Isn't it past your bedtime?" />
+		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 </dialogues>
