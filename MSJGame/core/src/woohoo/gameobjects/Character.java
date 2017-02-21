@@ -77,6 +77,8 @@ public class Character extends BaseEntity
 			move(brain.calculateDirection(collision.getPosition()));
 		}				
 		
+		mapObject.setIdle(collision.isStopped());
+		
 		if (!collision.isStopped())
 		{
 			if (Math.abs(collision.getVelocity().x) > Math.abs(collision.getVelocity().y))

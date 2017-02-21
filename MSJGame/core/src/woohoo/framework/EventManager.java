@@ -9,9 +9,7 @@ import woohoo.framework.events.CutsceneEvent;
 import woohoo.framework.events.Event;
 import woohoo.framework.events.EventListener;
 import woohoo.framework.events.EventTrigger;
-import woohoo.framework.events.MoveEvent;
 import woohoo.framework.events.MoveTrigger;
-import woohoo.gameobjects.Character;
 import woohoo.screens.PlayingScreen;
 
 public class EventManager

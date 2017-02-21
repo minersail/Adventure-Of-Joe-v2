@@ -1,24 +1,21 @@
 package woohoo.ai;
 
-import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import com.badlogic.gdx.ai.pfa.DefaultConnection;
+import com.badlogic.gdx.utils.Array;
 
 public class Node
 {
 	public int x;
 	public int y;
+	private Array<DefaultConnection> connections;
 	
 	public Node(int X, int Y)
 	{
 		x = X;
 		y = Y;
+		connections = new Array<>();
 	}
-	
-	public Node(float X, float Y)
-	{
-		x = Math.round(X);
-		y = Math.round(Y);
-	}
-	
+		
 	@Override 
 	public boolean equals(Object obj)
 	{
@@ -27,21 +24,14 @@ public class Node
 		return ((Node)obj).x == x && ((Node)obj).y == y;
 	}
 	
-	public Node getNeighbor(Direction dir)
+	public void createConnection(Node other)
 	{
-		switch (dir)
-		{
-			case Up:
-				return new Node(x, y - 1);
-			case Down:
-				return new Node(x, y + 1);
-			case Left:
-				return new Node(x - 1, y);
-			case Right:
-				return new Node(x + 1, y);
-			default:
-				return new Node(x, y);
-		}
+		connections.add(new DefaultConnection(this, other));
+	}
+	
+	public Array<DefaultConnection> getConnections()
+	{
+		return connections;
 	}
 
 	// This was automatically generated

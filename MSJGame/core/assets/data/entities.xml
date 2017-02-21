@@ -19,6 +19,5 @@
 		<entity class="npc" locX="-3" locY="2" texture="robert.png" name="robert" id="2" animated="false"/>
 		<entity class="npc" locX="1" locY="5" texture="robber.png" name="robber1" id="3" />
 		<entity class="npc" locX="3" locY="5" texture="robber.png" name="robber2" id="4" />
-		<entity class="enemy" locX="1" locY="12" texture="joeface.png" health="10" mode="follow" />
 	</area>
 </entities>

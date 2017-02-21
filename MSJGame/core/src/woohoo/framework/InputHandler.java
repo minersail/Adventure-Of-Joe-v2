@@ -64,9 +64,6 @@ public class InputHandler implements InputProcessor
 					case Keys.A:
 						player.attack();
 						break;
-					case Keys.NUM_0:
-						//screen.getEngine().getEntity("robber1").getComponent(AIComponent.class).;
-						break;
 				}
 				break;
 			
@@ -83,6 +80,16 @@ public class InputHandler implements InputProcessor
 				{
 					case Keys.ESCAPE:
 						screen.getInventoryManager().closeInventory();
+				}
+				break;
+				
+			case Cutscene:
+				switch(keycode)
+				{
+					case Keys.NUM_0: // Debug get rid of later
+						screen.getEngine().getPlayer().setAIMode(AIComponent.AIMode.Input);
+						screen.setState(PlayingScreen.GameState.Playing);
+						break;
 				}
 				break;
 		}

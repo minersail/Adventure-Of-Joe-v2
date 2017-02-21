@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
-import java.util.ArrayList;
 import woohoo.framework.contactcommands.GateContact;
 import woohoo.framework.fixturedata.GateData;
 import woohoo.gameobjects.components.MapObjectComponent;
@@ -106,6 +105,7 @@ public class GateManager
         createGates(nextGate.destArea());
 		screen.getEngine().loadEntities(nextGate.destArea());
 		screen.getEventManager().createEvents(nextGate.destArea());
+		screen.getAIManager().initializePathfinding(nextGate.destArea());
 		
 		// There's one frame where new map is not quite loaded, so skip the frame. Nobody will even notice
 		screen.getRenderer().skipFrame();

@@ -11,19 +11,18 @@
 		<action type="move" name="player" locX="16" locY="2" speed="5" />
 		<action type="dialogue" />
 	</cutscene>
-	<cutscene id="1">
+	<cutscene id="2">
 		<entity name="player" />
 		<entity name="mother" />
 		<entity name="robert" />
 		<action type="dialogue" />
-		<action type="move" name="mother" locX="2" locY="2" speed="2" />
 		<action type="move" name="mother" locX="2" locY="3" speed="2" />
 		<action type="dialogue" />
 		<action type="move" name="robert" locX="2" locY="2" speed="2" />
 		<action type="dialogue" />
 		<action type="move" name="robert" locX="3" locY="1" speed="2" />
 		<action type="dialogue" />
-		<action type="move" name="robert" locX="-2" locY="1" speed="2" />
+		<action type="move" name="robert" locX="-2" locY="2" speed="2" />
 		<action type="move" name="player" locX="2" locY="8" speed="2" />
 	</cutscene>
 </cutscenes>

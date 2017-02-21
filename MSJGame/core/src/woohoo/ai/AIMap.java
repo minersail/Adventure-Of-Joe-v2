@@ -1,73 +1,143 @@
 package woohoo.ai;
 
-import com.badlogic.gdx.ai.pfa.DefaultConnection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
+import java.util.ArrayList;
 import woohoo.gameobjects.components.CollisionComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
 
-public class AIMap implements IndexedGraph
+public class AIMap implements IndexedGraph<Node>
 {
-	private Array<Node> nodes;
+	private IntMap<Node> nodes;
 	private int width;
 	private int height;
+	private int offsetRow;
+	private int offsetCol;
 	
-	public AIMap(Map map, World world, CollisionComponent component)
+	/**
+	 * AIMap constructor creates the pathfinding grid: <br>
+	 *	- Creates nodes for every 1x1 tile <br>
+	 *  - Excludes wall tiles <br>
+	 *  - Excludes a tiles that have an entity on top of them <br>
+	 *  - Exceptions to entity exclusion are passed in as an array of CollisionComponents <br>
+	 *  - Extra nodes can manually be added that are outside of the regular game map (e.g. (-1, 0)) <br>
+	 *  - In order for the indexing algorithm to work properly, minimum and maximum rows and columns must
+	 *	  be set (if the extra nodes are to work) <br>
+	 * @param map to create the base grid
+	 * @param world to obtain all entity fixtures obstructing the map (and thus nodes to be excluded)
+	 * @param exclude list of {@link CollisionComponent}s that are exceptions to entity exclusion
+	 * @param extraNodes list of extra nodes to manually added
+	 * @param topRow minimum row (Note: these are additive, not definite: e.g. left row of 2 does not mean the largest row is 2, but rather that 2 is added onto the right row)
+	 * @param botRow maximum row
+	 * @param leftCol minimum column
+	 * @param rightCol maximum column
+	 */
+	public AIMap(Map map, World world, ArrayList<CollisionComponent> exclude, ArrayList<Vector2> extraNodes, int topRow, int botRow, int leftCol, int rightCol)
 	{
-		nodes = new Array<>();
+		nodes = new IntMap<>();
 		
 		TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get("Base");
-		width = layer.getWidth();
-		height = layer.getHeight();
+		width = layer.getWidth() + leftCol + rightCol;
+		height = layer.getHeight() + topRow + botRow;
+		offsetRow = topRow;
+		offsetCol = leftCol;
+		
+		for (Vector2 nodeXY : extraNodes)
+		{
+			int x = (int)nodeXY.x;
+			int y = (int)nodeXY.y;
+			
+			Node node = new Node(x, y);
+			nodes.put(index(x, y), node);
+		}
 		
 		// Nodes are every 1x1 unit, except walls
-		for (int j = 0; j < height; j++)
+		for (int j = 0; j < layer.getHeight(); j++)
 		{
-			for (int i = 0; i < width; i++)
+			for (int i = 0; i < layer.getWidth(); i++)
 			{
 				if (!layer.getCell(i, j).getTile().getProperties().get("isWall", Boolean.class))
-				{
-					nodes.add(new Node(i, j));
+				{					
+					Node node = new Node(i, j);
+					nodes.put(index(i, j), node);
 				}				
 				
-				world.QueryAABB(new EntityQuery(nodes, component.getMass(), i, j), i + 1, j + 1, i, j);
+				world.QueryAABB(new EntityQuery(nodes, exclude, i, j), i + 1, j + 1, i, j);
 			}
+		}
+		
+		for (Node node : nodes.values())
+		{
+			generateConnections(node);
+			if (node == null) System.out.println("hi");
 		}
 	}
 	
 	@Override
-	public Array getConnections(Object fN)
+	public Array getConnections(Node fromNode)
 	{
-		Array<DefaultConnection<Node>> connections = new Array<>();
-		Node fromNode = (Node)fN;
-		
-		if (contains(fromNode.getNeighbor(MapObjectComponent.Direction.Up)))
-			connections.add(new DefaultConnection<>(fromNode, fromNode.getNeighbor(MapObjectComponent.Direction.Up)));
-		if (contains(fromNode.getNeighbor(MapObjectComponent.Direction.Down)))
-			connections.add(new DefaultConnection<>(fromNode, fromNode.getNeighbor(MapObjectComponent.Direction.Down)));
-		if (contains(fromNode.getNeighbor(MapObjectComponent.Direction.Left)))
-			connections.add(new DefaultConnection<>(fromNode, fromNode.getNeighbor(MapObjectComponent.Direction.Left)));
-		if (contains(fromNode.getNeighbor(MapObjectComponent.Direction.Right)))
-			connections.add(new DefaultConnection<>(fromNode, fromNode.getNeighbor(MapObjectComponent.Direction.Right)));
-		
-		return connections;
-	}
-
-	@Override
-	public int getIndex(Object node)
-	{
-		return nodes.indexOf((Node)node, false);
+		return fromNode.getConnections();
 	}
 	
-	public Node get(int index)
+	final public void generateConnections(Node node)
 	{
-		return nodes.get(index);
+		int x = node.x;
+		int y = node.y;
+		
+		if (get(x, y - 1) != null)
+			node.createConnection(get(x, y - 1));
+		if (get(x, y + 1) != null)
+			node.createConnection(get(x, y + 1));
+		if (get(x - 1, y) != null)
+			node.createConnection(get(x - 1, y));
+		if (get(x + 1, y) != null)
+			node.createConnection(get(x + 1, y));
+	}
+
+	/*
+	Used by the path finder
+	
+	The nodes are stored in an IntMap, with an index mapping to each node, where index is
+	calculated as x + y * width. However, this index cannot be returned because getIndex()
+	expects an integer between 0 and n, where n is the number of nodes.
+	*/
+	@Override
+	public int getIndex(Node node)
+	{
+		return nodes.keys().toArray().indexOf(index(node.x, node.y));
+	}
+	
+	/**
+	 * Calculates an index given x and y coordinates
+	 * @param x value of the node
+	 * @param y value of the node
+	 * @return index of the node
+	 */
+	private int index(int x, int y)
+	{
+		return (x + offsetCol) + (y + offsetRow) * width;
+	}
+	
+	public Node get(int x, int y)
+	{
+		return nodes.get(index(x, y));
+	}
+	
+	public Node getFirst()
+	{
+		return nodes.values().toArray().get(0);
+	}
+	
+	public Node getLast()
+	{
+		return nodes.values().toArray().get(nodes.size - 1);
 	}
 
 	@Override
@@ -76,9 +146,9 @@ public class AIMap implements IndexedGraph
 		return nodes.size;
 	}
 	
-	public boolean contains(Node node)
+	public boolean contains(int index)
 	{
-		return nodes.contains(node, false);
+		return nodes.containsKey(index);
 	}
 	
 	/**
@@ -86,33 +156,41 @@ public class AIMap implements IndexedGraph
 	 */
 	public class EntityQuery implements QueryCallback
 	{
-		Array<Node> nodeList;
-		Body exclude;
+		IntMap<Node> nodeList;
+		ArrayList<Body> excludes;
 		int x;
 		int y;
 		
-		public EntityQuery(Array<Node> nodes, Body body, int X, int Y)
+		public EntityQuery(IntMap<Node> nodes, ArrayList<CollisionComponent> excl, int X, int Y)
 		{
 			nodeList = nodes;
-			exclude = body;
 			x = X;
 			y = Y;
+			
+			excludes = new ArrayList<>();
+			for (CollisionComponent e : excl)
+			{
+				excludes.add(e.getMass());
+			}
 		}
 		
 		@Override
 		public boolean reportFixture(Fixture fixture)
 		{			
-			for (Fixture fix : exclude.getFixtureList())
+			for (Body exclude : excludes)
 			{
-				if (fixture.equals(fix))
-					return true; // Don't include fixtures on the body performing the pathfinding
+				for (Fixture fix : exclude.getFixtureList())
+				{
+					if (fixture.equals(fix))
+						return true; // Don't include fixtures on the body performing the pathfinding
+				}
 			}
 			
 			// Finds a fixture overlapping the tile, and that fixture has collsion activated
 			if (!fixture.isSensor())
 			{
 				// Remove this as a possible node for the pathfinding graph
-				nodeList.removeValue(new Node(x, y), false);
+				nodeList.remove(index(x, y));
 				return false; // Only need to check for one
 			}
 			

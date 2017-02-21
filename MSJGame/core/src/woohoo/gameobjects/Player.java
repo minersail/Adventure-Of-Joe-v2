@@ -32,8 +32,6 @@ public class Player extends Character
 	public void update(float delta)
 	{
 		super.update(delta);
-		
-		mapObject.setIdle(collision.isStopped());
 				
 		if (weapon != null)
 		{

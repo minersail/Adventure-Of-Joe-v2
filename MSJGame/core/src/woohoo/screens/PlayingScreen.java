@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import woohoo.ai.AIDebugger;
 import woohoo.framework.AIManager;
 import woohoo.framework.IDManager;
 import woohoo.framework.ContactManager;
@@ -64,8 +65,9 @@ public class PlayingScreen implements Screen
 	final private OrthographicCamera cam; // Manages aspect ratio, zoom, and position of camera
 	final private FitViewport viewport; // Helper class for camera
 	final private Box2DDebugRenderer debugRenderer;
+	final private AIDebugger aiDebugger;
 	
-	final private AIManager aimanager;
+	final private AIManager aiManager;
     final private CutsceneManager cutscenes;
 	final private EventManager events;
     final private InventoryManager inventoryManager;
@@ -99,9 +101,10 @@ public class PlayingScreen implements Screen
         cam.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT);
 		
 		viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, cam);
-		viewport.apply();
+		//viewport.apply();
 		cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
 		debugRenderer = new Box2DDebugRenderer();
+		aiDebugger = new AIDebugger();
 		
 		// Load assets
 		assets = new AssetManager();
@@ -139,8 +142,8 @@ public class PlayingScreen implements Screen
 		engine.loadPlayer();
 		engine.loadEntities(currentArea);
 		
-		aimanager = new AIManager(this);
-		aimanager.initializePathfinding();
+		aiManager = new AIManager(this);
+		aiManager.initializePathfinding(currentArea);
 		
 		// Create event manager
 		events = new EventManager(this);
@@ -183,6 +186,7 @@ public class PlayingScreen implements Screen
 		
 		renderer.setView(cam);
 		renderer.render();
+		//aiDebugger.renderConnections(engine.getEntity("player"), cam);
 		//debugRenderer.render(world, cam.combined);
 		ui.draw();
     }
@@ -379,6 +383,11 @@ public class PlayingScreen implements Screen
 	public CutsceneManager getCutsceneManager()
 	{
 		return cutscenes;
+	}
+	
+	public AIManager getAIManager()
+	{
+		return aiManager;
 	}
 
     @Override
