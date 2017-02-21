@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import woohoo.framework.contactcommands.SensorContact;
 import woohoo.gameobjects.components.AIComponent.AIMode;
 import woohoo.gameobjects.components.CollisionComponent.Movement;
+import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.screens.PlayingScreen.WBodyType;
 
@@ -37,7 +38,10 @@ public class Player extends Character
 		{
 			weapon.update(delta);
 			weapon.setAngle(mapObject.getDirection());    
-			mapObject.setFighting(weapon.isActive());
+			if (weapon.isActive())
+            {
+                mapObject.setAnimationState(MapObjectComponent.AnimationState.Fighting);
+            }
 		}
 	}
     

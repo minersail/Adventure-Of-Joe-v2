@@ -27,6 +27,7 @@ public class Character extends BaseEntity
 	protected AIComponent brain;
 	
 	protected float speed = 2;
+    protected boolean dead;
 	    
 	public Character(TextureAtlas atlas, WBodyType type)
 	{		
@@ -61,6 +62,8 @@ public class Character extends BaseEntity
 	@Override
 	public void update(float delta)
 	{		
+        if (dead) return;
+        
 		super.update(delta);
 		
 		collision.update(delta);
@@ -77,7 +80,10 @@ public class Character extends BaseEntity
 			move(brain.calculateDirection(collision.getPosition()));
 		}				
 		
-		mapObject.setIdle(collision.isStopped());
+		if (collision.isStopped());
+        {
+            mapObject.setAnimationState(MapObjectComponent.AnimationState.Idle);
+        }
 		
 		if (!collision.isStopped())
 		{
@@ -112,6 +118,11 @@ public class Character extends BaseEntity
 	{
 		return mapObject.getDirection();
 	}
+    
+    public void setDirection(Direction direction)
+    {
+        mapObject.setDirection(direction);
+    }
 	
 	public Vector2 getCenter()
 	{
@@ -234,6 +245,12 @@ public class Character extends BaseEntity
 	{
 		brain.setAIMode(mode);
 	}
+    
+    public void die()
+    {
+        mapObject.setAnimationState(MapObjectComponent.AnimationState.Death);
+        dead = true;
+    }
 	
 	/**
 	 * Sets a position for the character to start moving towards

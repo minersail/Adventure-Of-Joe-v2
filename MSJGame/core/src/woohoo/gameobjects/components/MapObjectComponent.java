@@ -16,13 +16,17 @@ public class MapObjectComponent extends TextureMapObject implements Component
 	{
 		Up, Down, Left, Right
 	}
+    
+    public enum AnimationState
+    {
+        Walking, Idle, Fighting, Death
+    }
 	
 	private Direction direction = Direction.Down;
+    private AnimationState animState;
 	
 	private Map<String, Animation<TextureRegion>> animation;
 	private boolean usesAnimation;
-	private boolean isIdle;
-	private boolean isFighting;
 	
 	private float runTime = 0;
 	
@@ -55,9 +59,10 @@ public class MapObjectComponent extends TextureMapObject implements Component
 		addAnimation("Right_Fight", "right_fight", atlas, 0.166f, Animation.PlayMode.NORMAL);
 		addAnimation("Up_Fight", "up_fight", atlas, 0.166f, Animation.PlayMode.NORMAL);
 		addAnimation("Down_Fight", "down_fight", atlas, 0.166f, Animation.PlayMode.NORMAL);
+		addAnimation("Death", "death", atlas, 0.5f, Animation.PlayMode.NORMAL);
 		
 		size = new Vector2(1, 1);
-		isIdle = true;
+		animState = AnimationState.Idle;
 	}
 	
 	public MapObjectComponent addTo(MapObjects objects)
@@ -100,24 +105,14 @@ public class MapObjectComponent extends TextureMapObject implements Component
 		return size;
 	}
 	
-	public void setIdle(boolean idle)
+	public void setAnimationState(AnimationState state)
 	{
-		isIdle = idle;
+		animState = state;
 	}
 	
-	public boolean isIdle()
+	public AnimationState getAnimationState()
 	{
-		return isIdle;
-	}
-	
-	public void setFighting(boolean fighting)
-	{
-		isFighting = fighting;
-	}
-	
-	public boolean isFighting()
-	{
-		return isFighting;
+		return animState;
 	}
 	
 	public float getTime()

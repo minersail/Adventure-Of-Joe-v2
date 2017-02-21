@@ -61,8 +61,8 @@ public class GameWorld extends Engine
 	{
 		Player player = new Player(screen.getAssets().get("images/entities/youngjoe.pack", TextureAtlas.class));
 		screen.addEntity(player);
-		//player.setPosition(1, 5);
-		player.setPosition(1, 8);
+		player.setPosition(1, 5);
+		//player.setPosition(1, 8);
 		player.setName("player");
 		screen.getInventoryManager().fillInventory(player);	
 	}

@@ -11,6 +11,7 @@ import woohoo.gameobjects.Player;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.DialogueComponent;
+import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.GameState;
 
@@ -89,6 +90,16 @@ public class CutsceneManager
             else if (e.get("type").equals("dialogue"))
             {
                 action = new DialogueAction(component);
+                cutsceneActions.add(action);
+            }
+            else if (e.get("type").equals("rotate"))
+            {
+                action = new RotateAction(e.get("name"), e.get("direction"));
+                cutsceneActions.add(action);
+            }
+            else if (e.get("type").equals("kill"))
+            {
+                action = new KillAction(e.get("name"));
                 cutsceneActions.add(action);
             }
         }
@@ -181,6 +192,68 @@ public class CutsceneManager
         {
 			// GameState gets switched to Dialogue during start(), then goes back to cutscene during endDialogue()
             return screen.getState() == GameState.Cutscene;
+        }   
+    }
+    
+    public class RotateAction implements CutsceneAction
+    {
+        private Character character;
+        private Direction direction;
+        
+        public RotateAction(String characterName, String dir)
+        {
+            character = (Character)screen.getEngine().getEntity(characterName);
+            
+            switch (dir.toLowerCase())
+            {
+                case "up":                    
+                    direction = Direction.Up;
+                    break;
+                case "left":
+                    direction = Direction.Left;
+                    break;
+                case "right":
+                    direction = Direction.Right;
+                    break;
+                case "down":
+                default:
+                    direction = Direction.Down;
+                    break;
+            }
+        }
+        
+        @Override
+        public void start()
+        {
+            character.setDirection(direction);
+        }
+        
+        @Override
+        public boolean isDone() 
+        {
+            return true; // Instant
+        }   
+    }
+    
+    public class KillAction implements CutsceneAction
+    {
+        private Character character;
+        
+        public KillAction(String characterName)
+        {
+            character = (Character)screen.getEngine().getEntity(characterName);
+        }
+        
+        @Override
+        public void start()
+        {
+            character.die();
+        }
+        
+        @Override
+        public boolean isDone() 
+        {
+            return true; // Instant
         }   
     }
 }

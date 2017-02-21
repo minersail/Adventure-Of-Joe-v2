@@ -35,7 +35,6 @@ import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.Enemy;
-import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
@@ -89,7 +88,7 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	private int currentArea = 2;
+	private int currentArea = 0;
 	
     private float runTime;
 
@@ -199,11 +198,11 @@ public class PlayingScreen implements Screen
 		assets.load("images/entities/oldman.pack", TextureAtlas.class, flipParam);
 		assets.load("images/entities/mother.pack", TextureAtlas.class, flipParam);
 		assets.load("images/entities/youngjoe.pack", TextureAtlas.class, flipParam);
+        assets.load("images/entities/robert.pack", TextureAtlas.class, flipParam);	
 		assets.load("images/entities/joeface.png", Texture.class);
         assets.load("images/entities/ginger.png", Texture.class);
         assets.load("images/entities/robber.png", Texture.class);
         assets.load("images/entities/mother.png", Texture.class);	
-        assets.load("images/entities/robert.png", Texture.class);	
         assets.load("images/entities/scav.png", Texture.class);	
         assets.load("images/entities/fitz.png", Texture.class);	
 		assets.load("images/tilesets/tileset1.png", Texture.class);

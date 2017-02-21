@@ -28,10 +28,23 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 			if (obj.isAnimated())
 			{
 				String animString;
-				if (obj.isFighting())
-					animString = obj.getDirection().toString() + "_Fight";
-				else
-					animString = obj.getDirection().toString() + (obj.isIdle() ? "_Idle" : "");
+                
+                switch(obj.getAnimationState())
+                {
+                    case Idle:
+                        animString = obj.getDirection().toString() + "_Idle";
+                        break;
+                    case Fighting:
+                        animString = obj.getDirection().toString() + "_Fight";
+                        break;
+                    case Death:
+                        animString = "Death";
+                        break;
+                    case Walking:
+                    default:
+                        animString = obj.getDirection().toString();
+                        break;
+                }
 				
 				batch.draw(obj.getAnimation(animString).getKeyFrame(obj.getTime()),
 						   obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
