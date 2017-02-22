@@ -88,7 +88,7 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	private int currentArea = 0;
+	private int currentArea = 2;
 	
     private float runTime;
 
@@ -178,6 +178,10 @@ public class PlayingScreen implements Screen
 				break;
 				
             case Dialogue:
+				engine.animate(delta);
+				ui.act();
+				break;
+				
 			case Inventory:				
 				ui.act();
 				break;

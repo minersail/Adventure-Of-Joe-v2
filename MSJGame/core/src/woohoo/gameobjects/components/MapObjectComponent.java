@@ -28,7 +28,7 @@ public class MapObjectComponent extends TextureMapObject implements Component
 	private Map<String, Animation<TextureRegion>> animation;
 	private boolean usesAnimation;
 	
-	private float runTime = 0;
+	private float animationTime = 0;
 	
 	private Vector2 size;
 	
@@ -79,7 +79,7 @@ public class MapObjectComponent extends TextureMapObject implements Component
 	
 	public void update(float delta, Vector2 newPosition)
 	{
-		runTime += delta;
+		animationTime += delta;
 		
 		setX(newPosition.x);
 		setY(newPosition.y);
@@ -107,6 +107,10 @@ public class MapObjectComponent extends TextureMapObject implements Component
 	
 	public void setAnimationState(AnimationState state)
 	{
+		// Both of these have linear animations
+		if (state == AnimationState.Death || state == AnimationState.Fighting)
+			animationTime = 0;
+			
 		animState = state;
 	}
 	
@@ -117,7 +121,17 @@ public class MapObjectComponent extends TextureMapObject implements Component
 	
 	public float getTime()
 	{
-		return runTime;
+		return animationTime;
+	}
+	
+	public void setTime(float time)
+	{
+		animationTime = time;
+	}
+	
+	public void addTime(float time)
+	{
+		animationTime += time;
 	}
 	
 	public boolean isAnimated()

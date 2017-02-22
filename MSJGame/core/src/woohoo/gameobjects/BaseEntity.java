@@ -1,13 +1,11 @@
 package woohoo.gameobjects;
 
 import com.badlogic.ashley.core.Entity;
-import java.util.ArrayList;
-import java.util.ListIterator;
-import woohoo.framework.events.EventListener;
+import woohoo.framework.events.EventListeners;
 
 public class BaseEntity extends Entity
 {
-	protected ArrayList<EventListener> listeners = new ArrayList<>();
+	protected EventListeners<BaseEntity> listeners = new EventListeners<>();
 	protected float elapsedTime;
 	protected String name = "";
 	
@@ -15,26 +13,12 @@ public class BaseEntity extends Entity
 	{
 		elapsedTime += delta;
 		
-		for (ListIterator<EventListener> iter = listeners.listIterator(); iter.hasNext();)
-		{
-			if (iter.next().notify(this))
-				iter.remove();
-		}
+		listeners.notifyAll(this);
 	}
 	
-	public void addListener(EventListener listener)
+	public EventListeners getListeners()
 	{
-		listeners.add(listener);
-	}
-	
-	public void removeListener(EventListener listener)
-	{
-		listeners.remove(listener);
-	}
-	
-	public void clearListeners()
-	{
-		listeners.clear();
+		return listeners;
 	}
 	
 	public void setName(String n)

@@ -40,7 +40,6 @@ public class Player extends Character
 			weapon.setAngle(mapObject.getDirection());    
 			if (weapon.isActive())
             {
-                mapObject.setAnimationState(MapObjectComponent.AnimationState.Fighting);
             }
 		}
 	}
@@ -70,7 +69,10 @@ public class Player extends Character
 	public void attack()
 	{
 		if (weapon != null)
+		{
 			weapon.swing();	
+            mapObject.setAnimationState(MapObjectComponent.AnimationState.Fighting);
+		}
 	}
 	
 	public void setMovement(Movement movement)

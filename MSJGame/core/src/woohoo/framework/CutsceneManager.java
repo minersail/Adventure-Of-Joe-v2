@@ -6,11 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
+import woohoo.framework.events.EventListeners;
 import woohoo.gameobjects.BaseEntity;
 import woohoo.gameobjects.Player;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.DialogueComponent;
+import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.MapObjectComponent.AnimationState;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.GameState;
@@ -21,6 +24,8 @@ public class CutsceneManager
     
     private ArrayList<BaseEntity> cutsceneEntities;
     private ArrayList<CutsceneAction> cutsceneActions;
+	
+	private EventListeners listeners;
     
     private CutsceneAction currentAction;
     
@@ -29,6 +34,7 @@ public class CutsceneManager
         screen = scr;
         cutsceneEntities = new ArrayList<>();
         cutsceneActions = new ArrayList<>();
+		listeners = new EventListeners();
     }
     
     /**
@@ -47,7 +53,7 @@ public class CutsceneManager
 			}
 		}
         
-        if (currentAction.isDone())
+        if (currentAction.isDone(delta))
         {
             int nextAction = cutsceneActions.indexOf(currentAction) + 1;
             
@@ -61,6 +67,8 @@ public class CutsceneManager
                 currentAction.start();
             }
         }
+		
+		listeners.notifyAll(this);
 	}
     
     public void startCutscene(int cutsceneID)
@@ -82,26 +90,31 @@ public class CutsceneManager
         {
             CutsceneAction action;
             
-            if (e.get("type").equals("move"))
-            {
-                action = new MovementAction(e.get("name"), e.getFloat("locX"), e.getFloat("locY"), e.getFloat("speed"));
-                cutsceneActions.add(action);
-            }
-            else if (e.get("type").equals("dialogue"))
-            {
-                action = new DialogueAction(component);
-                cutsceneActions.add(action);
-            }
-            else if (e.get("type").equals("rotate"))
-            {
-                action = new RotateAction(e.get("name"), e.get("direction"));
-                cutsceneActions.add(action);
-            }
-            else if (e.get("type").equals("kill"))
-            {
-                action = new KillAction(e.get("name"));
-                cutsceneActions.add(action);
-            }
+			switch (e.get("type"))
+			{
+				case "move":
+					action = new MovementAction(e.get("name"), e.getFloat("locX"), e.getFloat("locY"), e.getFloat("speed"));
+					cutsceneActions.add(action);
+					break;
+				case "dialogue":
+					action = new DialogueAction(component);
+					cutsceneActions.add(action);
+					break;
+				case "rotate":
+					action = new RotateAction(e.get("name"), e.get("direction"));
+					cutsceneActions.add(action);
+					break;
+				case "kill":
+					action = new KillAction(e.get("name"));
+					cutsceneActions.add(action);
+					break;
+				case "animate":
+					action = new AnimateAction(e.get("name"), e.get("animation"), e.getFloat("time", 1));
+					cutsceneActions.add(action);
+					break;
+				default:
+					break;
+			}
         }
         
         screen.setState(GameState.Cutscene);
@@ -124,6 +137,16 @@ public class CutsceneManager
         cutsceneActions.clear();
         screen.setState(GameState.Playing);
     }
+	
+	public EventListeners getListeners()
+	{
+		return listeners;
+	}
+	
+	public int getActionsLeft()
+	{
+		return cutsceneActions.size() - 1 - cutsceneActions.indexOf(currentAction);
+	}
     
     public interface CutsceneAction
     {
@@ -131,9 +154,10 @@ public class CutsceneManager
         
         /**
          * Performs a cutscene action. isDone() will be called until it returns true
+		 * @param delta how much time has passed since last check. Helpful for time-based events
          * @return whether or not the act will end
          */
-        public boolean isDone();
+        public boolean isDone(float delta);
     }
     
     public class MovementAction implements CutsceneAction
@@ -160,7 +184,7 @@ public class CutsceneManager
         }
         
         @Override
-        public boolean isDone() 
+        public boolean isDone(float delta) 
         {
 			if (character.getComponent(AIComponent.class).getAIMode() == AIComponent.AIMode.Stay)
 			{
@@ -188,7 +212,7 @@ public class CutsceneManager
         }
         
         @Override
-        public boolean isDone() 
+        public boolean isDone(float delta) 
         {
 			// GameState gets switched to Dialogue during start(), then goes back to cutscene during endDialogue()
             return screen.getState() == GameState.Cutscene;
@@ -229,7 +253,7 @@ public class CutsceneManager
         }
         
         @Override
-        public boolean isDone() 
+        public boolean isDone(float delta) 
         {
             return true; // Instant
         }   
@@ -238,6 +262,7 @@ public class CutsceneManager
     public class KillAction implements CutsceneAction
     {
         private Character character;
+		private float actionTime;
         
         public KillAction(String characterName)
         {
@@ -251,9 +276,56 @@ public class CutsceneManager
         }
         
         @Override
-        public boolean isDone() 
+        public boolean isDone(float delta) 
         {
-            return true; // Instant
+            actionTime += delta;
+			// Time it takes to play out death animation, maybe customize later
+			return actionTime > 1.5f;
+        }   
+    }
+	
+	public class AnimateAction implements CutsceneAction
+    {
+        private Character character;
+		private AnimationState state;
+		private float actionTime;
+		private float maxTime;
+        
+        public AnimateAction(String characterName, String animation, float time)
+        {
+            character = (Character)screen.getEngine().getEntity(characterName);
+			maxTime = time;
+			
+			switch(animation.toLowerCase())
+			{
+				case "fight":
+					state = AnimationState.Fighting;
+					break;
+				case "walk":
+					state = AnimationState.Walking;
+					break;
+				case "death":
+					state = AnimationState.Death;
+					break;
+				case "idle":
+				default:
+					state = AnimationState.Idle;
+					break;
+			}
+        }
+        
+        @Override
+        public void start()
+        {
+            character.getComponent(MapObjectComponent.class).setAnimationState(state);
+        }
+        
+        @Override
+        public boolean isDone(float delta) 
+        {
+            actionTime += delta;
+			// Time it takes to play out death animation, maybe customize later
+			return actionTime > maxTime;
         }   
     }
 }

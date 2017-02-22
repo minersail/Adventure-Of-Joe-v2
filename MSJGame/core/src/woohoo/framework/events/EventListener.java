@@ -1,8 +1,6 @@
 package woohoo.framework.events;
 
-import woohoo.gameobjects.BaseEntity;
-
-public class EventListener
+public class EventListener<T>
 {
 	Event event;
 	EventTrigger trigger;
@@ -13,9 +11,9 @@ public class EventListener
 		event = e;
 	}
 	
-	public boolean notify(BaseEntity entity)
+	public boolean notify(T listenerHolder)
 	{
-		if (trigger.check(entity))
+		if (trigger.check(listenerHolder))
 		{
 			event.activate();
 			return true;

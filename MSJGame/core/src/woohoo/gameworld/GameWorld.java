@@ -16,6 +16,7 @@ import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.DialogueComponent;
+import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.SensorComponent;
 import woohoo.screens.PlayingScreen;
 
@@ -51,6 +52,17 @@ public class GameWorld extends Engine
 		}
     }
 	
+	public void animate(float delta)
+	{
+		for (Entity entity : getDuplicateList())
+		{
+			if (entity instanceof Character)
+			{
+				entity.getComponent(MapObjectComponent.class).addTime(delta);
+			}
+		}
+	}
+	
 	@Override
 	public void addEntity(Entity entity)
 	{
@@ -62,7 +74,6 @@ public class GameWorld extends Engine
 		Player player = new Player(screen.getAssets().get("images/entities/youngjoe.pack", TextureAtlas.class));
 		screen.addEntity(player);
 		player.setPosition(1, 5);
-		//player.setPosition(1, 8);
 		player.setName("player");
 		screen.getInventoryManager().fillInventory(player);	
 	}

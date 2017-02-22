@@ -9,7 +9,7 @@ import woohoo.gameobjects.Character;
  *
  * @author jordan
  */
-public class MoveTrigger implements EventTrigger
+public class MoveTrigger implements EventTrigger<BaseEntity>
 {
 	private Vector2 position;
 	private float distanceTo;

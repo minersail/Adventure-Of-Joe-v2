@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <events>
 	<area id="0">
-		<eventlistener entity="player">
+		<eventlistener owner="entity" entity="player">
 			<trigger type="move" locX="3" locY="5" dist="1" />
 			<event type="cutscene" id="0"/>
 		</eventlistener>
 	</area>
 	<area id="1">
-		<eventlistener entity="player">
+		<eventlistener owner="entity" entity="player">
 			<trigger type="move" locX="2.5" locY="7.5" dist="2" />
 			<event type="cutscene" id="1"/>
 		</eventlistener>
 	</area>
 	<area id="2">
-		<eventlistener entity="player">
+		<eventlistener owner="entity" entity="player">
 			<trigger type="move" locX="2.5" locY="6.5" dist=".5" />
 			<event type="cutscene" id="2"/>
+		</eventlistener>
+		<eventlistener owner="system" system="cutscene">
+			<trigger type="cutscene" />
+			<event type="ai" entity="robber1" mode="follow" targetChar="player" />
+		</eventlistener>
+		<eventlistener owner="system" system="cutscene">
+			<trigger type="cutscene" />
+			<event type="ai" entity="robber2" mode="follow" targetChar="player" />
 		</eventlistener>
 	</area>
 </events>

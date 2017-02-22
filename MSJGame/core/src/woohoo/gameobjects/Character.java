@@ -9,6 +9,7 @@ import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.MapObjectComponent.AnimationState;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.screens.PlayingScreen.WBodyType;
 
@@ -61,9 +62,7 @@ public class Character extends BaseEntity
 	
 	@Override
 	public void update(float delta)
-	{		
-        if (dead) return;
-        
+	{		        
 		super.update(delta);
 		
 		collision.update(delta);
@@ -80,9 +79,9 @@ public class Character extends BaseEntity
 			move(brain.calculateDirection(collision.getPosition()));
 		}				
 		
-		if (collision.isStopped());
+		if (collision.isStopped() && mapObject.getAnimationState() == AnimationState.Walking)
         {
-            mapObject.setAnimationState(MapObjectComponent.AnimationState.Idle);
+            mapObject.setAnimationState(AnimationState.Idle);
         }
 		
 		if (!collision.isStopped())
@@ -168,6 +167,8 @@ public class Character extends BaseEntity
 				collision.addVelocity(speed, 0);
 				break;
 		}
+		
+		mapObject.setAnimationState(AnimationState.Walking);
 	}
 	
 	public void stop()
@@ -248,7 +249,7 @@ public class Character extends BaseEntity
     
     public void die()
     {
-        mapObject.setAnimationState(MapObjectComponent.AnimationState.Death);
+        mapObject.setAnimationState(AnimationState.Death);
         dead = true;
     }
 	

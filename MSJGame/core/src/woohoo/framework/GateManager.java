@@ -93,7 +93,8 @@ public class GateManager
 		}
 		
 		// Remove event handlers from old screen
-		screen.getEngine().getPlayer().clearListeners();
+		screen.getEngine().getPlayer().getListeners().clearListeners();
+		screen.getCutsceneManager().getListeners().clearListeners();
 		
 		// Just fancy way to move all objects from old map to new map (Change in future to just player)
 		final TiledMap map = screen.getMapLoader().load(nextGate.destArea());

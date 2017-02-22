@@ -1,8 +1,6 @@
 package woohoo.framework.events;
 
-import woohoo.gameobjects.BaseEntity;
-
-public interface EventTrigger
+public interface EventTrigger<T>
 {
-	public boolean check(BaseEntity entity);
+	public boolean check(T listenerType);
 }

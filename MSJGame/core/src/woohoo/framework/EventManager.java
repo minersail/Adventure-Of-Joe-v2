@@ -5,11 +5,14 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
+import woohoo.framework.events.AIEvent;
 import woohoo.framework.events.CutsceneEvent;
+import woohoo.framework.events.CutsceneTrigger;
 import woohoo.framework.events.Event;
 import woohoo.framework.events.EventListener;
 import woohoo.framework.events.EventTrigger;
 import woohoo.framework.events.MoveTrigger;
+import woohoo.gameobjects.Character;
 import woohoo.screens.PlayingScreen;
 
 public class EventManager
@@ -37,26 +40,47 @@ public class EventManager
 			Element triggerEl = eventListener.getChildByName("trigger");
 			Element eventEl = eventListener.getChildByName("event");
 			
-			if (triggerEl.get("type").equals("move"))
+			switch (triggerEl.get("type").toLowerCase())
 			{
-				trigger = new MoveTrigger(new Vector2(triggerEl.getFloat("locX"), triggerEl.getFloat("locY")), triggerEl.getFloat("dist"));
-			}
-			else
-			{
-				trigger = null;
+				case "move":
+					trigger = new MoveTrigger(new Vector2(triggerEl.getFloat("locX"), triggerEl.getFloat("locY")), triggerEl.getFloat("dist"));
+					break;
+				case "cutscene":
+					trigger = new CutsceneTrigger();
+					break;
+				default:
+					trigger = null;
+					break;
 			}
 			
-			switch (eventEl.get("type"))
+			switch (eventEl.get("type").toLowerCase())
 			{
 				case "cutscene":
 					event = new CutsceneEvent(screen.getCutsceneManager(), eventEl.getInt("id"));
+					break;
+				case "ai":
+					event = new AIEvent((Character)screen.getEngine().getEntity(eventEl.get("entity")), eventEl.get("mode"), 
+										eventEl.get("targetChar", null) == null ? null : (Character)screen.getEngine().getEntity(eventEl.get("targetChar")),
+										eventEl.getInt("targetX", 0), eventEl.getInt("targetY", 0));
 					break;
 				default:
 					event = null;
 					break;
 			}
 			
-			screen.getEngine().getEntity(eventListener.get("entity")).addListener(new EventListener(trigger, event));
+			if (eventListener.get("owner").equals("entity"))
+			{
+				screen.getEngine().getEntity(eventListener.get("entity")).getListeners().addListener(new EventListener(trigger, event));
+			}
+			else if (eventListener.get("owner").equals("system"))
+			{
+				switch (eventListener.get("system"))
+				{
+					case "cutscene":
+						screen.getCutsceneManager().getListeners().addListener(new EventListener(trigger, event));
+						break;
+				}					
+			}
 		}
 	}
 }
