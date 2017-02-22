@@ -100,7 +100,7 @@ public class PlayingScreen implements Screen
         cam.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT);
 		
 		viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, cam);
-		//viewport.apply();
+		viewport.apply();
 		cam.position.set(cam.viewportWidth / 2, cam.viewportHeight / 2, 0);
 		debugRenderer = new Box2DDebugRenderer();
 		aiDebugger = new AIDebugger();
@@ -396,7 +396,11 @@ public class PlayingScreen implements Screen
     @Override
     public void resize(int width, int height)
     {
-        System.out.println("GameScreen - resizing");
+//        cam.viewportWidth = WORLD_WIDTH * (width / 800);
+//        cam.viewportHeight = WORLD_HEIGHT * (height / 800);
+//        cam.update();
+        
+        System.out.println("GameScreen - resize called");
     }
 
     @Override

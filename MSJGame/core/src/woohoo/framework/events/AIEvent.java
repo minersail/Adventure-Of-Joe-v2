@@ -44,7 +44,7 @@ public class AIEvent implements Event<Character>
 		
 		if (mode == AIMode.Follow)
 		{
-			aiChar.setTarget(aiChar);
+			aiChar.setTarget(followChar);
 		}
 		else if (mode == AIMode.MoveTo)
 		{

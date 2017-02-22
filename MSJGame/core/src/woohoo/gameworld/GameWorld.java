@@ -99,6 +99,7 @@ public class GameWorld extends Engine
 					screen.addEntity(npc);
 					npc.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
 					npc.setName(entity.get("name", ""));
+                    npc.setSpeed(entity.getFloat("speed", npc.getSpeed()));
 					break;
 				case "item":
 					Item item = new Item(screen.getIDManager().getItem(entity.getInt("id")).getItemTexture());
@@ -115,6 +116,7 @@ public class GameWorld extends Engine
 					enemy.changeMaxHealth(entity.getFloat("health"));
 					enemy.setAIMode(entity.get("mode"));
 					enemy.setName(entity.get("name", ""));
+                    enemy.setSpeed(entity.getFloat("speed", enemy.getSpeed()));
 					break;
 				default:
 					break;

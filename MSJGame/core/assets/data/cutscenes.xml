@@ -22,7 +22,7 @@
 		<action type="move" name="robert" locX="2" locY="2" speed="2" />
 		<action type="rotate" name="robert" direction="down" />
 		<action type="dialogue" />
-		<action type="animate" name="robert" animation="fight" time="1" />
+		<action type="animate" name="robert" animation="fight" time="0.5" />
 		<action type="kill" name="mother" />
 		<action type="dialogue" />
 		<action type="move" name="robert" locX="-2" locY="2" speed="2" />
