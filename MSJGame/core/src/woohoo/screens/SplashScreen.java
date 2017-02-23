@@ -16,20 +16,43 @@ public class SplashScreen implements Screen, InputProcessor
 	private SpriteBatch batcher;
 	private Texture background;
 	
+	private Color batchColor;
+	private boolean fading;
+	
 	public SplashScreen(MSJGame g)
 	{
 		game = g;
 		
 		batcher = new SpriteBatch();
+		batcher.enableBlending();
 		background = new Texture("images/splash/title.png");
+		batchColor = new Color(Color.WHITE);
 	}
 	
 	@Override
 	public void render(float delta)
 	{
+		if (fading)
+		{
+			batchColor.sub(0.01f, 0.01f, 0.01f, 0);
+			
+			batcher.setColor(batchColor);
+			
+			if (batchColor.equals(Color.BLACK))
+				switchToPlay();
+		}
+		
 		batcher.begin();
 		batcher.draw(background, 0, 0);
 		batcher.end();
+	}
+	
+	public void switchToPlay()
+	{		
+		game.setScreen(game.getPlayingScreen());
+        Gdx.input.setInputProcessor(new InputMultiplexer(game.getPlayingScreen().getUI(), game.getPlayingScreen().getInput()));
+		game.getPlayingScreen().getRenderer().getBatch().enableBlending();
+		game.getPlayingScreen().getRenderer().startFade(Color.BLACK);
 	}
 	
 	@Override
@@ -71,10 +94,7 @@ public class SplashScreen implements Screen, InputProcessor
 	@Override
 	public boolean keyDown(int keycode)
 	{
-		game.setScreen(game.getPlayingScreen());
-        Gdx.input.setInputProcessor(new InputMultiplexer(game.getPlayingScreen().getUI(), game.getPlayingScreen().getInput()));
-		game.getPlayingScreen().getRenderer().getBatch().enableBlending();
-		game.getPlayingScreen().getRenderer().startFade(Color.BLACK);
+		fading = true;		
 		return false;
 	}
 
