@@ -1,5 +1,6 @@
 package woohoo.gameworld;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -13,15 +14,17 @@ Anything that is drawn will be managed by this class
 public class GameRenderer extends OrthogonalTiledMapRenderer
 {    
 	private boolean skipNextFrame;
+	private Color fade;
 	
     public GameRenderer(TiledMap map, float scale)
 	{
 		super(map, scale);
+		super.getBatch().enableBlending();
 	}
 	
 	@Override
 	public void renderObject(MapObject object)
-	{
+	{		
 		if (object instanceof MapObjectComponent)
 		{
 			MapObjectComponent obj = (MapObjectComponent)object;
@@ -65,6 +68,9 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 	@Override
 	public void render()
 	{
+		super.getBatch().setColor(fade);
+		fade.add(0.005f, 0.005f, 0.005f, 0);
+		
 		if (!skipNextFrame)
 			super.render();
 		else
@@ -75,5 +81,10 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 	public void skipFrame()
 	{
 		skipNextFrame = true;
+	}
+	
+	public void startFade(Color color)
+	{
+		fade = color.cpy();
 	}
 }

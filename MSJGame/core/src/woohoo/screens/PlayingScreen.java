@@ -1,13 +1,13 @@
 package woohoo.screens;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader.TextureAtlasParameter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,6 +42,7 @@ import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.SensorComponent;
 import woohoo.gameworld.GameRenderer;
 import woohoo.gameworld.GameWorld;
+import woohoo.msjgame.MSJGame;
 
 public class PlayingScreen implements Screen
 {    
@@ -88,12 +89,12 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	private int currentArea = 2;
+	private int currentArea = 0;
 	
     private float runTime;
 
     // This is the constructor, not the class declaration
-    public PlayingScreen(Game game)
+    public PlayingScreen(MSJGame game)
     {
 		// Set up camera
         cam = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
@@ -150,7 +151,6 @@ public class PlayingScreen implements Screen
 		
 		// Initialize input
 		input = new InputHandler(this);
-        Gdx.input.setInputProcessor(new InputMultiplexer(ui, input));
 		
 		state = GameState.Playing;
     }
@@ -189,6 +189,7 @@ public class PlayingScreen implements Screen
 		
 		renderer.setView(cam);
 		renderer.render();
+		//shader.render(); // NOT WORKING
 		//aiDebugger.renderConnections(engine.getEntity("player"), cam);
 		//debugRenderer.render(world, cam.combined);
 		ui.draw();
@@ -203,10 +204,9 @@ public class PlayingScreen implements Screen
 		assets.load("images/entities/mother.pack", TextureAtlas.class, flipParam);
 		assets.load("images/entities/youngjoe.pack", TextureAtlas.class, flipParam);
         assets.load("images/entities/robert.pack", TextureAtlas.class, flipParam);	
+		assets.load("images/entities/robber.pack", TextureAtlas.class, flipParam);
 		assets.load("images/entities/joeface.png", Texture.class);
         assets.load("images/entities/ginger.png", Texture.class);
-        assets.load("images/entities/robber.png", Texture.class);
-        assets.load("images/entities/mother.png", Texture.class);	
         assets.load("images/entities/scav.png", Texture.class);	
         assets.load("images/entities/fitz.png", Texture.class);	
 		assets.load("images/tilesets/tileset1.png", Texture.class);
@@ -336,6 +336,11 @@ public class PlayingScreen implements Screen
     public World getWorld()
     {
         return world;
+    }
+    
+    public InputHandler getInput()
+    {
+        return input;
     }
     
     public AssetManager getAssets()
