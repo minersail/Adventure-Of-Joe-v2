@@ -18,6 +18,7 @@ public class SplashScreen implements Screen, InputProcessor
 	
 	private Color batchColor;
 	private boolean fading;
+	private float fadeSpeed = 0.1f;//0.01f;
 	
 	public SplashScreen(MSJGame g)
 	{
@@ -34,7 +35,7 @@ public class SplashScreen implements Screen, InputProcessor
 	{
 		if (fading)
 		{
-			batchColor.sub(0.01f, 0.01f, 0.01f, 0);
+			batchColor.sub(fadeSpeed, fadeSpeed, fadeSpeed, 0);
 			
 			batcher.setColor(batchColor);
 			
@@ -51,7 +52,6 @@ public class SplashScreen implements Screen, InputProcessor
 	{		
 		game.setScreen(game.getPlayingScreen());
         Gdx.input.setInputProcessor(new InputMultiplexer(game.getPlayingScreen().getUI(), game.getPlayingScreen().getInput()));
-		game.getPlayingScreen().getRenderer().getBatch().enableBlending();
 		game.getPlayingScreen().getRenderer().startFade(Color.BLACK);
 	}
 	

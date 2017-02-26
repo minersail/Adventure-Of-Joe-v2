@@ -98,7 +98,7 @@ public class GateManager
 		
 		// Just fancy way to move all objects from old map to new map (Change in future to just player)
 		final TiledMap map = screen.getMapLoader().load(nextGate.destArea());
-		map.getLayers().get("Objects").getObjects().add(screen.getEngine().getPlayer().getComponent(MapObjectComponent.class));
+		map.getLayers().get("Entities").getObjects().add(screen.getEngine().getPlayer().getComponent(MapObjectComponent.class));
 		screen.getRenderer().setMap(map);
         
 		// Move the player to the entrance of the new map based on where he exited previous map (Took forever to figure out)

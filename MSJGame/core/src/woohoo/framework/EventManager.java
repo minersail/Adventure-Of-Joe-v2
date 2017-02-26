@@ -12,6 +12,7 @@ import woohoo.framework.events.Event;
 import woohoo.framework.events.EventListener;
 import woohoo.framework.events.EventTrigger;
 import woohoo.framework.events.MoveTrigger;
+import woohoo.framework.events.QuestEvent;
 import woohoo.gameobjects.Character;
 import woohoo.screens.PlayingScreen;
 
@@ -62,6 +63,9 @@ public class EventManager
 					event = new AIEvent((Character)screen.getEngine().getEntity(eventEl.get("entity")), eventEl.get("mode"), 
 										eventEl.get("targetChar", null) == null ? null : (Character)screen.getEngine().getEntity(eventEl.get("targetChar")),
 										eventEl.getInt("targetX", 0), eventEl.getInt("targetY", 0));
+					break;
+				case "quest":
+					event = new QuestEvent(eventEl.getInt("id"), eventEl.get("action"), screen.getQuestManager());
 					break;
 				default:
 					event = null;

@@ -58,6 +58,9 @@ public class InputHandler implements InputProcessor
                     case Keys.ESCAPE:
                         screen.getInventoryManager().showInventory();
                         break;
+                    case Keys.F1:
+                        screen.getQuestManager().showQuests();
+                        break;
 					case Keys.S:
 						System.out.println(player.getPosition());
 						break;

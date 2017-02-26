@@ -130,14 +130,17 @@ public class HexMapLoader
 		screen.mapWidth = mapWidth;
 		screen.mapHeight = mapHeight;
 		
-		MapLayer objects = new MapLayer();
-		objects.setName("Objects");
+		MapLayer items = new MapLayer();
+		items.setName("Items");
+		MapLayer entities = new MapLayer();
+		entities.setName("Entities");
                         
         TiledMap tiledMap = new TiledMap();
 		layer1.setName("Base");
 		layer2.setName("Decorations");
         tiledMap.getLayers().add(layer1);
-		tiledMap.getLayers().add(objects);
+		tiledMap.getLayers().add(items);
+		tiledMap.getLayers().add(entities);
         tiledMap.getLayers().add(layer2);
 		
 		return tiledMap;

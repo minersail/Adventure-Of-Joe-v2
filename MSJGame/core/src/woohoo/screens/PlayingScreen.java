@@ -31,6 +31,7 @@ import woohoo.framework.GateManager;
 import woohoo.framework.HexMapLoader;
 import woohoo.framework.InputHandler;
 import woohoo.framework.InventoryManager;
+import woohoo.framework.QuestManager;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Character;
@@ -67,6 +68,7 @@ public class PlayingScreen implements Screen
 	final private Box2DDebugRenderer debugRenderer;
 	final private AIDebugger aiDebugger;
 	
+	final private QuestManager quests;
 	final private AIManager aiManager;
     final private CutsceneManager cutscenes;
 	final private EventManager events;
@@ -135,8 +137,11 @@ public class PlayingScreen implements Screen
 		engine = new GameWorld(this);
 		
 		// Create dialogue
-		dialogueManager = new DialogueManager(this, ui, assets.get("ui/uiskin.json", Skin.class));
+		dialogueManager = new DialogueManager(this, assets.get("ui/uiskin.json", Skin.class));
         cutscenes = new CutsceneManager(this);
+		
+		// Initialize quests
+		quests = new QuestManager(this, assets.get("ui/uiskin.json", Skin.class));
         
 		// Initialize objects
 		engine.loadPlayer();
@@ -189,7 +194,6 @@ public class PlayingScreen implements Screen
 		
 		renderer.setView(cam);
 		renderer.render();
-		//shader.render(); // NOT WORKING
 		//aiDebugger.renderConnections(engine.getEntity("player"), cam);
 		//debugRenderer.render(world, cam.combined);
 		ui.draw();
@@ -241,12 +245,13 @@ public class PlayingScreen implements Screen
 	*/
 	public void addEntity(Entity entity)
 	{		
-		MapObjects objects = renderer.getMap().getLayers().get("Objects").getObjects();
+		MapObjects entities = renderer.getMap().getLayers().get("Entities").getObjects();
+		MapObjects items = renderer.getMap().getLayers().get("Items").getObjects();
 		
 		if (entity instanceof Character)
 		{
-			entity.getComponent(MapObjectComponent.class).addTo(objects);
-			entity.getComponent(HealthBarComponent.class).addTo(objects).initializeHealthBar(assets.get("ui/healthbar.pack", TextureAtlas.class));
+			entity.getComponent(MapObjectComponent.class).addTo(entities);
+			entity.getComponent(HealthBarComponent.class).addTo(entities).initializeHealthBar(assets.get("ui/healthbar.pack", TextureAtlas.class));
 			entity.getComponent(CollisionComponent.class).createMass(world);
 			inventoryManager.loadInventory(entity.getComponent(InventoryComponent.class));
 			
@@ -261,7 +266,7 @@ public class PlayingScreen implements Screen
 		}
 		else if (entity instanceof Item)
 		{
-			entity.getComponent(MapObjectComponent.class).addTo(objects);
+			entity.getComponent(MapObjectComponent.class).addTo(items);
 			entity.getComponent(SensorComponent.class).initializeCommand(contacts, world).createMass(world);
 		}
 		
@@ -273,12 +278,13 @@ public class PlayingScreen implements Screen
 	*/
 	public void removeEntity(Entity entity)
 	{	
-		MapObjects objects = renderer.getMap().getLayers().get("Objects").getObjects();
+		MapObjects entities = renderer.getMap().getLayers().get("Entities").getObjects();
+		MapObjects items = renderer.getMap().getLayers().get("Items").getObjects();
 		
 		if (entity instanceof Character)
 		{
-			entity.getComponent(MapObjectComponent.class).removeFrom(objects);
-			entity.getComponent(HealthBarComponent.class).removeFrom(objects);
+			entity.getComponent(MapObjectComponent.class).removeFrom(entities);
+			entity.getComponent(HealthBarComponent.class).removeFrom(entities);
 			entity.getComponent(CollisionComponent.class).removeMass();
 			
 			if (entity instanceof Enemy)
@@ -288,7 +294,7 @@ public class PlayingScreen implements Screen
 		}
 		else if (entity instanceof Item)
 		{
-			entity.getComponent(MapObjectComponent.class).removeFrom(objects);
+			entity.getComponent(MapObjectComponent.class).removeFrom(items);
 			entity.getComponent(SensorComponent.class).removeMass();
 		}
 		
@@ -396,6 +402,11 @@ public class PlayingScreen implements Screen
 	public AIManager getAIManager()
 	{
 		return aiManager;
+	}
+	
+	public QuestManager getQuestManager()
+	{
+		return quests;
 	}
 
     @Override

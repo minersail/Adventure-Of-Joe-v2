@@ -1,7 +1,6 @@
 package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -18,16 +17,14 @@ public class DialogueManager
     private Image face;
 	private Label message;
 	private Label name;
-	private Stage ui;
 	
 	private final int MARGIN = 100;
 	private final int NAMEWIDTH = 100;
 	private final int NAMEHEIGHT = 100;
     
-    public DialogueManager(PlayingScreen scr, Stage s, Skin skin)
+    public DialogueManager(PlayingScreen scr, Skin skin)
     {
 		screen = scr;
-		ui = s;
 				
 		message = new Label("", skin);
 		message.setWidth(Gdx.graphics.getWidth() - MARGIN * 2 - NAMEWIDTH);
@@ -62,9 +59,9 @@ public class DialogueManager
 		name.setText(dia.getCurrentLine().name());
 		face.setDrawable(faceRegion);
 		
-		ui.getActors().add(message);
-		ui.getActors().add(name);
-		ui.getActors().add(face);
+		screen.getUI().getActors().add(message);
+		screen.getUI().getActors().add(name);
+		screen.getUI().getActors().add(face);
 		
 		screen.setState(GameState.Dialogue);
     }
@@ -107,9 +104,9 @@ public class DialogueManager
 	
 	public void endDialogue(GameState newState)
 	{
-		ui.getActors().removeValue(message, false);
-		ui.getActors().removeValue(name, false);
-		ui.getActors().removeValue(face, false);
+		screen.getUI().getActors().removeValue(message, false);
+		screen.getUI().getActors().removeValue(name, false);
+		screen.getUI().getActors().removeValue(face, false);
 		
 		screen.setState(newState);
 	}

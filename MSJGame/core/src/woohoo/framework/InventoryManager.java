@@ -33,13 +33,14 @@ public class InventoryManager
 {
     public final int INVENTORY_WIDTH = 5;
     public final int INVENTORY_HEIGHT = 8;
-    public final int ITEMX = 72;
-    public final int ITEMY = 72;
+    public final int ITEMX = 64;
+    public final int ITEMY = 64;
+	public final int ITEMBORDERX = 8;
+	public final int ITEMBORDERY = 8;
 	
 	public final int PADDING_LEFT = 100;
 	public final int PADDING_RIGHT = 100;
-	// I have no idea why the -6 needs to be there but it does
-	public final int INVENTORY_BOTTOM = -6 + (Gdx.graphics.getHeight() - ((INVENTORY_HEIGHT + 1) * ITEMY)) / 2;
+	public final int INVENTORY_BOTTOM = (Gdx.graphics.getHeight() - ((INVENTORY_HEIGHT + 1) * ITEMY)) / 2;
 	public final int INVENTORY_TOP = INVENTORY_BOTTOM + (INVENTORY_HEIGHT * ITEMY);
 	public final int INVENTORY_LEFT = PADDING_LEFT;
 	public final int INVENTORY_RIGHT = INVENTORY_LEFT + (INVENTORY_WIDTH * ITEMX);
@@ -75,8 +76,8 @@ public class InventoryManager
         closeButton = new TextButton("x", skin);
         weaponSlot = new InventorySlot(slotBackground, blankItem);
 		weaponSlot.setWeaponSlot(true);
-        table.add(closeButton).prefSize(ITEMX, ITEMY);   
-        table.add(weaponSlot).prefSize(ITEMX, ITEMY);
+        table.add(closeButton).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);   
+        table.add(weaponSlot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
         table.row();
         
         closeButton.addListener(new ClickListener()
@@ -120,16 +121,16 @@ public class InventoryManager
             for (int j = 0; j < INVENTORY_WIDTH; j++)
             {
                 InventorySlot slot = new InventorySlot(slotBackground, blankItem);
-                table.add(slot).prefSize(ITEMX, ITEMY);
+                table.add(slot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
 
                 dnd.addSource(new InventorySource(slot));
                 dnd.addTarget(new InventoryTarget(slot));
 				
                 InventorySlot slot2 = new InventorySlot(slotBackground, blankItem);
-                table2.add(slot2).prefSize(ITEMX, ITEMY);
+                table2.add(slot2).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
 
-                dnd.addSource(new InventorySource(slot));
-                dnd.addTarget(new InventoryTarget(slot));
+                dnd.addSource(new InventorySource(slot2));
+                dnd.addTarget(new InventoryTarget(slot2));
             }
             table.row();
 			table2.row();
@@ -201,7 +202,7 @@ public class InventoryManager
 			item.flipImage(); // When MapObjectComponent is initialized textures are flipped by default
 			TextureRegion region = new TextureRegion(item.getComponent(MapObjectComponent.class).getTextureRegion());
 			Image image = new Image(region);
-			image.setSize(ITEMX - 8, ITEMY - 8);
+			image.setSize(ITEMX, ITEMY);
 			
 			((InventorySlot)table.getCells().get(i).getActor()).setImage(image).setItem(item).setCount(1);
 		}
@@ -244,11 +245,30 @@ public class InventoryManager
 	 * @param item item to be dropped
 	 */
 	public void dropItem(Item item)
-	{		
+	{				
 		// Starts at 1 since first item is "X" button
 		for (int i = 1; i < table.getCells().size; i++)
 		{
 			InventorySlot slot = (InventorySlot)table.getCells().get(i).getActor();
+			
+			if (slot.getItem() != null && slot.getItem().equals(item))
+			{
+				slot.setItem(null).setImage(new Image(blankItem)).setCount(0);
+
+				currentInventory.removeItem(item);
+				screen.addEntity(item);
+
+				item.setPosition(screen.getEngine().getPlayer().getPosition().x, screen.getEngine().getPlayer().getPosition().y);
+				item.update(0);
+				item.flipImage(); // Because the world is in y-down and the UI is in y-up
+				return;
+			}
+		}
+		
+		// Check both tables
+		for (int i = 0; i < table2.getCells().size; i++)
+		{
+			InventorySlot slot = (InventorySlot)table2.getCells().get(i).getActor();
 			
 			if (slot.getItem() != null && slot.getItem().equals(item))
 			{
@@ -283,7 +303,7 @@ public class InventoryManager
         {
             super(background);
             itemImage = new Image(itemSprite);
-            itemImage.setSize(64, 64);
+            itemImage.setSize(ITEMX, ITEMY);
         }
         
         public Image getImage()
@@ -299,7 +319,7 @@ public class InventoryManager
         public InventorySlot setImage(Image image)
         {
             itemImage = image;			
-            itemImage.setSize(64, 64);
+            itemImage.setSize(ITEMX, ITEMY);
 			return this;
         }
 		
@@ -350,7 +370,7 @@ public class InventoryManager
             
             if (!dragged)
             {            
-                itemImage.setPosition(getX() + 4, getY() + 4);   
+                itemImage.setPosition(getX() + ITEMBORDERX / 2, getY() + ITEMBORDERY / 2);   
             }
         }
     }
@@ -389,21 +409,12 @@ public class InventoryManager
         }
 
 		/*
-		Called when item is dropped outside of inventory
+		Called when a drag is stopped
 		*/
         @Override
         public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) 
         {
-            if (!((InventorySlot)getActor()).isDragged()) return;
-			
-            float X = payload.getDragActor().getX() + DRAG_OFFSET_X;
-            float Y = payload.getDragActor().getY() - DRAG_OFFSET_Y; // I have no idea why this formula works but it does
-
-            /*
-            Right now assumes that the drop occurs out of player inventory, change later
-            */
-            if (X < INVENTORY_LEFT || X > INVENTORY_RIGHT ||
-                Y < INVENTORY_BOTTOM || Y > INVENTORY_TOP)
+            if (target == null) // Payload was not dropped on a target (e.g. outside the inventory)
             {
                 // Remove the item from the inventory and add it to the world
                 Item dropped = ((InventorySlot)getActor()).getItem();
@@ -428,23 +439,28 @@ public class InventoryManager
             super(slot);
         }
         
+		/*
+		Called when a payload is moved over a target
+		*/
         @Override
         public boolean drag(Source source, Payload payload, float x, float y, int pointer) 
         {
             return true;
         }
 
+		/*
+		Called when a payload moves out of a target's bounds
+		*/
         @Override
         public void reset(Source source, Payload payload) {}
 
         /*
-		Called when the payload is dropped inside the inventory
-		
-		Switch the images, items, item counts, etc. of the two inventory slots
+		Called when the payload is dropped on a target		
         */
         @Override
         public void drop(Source source, Payload payload, float x, float y, int pointer) 
         {			
+			// Switch the images, items, item counts, etc. of the two inventory slots
             InventorySlot sourceSlot = (InventorySlot)source.getActor();
             InventorySlot targetSlot = (InventorySlot)getActor();
 			

@@ -3,7 +3,7 @@ package woohoo.framework.events;
 import com.badlogic.gdx.math.Vector2;
 import woohoo.gameobjects.Character;
 
-public class MoveEvent implements Event
+public class MoveEvent implements Event<Character>
 {
 	Character character;
 	Vector2 position;
