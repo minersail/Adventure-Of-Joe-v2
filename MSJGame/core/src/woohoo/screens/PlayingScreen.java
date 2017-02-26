@@ -2,12 +2,10 @@ package woohoo.screens;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader.TextureAtlasParameter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -36,6 +34,7 @@ import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.Enemy;
+import woohoo.gameobjects.QuestIndicator;
 import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
@@ -49,7 +48,7 @@ public class PlayingScreen implements Screen
 {    
 	public enum GameState
 	{
-		Playing, Dialogue, Inventory, Cutscene
+		Playing, Dialogue, Inventory, Cutscene, Quests
 	}	
     
     public enum WBodyType
@@ -187,6 +186,7 @@ public class PlayingScreen implements Screen
 				ui.act();
 				break;
 				
+			case Quests:
 			case Inventory:				
 				ui.act();
 				break;
@@ -217,6 +217,7 @@ public class PlayingScreen implements Screen
 		assets.load("images/tilesets/d_tileset1.png", Texture.class);
 		assets.load("images/tilesets/tileset2.png", Texture.class);
 		assets.load("images/tilesets/d_tileset2.png", Texture.class);
+		assets.load("ui/movequest.png", Texture.class);
 		assets.load("ui/inventory.pack", TextureAtlas.class, flipParam);
 		assets.load("ui/healthbar.pack", TextureAtlas.class, flipParam);
         assets.load("ui/uiskin.atlas", TextureAtlas.class);
@@ -269,6 +270,10 @@ public class PlayingScreen implements Screen
 			entity.getComponent(MapObjectComponent.class).addTo(items);
 			entity.getComponent(SensorComponent.class).initializeCommand(contacts, world).createMass(world);
 		}
+		else if (entity instanceof QuestIndicator)
+		{
+			entity.getComponent(MapObjectComponent.class).addTo(items);
+		}
 		
 		engine.addEntity(entity);
 	}
@@ -296,6 +301,10 @@ public class PlayingScreen implements Screen
 		{
 			entity.getComponent(MapObjectComponent.class).removeFrom(items);
 			entity.getComponent(SensorComponent.class).removeMass();
+		}
+		else if (entity instanceof QuestIndicator)
+		{
+			entity.getComponent(MapObjectComponent.class).removeFrom(items);
 		}
 		
 		engine.removeEntity(entity);

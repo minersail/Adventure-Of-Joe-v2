@@ -85,6 +85,14 @@ public class InputHandler implements InputProcessor
 						screen.getInventoryManager().closeInventory();
 				}
 				break;
+			
+			case Quests:
+				switch (keycode)
+				{
+					case Keys.F1:
+						screen.getQuestManager().closeQuests();
+				}
+				break;
 				
 			case Cutscene:
 				switch(keycode)

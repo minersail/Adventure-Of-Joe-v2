@@ -3,6 +3,7 @@ package woohoo.framework;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.events.AIEvent;
@@ -39,8 +40,9 @@ public class EventManager
 			Event event;
 			
 			Element triggerEl = eventListener.getChildByName("trigger");
-			Element eventEl = eventListener.getChildByName("event");
+			Array<Element> eventEls = eventListener.getChildrenByName("event");
 			
+			// Create event trigger
 			switch (triggerEl.get("type").toLowerCase())
 			{
 				case "move":
@@ -54,34 +56,44 @@ public class EventManager
 					break;
 			}
 			
-			switch (eventEl.get("type").toLowerCase())
+			EventListener EL = new EventListener(trigger);
+			
+			// Add events to the event trigger
+			for (Element eventEl : eventEls)
 			{
-				case "cutscene":
-					event = new CutsceneEvent(screen.getCutsceneManager(), eventEl.getInt("id"));
-					break;
-				case "ai":
-					event = new AIEvent((Character)screen.getEngine().getEntity(eventEl.get("entity")), eventEl.get("mode"), 
-										eventEl.get("targetChar", null) == null ? null : (Character)screen.getEngine().getEntity(eventEl.get("targetChar")),
-										eventEl.getInt("targetX", 0), eventEl.getInt("targetY", 0));
-					break;
-				case "quest":
-					event = new QuestEvent(eventEl.getInt("id"), eventEl.get("action"), screen.getQuestManager());
-					break;
-				default:
-					event = null;
-					break;
+				switch (eventEl.get("type").toLowerCase())
+				{
+					case "cutscene":
+						event = new CutsceneEvent(screen.getCutsceneManager(), eventEl.getInt("id"));
+						break;
+					case "ai":
+						event = new AIEvent((Character)screen.getEngine().getEntity(eventEl.get("entity")), eventEl.get("mode"), 
+											eventEl.get("targetChar", null) == null ? null : (Character)screen.getEngine().getEntity(eventEl.get("targetChar")),
+											eventEl.getInt("targetX", 0), eventEl.getInt("targetY", 0));
+						break;
+					case "quest":
+						event = new QuestEvent(eventEl.getInt("id"), eventEl.get("action"), screen.getQuestManager());
+						break;
+					default:
+						event = null;
+						break;
+				}
+				
+				EL.addEvent(event);
 			}
+			
+			
 			
 			if (eventListener.get("owner").equals("entity"))
 			{
-				screen.getEngine().getEntity(eventListener.get("entity")).getListeners().addListener(new EventListener(trigger, event));
+				screen.getEngine().getEntity(eventListener.get("entity")).getListeners().addListener(EL);
 			}
 			else if (eventListener.get("owner").equals("system"))
 			{
 				switch (eventListener.get("system"))
 				{
 					case "cutscene":
-						screen.getCutsceneManager().getListeners().addListener(new EventListener(trigger, event));
+						screen.getCutsceneManager().getListeners().addListener(EL);
 						break;
 				}					
 			}

@@ -3,7 +3,7 @@ package woohoo.gameobjects;
 import com.badlogic.ashley.core.Entity;
 import woohoo.framework.events.EventListeners;
 
-public class BaseEntity extends Entity
+public abstract class BaseEntity extends Entity
 {
 	protected EventListeners<BaseEntity> listeners = new EventListeners<>();
 	protected float elapsedTime;

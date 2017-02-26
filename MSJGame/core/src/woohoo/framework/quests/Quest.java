@@ -1,25 +1,27 @@
 package woohoo.framework.quests;
 
-public abstract class Quest
+import com.badlogic.gdx.graphics.Texture;
+import woohoo.gameobjects.QuestIndicator;
+
+public class Quest
 {
 	public enum QuestState
 	{
-		Undiscovered, Incomplete, Current, Completed
+		Unknown, Discovered, Current, Completed
 	}
 	
-	protected QuestState questState = QuestState.Undiscovered;
+	protected QuestState questState = QuestState.Unknown;
+	protected QuestIndicator indicator;
 	protected int id;
+	protected String description;
 	
-	/**
-	 * Called every tick
-	 */
-	public abstract void indicate();
-	
-	/**
-	 * Called after a quest is completed
-	 */
-	public abstract void reward();
-	
+	public Quest(int ID, String desc, Texture indicatorTexture)
+	{
+		id = ID;
+		description = desc;
+		indicator = new QuestIndicator(indicatorTexture);
+	}
+			
 	public void setState(QuestState state)
 	{
 		questState = state;
@@ -30,13 +32,18 @@ public abstract class Quest
 		return questState;
 	}
 	
-	public void setID(int ID)
-	{
-		id = ID;
-	}
-	
 	public int getID()
 	{
 		return id;
+	}
+	
+	public String getDescription()
+	{
+		return description;
+	}
+	
+	public QuestIndicator getIndicator()
+	{
+		return indicator;
 	}
 }

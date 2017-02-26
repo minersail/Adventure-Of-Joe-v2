@@ -27,24 +27,21 @@ public class DialogueManager
 		screen = scr;
 				
 		message = new Label("", skin);
-		message.setWidth(Gdx.graphics.getWidth() - MARGIN * 2 - NAMEWIDTH);
-		message.setHeight(100);
+		message.setSize(Gdx.graphics.getWidth() - MARGIN * 2 - NAMEWIDTH, 100);
 		message.setPosition(MARGIN + NAMEWIDTH, 0);
 		message.setAlignment(Align.center);
 		message.setWrap(true);
 		message.setFontScale(0.75f);
 		
 		name = new Label("", skin);
-		name.setWidth(NAMEWIDTH);
-		name.setHeight(NAMEHEIGHT);
+		name.setSize(NAMEWIDTH, NAMEHEIGHT);
 		name.setPosition(MARGIN, 0);
 		name.setAlignment(Align.bottom);
 		name.setWrap(true);	
 		name.setFontScale(0.4f);
 		
 		face = new Image();
-		face.setWidth(64);
-		face.setHeight(64);
+		face.setSize(64, 64);
 		face.setPosition(MARGIN + 18, 30);
 		face.setAlign(Align.center);
     }

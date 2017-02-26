@@ -6,7 +6,7 @@ import woohoo.framework.quests.Quest.QuestState;
 public class QuestEvent implements Event
 {
 	int questID;
-	QuestState state;
+	String action;
 	QuestManager manager;
 	
 	public final String START = "start";
@@ -17,24 +17,26 @@ public class QuestEvent implements Event
 	{
 		questID = id;
 		manager = qm;
-		
-		switch(st)
-		{
-			case START:
-				state = QuestState.Current;			
-				break;
-			case END:
-				state = QuestState.Completed;
-				break;
-			case DISCOVER:
-				state = QuestState.Incomplete;
-				break;
-		}
+		action = st;		
 	}
 	
 	@Override
 	public void activate()
 	{
-		manager.getQuest(questID).setState(state);
+		switch(action)
+		{
+			case START:
+				manager.getQuest(questID).setState(QuestState.Current);
+				manager.startQuest(questID);
+				break;
+			case END:
+				manager.getQuest(questID).setState(QuestState.Completed);	
+				manager.endQuest(questID);
+				break;
+			case DISCOVER:
+				manager.getQuest(questID).setState(QuestState.Discovered);
+				manager.displayQuest(questID);
+				break;
+		}
 	}
 }

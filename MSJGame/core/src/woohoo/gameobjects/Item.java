@@ -66,9 +66,9 @@ public class Item extends BaseEntity
 	
 	public void flipImage()
 	{
-		TextureRegion texture = mapObject.getTextureRegion();
-		texture.flip(false, true);
-		mapObject.setTextureRegion(texture);
+		TextureRegion region = mapObject.getTextureRegion();
+		region.flip(false, true);
+		mapObject.setTextureRegion(region);
 	}
     
     public boolean isWeapon()
