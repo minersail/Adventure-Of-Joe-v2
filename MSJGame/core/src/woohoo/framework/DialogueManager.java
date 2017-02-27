@@ -74,20 +74,22 @@ public class DialogueManager
 		
 		if (currentDialogue.getCurrentLine().id() == -1)
 		{
-			if (currentDialogue.getCurrentLine().text().equals("LOOP"))
+			switch (currentDialogue.getCurrentLine().text())
 			{
-				currentDialogue.loop();
-				endDialogue(GameState.Playing);
-			}
-			else if (currentDialogue.getCurrentLine().text().equals("BREAK"))
-			{
-				currentDialogue.advance();
-				endDialogue(GameState.Playing);
-			}
-			else if (currentDialogue.getCurrentLine().text().equals("CUTSCENE"))
-			{
-				currentDialogue.advance();
-				endDialogue(GameState.Cutscene);
+				case "LOOP":
+					currentDialogue.loop();
+					endDialogue(GameState.Playing);
+					break;
+				case "BREAK":
+					currentDialogue.advance();
+					endDialogue(GameState.Playing);
+					break;
+				case "CUTSCENE":
+					currentDialogue.advance();
+					endDialogue(GameState.Cutscene);
+					break;
+				default:
+					break;
 			}
 			return;
 		}
@@ -106,5 +108,10 @@ public class DialogueManager
 		screen.getUI().getActors().removeValue(face, false);
 		
 		screen.setState(newState);
+	}
+	
+	public DialogueComponent getCurrentDialogue()
+	{
+		return currentDialogue;
 	}
 }

@@ -3,12 +3,16 @@ package woohoo.framework;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.XmlReader;
@@ -56,25 +60,31 @@ public class QuestManager
 		header.setPosition(0, Gdx.graphics.getHeight() - 100);
 		header.setAlignment(Align.center);
 		paneTable.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		paneTable.debugAll();
 		pane.setSize(Gdx.graphics.getWidth(), 200);
 		pane.setPosition(0, Gdx.graphics.getHeight() - 300);
 	}
 	
-	public void displayQuest(int id)
+	public void discoverQuest(int id)
 	{
 		paneTable.add(quests.get(id)).prefSize(Gdx.graphics.getWidth(), 100);
-		paneTable.row();	
+		paneTable.row();
+		
+		quests.get(id).setQuestIcon("discovered");
 	}
 	
 	public void startQuest(int id)
 	{
 		screen.addEntity(quests.get(id).getQuest().getIndicator());
+		screen.getAlertManager().alert("quest", quests.get(id).getQuest().getDescription());
+		
+		quests.get(id).setQuestIcon("current");
 	}
 	
 	public void endQuest(int id)
 	{
 		screen.removeEntity(quests.get(id).getQuest().getIndicator());
+		
+		quests.get(id).setQuestIcon("completed");
 	}
 	
 	public void showQuests()
@@ -99,17 +109,29 @@ public class QuestManager
 	public class QuestUI extends HorizontalGroup
 	{
 		private Label description;
+		private Stack imageStack;
+		private ImageButton imageBG;
+		private Image image;
 		private Quest quest;
 		
 		public QuestUI(Quest q, Skin skin)
 		{
 			quest = q;
 			description = new Label(quest.getDescription(), skin);
-			description.setSize(Gdx.graphics.getWidth(), 100);
+			description.setSize(Gdx.graphics.getWidth() - 100, 100);
+			description.setX(100);
 			description.setAlignment(Align.center);
 			description.layout();
-			//label.setWrap(true);
+			
+			imageBG = new ImageButton(skin);
+			imageBG.setSize(100, 100);
+			
+			image = new Image();
+			image.setSize(100, 100);
+			
+			imageStack = new Stack(imageBG, image);
 						
+			super.addActor(imageStack);
 			super.addActor(description);
 			super.setLayoutEnabled(false);
 		}
@@ -117,6 +139,12 @@ public class QuestManager
 		public Quest getQuest()
 		{
 			return quest;
+		}
+		
+		public void setQuestIcon(String icon)
+		{
+			image.setDrawable(new TextureRegionDrawable(new TextureRegion(screen.getAssets().get("ui/quests/" + icon + ".png", Texture.class))));
+			image.layout();
 		}
 	}
 }

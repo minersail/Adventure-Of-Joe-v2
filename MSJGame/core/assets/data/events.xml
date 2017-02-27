@@ -4,25 +4,38 @@
 		<eventlistener owner="entity" entity="player">
 			<trigger type="move" locX="3" locY="5" dist="1" />
 			<event type="cutscene" id="0" />
+		</eventlistener>
+		<eventlistener owner="system" system="cutscene">
+			<trigger type="cutscene" />
 			<event type="quest" id="0" action="discover" />
 			<event type="quest" id="0" action="start" />
+		</eventlistener>
+		<eventlistener owner="entity" entity="player">
+			<trigger type="move" locX="3" locY="0" dist="0.5" />
+			<event type="quest" id="0" action="end" />
 		</eventlistener>
 	</area>
 	<area id="1">
 		<eventlistener owner="entity" entity="player">
-			<trigger type="move" locX="2.5" locY="7.5" dist="2" />
+			<trigger type="move" locX="2" locY="7" dist="2" />
 			<event type="cutscene" id="1" />
 		</eventlistener>
 	</area>
 	<area id="2">
 		<eventlistener owner="entity" entity="player">
-			<trigger type="move" locX="2.5" locY="6.5" dist=".5" />
+			<trigger type="move" locX="2" locY="6" dist=".5" />
 			<event type="cutscene" id="2" />
+			<event type="quest" id="1" action="discover" />
 		</eventlistener>
 		<eventlistener owner="system" system="cutscene">
 			<trigger type="cutscene" />
 			<event type="ai" entity="robber1" mode="follow" targetChar="player" />
 			<event type="ai" entity="robber2" mode="follow" targetChar="player" />
+			<event type="quest" id="1" action="start" />
+		</eventlistener>
+		<eventlistener owner="entity" entity="player">
+			<trigger type="move" locX="20" locY="6" dist="1" />
+			<event type="quest" id="1" action="end" />
 		</eventlistener>
 	</area>
 </events>

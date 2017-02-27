@@ -35,7 +35,7 @@ public class QuestEvent implements Event
 				break;
 			case DISCOVER:
 				manager.getQuest(questID).setState(QuestState.Discovered);
-				manager.displayQuest(questID);
+				manager.discoverQuest(questID);
 				break;
 		}
 	}

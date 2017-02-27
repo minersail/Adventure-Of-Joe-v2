@@ -21,7 +21,8 @@ public class MoveTrigger implements EventTrigger<BaseEntity>
 	 */
 	public MoveTrigger(Vector2 pos, float dist)
 	{
-		position = pos;
+		// Switch from top-left corner to center
+		position = new Vector2(pos.x + 0.5f, pos.y + 0.5f);
 		distanceTo = dist;
 	}
 	

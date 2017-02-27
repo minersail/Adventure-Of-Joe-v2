@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.ai.AIDebugger;
 import woohoo.framework.AIManager;
+import woohoo.framework.AlertManager;
 import woohoo.framework.IDManager;
 import woohoo.framework.ContactManager;
 import woohoo.framework.CutsceneManager;
@@ -67,6 +68,7 @@ public class PlayingScreen implements Screen
 	final private Box2DDebugRenderer debugRenderer;
 	final private AIDebugger aiDebugger;
 	
+	final private AlertManager alerts;
 	final private QuestManager quests;
 	final private AIManager aiManager;
     final private CutsceneManager cutscenes;
@@ -153,6 +155,8 @@ public class PlayingScreen implements Screen
 		events = new EventManager(this);
 		events.createEvents(currentArea);
 		
+		alerts = new AlertManager(this, assets.get("ui/uiskin.json", Skin.class));
+		
 		// Initialize input
 		input = new InputHandler(this);
 		
@@ -166,6 +170,7 @@ public class PlayingScreen implements Screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
 		cam.update();
 		runTime += delta;
+		
 		switch (state)
 		{
 			case Playing:			
@@ -192,6 +197,7 @@ public class PlayingScreen implements Screen
 				break;
 		}
 		
+		alerts.act(delta);
 		renderer.setView(cam);
 		renderer.render();
 		//aiDebugger.renderConnections(engine.getEntity("player"), cam);
@@ -217,6 +223,10 @@ public class PlayingScreen implements Screen
 		assets.load("images/tilesets/d_tileset1.png", Texture.class);
 		assets.load("images/tilesets/tileset2.png", Texture.class);
 		assets.load("images/tilesets/d_tileset2.png", Texture.class);
+		assets.load("ui/alerts/quest.png", Texture.class);
+		assets.load("ui/quests/discovered.png", Texture.class);
+		assets.load("ui/quests/current.png", Texture.class);
+		assets.load("ui/quests/completed.png", Texture.class);
 		assets.load("ui/movequest.png", Texture.class);
 		assets.load("ui/inventory.pack", TextureAtlas.class, flipParam);
 		assets.load("ui/healthbar.pack", TextureAtlas.class, flipParam);
@@ -416,6 +426,11 @@ public class PlayingScreen implements Screen
 	public QuestManager getQuestManager()
 	{
 		return quests;
+	}
+	
+	public AlertManager getAlertManager()
+	{
+		return alerts;
 	}
 
     @Override
