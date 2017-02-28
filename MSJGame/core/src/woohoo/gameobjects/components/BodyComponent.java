@@ -3,9 +3,15 @@ package woohoo.gameobjects.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.framework.contactcommands.ContactCommand;
+import woohoo.framework.fixturedata.HitData;
 import woohoo.screens.PlayingScreen.WBodyType;
 
 /*
@@ -19,9 +25,10 @@ Fixture user data can be:
 	- BodyComponent: BodyComponent (or derived)
 	- Maybe write some base class FixtureData
 */
-public class BodyComponent implements Component
+public abstract class BodyComponent implements Component
 {
 	protected Body mass;
+	protected Fixture fixture;
 	protected ContactCommand contactData;
 	protected WBodyType type;
 	
@@ -29,12 +36,18 @@ public class BodyComponent implements Component
 	Creates mass, overriden by subclasses
 	*/
 	public void createMass(World world)
-	{
-	}
+    {
+        BodyDef bodyDef = new BodyDef();
+		mass = world.createBody(bodyDef);
+
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = getShape();		
+			
+        fixture = mass.createFixture(fixtureDef);
+    }
 	
-	public void update(float delta)
-	{
-	}		
+    public abstract Shape getShape();
+	public abstract void update(float delta);
 	
 	public void removeMass()
 	{
