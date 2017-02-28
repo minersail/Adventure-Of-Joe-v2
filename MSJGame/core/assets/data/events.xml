@@ -38,4 +38,6 @@
 			<event type="quest" id="1" action="end" />
 		</eventlistener>
 	</area>
+	<area id="3">
+	</area>
 </events>

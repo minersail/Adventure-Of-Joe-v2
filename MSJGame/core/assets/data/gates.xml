@@ -10,4 +10,6 @@
 	<area id="2">
 		<gate locX="-1" locY="1" sizeX="1" sizeY="3" destArea="1" destX="15" destY="1" />
 	</area>
+	<area id="3">
+	</area>
 </gates>

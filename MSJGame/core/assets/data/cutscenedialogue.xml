@@ -40,4 +40,6 @@
 		<line character="2" name="Robert" text="Finish him, too." />
 		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
+	<dialogue id="3">
+	</dialogue>
 </dialogues>

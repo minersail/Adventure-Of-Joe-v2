@@ -92,7 +92,7 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	private int currentArea = 0;
+	private int currentArea = 3;
 	
     private float runTime;
 
@@ -200,7 +200,7 @@ public class PlayingScreen implements Screen
 		alerts.act(delta);
 		renderer.setView(cam);
 		renderer.render();
-		//aiDebugger.renderConnections(engine.getEntity("player"), cam);
+		aiDebugger.renderLineOfSight(engine.getEntity("player"), cam);
 		//debugRenderer.render(world, cam.combined);
 		ui.draw();
     }

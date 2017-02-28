@@ -28,4 +28,6 @@
 		<action type="move" name="robert" locX="-2" locY="2" speed="2" />
 		<action type="move" name="player" locX="2" locY="8" speed="2" />
 	</cutscene>
+	<cutscene id="3">
+	</cutscene>
 </cutscenes>

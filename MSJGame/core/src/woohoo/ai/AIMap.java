@@ -125,6 +125,12 @@ public class AIMap implements IndexedGraph<Node>
 		return (x + offsetCol) + (y + offsetRow) * width;
 	}
 	
+	/**
+	 * Returns null if no node exists at these coordinates
+	 * @param x coordinate of desired node
+	 * @param y coordinate of desired node
+	 * @return
+	 */
 	public Node get(int x, int y)
 	{
 		return nodes.get(index(x, y));

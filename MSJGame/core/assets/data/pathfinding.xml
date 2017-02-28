@@ -14,4 +14,7 @@
 		<node x="-2" y="2" />
 		<node x="-1" y="2" />
 	</area>
+	<area id="0">
+		<settings />
+	</area>
 </pathfinding>

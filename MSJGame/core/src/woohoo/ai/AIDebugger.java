@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.CollisionComponent;
+import woohoo.gameobjects.components.MapObjectComponent;
 
 public class AIDebugger
 {
@@ -38,6 +40,22 @@ public class AIDebugger
 		{
 			renderer.line(((Node)connection.getFromNode()).x + 0.5f, ((Node)connection.getFromNode()).y + 0.5f, 
 						  ((Node)connection.getToNode()).x + 0.5f, ((Node)connection.getToNode()).y + 0.5f);
+		}
+		renderer.end();
+	}
+	
+	public void renderLineOfSight(Entity entity, Camera camera)
+	{
+		renderer.setProjectionMatrix(camera.combined);
+		
+		Array<Vector2> los = entity.getComponent(AIComponent.class).getLineOfSight(entity.getComponent(CollisionComponent.class).getPosition(),
+																				   entity.getComponent(MapObjectComponent.class).getDirection());
+		
+		renderer.begin();		
+		renderer.setColor(Color.FIREBRICK);
+		for (Vector2 pos : los)
+		{
+			renderer.rect(pos.x, pos.y, 1, 1);
 		}
 		renderer.end();
 	}
