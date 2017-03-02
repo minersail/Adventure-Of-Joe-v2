@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.events.AIEvent;
+import woohoo.framework.events.AreaEvent;
 import woohoo.framework.events.CutsceneEvent;
 import woohoo.framework.events.CutsceneTrigger;
 import woohoo.framework.events.Event;
@@ -32,7 +33,8 @@ public class EventManager
         
         XmlReader xml = new XmlReader();
         Element root = xml.parse(handle.readString());       
-        Element eventListeners = root.getChild(area);  
+        Element areaEl = root.getChild(area);        
+        Element eventListeners = areaEl.getChild(screen.getAreaManager().getAreaState(area));
         
         for (Element eventListener : eventListeners.getChildrenByName("eventlistener"))
         {		
@@ -73,6 +75,9 @@ public class EventManager
 						break;
 					case "quest":
 						event = new QuestEvent(eventEl.getInt("id"), eventEl.get("action"), screen.getQuestManager());
+						break;
+					case "areastate":
+						event = new AreaEvent(screen.getAreaManager(), eventEl.getInt("area"), eventEl.getInt("state"));
 						break;
 					default:
 						event = null;

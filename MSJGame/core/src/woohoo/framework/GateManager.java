@@ -41,8 +41,9 @@ public class GateManager
         FileHandle handle = Gdx.files.internal("data/gates.xml");
         
         XmlReader xml = new XmlReader();
-        XmlReader.Element root = xml.parse(handle.readString());       
-        XmlReader.Element gates = root.getChild(area);  
+        XmlReader.Element root = xml.parse(handle.readString());      
+        XmlReader.Element areaEl = root.getChild(area);      
+        XmlReader.Element gates = areaEl.getChild(screen.getAreaManager().getAreaState(area));  
         
         for (XmlReader.Element gate : gates.getChildrenByName("gate"))
         {

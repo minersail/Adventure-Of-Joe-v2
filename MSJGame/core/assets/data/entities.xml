@@ -9,16 +9,30 @@
 		<entity class="enemy" locX="7" locY="6" texture="scav.png" health="100" mode="stay" />
 	</template-->
 	<area id="0">
+		<areastate id="0">
+		</areastate>
+		<areastate id="1">
+		</areastate>
 	</area>
 	<area id="1">
-		<entity class="npc" locX="7" locY="6" texture="mother.pack" name="mother" id="1" animated="true"/>
-		<entity class="npc" locX="8" locY="6" texture="robert.pack" name="robert" id="2" animated="true"/>
+		<areastate id="0">
+			<entity class="npc" locX="7" locY="6" texture="mother.pack" name="mother" id="1" animated="true"/>
+			<entity class="npc" locX="8" locY="6" texture="robert.pack" name="robert" id="2" animated="true"/>
+		</areastate>
+		<areastate id="1">
+		</areastate>
 	</area>
 	<area id="2">
-		<entity class="npc" locX="-2" locY="2" texture="mother.pack" name="mother" id="1" animated="true"/>
-		<entity class="npc" locX="-3" locY="2" texture="robert.pack" name="robert" id="2" animated="true"/>
-		<entity class="npc" locX="1" locY="5" texture="robber.pack" name="robber1" id="3" animated="true" speed="1.25" />
-		<entity class="npc" locX="3" locY="5" texture="robber.pack" name="robber2" id="4" animated="true" speed="1.25" />
+		<areastate id="0">
+			<entity class="npc" locX="-2" locY="2" texture="mother.pack" name="mother" id="1" animated="true"/>
+			<entity class="npc" locX="-3" locY="2" texture="robert.pack" name="robert" id="2" animated="true"/>
+			<entity class="npc" locX="1" locY="5" texture="robber.pack" name="robber1" id="3" animated="true" speed="1.25" />
+			<entity class="npc" locX="3" locY="5" texture="robber.pack" name="robber2" id="4" animated="true" speed="1.25" />
+		</areastate>
+		<areastate id="1">
+			<entity class="npc" locX="1" locY="5" texture="robber.pack" name="robber1" id="3" animated="true" speed="1.25" />
+			<entity class="npc" locX="3" locY="5" texture="robber.pack" name="robber2" id="4" animated="true" speed="1.25" />
+		</areastate>
 	</area>
 	<area id="3">
 	</area>

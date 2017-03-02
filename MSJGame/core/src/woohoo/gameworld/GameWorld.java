@@ -84,7 +84,8 @@ public class GameWorld extends Engine
         
         XmlReader xml = new XmlReader();
         XmlReader.Element root = xml.parse(handle.readString());       
-        XmlReader.Element entities = root.getChild(area);  
+        XmlReader.Element areaEl = root.getChild(area);         
+        XmlReader.Element entities = areaEl.getChild(screen.getAreaManager().getAreaState(area));  
         
         for (XmlReader.Element entity : entities.getChildrenByName("entity"))
         {

@@ -35,10 +35,11 @@ public class HexMapLoader
         XmlReader xml = new XmlReader();
         Element root = xml.parse(handle.readString());       
         Element areaData = root.getChild(area);  
-        int tilesetNum = areaData.getInt("tileset");
+        int tilesetNum = areaData.getInt("tileset", 0);
+        int d_tilesetNum = areaData.getInt("d_tileset", 0);
         
         Texture tileset = screen.getAssets().get("images/tilesets/tileset" + tilesetNum + ".png", Texture.class);
-        Texture decorationTileset = screen.getAssets().get("images/tilesets/d_tileset" + tilesetNum + ".png", Texture.class);
+        Texture decorationTileset = screen.getAssets().get("images/tilesets/d_tileset" + d_tilesetNum + ".png", Texture.class);
         
 		FileHandle mapHandle = Gdx.files.internal("maps/" + area + ".txt");
 		String map = mapHandle.readString();
