@@ -5,19 +5,41 @@ import java.util.Arrays;
 
 public class EventListener<T>
 {
-	ArrayList<Event> events;
-	EventTrigger trigger;
-	
-	public EventListener(EventTrigger eT)
+	public enum EventListenerState
 	{
-		trigger = eT;
-		
-		events = new ArrayList<>();
+		Enabled, Disabled, Autodisable
 	}
 	
-	public EventListener(EventTrigger eT, Event... e)
+	ArrayList<Event> events;
+	EventTrigger trigger;
+	EventListenerState listenerState;
+	int id;
+	int area;
+	
+	public EventListener(String state, int ID, int eventArea, EventTrigger eT)
 	{
-		this(eT);
+		trigger = eT;		
+		events = new ArrayList<>();
+		id = ID;
+		area = eventArea;
+		
+		switch(state)
+		{
+			case "enabled":
+				listenerState = EventListenerState.Enabled;
+				break;
+			case "disabled":
+				listenerState = EventListenerState.Disabled;
+				break;
+			case "autodisable":
+				listenerState = EventListenerState.Autodisable;
+				break;
+		}
+	}
+	
+	public EventListener(String state, int ID, int eventArea, EventTrigger eT, Event... e)
+	{
+		this(state, ID, eventArea, eT);
 		events.addAll(Arrays.asList(e));
 	}
 	
@@ -37,5 +59,20 @@ public class EventListener<T>
 		}
 		
 		return false;
+	}
+	
+	public EventListenerState getListenerState()
+	{
+		return listenerState;
+	}
+	
+	public int getArea()
+	{
+		return area;
+	}
+	
+	public int getID()
+	{
+		return id;
 	}
 }

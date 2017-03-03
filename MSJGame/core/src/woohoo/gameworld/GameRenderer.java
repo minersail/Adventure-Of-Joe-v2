@@ -55,9 +55,10 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 			}
 			else
 			{			
+				Color oldColor = batch.getColor();
 				batch.setColor(obj.getColor());
 				batch.draw(obj.getTextureRegion(), obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
-				batch.setColor(Color.WHITE);
+				batch.setColor(oldColor);
 			}
 		}
         else if (object instanceof HealthBarComponent)

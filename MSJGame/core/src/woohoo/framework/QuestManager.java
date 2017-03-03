@@ -40,7 +40,7 @@ public class QuestManager
 		screen = scr;
 		
 		// All quests are loaded hidden
-		FileHandle handle = Gdx.files.internal("data/quests.xml");
+		FileHandle handle = Gdx.files.local("data/quests.xml");
         
         XmlReader xml = new XmlReader();
         Element root = xml.parse(handle.readString());

@@ -24,12 +24,11 @@ public class AIManager
 	
 	public void initializePathfinding(int area)
 	{
-		FileHandle handle = Gdx.files.internal("data/pathfinding.xml");
+		FileHandle handle = Gdx.files.local("data/pathfinding.xml");
         
         XmlReader xml = new XmlReader();
         Element root = xml.parse(handle.readString());    
-		Element areaEl = root.getChild(area);
-        Element data = areaEl.getChild(screen.getAreaManager().getAreaState(area));  
+		Element data = root.getChild(area);
 		
 		ArrayList<Vector2> extraNodes = new ArrayList<>();
 		int topRow = data.getChildByName("settings").getInt("topRow", 0);

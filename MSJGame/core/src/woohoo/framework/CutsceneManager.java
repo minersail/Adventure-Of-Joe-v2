@@ -73,7 +73,7 @@ public class CutsceneManager
     
     public void startCutscene(int cutsceneID)
     {
-        FileHandle handle = Gdx.files.internal("data/cutscenes.xml");
+        FileHandle handle = Gdx.files.local("data/cutscenes.xml");
         
         XmlReader xml = new XmlReader();
         Element root = xml.parse(handle.readString());

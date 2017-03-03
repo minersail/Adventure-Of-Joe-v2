@@ -38,12 +38,11 @@ public class GateManager
     */
     public void createGates(int area)
     {        
-        FileHandle handle = Gdx.files.internal("data/gates.xml");
+        FileHandle handle = Gdx.files.local("data/gates.xml");
         
         XmlReader xml = new XmlReader();
-        XmlReader.Element root = xml.parse(handle.readString());      
-        XmlReader.Element areaEl = root.getChild(area);      
-        XmlReader.Element gates = areaEl.getChild(screen.getAreaManager().getAreaState(area));  
+        XmlReader.Element root = xml.parse(handle.readString());   
+        XmlReader.Element gates = root.getChild(area);      
         
         for (XmlReader.Element gate : gates.getChildrenByName("gate"))
         {

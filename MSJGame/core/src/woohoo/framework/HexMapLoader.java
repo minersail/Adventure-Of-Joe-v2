@@ -30,7 +30,7 @@ public class HexMapLoader
 	
 	public TiledMap load(int area)
 	{		
-        FileHandle handle = Gdx.files.internal("data/areas.xml");
+        FileHandle handle = Gdx.files.local("data/areas.xml");
         
         XmlReader xml = new XmlReader();
         Element root = xml.parse(handle.readString());       
@@ -41,7 +41,7 @@ public class HexMapLoader
         Texture tileset = screen.getAssets().get("images/tilesets/tileset" + tilesetNum + ".png", Texture.class);
         Texture decorationTileset = screen.getAssets().get("images/tilesets/d_tileset" + d_tilesetNum + ".png", Texture.class);
         
-		FileHandle mapHandle = Gdx.files.internal("maps/" + area + ".txt");
+		FileHandle mapHandle = Gdx.files.local("maps/" + area + ".txt");
 		String map = mapHandle.readString();
 
 		String[] rows = map.split("\n");

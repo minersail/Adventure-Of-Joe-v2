@@ -165,7 +165,7 @@ public class InventoryManager
 	 */
     public void loadInventory(InventoryComponent inventory)
     {        
-        FileHandle handle = Gdx.files.internal("data/inventory.xml");
+        FileHandle handle = Gdx.files.local("data/inventory.xml");
         
         XmlReader xml = new XmlReader();
         XmlReader.Element root = xml.parse(handle.readString());    

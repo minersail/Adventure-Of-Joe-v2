@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.events.AIEvent;
-import woohoo.framework.events.AreaEvent;
+import woohoo.framework.events.AttributeXMLEvent;
 import woohoo.framework.events.CutsceneEvent;
 import woohoo.framework.events.CutsceneTrigger;
 import woohoo.framework.events.Event;
@@ -29,15 +29,16 @@ public class EventManager
 	
 	public void createEvents(int area)
 	{
-		FileHandle handle = Gdx.files.internal("data/events.xml");
+		FileHandle handle = Gdx.files.local("data/events.xml");
         
         XmlReader xml = new XmlReader();
         Element root = xml.parse(handle.readString());       
-        Element areaEl = root.getChild(area);        
-        Element eventListeners = areaEl.getChild(screen.getAreaManager().getAreaState(area));
+        Element eventListeners = root.getChild(area);        
         
         for (Element eventListener : eventListeners.getChildrenByName("eventlistener"))
         {		
+			if (eventListener.get("state").equals("disabled")) continue;
+			
 			EventTrigger trigger;
 			Event event;
 			
@@ -58,11 +59,11 @@ public class EventManager
 					break;
 			}
 			
-			EventListener EL = new EventListener(trigger);
+			EventListener EL = new EventListener(eventListener.get("state"), eventListener.getInt("id"), area, trigger);
 			
-			// Add events to the event trigger
-			for (Element eventEl : eventEls)
-			{
+			// Create events to be activated by the event trigger
+			for (final Element eventEl : eventEls)
+			{				
 				switch (eventEl.get("type").toLowerCase())
 				{
 					case "cutscene":
@@ -76,8 +77,9 @@ public class EventManager
 					case "quest":
 						event = new QuestEvent(eventEl.getInt("id"), eventEl.get("action"), screen.getQuestManager());
 						break;
-					case "areastate":
-						event = new AreaEvent(screen.getAreaManager(), eventEl.getInt("area"), eventEl.getInt("state"));
+					case "editxml":
+						event = new AttributeXMLEvent(eventEl.get("filename"), eventEl.get("attribute"), eventEl.get("value"), eventEl.getInt("area"), 
+													  eventEl.get("elementname"), eventEl.get("selectorname"), eventEl.get("selectorvalue"));
 						break;
 					default:
 						event = null;
@@ -85,10 +87,9 @@ public class EventManager
 				}
 				
 				EL.addEvent(event);
-			}
+			}		
 			
-			
-			
+			// Combine the event trigger and events and allocate them to the correct place
 			if (eventListener.get("owner").equals("entity"))
 			{
 				screen.getEngine().getEntity(eventListener.get("entity")).getListeners().addListener(EL);

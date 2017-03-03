@@ -22,7 +22,7 @@ public class DialogueComponent implements Component
     {
         sequence = new ArrayList<>();
         
-        FileHandle handle = Gdx.files.internal(cutscene ? "data/cutscenedialogue.xml" : "data/dialogue.xml");
+        FileHandle handle = Gdx.files.local(cutscene ? "data/cutscenedialogue.xml" : "data/dialogue.xml");
         
         XmlReader xml = new XmlReader();
         Element root = xml.parse(handle.readString());       

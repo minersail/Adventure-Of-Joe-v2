@@ -80,15 +80,16 @@ public class GameWorld extends Engine
 	
 	public void loadEntities(int area)
 	{
-		FileHandle handle = Gdx.files.internal("data/entities.xml");
+		FileHandle handle = Gdx.files.local("data/entities.xml");
         
         XmlReader xml = new XmlReader();
         XmlReader.Element root = xml.parse(handle.readString());       
-        XmlReader.Element areaEl = root.getChild(area);         
-        XmlReader.Element entities = areaEl.getChild(screen.getAreaManager().getAreaState(area));  
+        XmlReader.Element entities = root.getChild(area);         
         
         for (XmlReader.Element entity : entities.getChildrenByName("entity"))
         {
+			if (!entity.getBoolean("enabled")) continue;
+			
 			String eClass = entity.get("class");
 			
 			switch (eClass)

@@ -21,7 +21,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.ai.AIDebugger;
 import woohoo.framework.AIManager;
 import woohoo.framework.AlertManager;
-import woohoo.framework.AreaManager;
 import woohoo.framework.IDManager;
 import woohoo.framework.ContactManager;
 import woohoo.framework.CutsceneManager;
@@ -69,7 +68,6 @@ public class PlayingScreen implements Screen
 	final private Box2DDebugRenderer debugRenderer;
 	final private AIDebugger aiDebugger;
 	
-	final private AreaManager areas;
 	final private AlertManager alerts;
 	final private QuestManager quests;
 	final private AIManager aiManager;
@@ -117,7 +115,6 @@ public class PlayingScreen implements Screen
 		
 		// Map ids
 		idManager = new IDManager(assets);
-		areas = new AreaManager(this);
 		
 		// Create physics
 		world = new World(new Vector2(0, 0), true);	
@@ -434,11 +431,6 @@ public class PlayingScreen implements Screen
 	public AlertManager getAlertManager()
 	{
 		return alerts;
-	}
-	
-	public AreaManager getAreaManager()
-	{
-		return areas;
 	}
 
     @Override

@@ -1,7 +1,11 @@
 package woohoo.framework.events;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.XmlReader;
 import java.util.ArrayList;
 import java.util.ListIterator;
+import woohoo.framework.events.EventListener.EventListenerState;
 
 public class EventListeners<T>
 {
@@ -11,8 +15,25 @@ public class EventListeners<T>
 	{		
 		for (ListIterator<EventListener> iter = listeners.listIterator(); iter.hasNext();)
 		{
-			if (iter.next().notify(listenerHolder))
-				iter.remove();
+			EventListener listener = iter.next();
+			
+			if (listener.notify(listenerHolder))
+			{
+				if (listener.getListenerState() == EventListenerState.Autodisable)
+				{
+					FileHandle handle = Gdx.files.local("data/events.xml");
+
+					XmlReader reader = new XmlReader();
+					XmlReader.Element root = reader.parse(handle.readString());
+					XmlReader.Element targetListener = root.getChild(listener.getArea()).getChild(listener.getID());
+
+					targetListener.setAttribute("state", "disabled");
+
+					handle.writeString(root.toString(), false);
+					
+					iter.remove();
+				}
+			}
 		}
 	}
 	
