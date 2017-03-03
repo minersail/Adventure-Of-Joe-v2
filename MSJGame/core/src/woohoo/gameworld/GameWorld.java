@@ -96,8 +96,8 @@ public class GameWorld extends Engine
 			{
 				case "npc":					
 					NPC npc = entity.getBoolean("animated", false) ? 
-						new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), TextureAtlas.class), entity.getInt("id")) :
-						new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class), entity.getInt("id")); 
+						new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), TextureAtlas.class), entity.getInt("dialogueid")) :
+						new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class), entity.getInt("dialogueid")); 
 					screen.addEntity(npc);
 					npc.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
 					npc.setName(entity.get("name", ""));

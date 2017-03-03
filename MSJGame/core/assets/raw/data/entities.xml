@@ -11,14 +11,14 @@
 	<area id="0">
 	</area>
 	<area id="1">
-		<entity class="npc" locX="7" locY="6" enabled="true" texture="mother.pack" name="mother" id="1" animated="true"/>
-		<entity class="npc" locX="8" locY="6" enabled="true" texture="robert.pack" name="robert" id="2" animated="true"/>
+		<entity class="npc" locX="7" locY="6" enabled="true" texture="mother.pack" name="mother" dialogueid="1" animated="true"/>
+		<entity class="npc" locX="8" locY="6" enabled="true" texture="robert.pack" name="robert" dialogueid="2" animated="true"/>
 	</area>
 	<area id="2">
-		<entity class="npc" locX="-2" locY="2" enabled="true" texture="mother.pack" name="mother" id="1" animated="true"/>
-		<entity class="npc" locX="-3" locY="2" enabled="true" texture="robert.pack" name="robert" id="2" animated="true"/>
-		<entity class="npc" locX="1" locY="5" enabled="true" texture="robber.pack" name="robber1" id="3" animated="true" speed="1.25" />
-		<entity class="npc" locX="3" locY="5" enabled="true" texture="robber.pack" name="robber2" id="4" animated="true" speed="1.25" />
+		<entity class="npc" locX="-2" locY="2" enabled="true" texture="mother.pack" name="mother" dialogueid="1" animated="true"/>
+		<entity class="npc" locX="-3" locY="2" enabled="true" texture="robert.pack" name="robert" dialogueid="2" animated="true"/>
+		<entity class="npc" locX="1" locY="5" enabled="true" texture="robber.pack" name="robber1" dialogueid="3" animated="true" speed="1.25" />
+		<entity class="npc" locX="3" locY="5" enabled="true" texture="robber.pack" name="robber2" dialogueid="4" animated="true" speed="1.25" />
 	</area>
 	<area id="3">
 	</area>

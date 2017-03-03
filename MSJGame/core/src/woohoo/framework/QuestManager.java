@@ -47,7 +47,7 @@ public class QuestManager
         
         for (Element questEl : root.getChildrenByName("quest"))
         {		
-			Quest quest = new Quest(questEl.getInt("id"), questEl.get("description"), screen.getAssets().get("ui/" + questEl.get("type") + "quest.png", Texture.class));
+			Quest quest = new Quest(questEl.getInt("id"), questEl.get("description"), screen.getAssets().get("ui/quests/" + questEl.get("type") + "quest.png", Texture.class));
 			
 			quest.setState(QuestState.Current);
 			quest.getIndicator().setPosition(questEl.getInt("locX"), questEl.getInt("locY"));

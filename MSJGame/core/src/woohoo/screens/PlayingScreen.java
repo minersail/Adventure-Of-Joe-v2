@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader.TextureAtlasParameter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -111,7 +112,15 @@ public class PlayingScreen implements Screen
 		
 		// Load assets
 		assets = new AssetManager();
-		loadAssets();
+		loadAssets("images/entities", "pack");
+		loadAssets("images/faces", "png");
+		loadAssets("images/items", "png");
+		loadAssets("images/tilesets", "png");
+		loadAssets("ui/alerts", "png");
+		loadAssets("ui/quests", "png");
+		loadAssets("ui", "pack");
+		loadAssets("ui", "json");
+		assets.finishLoading();
 		
 		// Map ids
 		idManager = new IDManager(assets);
@@ -205,46 +214,28 @@ public class PlayingScreen implements Screen
 		ui.draw();
     }
 	
-	private void loadAssets()
+	private void loadAssets(String directoryName, String extension)
 	{			
-		TextureAtlasParameter flipParam = new TextureAtlasParameter(true);
-		SkinParameter skinParam1 = new SkinParameter("ui/uiskin.atlas");
-		
-		assets.load("images/entities/oldman.pack", TextureAtlas.class, flipParam);
-		assets.load("images/entities/mother.pack", TextureAtlas.class, flipParam);
-		assets.load("images/entities/youngjoe.pack", TextureAtlas.class, flipParam);
-        assets.load("images/entities/robert.pack", TextureAtlas.class, flipParam);	
-		assets.load("images/entities/robber.pack", TextureAtlas.class, flipParam);
-		assets.load("images/entities/joeface.png", Texture.class);
-        assets.load("images/entities/ginger.png", Texture.class);
-        assets.load("images/entities/scav.png", Texture.class);	
-        assets.load("images/entities/fitz.png", Texture.class);	
-		assets.load("images/tilesets/tileset1.png", Texture.class);
-		assets.load("images/tilesets/d_tileset1.png", Texture.class);
-		assets.load("images/tilesets/tileset2.png", Texture.class);
-		assets.load("images/tilesets/d_tileset2.png", Texture.class);
-		assets.load("ui/alerts/quest.png", Texture.class);
-		assets.load("ui/quests/discovered.png", Texture.class);
-		assets.load("ui/quests/current.png", Texture.class);
-		assets.load("ui/quests/completed.png", Texture.class);
-		assets.load("ui/movequest.png", Texture.class);
-		assets.load("ui/inventory.pack", TextureAtlas.class, flipParam);
-		assets.load("ui/healthbar.pack", TextureAtlas.class, flipParam);
-        assets.load("ui/uiskin.atlas", TextureAtlas.class);
-		assets.load("ui/uiskin.json", Skin.class, skinParam1);
-		
-		// Load faces
-		assets.load("images/faces/000_youngjoe.png", Texture.class);
-		assets.load("images/faces/001_mother.png", Texture.class);
-		assets.load("images/faces/002_robert.png", Texture.class);
-		assets.load("images/faces/003_robber.png", Texture.class);
-        
-        // Load items
-        assets.load("images/items/000_Stick.png", Texture.class);
-        assets.load("images/items/001_PurpleStick.png", Texture.class);
-        assets.load("images/items/002_GreenStick.png", Texture.class);
-        
-		assets.finishLoading();
+		for (FileHandle handle : Gdx.files.internal(directoryName).list(extension))
+		{
+			loadAsset(handle);
+		}        
+	}
+	
+	private void loadAsset(FileHandle handle)
+	{
+		switch(handle.extension())
+		{
+			case "png":
+				assets.load(handle.path(), Texture.class);
+				break;
+			case "pack":
+			case "atlas":
+				assets.load(handle.path(), TextureAtlas.class, new TextureAtlasParameter(true));
+				break;
+			case "json":
+				assets.load(handle.path(), Skin.class, new SkinParameter(handle.pathWithoutExtension() + ".atlas"));
+		}
 	}
 	
 	/*
@@ -472,4 +463,14 @@ public class PlayingScreen implements Screen
     {
 
     }
+	
+	public void resetData()
+	{
+		FileHandle raw = Gdx.files.internal("raw/data");
+		
+		for (FileHandle handle : raw.list())
+		{
+			handle.copyTo(Gdx.files.local("data/" + handle.name()));
+		}
+	}
 }

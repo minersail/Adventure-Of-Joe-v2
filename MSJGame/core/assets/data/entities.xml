@@ -1,25 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
 <entities>
-	<!--template>
-		<entity class="npc" locX="5" locY="5" texture="ginger.png" id="1" />
-		<entity class="item" locX="3" locY="3" id="0" type="weapon" />
-		<entity class="enemy" locX="7" locY="3" texture="ginger.png" health="10" mode="stay"/>
-		<entity class="enemy" locX="7" locY="4" name="betterginger" texture="ginger.png" health="10" mode="stay" />
-		<entity class="enemy" locX="7" locY="5" texture="joeface.png" health="10" mode="follow" />
-		<entity class="enemy" locX="7" locY="6" texture="scav.png" health="100" mode="stay" />
-	</template-->
-	<area id="0">
-	</area>
+	<area id="0"/>
 	<area id="1">
-		<entity class="npc" locX="7" locY="6" enabled="true" texture="mother.pack" name="mother" id="1" animated="true"/>
-		<entity class="npc" locX="8" locY="6" enabled="true" texture="robert.pack" name="robert" id="2" animated="true"/>
+		<entity enabled="false" dialogueid="1" class="npc" locY="6" name="mother" texture="mother.pack" animated="true" locX="7"/>
+		<entity enabled="false" dialogueid="2" class="npc" locY="6" name="robert" texture="robert.pack" animated="true" locX="8"/>
 	</area>
 	<area id="2">
-		<entity class="npc" locX="-2" locY="2" enabled="true" texture="mother.pack" name="mother" id="1" animated="true"/>
-		<entity class="npc" locX="-3" locY="2" enabled="true" texture="robert.pack" name="robert" id="2" animated="true"/>
-		<entity class="npc" locX="1" locY="5" enabled="true" texture="robber.pack" name="robber1" id="3" animated="true" speed="1.25" />
-		<entity class="npc" locX="3" locY="5" enabled="true" texture="robber.pack" name="robber2" id="4" animated="true" speed="1.25" />
+		<entity enabled="false" dialogueid="1" class="npc" locY="2" name="mother" texture="mother.pack" animated="true" locX="-2"/>
+		<entity enabled="false" dialogueid="2" class="npc" locY="2" name="robert" texture="robert.pack" animated="true" locX="-3"/>
+		<entity enabled="true" dialogueid="3" speed="1.25" class="npc" locY="5" name="robber1" texture="robber.pack" animated="true" locX="1"/>
+		<entity enabled="true" dialogueid="4" speed="1.25" class="npc" locY="5" name="robber2" texture="robber.pack" animated="true" locX="3"/>
 	</area>
-	<area id="3">
-	</area>
+	<area id="3"/>
 </entities>
