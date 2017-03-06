@@ -93,7 +93,7 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	private int currentArea = 0;
+	private int currentArea = 3;
 	
     private float runTime;
 

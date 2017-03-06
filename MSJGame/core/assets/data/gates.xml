@@ -9,7 +9,11 @@
 	</area>
 	<area id="2">
 		<gate locX="-1" locY="1" sizeX="1" sizeY="3" destArea="1" destX="15" destY="1" />
+		<gate locX="20" locY="5" sizeX="1" sizeY="3" destArea="3" destX="3" destY="1" />
 	</area>
 	<area id="3">
+		<gate locX="2" locY="8" sizeX="2" sizeY="1" destArea="4" destX="19" destY="9" />
+	</area>
+	<area id="4">
 	</area>
 </gates>

@@ -1,45 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
 <events>
 	<area id="0">
-		<eventlistener state="disabled" owner="entity" entity="player" id="0">
-			<trigger dist="1" locX="3" locY="5" type="move"/>
-			<event type="cutscene" id="0"/>
+		<eventlistener id="0" owner="entity" entity="player" state="autodisable">
+			<trigger type="move" locX="3" locY="5" dist="1" />
+			<event type="cutscene" id="0" />
 		</eventlistener>
-		<eventlistener state="disabled" owner="system" id="1" system="cutscene">
-			<trigger type="cutscene"/>
-			<event action="discover" type="quest" id="0"/>
-			<event action="start" type="quest" id="0"/>
+		<eventlistener id="1" owner="system" system="cutscene" state="autodisable">
+			<trigger type="cutscene" />
+			<event type="quest" id="0" action="discover" />
+			<event type="quest" id="0" action="start" />
 		</eventlistener>
-		<eventlistener state="disabled" owner="entity" entity="player" id="2">
-			<trigger dist="0.5" locX="3" locY="0" type="move"/>
-			<event action="end" type="quest" id="0"/>
+		<eventlistener id="2" owner="entity" entity="player" state="autodisable">
+			<trigger type="move" locX="3" locY="0" dist="0.5" />
+			<event type="quest" id="0" action="end" />
 		</eventlistener>
 	</area>
 	<area id="1">
-		<eventlistener state="disabled" owner="entity" entity="player" id="0">
-			<trigger dist="2" locX="2" locY="7" type="move"/>
-			<event type="cutscene" id="1"/>
+		<eventlistener id="0" owner="entity" entity="player" state="autodisable">
+			<trigger type="move" locX="2" locY="7" dist="2" />
+			<event type="cutscene" id="1" />
 		</eventlistener>
 	</area>
 	<area id="2">
-		<eventlistener state="disabled" owner="entity" entity="player" id="0">
-			<trigger dist=".5" locX="2" locY="6" type="move"/>
-			<event type="cutscene" id="2"/>
-			<event action="discover" type="quest" id="1"/>
+		<eventlistener id="0" owner="entity" entity="player" state="autodisable">
+			<trigger type="move" locX="2" locY="6" dist=".5" />
+			<event type="cutscene" id="2" />
+			<event type="quest" id="1" action="discover" />
 		</eventlistener>
-		<eventlistener state="disabled" owner="system" id="1" system="cutscene">
-			<trigger type="cutscene"/>
-			<event mode="follow" entity="robber1" targetChar="player" type="ai"/>
-			<event mode="follow" entity="robber2" targetChar="player" type="ai"/>
-			<event action="start" type="quest" id="1"/>
-			<event value="false" selectorvalue="mother" selectorname="name" elementname="entity" type="editxml" attribute="enabled" area="1" filename="entities.xml"/>
-			<event value="false" selectorvalue="robert" selectorname="name" elementname="entity" type="editxml" attribute="enabled" area="1" filename="entities.xml"/>
-			<event value="false" selectorvalue="mother" selectorname="name" elementname="entity" type="editxml" attribute="enabled" area="2" filename="entities.xml"/>
-			<event value="false" selectorvalue="robert" selectorname="name" elementname="entity" type="editxml" attribute="enabled" area="2" filename="entities.xml"/>
+		<eventlistener id="1" owner="system" system="cutscene" state="autodisable">
+			<trigger type="cutscene" />
+			<event type="ai" entity="robber1" mode="follow" targetChar="player" />
+			<event type="ai" entity="robber2" mode="follow" targetChar="player" />
+			<event type="quest" id="1" action="start" />
+			<event type="editxml" filename="entities.xml" elementname="entity" selectorname="name" selectorvalue="mother" attribute="enabled" value="false" area="1"/>
+			<event type="editxml" filename="entities.xml" elementname="entity" selectorname="name" selectorvalue="robert" attribute="enabled" value="false" area="1"/>
+			<event type="editxml" filename="entities.xml" elementname="entity" selectorname="name" selectorvalue="mother" attribute="enabled" value="false" area="2"/>
+			<event type="editxml" filename="entities.xml" elementname="entity" selectorname="name" selectorvalue="robert" attribute="enabled" value="false" area="2"/>
 		</eventlistener>
-		<eventlistener state="disabled" owner="entity" entity="player" id="2">
-			<trigger dist="1" locX="20" locY="6" type="move"/>
-			<event action="end" type="quest" id="1"/>
+		<eventlistener id="2" owner="entity" entity="player" state="autodisable">
+			<trigger type="move" locX="20" locY="6" dist="1" />
+			<event type="quest" id="1" action="end" />
 		</eventlistener>
 	</area>
-	<area id="3"/>
+	<area id="3">
+	</area>
+	<area id="4">
+	</area>
 </events>
