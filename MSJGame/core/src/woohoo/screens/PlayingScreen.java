@@ -40,6 +40,7 @@ import woohoo.gameobjects.QuestIndicator;
 import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
+import woohoo.gameobjects.components.LOSComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.SensorComponent;
 import woohoo.gameworld.GameRenderer;
@@ -255,6 +256,7 @@ public class PlayingScreen implements Screen
 			entity.getComponent(MapObjectComponent.class).addTo(entities);
 			entity.getComponent(HealthBarComponent.class).addTo(entities).initializeHealthBar(assets.get("ui/healthbar.pack", TextureAtlas.class));
 			entity.getComponent(CollisionComponent.class).createMass(world);
+			entity.getComponent(LOSComponent.class).createMass(world);
 			inventoryManager.loadInventory(entity.getComponent(InventoryComponent.class));
 			
 			if (entity instanceof Enemy)
@@ -292,6 +294,7 @@ public class PlayingScreen implements Screen
 			entity.getComponent(MapObjectComponent.class).removeFrom(entities);
 			entity.getComponent(HealthBarComponent.class).removeFrom(entities);
 			entity.getComponent(CollisionComponent.class).removeMass();
+			entity.getComponent(LOSComponent.class).removeMass();
 			
 			if (entity instanceof Enemy)
 			{

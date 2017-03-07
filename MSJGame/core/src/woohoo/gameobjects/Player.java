@@ -31,17 +31,18 @@ public class Player extends Character
 	
 	@Override
 	public void update(float delta)
-	{
-		super.update(delta);
-				
+	{				
 		if (weapon != null)
 		{
 			weapon.update(delta);
 			weapon.setAngle(mapObject.getDirection());    
-			if (weapon.isActive())
+			if (!weapon.isActive())
             {
+				mapObject.setAnimationState(MapObjectComponent.AnimationState.Walking);
             }
 		}
+		
+		super.update(delta);
 	}
     
     public void equip(Item item)

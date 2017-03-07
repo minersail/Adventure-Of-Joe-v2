@@ -122,7 +122,7 @@ public class AIComponent implements Component
 			case MoveTo:								
 				return getDirection(current, targetPos);
 			case Stay:
-				return null;
+			case Input:
 			default:
 				return null;			
 		}

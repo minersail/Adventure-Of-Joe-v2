@@ -8,6 +8,7 @@ import woohoo.gameobjects.components.AIComponent.AIMode;
 import woohoo.gameobjects.components.CollisionComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
+import woohoo.gameobjects.components.LOSComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.MapObjectComponent.AnimationState;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
@@ -26,38 +27,38 @@ public class Character extends BaseEntity
 	protected InventoryComponent inventory;
     protected HealthBarComponent healthBar;
 	protected AIComponent brain;
+	protected LOSComponent lineOfSight;
 	
 	protected float speed = 2;
     protected boolean dead;
 	    
 	public Character(TextureAtlas atlas, WBodyType type)
 	{		
+		this(type);
 		mapObject = new MapObjectComponent(atlas);
-		collision = new CollisionComponent(type);
-		inventory = new InventoryComponent();
-        healthBar = new HealthBarComponent(10);
-		brain = new AIComponent();
-		
 		super.add(mapObject);
-        super.add(collision);
-		super.add(inventory);
-        super.add(healthBar);
-		super.add(brain);
 	}
 	
 	public Character(TextureRegion region, WBodyType type)
-	{		
+	{
+		this(type);
 		mapObject = new MapObjectComponent(region);
+		super.add(mapObject);
+	}
+	
+	private Character(WBodyType type)
+	{
 		collision = new CollisionComponent(type);
 		inventory = new InventoryComponent();
         healthBar = new HealthBarComponent(10);
 		brain = new AIComponent();
+		lineOfSight = new LOSComponent(type);
 		
-		super.add(mapObject);
         super.add(collision);
 		super.add(inventory);
         super.add(healthBar);
 		super.add(brain);
+		super.add(lineOfSight);
 	}
 	
 	@Override
@@ -70,6 +71,9 @@ public class Character extends BaseEntity
 		inventory.update(delta);
         healthBar.update(delta, collision.getPosition());
 		brain.update(delta, collision.getPosition());
+		lineOfSight.update(delta);
+		lineOfSight.setPosition(collision.getPosition().x, collision.getPosition().y);
+		lineOfSight.rotate(mapObject.getDirection());
 		
 		collision.setImmovable(brain.getAIMode() == AIMode.Stay);
 		
