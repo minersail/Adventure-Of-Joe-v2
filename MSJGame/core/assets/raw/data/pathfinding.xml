@@ -15,7 +15,11 @@
 		<node x="-1" y="2" />
 	</area>
 	<area id="3">
-		<settings />
+		<settings bottomRow="4" />
+		<node x="3" y="8" />
+		<node x="3" y="9" />
+		<node x="3" y="10" />
+		<node x="3" y="11" />
 	</area>
 	<area id="4">
 		<settings />

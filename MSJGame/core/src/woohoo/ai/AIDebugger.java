@@ -43,20 +43,4 @@ public class AIDebugger
 		}
 		renderer.end();
 	}
-	
-	public void renderLineOfSight(Entity entity, Camera camera)
-	{
-		renderer.setProjectionMatrix(camera.combined);
-		
-		Array<Vector2> los = entity.getComponent(AIComponent.class).getLineOfSight(entity.getComponent(CollisionComponent.class).getPosition(),
-																				   entity.getComponent(MapObjectComponent.class).getDirection());
-		
-		renderer.begin();		
-		renderer.setColor(Color.FIREBRICK);
-		for (Vector2 pos : los)
-		{
-			renderer.rect(pos.x, pos.y, 1, 1);
-		}
-		renderer.end();
-	}
 }

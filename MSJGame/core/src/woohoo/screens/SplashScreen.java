@@ -54,6 +54,7 @@ public class SplashScreen implements Screen, InputProcessor
 		game.getPlayingScreen().getRenderer().startFade(Color.BLACK);
 		game.getPlayingScreen().resetData();
 		game.setScreen(game.getPlayingScreen());
+		game.getPlayingScreen().initialize();
 	}
 	
 	@Override

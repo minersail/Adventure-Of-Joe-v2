@@ -41,5 +41,7 @@
 		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
 	<dialogue id="3">
+		<line character="4" name="Bollin" text="What are you doing, son? Come back here." />
+		<line character="5" name="Guard" text="What are you doing, son? Come back here." />
 	</dialogue>
 </dialogues>

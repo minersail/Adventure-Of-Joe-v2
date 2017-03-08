@@ -250,6 +250,33 @@ public class Character extends BaseEntity
 	{
 		brain.setAIMode(mode);
 	}
+	
+	public void setAIMode(String mode)
+	{
+		switch(mode)
+		{
+			case "stay":
+				brain.setAIMode(AIMode.Stay);
+				break;
+			case "follow":
+				brain.setAIMode(AIMode.Follow);
+				break;
+			case "random":
+				brain.setAIMode(AIMode.Random);
+				break;
+			case "moveto":
+				brain.setAIMode(AIMode.MoveTo);
+				break;
+			case "sentry":
+				brain.setAIMode(AIMode.Sentry);
+				break;
+		}
+	}
+	
+	public void setMoveTimestep(float time)
+	{
+		brain.setTimeStep(time);
+	}
     
     public void die()
     {

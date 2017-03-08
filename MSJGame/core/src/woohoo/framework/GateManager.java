@@ -104,7 +104,7 @@ public class GateManager
 		// Move the player to the entrance of the new map based on where he exited previous map (Took forever to figure out)
         screen.getEngine().getPlayer().setPosition(nextGate.playerPos().x, nextGate.playerPos().y);
         createGates(nextGate.destArea());
-		screen.getEngine().loadEntities(nextGate.destArea());
+		screen.getEntityLoader().loadEntities(nextGate.destArea());
 		screen.getEventManager().createEvents(nextGate.destArea());
 		screen.getAIManager().initializePathfinding(nextGate.destArea());
 		

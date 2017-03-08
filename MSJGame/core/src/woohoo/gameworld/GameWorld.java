@@ -3,14 +3,10 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.XmlReader;
 import java.util.ArrayList;
 import woohoo.gameobjects.BaseEntity;
-import woohoo.gameobjects.Enemy;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
@@ -77,55 +73,7 @@ public class GameWorld extends Engine
 		player.setName("player");
 		screen.getInventoryManager().fillInventory(player);	
 	}
-	
-	public void loadEntities(int area)
-	{
-		FileHandle handle = Gdx.files.local("data/entities.xml");
-        
-        XmlReader xml = new XmlReader();
-        XmlReader.Element root = xml.parse(handle.readString());       
-        XmlReader.Element entities = root.getChild(area);         
-        
-        for (XmlReader.Element entity : entities.getChildrenByName("entity"))
-        {
-			if (!entity.getBoolean("enabled")) continue;
-			
-			String eClass = entity.get("class");
-			
-			switch (eClass)
-			{
-				case "npc":					
-					NPC npc = entity.getBoolean("animated", false) ? 
-						new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), TextureAtlas.class), entity.getInt("dialogueid")) :
-						new NPC(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class), entity.getInt("dialogueid")); 
-					screen.addEntity(npc);
-					npc.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
-					npc.setName(entity.get("name", ""));
-                    npc.setSpeed(entity.getFloat("speed", npc.getSpeed()));
-					break;
-				case "item":
-					Item item = new Item(screen.getIDManager().getItem(entity.getInt("id")).getItemTexture());
-					screen.addEntity(item);
-					item.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
-					item.setType(entity.get("type"));
-					item.flipImage();
-					item.setName(entity.get("name", ""));
-					break;
-				case "enemy":
-					Enemy enemy = new Enemy(screen.getAssets().get("images/entities/" + entity.get("texture"), Texture.class));
-					screen.addEntity(enemy);
-					enemy.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
-					enemy.changeMaxHealth(entity.getFloat("health"));
-					enemy.setAIMode(entity.get("mode"));
-					enemy.setName(entity.get("name", ""));
-                    enemy.setSpeed(entity.getFloat("speed", enemy.getSpeed()));
-					break;
-				default:
-					break;
-			}
-		}
-	}
-    
+	    
     public Player getPlayer()
     {
         for (Entity entity : getEntities())

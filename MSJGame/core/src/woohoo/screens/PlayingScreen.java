@@ -26,6 +26,7 @@ import woohoo.framework.IDManager;
 import woohoo.framework.ContactManager;
 import woohoo.framework.CutsceneManager;
 import woohoo.framework.DialogueManager;
+import woohoo.framework.EntityLoader;
 import woohoo.framework.EventManager;
 import woohoo.framework.GateManager;
 import woohoo.framework.HexMapLoader;
@@ -70,6 +71,7 @@ public class PlayingScreen implements Screen
 	final private Box2DDebugRenderer debugRenderer;
 	final private AIDebugger aiDebugger;
 	
+	final private EntityLoader entityLoader;
 	final private AlertManager alerts;
 	final private QuestManager quests;
 	final private AIManager aiManager;
@@ -97,10 +99,9 @@ public class PlayingScreen implements Screen
 	private int currentArea = 4;
 	
     private float runTime;
-
-    // This is the constructor, not the class declaration
-    public PlayingScreen(MSJGame game)
-    {
+	
+	public PlayingScreen(MSJGame game)
+	{
 		// Set up camera
         cam = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         cam.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT);
@@ -131,8 +132,7 @@ public class PlayingScreen implements Screen
 		contacts = new ContactManager();
         
         // Create gate sensors
-        gates = new GateManager(this);        
-        gates.createGates(currentArea);
+        gates = new GateManager(this);    
 		
 		// Create user interface
 		ui = new Stage();
@@ -146,6 +146,8 @@ public class PlayingScreen implements Screen
 		// Draw and update every frame
 		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
 		engine = new GameWorld(this);
+		entityLoader = new EntityLoader(this);
+		engine.loadPlayer();
 		
 		// Create dialogue
 		dialogueManager = new DialogueManager(this, assets.get("ui/uiskin.json", Skin.class));
@@ -154,21 +156,24 @@ public class PlayingScreen implements Screen
 		// Initialize quests
 		quests = new QuestManager(this, assets.get("ui/uiskin.json", Skin.class));
         
-		// Initialize objects
-		engine.loadPlayer();
-		engine.loadEntities(currentArea);
 		
 		aiManager = new AIManager(this);
-		aiManager.initializePathfinding(currentArea);
 		
 		// Create event manager
 		events = new EventManager(this);
-		events.createEvents(currentArea);
 		
 		alerts = new AlertManager(this, assets.get("ui/uiskin.json", Skin.class));
 		
 		// Initialize input
 		input = new InputHandler(this);
+	}
+
+    public void initialize()
+    {    
+        gates.createGates(currentArea);
+		entityLoader.loadEntities(currentArea);
+		aiManager.initializePathfinding(currentArea);
+		events.createEvents(currentArea);
 		
 		state = GameState.Playing;
     }
@@ -425,6 +430,11 @@ public class PlayingScreen implements Screen
 	public AlertManager getAlertManager()
 	{
 		return alerts;
+	}
+	
+	public EntityLoader getEntityLoader()
+	{
+		return entityLoader;
 	}
 
     @Override

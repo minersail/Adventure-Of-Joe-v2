@@ -11,18 +11,54 @@
 	<area id="0">
 	</area>
 	<area id="1">
-		<entity class="npc" locX="7" locY="6" enabled="true" texture="mother.pack" name="mother" dialogueid="1" animated="true"/>
-		<entity class="npc" locX="8" locY="6" enabled="true" texture="robert.pack" name="robert" dialogueid="2" animated="true"/>
+		<entity class="npc" enabled="true" name="mother">
+			<characterdata locX="7" locY="6" texture="mother.pack" animated="true" />
+			<npcdata dialogueid="1" />
+		</entity>
+		<entity class="npc" enabled="true" name="robert">
+			<characterdata locX="8" locY="6" texture="robert.pack" animated="true" />
+			<npcdata dialogueid="2" />
+		</entity>
 	</area>
 	<area id="2">
-		<entity class="npc" locX="-2" locY="2" enabled="true" texture="mother.pack" name="mother" dialogueid="1" animated="true"/>
-		<entity class="npc" locX="-3" locY="2" enabled="true" texture="robert.pack" name="robert" dialogueid="2" animated="true"/>
-		<entity class="npc" locX="1" locY="5" enabled="true" texture="robber.pack" name="robber1" dialogueid="3" animated="true" speed="1.25" />
-		<entity class="npc" locX="3" locY="5" enabled="true" texture="robber.pack" name="robber2" dialogueid="4" animated="true" speed="1.25" />
+		<entity class="npc" enabled="true" name="mother">
+			<characterdata locX="-2" locY="2" texture="mother.pack" animated="true" />
+			<npcdata dialogueid="1" />
+		</entity>
+		<entity class="npc" enabled="true" name="robert">
+			<characterdata locX="-3" locY="2" texture="robert.pack" animated="true" />
+			<npcdata dialogueid="2" />
+		</entity>
+		<entity class="npc" enabled="true" name="robber1">
+			<characterdata locX="1" locY="5" texture="robert.pack" animated="true" speed="1.25" />
+			<npcdata dialogueid="3" />
+		</entity>
+		<entity class="npc" enabled="true" name="robber2">
+			<characterdata locX="3" locY="5" texture="robert.pack" animated="true" speed="1.25" />
+			<npcdata dialogueid="4" />
+		</entity>
 	</area>
 	<area id="3">
+		<entity class="npc" enabled="true" name="bollins">
+			<characterdata locX="3" locY="11" texture="oldman.pack" animated="true" speed="1" />
+			<npcdata dialogueid="4" />
+		</entity>
+		<entity class="npc" enabled="true" name="bollins">
+			<characterdata locX="3" locY="10" texture="oldman.pack" animated="true" speed="1" />
+			<npcdata dialogueid="4" />
+		</entity>
 	</area>
 	<area id="4">
+		<entity class="npc" enabled="true" name="woman1">
+			<characterdata locX="10" locY="4" texture="woman1.pack" animated="true" speed="0.5" />
+			<npcdata dialogueid="1" />
+			<aidata mode="random" timestep="8" />
+		</entity>
+		<entity class="npc" enabled="true" name="woman2">
+			<characterdata locX="3" locY="4" texture="woman1.pack" animated="true" speed="0.5" />
+			<npcdata dialogueid="1" />
+			<aidata mode="random" timestep="8" />
+		</entity>
 	</area>
 	<area id="5">
 	</area>

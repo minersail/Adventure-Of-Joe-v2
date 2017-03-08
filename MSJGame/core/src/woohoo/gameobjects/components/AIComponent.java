@@ -6,7 +6,6 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import woohoo.ai.AIHeuristic;
 import woohoo.ai.AIMap;
@@ -18,7 +17,7 @@ public class AIComponent implements Component
 {
 	public enum AIMode
 	{
-		Follow, Stay, MoveTo, Input
+		Follow, Stay, MoveTo, Input, Random, Sentry
 	}
 	
 	private AIMap nodes;
@@ -89,10 +88,7 @@ public class AIComponent implements Component
 	}
 	
 	private Direction getDirection(Vector2 current, Vector2 target)
-	{
-		// If timer is not up yet, return previous direction
-        if (lockDirection) return nextDirection;
-		
+	{		
 		calculatePath(current, target);
 		
         if (path.nodes.size <= 1) return nextDirection;
@@ -109,23 +105,54 @@ public class AIComponent implements Component
 			nextDirection = dY > 0 ? Direction.Up : Direction.Down;
 		}
 		
-		lockDirection = true;
         return nextDirection;
+	}
+	
+	private Direction getRandomDirection()
+	{
+		int random = (int)Math.floor(Math.random() * 5);
+		
+		switch(random)
+		{
+			case 0:
+				nextDirection = Direction.Up;
+				break;
+			case 1:
+				nextDirection = Direction.Down;
+				break;
+			case 2:
+				nextDirection = Direction.Left;
+				break;
+			case 3:
+				nextDirection = Direction.Right;				
+				break;
+			case 4:
+				nextDirection = null;				
+				break;
+		}
+		return nextDirection;
 	}
 	
 	public Direction calculateDirection(Vector2 current)
 	{
+		// If timer is not up yet, return previous direction
+        if (lockDirection) return nextDirection;
+		lockDirection = true;
+		
 		switch(mode)
 		{
 			case Follow:
 				return getDirection(current, targetChar.getPosition());
 			case MoveTo:								
 				return getDirection(current, targetPos);
+			case Random:
+				return getRandomDirection();
 			case Stay:
 			case Input:
 			default:
 				return null;			
 		}
+		
 	}
 	
 	public AIMode getAIMode()
@@ -161,89 +188,5 @@ public class AIComponent implements Component
 	public AIMap getAIMap()
 	{
 		return nodes;
-	}
-	
-	/**
-	 * Generates cone-shaped line of sight
-	 * @param current origin of line of sight
-	 * @param dir direction of line of sight
-	 * @return list of positions that can be seen from the current position and direction
-	 */
-	public Array<Vector2> getLineOfSight(Vector2 current, Direction dir)
-	{
-		Array<Vector2> los = new Array<>();
-		float radius = 8;
-				
-		// Bottom part of the cone
-		for (double i = 0; i <= radius * Math.sqrt(3) / 2; i++)
-		{
-			for (double j = Math.floor(-i / 2); j <= Math.ceil(i / 2); j++) // 1 to 2 ratio gives us the 60 degrees line of vision
-			{
-				los.add(new Vector2(Math.round(current.x + j), Math.round(current.y + i)));
-			}
-		}
-		
-		// Top part of the cone
-		for (double i = radius * Math.sqrt(3) / 2; i <= radius; i++)
-		{
-			for (double j = Math.floor(-(radius - i) * 2); j <= Math.ceil((radius - i) * 2); j++)
-			{
-				los.add(new Vector2(Math.round(current.x + j), Math.round(current.y + i)));
-			}
-		}
-		
-		// Rotate cone based on direction
-		for (Vector2 loc : los)
-		{
-			float offsetX = loc.x - Math.round(current.x);
-			float offsetY = loc.y - Math.round(current.y);
-			
-			switch(dir)
-			{
-				case Up:
-					loc.x = -offsetX + current.x;
-					loc.y = -offsetY + current.y;
-					break;
-				case Down:
-					break;
-				case Left:
-					loc.x = -offsetY + current.x;
-					loc.y = -offsetX + current.y;
-					break;
-				case Right:
-					loc.x = offsetY + current.x;
-					loc.y = offsetX + current.y;
-					break;
-			}
-			
-			loc.x = Math.round(loc.x);
-			loc.y = Math.round(loc.y);
-		}
-		
-		Array<Vector2> obstructions = new Array<>();
-		// Remove locations obscured by line of sight, based on pathfinding grid
-		for (Vector2 loc : los)
-		{
-			Node node = nodes.get((int)loc.x, (int)loc.y);
-			
-			if (node != null)
-			{
-				for (Vector2 obstr : obstructions)
-				{
-					if (obstr.y == loc.y && ((dir == Direction.Left && obstr.x > loc.x) || (dir == Direction.Right && obstr.x < loc.x)) ||
-						obstr.x == loc.x && ((dir == Direction.Up && obstr.y > loc.y) || (dir == Direction.Down && obstr.y < loc.y)))
-					{
-						los.removeValue(loc, false);
-					}
-				}
-			}
-			else if (node == null)
-			{
-				obstructions.add(loc);
-				los.removeValue(loc, false);
-			}
-		}
-		
-		return los;
 	}
 }
