@@ -39,8 +39,12 @@
 		</entity>
 	</area>
 	<area id="3">
-		<entity class="npc" enabled="true" name="bollins">
-			<characterdata locX="3" locY="5" texture="oldman.pack" animated="true" speed="1" />
+		<entity class="npc" enabled="true" name="bollin">
+			<characterdata locX="3" locY="11" texture="oldman.pack" animated="true" speed="1" />
+			<npcdata dialogueid="4" />
+		</entity>
+		<entity class="npc" enabled="true" name="guard">
+			<characterdata locX="3" locY="10" texture="robert.pack" animated="true" speed="1" />
 			<npcdata dialogueid="4" />
 		</entity>
 	</area>

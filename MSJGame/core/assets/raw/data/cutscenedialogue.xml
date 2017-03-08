@@ -41,7 +41,19 @@
 		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
 	<dialogue id="3">
-		<line character="4" name="Bollin" text="What are you doing, son? Come back here." />
-		<line character="5" name="Guard" text="What are you doing, son? Come back here." />
+		<line character="5" name="Guard" text="Wake up! You can't sleep here." />
+		<line character="0" name="Joe" text="You know, I was having a pretty nice dream." />
+		<line character="0" name="Joe" text="There was a gigantic hot dog and.." />
+		<line character="5" name="Guard" text="I don't care about your hot dog. Where's your documentation?" />
+		<line character="-1" name="Command" text="CUTSCENE" />
+		<line character="4" name="Bollin" text="Can we arrest this street rat already?" />
+		<line character="5" name="Guard" text="Is there a rush? I need to see his documentation." />
+		<line character="4" name="Bollin" text="The rush is that I need to get my baby powder." />
+		<line character="4" name="Bollin" text="I just came back from Puerto Guz." />
+		<line character="4" name="Bollin" text="You wouldn't believe what they do in the broth..." />
+		<line character="5" name="Guard" text="Ok, that's enough information. Do you have your documentation?" />
+		<line character="0" name="Joe" text="No, but I'll tell you what I do have." />
+		<line character="0" name="Joe" text="I have to take a leak." />
+		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
 </dialogues>
