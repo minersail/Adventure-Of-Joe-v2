@@ -3,7 +3,7 @@ package woohoo.framework.fixturedata;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.gameobjects.components.WeaponComponent;
 
-public class HitData extends SensorData
+public class HitData extends HitboxData
 {
     private WeaponComponent weapon;
     

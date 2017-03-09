@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.CollisionComponent;
+import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 
 public class AIDebugger
@@ -26,7 +26,7 @@ public class AIDebugger
 		renderer.setProjectionMatrix(camera.combined);
 		
 		AIMap map = entity.getComponent(AIComponent.class).getAIMap();		
-		Vector2 pos = entity.getComponent(CollisionComponent.class).getPosition();
+		Vector2 pos = entity.getComponent(MovementComponent.class).getPosition();
 		
 		Node node = map.get(Math.round(pos.x), Math.round(pos.y));
 		

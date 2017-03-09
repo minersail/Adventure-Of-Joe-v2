@@ -38,7 +38,7 @@ import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.Enemy;
 import woohoo.gameobjects.QuestIndicator;
-import woohoo.gameobjects.components.CollisionComponent;
+import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.LOSComponent;
@@ -260,7 +260,7 @@ public class PlayingScreen implements Screen
 		{
 			entity.getComponent(MapObjectComponent.class).addTo(entities);
 			entity.getComponent(HealthBarComponent.class).addTo(entities).initializeHealthBar(assets.get("ui/healthbar.pack", TextureAtlas.class));
-			entity.getComponent(CollisionComponent.class).createMass(world);
+			entity.getComponent(MovementComponent.class).createMass(world);
 			entity.getComponent(LOSComponent.class).createMass(world);
 			inventoryManager.loadInventory(entity.getComponent(InventoryComponent.class));
 			
@@ -270,7 +270,7 @@ public class PlayingScreen implements Screen
 			}
 			else if (entity instanceof NPC)
 			{
-				entity.getComponent(CollisionComponent.class).setImmovable(true);
+				entity.getComponent(MovementComponent.class).setImmovable(true);
 			}
 		}
 		else if (entity instanceof Item)
@@ -298,7 +298,7 @@ public class PlayingScreen implements Screen
 		{
 			entity.getComponent(MapObjectComponent.class).removeFrom(entities);
 			entity.getComponent(HealthBarComponent.class).removeFrom(entities);
-			entity.getComponent(CollisionComponent.class).removeMass();
+			entity.getComponent(MovementComponent.class).removeMass();
 			entity.getComponent(LOSComponent.class).removeMass();
 			
 			if (entity instanceof Enemy)

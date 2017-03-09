@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import java.util.ArrayList;
-import woohoo.gameobjects.components.CollisionComponent;
+import woohoo.gameobjects.components.MovementComponent;
 
 public class AIMap implements IndexedGraph<Node>
 {
@@ -32,14 +32,14 @@ public class AIMap implements IndexedGraph<Node>
 	 *	  be set (if the extra nodes are to work) <br>
 	 * @param map to create the base grid
 	 * @param world to obtain all entity fixtures obstructing the map (and thus nodes to be excluded)
-	 * @param exclude list of {@link CollisionComponent}s that are exceptions to entity exclusion
+	 * @param exclude list of {@link MovementComponent}s that are exceptions to entity exclusion
 	 * @param extraNodes list of extra nodes to manually added
 	 * @param topRow minimum row (Note: these are additive, not definite: e.g. left row of 2 does not mean the largest row is 2, but rather that 2 is added onto the right row)
 	 * @param botRow maximum row
 	 * @param leftCol minimum column
 	 * @param rightCol maximum column
 	 */
-	public AIMap(Map map, World world, ArrayList<CollisionComponent> exclude, ArrayList<Vector2> extraNodes, int topRow, int botRow, int leftCol, int rightCol)
+	public AIMap(Map map, World world, ArrayList<MovementComponent> exclude, ArrayList<Vector2> extraNodes, int topRow, int botRow, int leftCol, int rightCol)
 	{
 		nodes = new IntMap<>();
 		
@@ -167,14 +167,14 @@ public class AIMap implements IndexedGraph<Node>
 		int x;
 		int y;
 		
-		public EntityQuery(IntMap<Node> nodes, ArrayList<CollisionComponent> excl, int X, int Y)
+		public EntityQuery(IntMap<Node> nodes, ArrayList<MovementComponent> excl, int X, int Y)
 		{
 			nodeList = nodes;
 			x = X;
 			y = Y;
 			
 			excludes = new ArrayList<>();
-			for (CollisionComponent e : excl)
+			for (MovementComponent e : excl)
 			{
 				excludes.add(e.getMass());
 			}

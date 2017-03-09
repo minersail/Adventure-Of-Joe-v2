@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import woohoo.framework.contactcommands.SensorContact;
+import woohoo.framework.contactcommands.HitboxContact;
 import woohoo.gameobjects.components.AIComponent.AIMode;
-import woohoo.gameobjects.components.CollisionComponent.Movement;
+import woohoo.gameobjects.components.MovementComponent.Movement;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.screens.PlayingScreen.WBodyType;
@@ -49,7 +49,7 @@ public class Player extends Character
     {
         weapon = new WeaponComponent(item);
 		weapon.createMass(collision.getMass().getWorld());
-		weapon.setContactData(new SensorContact(weapon, WBodyType.Enemy));
+		weapon.setContactData(new HitboxContact(weapon, WBodyType.Enemy));
         super.add(weapon);
         
         RevoluteJointDef jointDef = new RevoluteJointDef();

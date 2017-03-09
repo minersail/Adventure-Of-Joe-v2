@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import woohoo.gameobjects.Player;
 import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.CollisionComponent.Movement;
+import woohoo.gameobjects.components.MovementComponent.Movement;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.screens.PlayingScreen;
 

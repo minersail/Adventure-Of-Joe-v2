@@ -3,7 +3,7 @@ package woohoo.gameobjects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ObjectMap;
-import woohoo.framework.contactcommands.SensorContact;
+import woohoo.framework.contactcommands.HitboxContact;
 import woohoo.gameobjects.components.ItemDataComponent;
 import woohoo.gameobjects.components.ItemDataComponent.ItemType;
 import woohoo.gameobjects.components.MapObjectComponent;
@@ -25,7 +25,7 @@ public class Item extends BaseEntity
 		sensor = new SensorComponent(WBodyType.Item);
         itemData = new ItemDataComponent(data);
 		
-		sensor.setContactData(new SensorContact(sensor, WBodyType.Player));
+		sensor.setContactData(new HitboxContact(sensor, WBodyType.Player));
 		
 		super.add(mapObject);
         super.add(sensor);

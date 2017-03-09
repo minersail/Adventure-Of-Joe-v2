@@ -10,7 +10,7 @@ import woohoo.gameobjects.BaseEntity;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.Enemy;
 import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.CollisionComponent;
+import woohoo.gameobjects.components.MovementComponent;
 import woohoo.screens.PlayingScreen;
 
 public class AIManager
@@ -47,14 +47,14 @@ public class AIManager
 		{
 			if (entity instanceof Character)
 			{ // exclude is list of box2d bodies that would otherwise interfere with the pathfinding grid
-				ArrayList<CollisionComponent> exclude = new ArrayList<>();
-				exclude.add(entity.getComponent(CollisionComponent.class));
+				ArrayList<MovementComponent> exclude = new ArrayList<>();
+				exclude.add(entity.getComponent(MovementComponent.class));
 				
 				if (entity instanceof Enemy)
 				{
-					entity.getComponent(AIComponent.class).setTargetCharacter(entity.getComponent(CollisionComponent.class).getPosition(), 
+					entity.getComponent(AIComponent.class).setTargetCharacter(entity.getComponent(MovementComponent.class).getPosition(), 
 																			  screen.getEngine().getPlayer());
-					exclude.add(screen.getEngine().getPlayer().getComponent(CollisionComponent.class));
+					exclude.add(screen.getEngine().getPlayer().getComponent(MovementComponent.class));
 				}
 				
 				entity.getComponent(AIComponent.class).initializePathfinding(screen.getRenderer().getMap(), screen.getWorld(), exclude, extraNodes,

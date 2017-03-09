@@ -2,7 +2,7 @@ package woohoo.gameobjects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import woohoo.framework.contactcommands.SensorContact;
+import woohoo.framework.contactcommands.HitboxContact;
 import woohoo.framework.fixturedata.HitData;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.SensorComponent;
@@ -19,7 +19,7 @@ public class Enemy extends Character
 		hitBox = new SensorComponent(WBodyType.Enemy);
 		brain = new AIComponent();
 		
-		hitBox.setContactData(new SensorContact(hitBox, WBodyType.Weapon));
+		hitBox.setContactData(new HitboxContact(hitBox, WBodyType.Weapon));
 		
 		super.add(hitBox);
 		super.add(brain);

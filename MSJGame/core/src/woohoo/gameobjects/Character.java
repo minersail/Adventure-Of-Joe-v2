@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.AIComponent.AIMode;
-import woohoo.gameobjects.components.CollisionComponent;
+import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.LOSComponent;
@@ -23,7 +23,7 @@ entities that can move and collide.
 public class Character extends BaseEntity
 {
     protected MapObjectComponent mapObject;
-	protected CollisionComponent collision;
+	protected MovementComponent collision;
 	protected InventoryComponent inventory;
     protected HealthBarComponent healthBar;
 	protected AIComponent brain;
@@ -48,7 +48,7 @@ public class Character extends BaseEntity
 	
 	private Character(WBodyType type)
 	{
-		collision = new CollisionComponent(type);
+		collision = new MovementComponent(type);
 		inventory = new InventoryComponent();
         healthBar = new HealthBarComponent(10);
 		brain = new AIComponent();

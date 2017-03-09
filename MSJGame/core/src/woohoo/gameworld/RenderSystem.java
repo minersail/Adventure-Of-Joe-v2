@@ -4,9 +4,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameobjects.components.MovementComponent;
-import woohoo.gameobjects.components.MovementComponent.Movement;
 
 public class RenderSystem extends IteratingSystem
 {
@@ -14,7 +13,7 @@ public class RenderSystem extends IteratingSystem
 	
 	public RenderSystem(TiledMap map, float scale)
 	{
-		super(Family.all(MapObjectComponent.class).get());
+		super(Family.all(MapObjectComponent.class, HitboxComponent.class).get());
 		
 		renderer = new GameRenderer(map, scale);
 		
@@ -38,9 +37,9 @@ public class RenderSystem extends IteratingSystem
 	protected void processEntity(Entity entity, float deltaTime)
 	{
 		MapObjectComponent mapObject = Mappers.mapObjects.get(entity);
-		MovementComponent movement = Mappers.movements.get(entity);
+		HitboxComponent hitbox = Mappers.hitboxes.get(entity);
 
-		Mappers.mapObjects.get(entity).setX(Mappers.positions.get(entity).getPosition().x);
-		Mappers.mapObjects.get(entity).setY(Mappers.positions.get(entity).getPosition().y);
+		mapObject.setX(hitbox.getPosition().x);
+		mapObject.setY(hitbox.getPosition().y);
 	}
 }
