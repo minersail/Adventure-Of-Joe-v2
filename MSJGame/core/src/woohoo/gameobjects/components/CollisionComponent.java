@@ -1,21 +1,25 @@
 package woohoo.gameobjects.components;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import woohoo.framework.contactcommands.ContactCommand;
 import woohoo.framework.fixturedata.FixtureData;
 import woohoo.screens.PlayingScreen.WBodyType;
 
-public class CollisionComponent extends BodyComponent
-{
+public class CollisionComponent implements Component
+{	
 	// Only really used for player movement
 	public enum Movement
 	{
 		None, Horizontal, Vertical
 	}
 	
+	private Body mass;
 	private Vector2 velocity = new Vector2(0, 0);
 	private Movement movement;
 	
@@ -68,18 +72,21 @@ public class CollisionComponent extends BodyComponent
 		}
 	}
 	
+	@Override
 	public void addVelocity(float x, float y)
 	{
 		velocity.x += x;
 		velocity.y += y;
 	}
 	
+	@Override
 	public void setVelocity(float x, float y)
 	{
 		velocity.x = x;
 		velocity.y = y;
 	}
 	
+	@Override
 	public Vector2 getVelocity()
 	{
 		return velocity;
@@ -90,18 +97,43 @@ public class CollisionComponent extends BodyComponent
 		mass.applyLinearImpulse(new Vector2(x, y), mass.getLocalCenter(), true);
 	}
 	
+	@Override
 	public boolean isStopped()
 	{
 		return Math.abs(mass.getLinearVelocity().x) < 0.5f && Math.abs(mass.getLinearVelocity().y) < 0.5f;
 	}
 	
+	@Override
 	public void setMovement(Movement move)
 	{
 		movement = move;
 	}
 	
+	@Override
 	public Movement getMovement()
 	{
 		return movement;
+	}
+
+	@Override
+	public Vector2 getPosition() 
+	{
+		return mass.getPosition();
+	}
+
+	@Override
+	public ContactCommand getContactData() 
+	{
+		
+	}
+
+	@Override
+	public void setMovement(Movement move) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void setContactData(ContactCommand command) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 }
