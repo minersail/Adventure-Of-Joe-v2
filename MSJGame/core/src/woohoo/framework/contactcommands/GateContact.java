@@ -10,7 +10,7 @@ import woohoo.screens.PlayingScreen;
  * Contains all the code for when the player interacts with a gate
  * @author jordan
  */
-public class GateContact implements ContactCommand
+public class GateContact implements ContactCheck
 {
 	GateManager manager;
 	

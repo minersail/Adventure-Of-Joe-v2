@@ -6,6 +6,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
 import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
+import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.MovementComponent.Movement;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
@@ -15,7 +16,7 @@ public class MovementSystem extends IteratingSystem
 {
 	public MovementSystem()
 	{
-		super(Family.all(AnimMapObjectComponent.class, MovementComponent.class, PositionComponent.class).get());
+		super(Family.all(AnimMapObjectComponent.class, MovementComponent.class, PositionComponent.class, HitboxComponent.class).get());
 	}
 	
 	@Override
@@ -55,6 +56,7 @@ public class MovementSystem extends IteratingSystem
 	{
 		AnimMapObjectComponent mapObject = Mappers.animMapObjects.get(entity);
 		MovementComponent movement = Mappers.movements.get(entity);
+		HitboxComponent hitbox = Mappers.hitboxes.get(entity);
 		PositionComponent position = Mappers.positions.get(entity);
 		
 		if (mapObject.direction == null) return;
@@ -80,17 +82,17 @@ public class MovementSystem extends IteratingSystem
 		switch (movement.movement)
 		{
 			case Vertical:
-				movement.mass.setLinearVelocity(new Vector2(0, movement.velocity.y));				
+				hitbox.mass.setLinearVelocity(new Vector2(0, movement.velocity.y));				
 				break;
 			case Horizontal:
-				movement.mass.setLinearVelocity(new Vector2(movement.velocity.x, 0));				
+				hitbox.mass.setLinearVelocity(new Vector2(movement.velocity.x, 0));				
 				break;
 			case None:
-				movement.mass.setLinearVelocity(movement.velocity);
+				hitbox.mass.setLinearVelocity(movement.velocity);
 				break;
 		}
 		
-		position.position = movement.mass.getPosition().cpy();
+		position.position = hitbox.mass.getPosition().cpy();
 	}
 	
 	public void setEntityAnimation(Entity entity)

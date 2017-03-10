@@ -6,9 +6,9 @@ import woohoo.framework.fixturedata.FixtureData;
 import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.screens.PlayingScreen.WBodyType;
 
-public class HitboxContact implements ContactCommand
+public class HitboxContact implements ContactCheck
 {
-	// The SensorComponent that this ContactCommand will be detecting contact for
+	// The SensorComponent that this ContactCheck will be detecting contact for
 	private HitboxComponent hitbox;
 	// What kind of body this sensor is testing for
 	private WBodyType testType;

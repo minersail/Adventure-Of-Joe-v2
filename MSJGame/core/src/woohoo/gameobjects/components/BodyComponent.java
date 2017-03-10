@@ -9,8 +9,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import woohoo.framework.contactcommands.ContactCommand;
 import woohoo.screens.PlayingScreen.WBodyType;
+import woohoo.framework.contactcommands.ContactCheck;
 
 /*
 Base component class for box2d-based components
@@ -27,7 +27,7 @@ public abstract class BodyComponent implements Component
 {
 	protected Body mass;
 	protected Fixture fixture;
-	protected ContactCommand contactData;
+	protected ContactCheck contactData;
 	protected WBodyType type;
 	
 	/*
@@ -73,12 +73,12 @@ public abstract class BodyComponent implements Component
 		return new Vector2(mass.getPosition().x - 0.5f, mass.getPosition().y - 0.5f);
 	}
     
-    public void setContactData(ContactCommand command)
+    public void setContactData(ContactCheck command)
     {
         contactData = command;
     }
 	
-	public ContactCommand getContactData()
+	public ContactCheck getContactData()
 	{
 		return contactData;
 	}

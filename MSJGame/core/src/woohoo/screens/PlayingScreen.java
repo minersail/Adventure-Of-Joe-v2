@@ -43,7 +43,6 @@ import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.LOSComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameobjects.components.SensorComponent;
 import woohoo.gameworld.GameRenderer;
 import woohoo.gameworld.GameWorld;
 import woohoo.msjgame.MSJGame;
@@ -54,11 +53,6 @@ public class PlayingScreen implements Screen
 	{
 		Playing, Dialogue, Inventory, Cutscene, Quests
 	}	
-    
-    public enum WBodyType
-    {
-        Player, Entity, Wall, Gate, Item, NPC, Weapon, Enemy
-    }
 	
 	/* Dimensions of tiles on the spritesheet */
     public final int T_TILE_WIDTH = 16;
