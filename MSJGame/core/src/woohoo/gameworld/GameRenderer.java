@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import woohoo.gameobjects.components.AnimMapObjectComponent;
+import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 
@@ -26,41 +28,25 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 	@Override
 	public void renderObject(MapObject object)
 	{		
-		if (object instanceof MapObjectComponent)
+		if (object instanceof AnimMapObjectComponent)
 		{
-			MapObjectComponent obj = (MapObjectComponent)object;
-			if (obj.isAnimated())
-			{
-				String animString;
-                
-                switch(obj.getAnimationState())
-                {
-                    case Idle:
-                        animString = obj.getDirection().toString() + "_Idle";
-                        break;
-                    case Fighting:
-                        animString = obj.getDirection().toString() + "_Fight";
-                        break;
-                    case Death:
-                        animString = "Death";
-                        break;
-                    case Walking:
-                    default:
-                        animString = obj.getDirection().toString();
-                        break;
-                }
-				
-				batch.draw(obj.getAnimation(animString).getKeyFrame(obj.getTime()),
-						   obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
-			}
-			else
-			{			
-				Color oldColor = batch.getColor();
-				batch.setColor(obj.getColor());
-				batch.draw(obj.getTextureRegion(), obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
-				batch.setColor(oldColor);
-			}
+			AnimMapObjectComponent obj = (AnimMapObjectComponent)object;
+			String animString = obj.animState == AnimationState.Death ? "death" : obj.direction.text() + "_" + obj.animState.text();
+
+			Color oldColor = batch.getColor();
+			batch.setColor(obj.getColor());
+			batch.draw(obj.getAnimation(animString).getKeyFrame(obj.animationTime), obj.getX(), obj.getY(), obj.size.x, obj.size.y);
+			batch.setColor(oldColor);
 		}
+		else if (object instanceof MapObjectComponent)
+		{			
+			MapObjectComponent obj = (MapObjectComponent)object;
+			
+			Color oldColor = batch.getColor();
+			batch.setColor(obj.getColor());
+			batch.draw(obj.getTextureRegion(), obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
+			batch.setColor(oldColor);
+		}		
         else if (object instanceof HealthBarComponent)
         {
             HealthBarComponent healthBar = (HealthBarComponent)object;

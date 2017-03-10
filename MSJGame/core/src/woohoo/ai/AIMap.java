@@ -176,7 +176,7 @@ public class AIMap implements IndexedGraph<Node>
 			excludes = new ArrayList<>();
 			for (MovementComponent e : excl)
 			{
-				excludes.add(e.getMass());
+				excludes.add(e.mass);
 			}
 		}
 		

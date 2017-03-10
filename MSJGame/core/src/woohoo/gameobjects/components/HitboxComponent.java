@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import woohoo.framework.ContactManager;
 import woohoo.framework.contactcommands.ContactCommand;
 import woohoo.framework.fixturedata.FixtureData;
-import woohoo.framework.fixturedata.SensorData;
+import woohoo.framework.fixturedata.HitboxData;
 
 public class HitboxComponent implements Component
 {
@@ -36,7 +36,7 @@ public class HitboxComponent implements Component
 		
         fixture = mass.createFixture(fixtureDef);
 		fixture.setSensor(true);
-		fixture.setUserData(new SensorData(this));	
+		fixture.setUserData(new HitboxData(this));	
 	}
 	
 	public SensorComponent initializeCommand(ContactManager contacts, World world)

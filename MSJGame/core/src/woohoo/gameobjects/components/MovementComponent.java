@@ -18,13 +18,15 @@ public class MovementComponent implements Component
 		None, Horizontal, Vertical
 	}
 	
-	private Body mass;
-	private Vector2 velocity = new Vector2(0, 0);
-	private Movement movement;
+	public Body mass;
+	public Vector2 velocity;
+	public Movement movement;
+	public float speed;
 	
 	public MovementComponent(World world)
 	{
 		movement = Movement.None;
+		velocity = new Vector2(0, 0);
 		
         BodyDef bodyDef = new BodyDef();
 		mass = world.createBody(bodyDef);
@@ -45,66 +47,13 @@ public class MovementComponent implements Component
         fixture.setRestitution(0);	
 	}
 	
-	public void addVelocity(float x, float y)
-	{
-		velocity.x += x;
-		velocity.y += y;
-	}
-	
-	public void setVelocity(float x, float y)
-	{
-		velocity.x = x;
-		velocity.y = y;
-	}
-	
-	public void move()
-	{		
-		switch (movement)
-		{
-			case Vertical:
-				mass.setLinearVelocity(new Vector2(0, velocity.y));				
-				break;
-			case Horizontal:
-				mass.setLinearVelocity(new Vector2(velocity.x, 0));				
-				break;
-			case None:
-				mass.setLinearVelocity(velocity);
-				break;
-		}
-	}
-	
-	public Vector2 getVelocity()
-	{
-		return velocity;
-	}
-	
 	public void applyImpulse(float x, float y)
 	{
 		mass.applyLinearImpulse(new Vector2(x, y), mass.getLocalCenter(), true);
 	}
 	
-	public boolean isStopped()
+	public boolean isStopped(float tolerance)
 	{
-		return Math.abs(mass.getLinearVelocity().x) < 0.5f && Math.abs(mass.getLinearVelocity().y) < 0.5f;
-	}
-	
-	public void setMovement(Movement move)
-	{
-		movement = move;
-	}
-	
-	public Movement getMovement()
-	{
-		return movement;
-	}
-
-	public Vector2 getPosition() 
-	{
-		return mass.getPosition();
-	}
-	
-	public Body getMass()
-	{
-		return mass;
+		return mass.getLinearVelocity().isZero(tolerance);
 	}
 }

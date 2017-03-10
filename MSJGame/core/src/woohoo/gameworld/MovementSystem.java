@@ -4,14 +4,18 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
+import woohoo.gameobjects.components.AnimMapObjectComponent;
+import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
 import woohoo.gameobjects.components.MovementComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.MovementComponent.Movement;
+import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.gameobjects.components.PositionComponent;
 
 public class MovementSystem extends IteratingSystem
 {
 	public MovementSystem()
 	{
-		super(Family.all(MapObjectComponent.class).one(MovementComponent.class).get());
+		super(Family.all(AnimMapObjectComponent.class, MovementComponent.class, PositionComponent.class).get());
 	}
 	
 	@Override
@@ -22,35 +26,126 @@ public class MovementSystem extends IteratingSystem
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) 
 	{		
-		MapObjectComponent mapObject = Mappers.mapObjects.get(entity);
+		moveEntity(entity);
+		setEntityDirection(entity);
+		setEntityAnimation(entity);
+	}
+	
+	public void setEntityDirection(Entity entity)
+	{
+		AnimMapObjectComponent mapObject = Mappers.animMapObjects.get(entity);
 		MovementComponent movement = Mappers.movements.get(entity);
 		
-		movement.move();
-
-		if (movement.isStopped() && mapObject.getAnimationState() == MapObjectComponent.AnimationState.Walking)
+		if (!movement.isStopped(0.25f)) 
 		{
-			mapObject.setAnimationState(MapObjectComponent.AnimationState.Idle);
-		}
-
-		if (!movement.isStopped()) 
-		{
-			if (movement.getMovement() == MovementComponent.Movement.Horizontal)
+			if (movement.movement == Movement.Horizontal)
 			{
-				if (movement.getVelocity().x > 0) {
-					mapObject.setDirection(MapObjectComponent.Direction.Right);
-				} else {
-					mapObject.setDirection(MapObjectComponent.Direction.Left);
-				}
+				if (movement.velocity.x > 0) { mapObject.direction = Direction.Right;
+				} else {					   mapObject.direction = Direction.Left; }
 			}
-			else if (movement.getMovement() == MovementComponent.Movement.Vertical)
+			else if (movement.movement == Movement.Vertical)
 			{
-				if (movement.getVelocity().y > 0) 
+				if (movement.velocity.y > 0) { mapObject.direction = Direction.Down;
+				} else { 					   mapObject.direction = Direction.Up; }
+			}
+		}
+	}
+	
+	public void moveEntity(Entity entity)
+	{
+		AnimMapObjectComponent mapObject = Mappers.animMapObjects.get(entity);
+		MovementComponent movement = Mappers.movements.get(entity);
+		PositionComponent position = Mappers.positions.get(entity);
+		
+		if (mapObject.direction == null) return;
+		
+		switch (mapObject.direction)
+		{
+			case Up:
+				movement.velocity.set(0, -movement.speed);
+				break;
+			case Down:
+				movement.velocity.set(0, movement.speed);
+				break;
+			case Left:
+				movement.velocity.set(-movement.speed, 0);
+				break;
+			case Right:
+				movement.velocity.set(movement.speed, 0);
+				break;
+		}
+		
+		mapObject.setAnimationState(AnimationState.Walking);
+		
+		switch (movement.movement)
+		{
+			case Vertical:
+				movement.mass.setLinearVelocity(new Vector2(0, movement.velocity.y));				
+				break;
+			case Horizontal:
+				movement.mass.setLinearVelocity(new Vector2(movement.velocity.x, 0));				
+				break;
+			case None:
+				movement.mass.setLinearVelocity(movement.velocity);
+				break;
+		}
+		
+		position.position = movement.mass.getPosition().cpy();
+	}
+	
+	public void setEntityAnimation(Entity entity)
+	{
+		AnimMapObjectComponent mapObject = Mappers.animMapObjects.get(entity);
+		MovementComponent movement = Mappers.movements.get(entity);
+		
+		if (movement.isStopped(0.25f) && mapObject.getAnimationState() == AnimationState.Walking)
+		{
+			mapObject.setAnimationState(AnimationState.Idle);
+		}
+	}
+	
+	public boolean isFacing(Entity current, Entity target)
+	{
+		AnimMapObjectComponent mapObject = Mappers.animMapObjects.get(current);
+		AnimMapObjectComponent tMapObject = Mappers.animMapObjects.get(target);
+		PositionComponent movement = Mappers.positions.get(current);
+		PositionComponent tMovement = Mappers.positions.get(target);
+		
+		switch (mapObject.direction)
+		{
+			case Up:
+				if (movement.position.x > tMovement.position.x - tMapObject.size.x / 2 &&	// Center must be within left and right bounds of other
+					movement.position.x < tMovement.position.x + tMapObject.size.x / 2 && // (Basically a check to see if *this* is below or above other)
+					movement.position.y > tMovement.position.y)						    // Center must be below other's center
 				{
-					mapObject.setDirection(MapObjectComponent.Direction.Down);
-				} else {
-					mapObject.setDirection(MapObjectComponent.Direction.Up);
+					return true;
 				}
-			}
+				break;
+			case Down:
+				if (movement.position.x > tMovement.position.x - tMapObject.size.x / 2 &&	// Center must be within left and right bounds of other
+					movement.position.x < tMovement.position.x + tMapObject.size.x / 2 && // (Basically a check to see if *this* is below or above other)
+					movement.position.y < tMovement.position.y)						    // Center must be above other's center
+				{
+					return true;
+				}				
+				break;
+			case Left:
+				if (movement.position.y > tMovement.position.y - tMapObject.size.y / 2 &&	// Center must be within top and bottom bounds of other
+					movement.position.y < tMovement.position.y + tMapObject.size.y / 2 && // (Basically a check to see if *this* is to left or right of other)
+					movement.position.x > tMovement.position.x)						    // Center must be left of other's center
+				{
+					return true;
+				}				
+				break;
+			case Right:
+				if (movement.position.y > tMovement.position.y - tMapObject.size.y / 2 && // Center must be within top and bottom bounds of other
+					movement.position.y < tMovement.position.y + tMapObject.size.y / 2 && // (Basically a check to see if *this* is to left or right of other)
+					movement.position.x < tMovement.position.x)						    // Center must be right of other's center
+				{
+					return true;
+				}						
+				break;
 		}
+		return false;
 	}
 }

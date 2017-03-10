@@ -10,7 +10,7 @@ import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.LOSComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameobjects.components.MapObjectComponent.AnimationState;
+import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 import woohoo.screens.PlayingScreen.WBodyType;
 
@@ -107,135 +107,135 @@ public class Character extends BaseEntity
 		}
 	}
     
-    public Vector2 getPosition()
-    {
-        return new Vector2(mapObject.getX(), mapObject.getY());
-    }
-	
-    public void setPosition(float x, float y)
-    {
-        collision.setPosition(x, y);
-    }
-	
-	public Direction getDirection()
-	{
-		return mapObject.getDirection();
-	}
-    
-    public void setDirection(Direction direction)
-    {
-        mapObject.setDirection(direction);
-    }
-	
-	public Vector2 getCenter()
-	{
-		return new Vector2(mapObject.getX() + mapObject.getSize().x / 2, mapObject.getY() + mapObject.getSize().y / 2);
-	}
-	
-	public void setSize(float x, float y)
-	{
-		mapObject.setSize(x, y);
-	}
-	
-	public Vector2 getSize()
-	{
-		return mapObject.getSize();
-	}
-	
-	public void setSpeed(float newSpeed)
-	{
-		speed = newSpeed;
-	}
-	
-	public float getSpeed()
-	{
-		return speed;
-	}
-	
-	public void move(Direction dir)
-	{
-		if (dir == null) return;
-		
-		switch (dir)
-		{
-			case Up:
-				collision.addVelocity(0, -speed);
-				break;
-			case Down:
-				collision.addVelocity(0, speed);
-				break;
-			case Left:
-				collision.addVelocity(-speed, 0);
-				break;
-			case Right:
-				collision.addVelocity(speed, 0);
-				break;
-		}
-		
-		mapObject.setAnimationState(AnimationState.Walking);
-	}
-	
-	public void stop()
-	{
-		collision.setVelocity(0, 0);
-	}
-	
-	public float distanceTo(Character other)
-	{
-		float dX = getCenter().x - other.getCenter().x;
-		float dY = getCenter().y - other.getCenter().y;
-		
-		return (float)Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
-	}
-	
-	public float distanceTo(Vector2 position)
-	{
-		float dX = getCenter().x - position.x;
-		float dY = getCenter().y - position.y;
-		
-		return (float)Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
-	}
-	
-	public boolean isFacing(Character other)
-	{
-		switch (getDirection())
-		{
-			case Up:
-				if (getCenter().x > other.getPosition().x &&					 // Center must be within left and right bounds of other
-					getCenter().x < other.getPosition().x + other.getSize().x && // (Basically a check to see if *this* is below or above other)
-					getCenter().y > other.getCenter().y)						 // Center must be below other's center
-				{
-					return true;
-				}
-				break;
-			case Down:
-				if (getCenter().x > other.getPosition().x &&					 // Center must be within left and right bounds of other
-					getCenter().x < other.getPosition().x + other.getSize().x && // (Basically a check to see if *this* is below or above other)
-					getCenter().y < other.getCenter().y)						 // Center must be above other's center
-				{
-					return true;
-				}				
-				break;
-			case Left:
-				if (getCenter().y > other.getPosition().y &&					 // Center must be within top and bottom bounds of other
-					getCenter().y < other.getPosition().y + other.getSize().y && // (Basically a check to see if *this* is to left or right of other)
-					getCenter().x > other.getCenter().x)						 // Center must be left of other's center
-				{
-					return true;
-				}				
-				break;
-			case Right:
-				if (getCenter().y > other.getPosition().y &&					 // Center must be within top and bottom bounds of other
-					getCenter().y < other.getPosition().y + other.getSize().y && // (Basically a check to see if *this* is to left or right of other)
-					getCenter().x < other.getCenter().x)						 // Center must be right of other's center
-				{
-					return true;
-				}						
-				break;
-		}
-		return false;
-	}
-	
+//    public Vector2 getPosition()
+//    {
+//        return new Vector2(mapObject.getX(), mapObject.getY());
+//    }
+//	
+//    public void setPosition(float x, float y)
+//    {
+//        collision.setPosition(x, y);
+//    }
+//	
+//	public Direction getDirection()
+//	{
+//		return mapObject.getDirection();
+//	}
+//    
+//    public void setDirection(Direction direction)
+//    {
+//        mapObject.setDirection(direction);
+//    }
+//	
+//	public Vector2 getCenter()
+//	{
+//		return new Vector2(mapObject.getX() + mapObject.getSize().x / 2, mapObject.getY() + mapObject.getSize().y / 2);
+//	}
+//	
+//	public void setSize(float x, float y)
+//	{
+//		mapObject.setSize(x, y);
+//	}
+//	
+//	public Vector2 getSize()
+//	{
+//		return mapObject.getSize();
+//	}
+//	
+//	public void setSpeed(float newSpeed)
+//	{
+//		speed = newSpeed;
+//	}
+//	
+//	public float getSpeed()
+//	{
+//		return speed;
+//	}
+//	
+//	public void move(Direction dir)
+//	{
+//		if (dir == null) return;
+//		
+//		switch (dir)
+//		{
+//			case Up:
+//				collision.addVelocity(0, -speed);
+//				break;
+//			case Down:
+//				collision.addVelocity(0, speed);
+//				break;
+//			case Left:
+//				collision.addVelocity(-speed, 0);
+//				break;
+//			case Right:
+//				collision.addVelocity(speed, 0);
+//				break;
+//		}
+//		
+//		mapObject.setAnimationState(AnimationState.Walking);
+//	}
+//	
+//	public void stop()
+//	{
+//		collision.setVelocity(0, 0);
+//	}
+//	
+//	public float distanceTo(Character other)
+//	{
+//		float dX = getCenter().x - other.getCenter().x;
+//		float dY = getCenter().y - other.getCenter().y;
+//		
+//		return (float)Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+//	}
+//	
+//	public float distanceTo(Vector2 position)
+//	{
+//		float dX = getCenter().x - position.x;
+//		float dY = getCenter().y - position.y;
+//		
+//		return (float)Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+//	}
+//	
+//	public boolean isFacing(Character other)
+//	{
+//		switch (getDirection())
+//		{
+//			case Up:
+//				if (getCenter().x > other.getPosition().x &&					 // Center must be within left and right bounds of other
+//					getCenter().x < other.getPosition().x + other.getSize().x && // (Basically a check to see if *this* is below or above other)
+//					getCenter().y > other.getCenter().y)						 // Center must be below other's center
+//				{
+//					return true;
+//				}
+//				break;
+//			case Down:
+//				if (getCenter().x > other.getPosition().x &&					 // Center must be within left and right bounds of other
+//					getCenter().x < other.getPosition().x + other.getSize().x && // (Basically a check to see if *this* is below or above other)
+//					getCenter().y < other.getCenter().y)						 // Center must be above other's center
+//				{
+//					return true;
+//				}				
+//				break;
+//			case Left:
+//				if (getCenter().y > other.getPosition().y &&					 // Center must be within top and bottom bounds of other
+//					getCenter().y < other.getPosition().y + other.getSize().y && // (Basically a check to see if *this* is to left or right of other)
+//					getCenter().x > other.getCenter().x)						 // Center must be left of other's center
+//				{
+//					return true;
+//				}				
+//				break;
+//			case Right:
+//				if (getCenter().y > other.getPosition().y &&					 // Center must be within top and bottom bounds of other
+//					getCenter().y < other.getPosition().y + other.getSize().y && // (Basically a check to see if *this* is to left or right of other)
+//					getCenter().x < other.getCenter().x)						 // Center must be right of other's center
+//				{
+//					return true;
+//				}						
+//				break;
+//		}
+//		return false;
+//	}
+//	
 	public void changeMaxHealth(float newMax)
 	{
 		healthBar.changeMax(newMax);
@@ -246,37 +246,37 @@ public class Character extends BaseEntity
         healthBar.damage(damage);
     }
 	
-	public void setAIMode(AIMode mode)
-	{
-		brain.setAIMode(mode);
-	}
-	
-	public void setAIMode(String mode)
-	{
-		switch(mode)
-		{
-			case "stay":
-				brain.setAIMode(AIMode.Stay);
-				break;
-			case "follow":
-				brain.setAIMode(AIMode.Follow);
-				break;
-			case "random":
-				brain.setAIMode(AIMode.Random);
-				break;
-			case "moveto":
-				brain.setAIMode(AIMode.MoveTo);
-				break;
-			case "sentry":
-				brain.setAIMode(AIMode.Sentry);
-				break;
-		}
-	}
-	
-	public void setMoveTimestep(float time)
-	{
-		brain.setTimeStep(time);
-	}
+//	public void setAIMode(AIMode mode)
+//	{
+//		brain.setAIMode(mode);
+//	}
+//	
+//	public void setAIMode(String mode)
+//	{
+//		switch(mode)
+//		{
+//			case "stay":
+//				brain.setAIMode(AIMode.Stay);
+//				break;
+//			case "follow":
+//				brain.setAIMode(AIMode.Follow);
+//				break;
+//			case "random":
+//				brain.setAIMode(AIMode.Random);
+//				break;
+//			case "moveto":
+//				brain.setAIMode(AIMode.MoveTo);
+//				break;
+//			case "sentry":
+//				brain.setAIMode(AIMode.Sentry);
+//				break;
+//		}
+//	}
+//	
+//	public void setMoveTimestep(float time)
+//	{
+//		brain.setTimeStep(time);
+//	}
     
     public void die()
     {

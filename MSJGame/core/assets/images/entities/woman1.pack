@@ -3,21 +3,21 @@ woman1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-down
+down_walk
   rotate: false
   xy: 1, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-down
+down_walk
   rotate: false
   xy: 35, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-down
+down_walk
   rotate: false
   xy: 69, 1
   size: 32, 32
@@ -45,21 +45,21 @@ down_idle
   orig: 32, 32
   offset: 0, 0
   index: 3
-left
+left_walk
   rotate: false
   xy: 205, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-left
+left_walk
   rotate: false
   xy: 239, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-left
+left_walk
   rotate: false
   xy: 273, 1
   size: 32, 32
@@ -87,21 +87,21 @@ left_idle
   orig: 32, 32
   offset: 0, 0
   index: 3
-right
+right_walk
   rotate: false
   xy: 409, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-right
+right_walk
   rotate: false
   xy: 443, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-right
+right_walk
   rotate: false
   xy: 477, 1
   size: 32, 32
@@ -129,21 +129,21 @@ right_idle
   orig: 32, 32
   offset: 0, 0
   index: 3
-up
+up_walk
   rotate: false
   xy: 613, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-up
+up_walk
   rotate: false
   xy: 647, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-up
+up_walk
   rotate: false
   xy: 681, 1
   size: 32, 32

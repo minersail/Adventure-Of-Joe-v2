@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import woohoo.ai.AIHeuristic;
 import woohoo.ai.AIMap;
 import woohoo.ai.Node;
+import woohoo.ai.aistates.AIState;
 import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
 
@@ -17,7 +18,36 @@ public class AIComponent implements Component
 {
 	public enum AIMode
 	{
-		Follow, Stay, MoveTo, Input, Random, Sentry
+		Follow("follow"), 
+		Stay("stay"), 
+		MoveTo("moveto"), 
+		Input("input"), 
+		Random("random"), 
+		Sentry("sentry");
+		
+		private String text;
+		
+		AIMode(String str)
+		{
+			text = str;
+		}
+		
+		public String text()
+		{
+			return text;
+		}
+		
+		public static AIMode fromString(String str) 
+		{
+			for (AIMode b : AIMode.values()) 
+			{
+				if (b.text.equalsIgnoreCase(str))
+				{
+					return b;
+				}
+			}
+			throw new IllegalArgumentException("No AIMode with text " + str + " found.");
+		}
 	}
 	
 	private AIMap nodes;
@@ -29,14 +59,15 @@ public class AIComponent implements Component
 	private Character targetChar;
 	private Vector2 targetPos;
 	
-	private Direction nextDirection;
-    private boolean lockDirection;
-	private float timer;
-	private float timeStep; // How often the AI should switch directions
+	public Direction currentDirection;
+    public boolean lockDirection;
+	public float timer;    // Internal timer to keep track of time
+	public float timeStep; // How often the AI should switch directions
 	
-	private final float DEFAULT_TIMESTEP = 0.5f;
+	public final float DEFAULT_TIMESTEP = 0.5f;
 	
-	private AIMode mode;
+	public AIMode mode;
+	public AIState state;
 	
 	public AIComponent()
 	{		
@@ -73,7 +104,7 @@ public class AIComponent implements Component
 		path = new DefaultGraphPath();
 	}
 	
-	public void calculatePath(Vector2 current, Vector2 target)
+	private void calculatePath(Vector2 current, Vector2 target)
 	{
 		Node nodeStart = nodes.get(Math.round(current.x), Math.round(current.y));
 		Node nodeEnd = nodes.get(Math.round(target.x), Math.round(target.y));
@@ -87,25 +118,25 @@ public class AIComponent implements Component
 		pathFinder.searchNodePath(nodeStart, nodeEnd, heuristic, path);
 	}
 	
-	private Direction getDirection(Vector2 current, Vector2 target)
+	public Direction getDirection(Vector2 current, Vector2 target)
 	{		
 		calculatePath(current, target);
 		
-        if (path.nodes.size <= 1) return nextDirection;
+        if (path.nodes.size <= 1) return currentDirection;
         		
 		float dX = current.x - ((Node)path.nodes.get(1)).x; // path.nodes.get(0) is current position, path.nodes.get(1) is next
 		float dY = current.y - ((Node)path.nodes.get(1)).y;
 		
 		if (Math.abs(dX) > Math.abs(dY))
 		{
-			nextDirection = dX > 0 ? Direction.Left : Direction.Right;
+			currentDirection = dX > 0 ? Direction.Left : Direction.Right;
 		}
 		else
 		{
-			nextDirection = dY > 0 ? Direction.Up : Direction.Down;
+			currentDirection = dY > 0 ? Direction.Up : Direction.Down;
 		}
 		
-        return nextDirection;
+        return currentDirection;
 	}
 	
 	private Direction getRandomDirection()
@@ -115,28 +146,28 @@ public class AIComponent implements Component
 		switch(random)
 		{
 			case 0:
-				nextDirection = Direction.Up;
+				currentDirection = Direction.Up;
 				break;
 			case 1:
-				nextDirection = Direction.Down;
+				currentDirection = Direction.Down;
 				break;
 			case 2:
-				nextDirection = Direction.Left;
+				currentDirection = Direction.Left;
 				break;
 			case 3:
-				nextDirection = Direction.Right;				
+				currentDirection = Direction.Right;				
 				break;
 			case 4:
-				nextDirection = null;				
+				currentDirection = null;				
 				break;
 		}
-		return nextDirection;
+		return currentDirection;
 	}
 	
 	public Direction calculateDirection(Vector2 current)
 	{
 		// If timer is not up yet, return previous direction
-        if (lockDirection) return nextDirection;
+        if (lockDirection) return currentDirection;
 		lockDirection = true;
 		
 		switch(mode)
@@ -150,19 +181,8 @@ public class AIComponent implements Component
 			case Stay:
 			case Input:
 			default:
-				return null;			
+				return null;
 		}
-		
-	}
-	
-	public AIMode getAIMode()
-	{
-		return mode;
-	}
-	
-	public void setAIMode(AIMode aimode)
-	{
-		mode = aimode;
 	}
 	
 	public void setTargetPosition(Vector2 current, Vector2 target)

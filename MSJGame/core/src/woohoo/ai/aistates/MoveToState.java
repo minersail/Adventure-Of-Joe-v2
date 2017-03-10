@@ -1,0 +1,25 @@
+package woohoo.ai.aistates;
+
+import com.badlogic.gdx.math.Vector2;
+import woohoo.gameobjects.components.AIComponent;
+import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.gameobjects.components.PositionComponent;
+
+public class MoveToState implements AIState
+{
+	public Vector2 target;
+	
+	public MoveToState(Vector2 targetPosition)
+	{
+		target = targetPosition;
+	}
+	
+	@Override
+	public Direction getDirection(AIComponent ai, PositionComponent pos)
+	{
+		if (pos.position.dst(target) < 0.5f)
+			ai.state = new StayState();
+		
+		return ai.getDirection(pos.position, target);
+	}
+}
