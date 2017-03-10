@@ -20,30 +20,31 @@ public class HitboxContact implements ContactCommand
 	}
 	
 	@Override
-	public void startContact(Contact contact)
+	public boolean detectStart(Contact contact)
 	{
 		Fixture fA = contact.getFixtureA();
 		Fixture fB = contact.getFixtureB();
         
 		// If this sensor is inactive, or if neither of the fixtures are this one
-		if (!hitbox.isActive() || (!fA.equals(hitbox.getFixture()) && !fB.equals(hitbox.getFixture()))) return;
+		if (!hitbox.isActive() || (!fA.equals(hitbox.getFixture()) && !fB.equals(hitbox.getFixture()))) return false;
         
         FixtureData AData = (FixtureData)fA.getUserData();
         FixtureData BData = (FixtureData)fB.getUserData();
 		
         // If one of the fixtures is part of an inactive sensor
-		if (AData instanceof SensorData && !((SensorData)AData).isActive()) return;
-		if (BData instanceof SensorData && !((SensorData)BData).isActive()) return;
+		if (AData instanceof SensorData && !((SensorData)AData).isActive()) return false;
+		if (BData instanceof SensorData && !((SensorData)BData).isActive()) return false;
 
 		if (fA.equals(hitbox.getFixture()) && fB.getBody().getUserData() == testType
 			|| fB.equals(hitbox.getFixture()) && fA.getBody().getUserData() == testType)
 		{
 			hitbox.setCollided(fA.equals(hitbox.getFixture()) ? fB : fA);
+			return true;
 		}
 	}
 
 	@Override
-	public void endContact(Contact contact)
+	public boolean detectEnd(Contact contact)
 	{		
 		Fixture fA = contact.getFixtureA();
 		Fixture fB = contact.getFixtureB();
@@ -52,6 +53,21 @@ public class HitboxContact implements ContactCommand
 			|| fB.equals(hitbox.getFixture()) && fA.getBody().getUserData() == testType)
 		{
 			hitbox.setCollided(null);
+			return true;
 		}
+		
+		return false;
+	}
+
+	@Override
+	public void activateStart() 
+	{
+		
+	}
+
+	@Override
+	public void activateEnd() 
+	{
+		
 	}
 }

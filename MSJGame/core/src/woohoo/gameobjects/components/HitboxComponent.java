@@ -1,7 +1,6 @@
 package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -15,12 +14,12 @@ import woohoo.framework.fixturedata.HitboxData;
 
 public class HitboxComponent implements Component
 {
-	private Body mass;
-	private Fixture fixture;
+	public Body mass;
+	public Fixture fixture;
 	
-	private boolean isActive = true;
-	private Fixture collidedFixture;
-	private ContactCommand contactCode;
+	public boolean isActive;
+	public Fixture collidedFixture;
+	public ContactCommand contactCode;
 	
 	public HitboxComponent(World world)
 	{		
@@ -36,12 +35,14 @@ public class HitboxComponent implements Component
 		
         fixture = mass.createFixture(fixtureDef);
 		fixture.setSensor(true);
-		fixture.setUserData(new HitboxData(this));	
+		fixture.setUserData(new HitboxData(this));
+		
+		isActive = true;
 	}
 	
-	public SensorComponent initializeCommand(ContactManager contacts, World world)
+	public HitboxComponent initializeCommand(ContactManager contacts, World world)
 	{
-		contacts.addCommand(contactData, world);
+		contacts.addCommand(contactCode, world);
 		return this;
 	}
 	
@@ -60,23 +61,8 @@ public class HitboxComponent implements Component
 		return collidedFixture != null;
 	}
 	
-	public void setCollided(Fixture collided)
-	{
-		collidedFixture = collided;
-	}
-	
-	public Fixture getFixture()
-	{
-		return fixture;
-	}
-	
 	public FixtureData getContact()
 	{
 		return (FixtureData)collidedFixture.getUserData();
-	}
-	
-	public Vector2 getPosition()
-	{
-		return mass.getPosition();
 	}
 }

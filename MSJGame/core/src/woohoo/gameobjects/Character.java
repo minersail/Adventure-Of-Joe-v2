@@ -31,46 +31,46 @@ public class Character extends BaseEntity
 	
 	protected float speed = 2;
     protected boolean dead;
-	    
-	public Character(TextureAtlas atlas, WBodyType type)
-	{		
-		this(type);
-		mapObject = new MapObjectComponent(atlas);
-		super.add(mapObject);
-	}
-	
-	public Character(TextureRegion region, WBodyType type)
-	{
-		this(type);
-		mapObject = new MapObjectComponent(region);
-		super.add(mapObject);
-	}
-	
-	private Character(WBodyType type)
-	{
-		collision = new MovementComponent(type);
-		inventory = new InventoryComponent();
-        healthBar = new HealthBarComponent(10);
-		brain = new AIComponent();
-		lineOfSight = new LOSComponent(type);
-		
-        super.add(collision);
-		super.add(inventory);
-        super.add(healthBar);
-		super.add(brain);
-		super.add(lineOfSight);
-	}
-	
-	@Override
-	public void update(float delta)
-	{		        
-		super.update(delta);
-		
-		collision.update(delta);
-		mapObject.update(delta, collision.getPosition());
-		inventory.update(delta);
-        healthBar.update(delta, collision.getPosition());
-		brain.update(delta, collision.getPosition());
+//	    
+//	public Character(TextureAtlas atlas, WBodyType type)
+//	{		
+//		this(type);
+//		mapObject = new MapObjectComponent(atlas);
+//		super.add(mapObject);
+//	}
+//	
+//	public Character(TextureRegion region, WBodyType type)
+//	{
+//		this(type);
+//		mapObject = new MapObjectComponent(region);
+//		super.add(mapObject);
+//	}
+//	
+//	private Character(WBodyType type)
+//	{
+//		collision = new MovementComponent(type);
+//		inventory = new InventoryComponent();
+//        healthBar = new HealthBarComponent(10);
+//		brain = new AIComponent();
+//		lineOfSight = new LOSComponent(type);
+//		
+//        super.add(collision);
+//		super.add(inventory);
+//        super.add(healthBar);
+//		super.add(brain);
+//		super.add(lineOfSight);
+//	}
+//	
+//	@Override
+//	public void update(float delta)
+//	{		        
+//		super.update(delta);
+//		
+//		collision.update(delta);
+//		mapObject.update(delta, collision.getPosition());
+//		inventory.update(delta);
+//        healthBar.update(delta, collision.getPosition());
+//		brain.update(delta, collision.getPosition());
 		lineOfSight.update(delta);
 		lineOfSight.setPosition(collision.getPosition().x, collision.getPosition().y);
 		lineOfSight.rotate(mapObject.getDirection());
@@ -82,31 +82,31 @@ public class Character extends BaseEntity
 			stop();
 			move(brain.calculateDirection(collision.getPosition()));
 		}				
-		
-		if (collision.isStopped() && mapObject.getAnimationState() == AnimationState.Walking)
-        {
-            mapObject.setAnimationState(AnimationState.Idle);
-        }
-		
-		if (!collision.isStopped())
-		{
-			if (Math.abs(collision.getVelocity().x) > Math.abs(collision.getVelocity().y))
-			{
-				if (collision.getVelocity().x > 0)
-					mapObject.setDirection(Direction.Right);
-				else
-					mapObject.setDirection(Direction.Left);
-			}
-			else
-			{
-				if (collision.getVelocity().y > 0)
-					mapObject.setDirection(Direction.Down);
-				else
-					mapObject.setDirection(Direction.Up);
-			}
-		}
-	}
-    
+//		
+//		if (collision.isStopped() && mapObject.getAnimationState() == AnimationState.Walking)
+//        {
+//            mapObject.setAnimationState(AnimationState.Idle);
+//        }
+//		
+//		if (!collision.isStopped())
+//		{
+//			if (Math.abs(collision.getVelocity().x) > Math.abs(collision.getVelocity().y))
+//			{
+//				if (collision.getVelocity().x > 0)
+//					mapObject.setDirection(Direction.Right);
+//				else
+//					mapObject.setDirection(Direction.Left);
+//			}
+//			else
+//			{
+//				if (collision.getVelocity().y > 0)
+//					mapObject.setDirection(Direction.Down);
+//				else
+//					mapObject.setDirection(Direction.Up);
+//			}
+//		}
+//	}
+//    
 //    public Vector2 getPosition()
 //    {
 //        return new Vector2(mapObject.getX(), mapObject.getY());
@@ -283,24 +283,24 @@ public class Character extends BaseEntity
         mapObject.setAnimationState(AnimationState.Death);
         dead = true;
     }
-	
-	/**
-	 * Sets a position for the character to start moving towards
-	 * @param position target location
-	 */
-	public void setTarget(Vector2 position)
-	{
-		brain.setTargetPosition(collision.getPosition(), position);
-		brain.setAIMode(AIMode.MoveTo);
-	}
-	
-	/**
-	 * Sets a character for the character to start following
-	 * @param character target character
-	 */
-	public void setTarget(Character character)
-	{
-		brain.setTargetCharacter(collision.getPosition(), character);
-		brain.setAIMode(AIMode.Follow);
-	}
+//	
+//	/**
+//	 * Sets a position for the character to start moving towards
+//	 * @param position target location
+//	 */
+//	public void setTarget(Vector2 position)
+//	{
+//		brain.setTargetPosition(collision.getPosition(), position);
+//		brain.setAIMode(AIMode.MoveTo);
+//	}
+//	
+//	/**
+//	 * Sets a character for the character to start following
+//	 * @param character target character
+//	 */
+//	public void setTarget(Character character)
+//	{
+//		brain.setTargetCharacter(collision.getPosition(), character);
+//		brain.setAIMode(AIMode.Follow);
+//	}
 }

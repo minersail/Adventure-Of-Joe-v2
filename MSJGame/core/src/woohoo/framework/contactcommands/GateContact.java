@@ -20,7 +20,7 @@ public class GateContact implements ContactCommand
 	}
 	
 	@Override
-	public void startContact(Contact contact)
+	public boolean detectStart(Contact contact)
 	{
 		Fixture fA = contact.getFixtureA();
 		Fixture fB = contact.getFixtureB();
@@ -44,7 +44,7 @@ public class GateContact implements ContactCommand
 	}
 
 	@Override
-	public void endContact(Contact contact)
+	public void detectEnd(Contact contact)
 	{
 		
 	}
