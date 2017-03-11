@@ -7,11 +7,37 @@ public class ItemDataComponent implements Component
 {    
     public enum ItemType // Used in ItemMetaData
     {
-        Item, Weapon
+        Item("item"),
+		Weapon("weapon");
+		
+		private String text;
+		
+		ItemType(String str)
+		{
+			text = str;
+		}
+		
+		public String text()
+		{
+			return text;
+		}
+		
+		public static ItemType fromString(String str) 
+		{
+			for (ItemType b : ItemType.values()) 
+			{
+				if (b.text.equalsIgnoreCase(str))
+				{
+					return b;
+				}
+			}
+			throw new IllegalArgumentException("No ItemType with text " + str + " found.");
+		}
     }
     
-    private ItemType type;
-    private ObjectMap metaData;
+    public ItemType type;
+    public ObjectMap metaData;
+	public boolean playerTouched; // Whether or not the player can pick up the item
     
     public ItemDataComponent(ObjectMap element)
     {
@@ -23,38 +49,7 @@ public class ItemDataComponent implements Component
 		else
 		{
 			metaData = element;
-			setType((String)element.get("type"));
+			type = ItemType.fromString((String)element.get("type"));
 		}
-    }
-    
-    public ItemType getType()
-    {
-        return type;
-    }
-    
-    public void setType(ItemType type)
-    {
-        this.type = type;
-		
-		metaData.put("type", type);
-    }
-	
-	public void setType(String str)
-    {
-        switch (str.toLowerCase())
-		{
-			case "weapon":
-				setType(ItemType.Weapon);
-				break;
-			case "item":
-			default:
-				setType(ItemType.Item);
-				break;
-		}
-    }
-    
-    public ObjectMap getMetaData()
-    {
-        return metaData;
-    }            
+    }          
 }

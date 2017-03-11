@@ -5,20 +5,57 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class MovementComponent implements Component
-{	
-	// Only really used for player movement
-	public enum Movement
+{		
+	public enum Direction
 	{
-		None, Horizontal, Vertical
+		Up("up"), 
+		Down("down"),
+		Left("left"),
+		Right("right"),
+		None("none");
+		
+		private String text;
+		
+		Direction(String str)
+		{
+			text = str;
+		}
+		
+		public String text()
+		{
+			return text;
+		}
+		
+		public static Direction fromString(String str) 
+		{
+			for (Direction b : Direction.values()) 
+			{
+				if (b.text.equalsIgnoreCase(str))
+				{
+					return b;
+				}
+			}
+			throw new IllegalArgumentException("No Direction with text " + str + " found.");
+		}
+		
+		public static boolean isHorizontal(Direction dir)
+		{
+			return dir == Left || dir == Right;
+		}
+		
+		public static boolean isVertical(Direction dir)
+		{
+			return dir == Up || dir == Down;
+		}
 	}
 	
 	public Vector2 velocity;
-	public Movement movement;
+	public Direction direction;
 	public float speed;
 	
 	public MovementComponent(World world)
 	{
-		movement = Movement.None;
+		direction = Direction.None;
 		velocity = new Vector2(0, 0);
 		speed = 1;
 	}

@@ -11,8 +11,7 @@ import woohoo.ai.AIHeuristic;
 import woohoo.ai.AIMap;
 import woohoo.ai.Node;
 import woohoo.ai.aistates.AIState;
-import woohoo.gameobjects.Character;
-import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.gameobjects.components.MovementComponent.Direction;
 
 public class AIComponent implements Component
 {
@@ -97,9 +96,9 @@ public class AIComponent implements Component
 		}
 	}
 	
-	public void initializePathfinding(Map map, World world, ArrayList<MovementComponent> exclude, ArrayList<Vector2> extraNodes, int topRow, int botRow, int leftCol, int rightCol)
+	public void initializePathfinding(Map map, World world, ArrayList<Vector2> extraNodes, int topRow, int botRow, int leftCol, int rightCol)
 	{
-		nodes = new AIMap(map, world, exclude, extraNodes, topRow, botRow, leftCol, rightCol);
+		nodes = new AIMap(map, world, extraNodes, topRow, botRow, leftCol, rightCol);
 		pathFinder = new IndexedAStarPathFinder(nodes);
 		path = new DefaultGraphPath();
 	}
