@@ -44,7 +44,7 @@ import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.LOSComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameworld.GameRenderer;
-import woohoo.gameworld.GameWorld;
+import woohoo.gameworld.GameEngine;
 import woohoo.msjgame.MSJGame;
 
 public class PlayingScreen implements Screen
@@ -80,7 +80,7 @@ public class PlayingScreen implements Screen
 	final private InputHandler input;
 	final private HexMapLoader mapLoader;
 	final private GameRenderer renderer;
-	final private GameWorld engine;
+	final private GameEngine engine;
 	final private World world;
 	final private Stage ui;
 		
@@ -139,7 +139,7 @@ public class PlayingScreen implements Screen
 		
 		// Draw and update every frame
 		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
-		engine = new GameWorld(this);
+		engine = new GameEngine(this);
 		entityLoader = new EntityLoader(this);
 		engine.loadPlayer();
 		
@@ -346,7 +346,7 @@ public class PlayingScreen implements Screen
         return cam;
     }
 	
-	public GameWorld getEngine()
+	public GameEngine getEngine()
 	{
 		return engine;
 	}

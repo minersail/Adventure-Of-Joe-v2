@@ -1,31 +1,28 @@
 package woohoo.gameobjects.components;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.MapObjectComponent.Direction;
-import woohoo.screens.PlayingScreen;
 
-public class LOSComponent extends SensorComponent
+public class LOSComponent implements Component
 {
-    public LOSComponent(PlayingScreen.WBodyType bodyType) 
+	public Body mass;
+	public Fixture fixture;
+	
+    public LOSComponent(World world) 
     {
-        super(bodyType);
-    }
-    
-    @Override
-	public void createMass(World world)
-	{
-		super.createMass(world);
+		BodyDef bodyDef = new BodyDef();
+		mass = world.createBody(bodyDef);
+        mass.setType(BodyDef.BodyType.DynamicBody);
+		mass.setUserData(new ContactData());
 		
-		mass.setType(BodyDef.BodyType.DynamicBody);
-	}
-    
-    @Override
-    public Shape getShape()
-    {
 		PolygonShape shape = new PolygonShape();
 		float LOSradius = 5;
 		
@@ -41,13 +38,16 @@ public class LOSComponent extends SensorComponent
 							  new Vector2(LOSradius * SIN70, LOSradius * -COS70), new Vector2(LOSradius * SIN80, LOSradius * -COS80)};
 		
 		shape.set(vertices);
-        return shape;
+
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = shape;
+		
+        fixture = mass.createFixture(fixtureDef);
+		fixture.setSensor(true);
+        fixture.setDensity(100f);
+        fixture.setFriction(0);
+        fixture.setRestitution(0);
     }
-	
-	@Override
-	public void update(float delta)
-	{
-	}
 	
 	public void rotate(Direction direction)
 	{

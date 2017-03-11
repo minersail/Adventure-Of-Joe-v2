@@ -1,36 +1,36 @@
-package woohoo.gameobjects;
-
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.AIComponent.AIMode;
-import woohoo.gameobjects.components.MovementComponent;
-import woohoo.gameobjects.components.HealthBarComponent;
-import woohoo.gameobjects.components.InventoryComponent;
-import woohoo.gameobjects.components.LOSComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
-import woohoo.gameobjects.components.MapObjectComponent.Direction;
-import woohoo.screens.PlayingScreen.WBodyType;
-
-/*
-Not to be confused with CharacterData/CharacterManager
-
-This is a physical/visual representation base class for 
-entities that can move and collide.
-*/
-public class Character extends BaseEntity
-{
-    protected MapObjectComponent mapObject;
-	protected MovementComponent collision;
-	protected InventoryComponent inventory;
-    protected HealthBarComponent healthBar;
-	protected AIComponent brain;
-	protected LOSComponent lineOfSight;
-	
-	protected float speed = 2;
-    protected boolean dead;
+//package woohoo.gameobjects;
+//
+//import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+//import com.badlogic.gdx.graphics.g2d.TextureRegion;
+//import com.badlogic.gdx.math.Vector2;
+//import woohoo.gameobjects.components.AIComponent;
+//import woohoo.gameobjects.components.AIComponent.AIMode;
+//import woohoo.gameobjects.components.MovementComponent;
+//import woohoo.gameobjects.components.HealthBarComponent;
+//import woohoo.gameobjects.components.InventoryComponent;
+//import woohoo.gameobjects.components.LOSComponent;
+//import woohoo.gameobjects.components.MapObjectComponent;
+//import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
+//import woohoo.gameobjects.components.MapObjectComponent.Direction;
+//import woohoo.screens.PlayingScreen.WBodyType;
+//
+///*
+//Not to be confused with CharacterData/CharacterManager
+//
+//This is a physical/visual representation base class for 
+//entities that can move and collide.
+//*/
+//public class Character extends BaseEntity
+//{
+//    protected MapObjectComponent mapObject;
+//	protected MovementComponent collision;
+//	protected InventoryComponent inventory;
+//    protected HealthBarComponent healthBar;
+//	protected AIComponent brain;
+//	protected LOSComponent lineOfSight;
+//	
+//	protected float speed = 2;
+//    protected boolean dead;
 //	    
 //	public Character(TextureAtlas atlas, WBodyType type)
 //	{		

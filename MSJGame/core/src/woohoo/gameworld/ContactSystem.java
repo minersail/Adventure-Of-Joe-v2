@@ -8,8 +8,9 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import java.util.Iterator;
+import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.HitboxComponent;
-import woohoo.gameobjects.components.HitboxComponent.ContactData;
 import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.PositionComponent;
 
@@ -54,9 +55,20 @@ public class ContactSystem extends IteratingSystem
 	{
 		HitboxComponent hitbox = Mappers.hitboxes.get(entity);
 		
-		if (hitbox.getContactData().type == null)
+		if (hitbox.getContactData().hasCollisions())
 		{
-			// switch statement
+			for (Iterator<ContactData> it = hitbox.getContactData().collisions.iterator(); it.hasNext();)
+			{
+				ContactData data = it.next();
+				
+				data.collisions.removeValue(hitbox.getContactData(), true); // Remove the corresponding collision on the other object
+				it.remove();
+			}
 		}
+	}
+	
+	private void processContact(Entity entity1, Entity entity2)
+	{
+		
 	}
 }

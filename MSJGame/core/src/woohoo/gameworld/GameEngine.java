@@ -6,14 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
-import woohoo.gameobjects.BaseEntity;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Player;
-import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.DialogueComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameobjects.components.SensorComponent;
 import woohoo.screens.PlayingScreen;
 
 /*
@@ -21,13 +17,13 @@ All objects are data that will be drawn by the tiles
 
 Their updates will be called in this class
 */
-public class GameWorld extends Engine
+public class GameEngine extends Engine
 {
 	private PlayingScreen screen;
     
     public float runtime;
 	
-	public GameWorld(PlayingScreen scr)
+	public GameEngine(PlayingScreen scr)
 	{
 		screen = scr;
 	}
@@ -35,28 +31,13 @@ public class GameWorld extends Engine
 	@Override
     public void update(float delta)
     {
+		super.update(delta);
 		runtime += delta;
-
-		for (Entity entity : getDuplicateList())
-		{
-			((BaseEntity)entity).update(delta);
-			
-			if (entity instanceof Player)
-			{
-				adjustCamera((Player)entity);
-			}
-		}
     }
 	
 	public void animate(float delta)
 	{
-		for (Entity entity : getDuplicateList())
-		{
-			if (entity instanceof Character)
-			{
-				entity.getComponent(MapObjectComponent.class).addTime(delta);
-			}
-		}
+		getSystem(RenderSystem.class).update(delta);
 	}
 	
 	@Override
@@ -74,24 +55,24 @@ public class GameWorld extends Engine
 		screen.getInventoryManager().fillInventory(player);	
 	}
 	    
-    public Player getPlayer()
+    public Entity getPlayer()
     {
         for (Entity entity : getEntities())
         {
-            if (entity instanceof Player)
-                return (Player)entity;
+            if (Mappers.ids.get(entity).name.equals("player"))
+                return entity;
         }
         
         Gdx.app.log("ERROR", "Player does not exist in GameWorld");
         return null;
     }
 	
-	public BaseEntity getEntity(String name)
+	public Entity getEntity(String name)
 	{
 		for (Entity entity : getEntities())
         {
-            if (((BaseEntity)entity).getName().equals(name))
-                return (BaseEntity)entity;
+			if (Mappers.ids.get(entity).name.equals(name))
+				return entity;
         }
 		
         Gdx.app.log("ERROR", "Entity does not exist in GameWorld");
@@ -110,17 +91,6 @@ public class GameWorld extends Engine
         return npcs;
     }
 	
-	public void stopAll()
-	{
-		for (Entity entity : getDuplicateList())
-		{
-			if (entity instanceof Character)
-			{
-				((Character)entity).stop();
-			}
-		}
-	}
-	
 	/*
 	Check to see if the player is facing an NPC
 	*/
@@ -138,7 +108,7 @@ public class GameWorld extends Engine
 		return false;
 	}
 	
-	public void checkItems(Player player)
+	public void checkItems(Entity player)
 	{
 		for (Entity entity : getEntities())
 		{
@@ -157,9 +127,9 @@ public class GameWorld extends Engine
 	/*
 	If map is smaller than screen, center it in screen. If it is larger, pan it based on player's location
 	*/
-	public void adjustCamera(Player player)
+	public void adjustCamera(Entity player)
 	{
-		Vector2 p = player.getPosition();
+		Vector2 p = Mappers.positions.get(player).position;
 		Vector2 newPos = new Vector2(p);
 				
 		if (screen.mapWidth > screen.WORLD_WIDTH)
@@ -186,12 +156,12 @@ public class GameWorld extends Engine
 		screen.setCamera(newPos.x, newPos.y);
 	}
 	
-	public ArrayList<BaseEntity> getDuplicateList()
+	public ArrayList<Entity> getDuplicateList()
 	{
-		ArrayList<BaseEntity> list = new ArrayList<>();
+		ArrayList<Entity> list = new ArrayList<>();
 		for (Entity entity : getEntities())
 		{
-			list.add((BaseEntity)entity);
+			list.add(entity);
 		}
 		
 		return list;

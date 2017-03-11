@@ -4,14 +4,13 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import java.util.ArrayList;
-import woohoo.gameobjects.components.MovementComponent;
 
 public class AIMap implements IndexedGraph<Node>
 {
@@ -32,14 +31,13 @@ public class AIMap implements IndexedGraph<Node>
 	 *	  be set (if the extra nodes are to work) <br>
 	 * @param map to create the base grid
 	 * @param world to obtain all entity fixtures obstructing the map (and thus nodes to be excluded)
-	 * @param exclude list of {@link MovementComponent}s that are exceptions to entity exclusion
 	 * @param extraNodes list of extra nodes to manually added
 	 * @param topRow minimum row (Note: these are additive, not definite: e.g. left row of 2 does not mean the largest row is 2, but rather that 2 is added onto the right row)
 	 * @param botRow maximum row
 	 * @param leftCol minimum column
 	 * @param rightCol maximum column
 	 */
-	public AIMap(Map map, World world, ArrayList<MovementComponent> exclude, ArrayList<Vector2> extraNodes, int topRow, int botRow, int leftCol, int rightCol)
+	public AIMap(Map map, World world, ArrayList<Vector2> extraNodes, int topRow, int botRow, int leftCol, int rightCol)
 	{
 		nodes = new IntMap<>();
 		
@@ -69,14 +67,13 @@ public class AIMap implements IndexedGraph<Node>
 					nodes.put(index(i, j), node);
 				}				
 				
-				world.QueryAABB(new EntityQuery(nodes, exclude, i, j), i + 1, j + 1, i, j);
+				world.QueryAABB(new EntityQuery(nodes, i, j), i + 1, j + 1, i, j);
 			}
 		}
 		
 		for (Node node : nodes.values())
 		{
 			generateConnections(node);
-			if (node == null) System.out.println("hi");
 		}
 	}
 	
@@ -163,37 +160,21 @@ public class AIMap implements IndexedGraph<Node>
 	public class EntityQuery implements QueryCallback
 	{
 		IntMap<Node> nodeList;
-		ArrayList<Body> excludes;
 		int x;
 		int y;
 		
-		public EntityQuery(IntMap<Node> nodes, ArrayList<MovementComponent> excl, int X, int Y)
+		public EntityQuery(IntMap<Node> nodes, int X, int Y)
 		{
 			nodeList = nodes;
 			x = X;
 			y = Y;
-			
-			excludes = new ArrayList<>();
-			for (MovementComponent e : excl)
-			{
-				excludes.add(e.mass);
-			}
 		}
 		
 		@Override
 		public boolean reportFixture(Fixture fixture)
-		{			
-			for (Body exclude : excludes)
-			{
-				for (Fixture fix : exclude.getFixtureList())
-				{
-					if (fixture.equals(fix))
-						return true; // Don't include fixtures on the body performing the pathfinding
-				}
-			}
-			
+		{				
 			// Finds a fixture overlapping the tile, and that fixture has collsion activated
-			if (!fixture.isSensor())
+			if (!fixture.isSensor() && fixture.getBody().getType() == BodyType.StaticBody)
 			{
 				// Remove this as a possible node for the pathfinding graph
 				nodeList.remove(index(x, y));

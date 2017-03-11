@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import woohoo.framework.fixturedata.GateData;
+import woohoo.framework.contactcommands.ContactData;
 
 public class GateComponent implements Component
 {
@@ -17,8 +17,8 @@ public class GateComponent implements Component
 	public Vector2 position;
 	public Vector2 size;
 	public Vector2 playerPos; // Where the player will exit the gate
-	
 	public int destArea;
+	public boolean triggered;
 
     public GateComponent(World world, Element gate)
     {        
@@ -44,15 +44,15 @@ public class GateComponent implements Component
 		fixtureDef.shape = shape;
 		fixtureDef.isSensor = true;
 
-		body.createFixture(fixtureDef).setUserData(new GateData(gate));
-		body.setUserData();
+		body.createFixture(fixtureDef);
+		body.setUserData(new ContactData());
     }
 
-    public void setPlayerOffset(float x, float y)
+    public void setPlayerOffset(Vector2 offset)
     {
         // Took me forever to figure this out
         // Reposition the character relative to the gate's exit location based on where the player entered the gate's entrance
-        playerOffset = new Vector2(Math.min(Math.max(0, x), size.x - 1), Math.min(Math.max(0, y), size.y - 1));
+        playerOffset = new Vector2(Math.min(Math.max(0, offset.x), size.x - 1), Math.min(Math.max(0, offset.y), size.y - 1));
 		playerPos = position.cpy().add(playerOffset);
     }
 }

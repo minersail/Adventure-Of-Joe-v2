@@ -1,7 +1,6 @@
 package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -9,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
+import woohoo.framework.contactcommands.ContactData;
 import woohoo.framework.fixturedata.HitboxData;
 
 public class HitboxComponent implements Component
@@ -82,24 +81,5 @@ public class HitboxComponent implements Component
 	public ContactData getContactData()
 	{
 		return (ContactData)mass.getUserData();
-	}
-	
-	public class ContactData
-	{       
-		public ContactType type;
-		public Entity owner;
-		
-		// Array of collisions
-		public Array<ContactData> collisions;
-
-		public ContactData()
-		{
-			collisions = null;
-		}
-
-		public boolean hasCollisions()
-		{
-			return collisions.size == 0;
-		}
 	}
 }
