@@ -1,6 +1,6 @@
 package woohoo.framework.contactcommands;
 
-import woohoo.gameobjects.components.HitboxComponent;
+import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.ItemDataComponent;
 import woohoo.gameworld.Mappers;
 
@@ -13,12 +13,12 @@ public class ItemContact implements ContactCommand
 	@Override
 	public void activate(ContactData contactA, ContactData contactB)
 	{
-		if (contactA.type == HitboxComponent.ContactType.Item && contactB.type == HitboxComponent.ContactType.Player)
+		if (contactA.type == ContactType.Item && contactB.type == ContactType.Player)
 		{
 			ItemDataComponent item = Mappers.items.get(contactA.owner);			
 			item.playerTouched = true;
 		}
-		else if (contactB.type == HitboxComponent.ContactType.Item && contactA.type == HitboxComponent.ContactType.Player)
+		else if (contactB.type == ContactType.Item && contactA.type == ContactType.Player)
 		{
 			ItemDataComponent item = Mappers.items.get(contactB.owner);			
 			item.playerTouched = true;

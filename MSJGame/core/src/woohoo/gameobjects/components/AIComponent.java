@@ -6,6 +6,8 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
 import woohoo.ai.AIHeuristic;
 import woohoo.ai.AIMap;
@@ -96,8 +98,24 @@ public class AIComponent implements Component
 		}
 	}
 	
-	public void initializePathfinding(Map map, World world, ArrayList<Vector2> extraNodes, int topRow, int botRow, int leftCol, int rightCol)
+	public void initializePathfinding(Map map, World world, Element data)
 	{
+		int topRow = 0, botRow = 0, leftCol = 0, rightCol = 0;		
+		ArrayList<Vector2> extraNodes = new ArrayList<>();
+		
+		if (data.getChildByName("settings") != null)
+		{
+			topRow = data.getChildByName("settings").getInt("topRow", 0);
+			botRow = data.getChildByName("settings").getInt("botRow", 0);
+			leftCol = data.getChildByName("settings").getInt("leftCol", 0);
+			rightCol = data.getChildByName("settings").getInt("rightCol", 0);
+		}
+        
+        for (Element nodeData : data.getChildrenByName("node"))
+		{
+			extraNodes.add(new Vector2(nodeData.getInt("x"), nodeData.getInt("y")));
+		}
+		
 		nodes = new AIMap(map, world, extraNodes, topRow, botRow, leftCol, rightCol);
 		pathFinder = new IndexedAStarPathFinder(nodes);
 		path = new DefaultGraphPath();
@@ -136,67 +154,6 @@ public class AIComponent implements Component
 		}
 		
         return currentDirection;
-	}
-	
-	private Direction getRandomDirection()
-	{
-		int random = (int)Math.floor(Math.random() * 5);
-		
-		switch(random)
-		{
-			case 0:
-				currentDirection = Direction.Up;
-				break;
-			case 1:
-				currentDirection = Direction.Down;
-				break;
-			case 2:
-				currentDirection = Direction.Left;
-				break;
-			case 3:
-				currentDirection = Direction.Right;				
-				break;
-			case 4:
-				currentDirection = null;				
-				break;
-		}
-		return currentDirection;
-	}
-	
-	public Direction calculateDirection(Vector2 current)
-	{
-		// If timer is not up yet, return previous direction
-        if (lockDirection) return currentDirection;
-		lockDirection = true;
-		
-		switch(mode)
-		{
-			case Follow:
-				return getDirection(current, targetChar.getPosition());
-			case MoveTo:								
-				return getDirection(current, targetPos);
-			case Random:
-				return getRandomDirection();
-			case Stay:
-			case Input:
-			default:
-				return null;
-		}
-	}
-	
-	public void setTargetPosition(Vector2 current, Vector2 target)
-	{
-		targetPos = target;
-	}
-	
-	public void setTargetCharacter(Vector2 current, Character character)
-	{
-		targetChar = character;
-	}
-	
-	public void setTimeStep(float newStep)
-	{
-		timeStep = newStep;
 	}
 	
 	public void resetTimeStep()

@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import java.util.Iterator;
 import woohoo.framework.contactcommands.ContactData;
+import woohoo.gameobjects.components.ContactComponent;
 import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.PositionComponent;
@@ -18,7 +19,7 @@ public class ContactSystem extends IteratingSystem
 {
 	public ContactSystem(World world)
 	{
-		super(Family.all(MovementComponent.class, PositionComponent.class, HitboxComponent.class).get());
+		super(Family.all(MovementComponent.class, PositionComponent.class, HitboxComponent.class, ContactComponent.class).get());
 		
 		world.setContactListener(new ContactListener() 
 		{

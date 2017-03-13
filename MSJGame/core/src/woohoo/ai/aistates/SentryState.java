@@ -3,7 +3,7 @@ package woohoo.ai.aistates;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.gameobjects.components.MovementComponent.Direction;
 import woohoo.gameobjects.components.PositionComponent;
 
 public class SentryState implements AIState

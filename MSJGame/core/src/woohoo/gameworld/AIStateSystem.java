@@ -13,12 +13,6 @@ public class AIStateSystem extends IteratingSystem
 	{
 		super(Family.all(MapObjectComponent.class, PositionComponent.class, AIComponent.class).get());
 	}
-	
-	@Override
-	public void update(float delta)
-	{
-		super.update(delta);
-	}
 
 	@Override
 	protected void processEntity(Entity entity, float deltaTime)

@@ -23,7 +23,10 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 	@Override
 	protected void processEntity(Entity entity, float deltaTime)
 	{
-		
+		for (InputCommand command : Mappers.inputs.get(entity).commands)
+		{
+			command.apply(entity);
+		}
 	}
 
 	@Override
@@ -108,12 +111,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 			!Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.LEFT))
 		{
 			player.stop();
-			player.setMovement(MovementComponent.Movement.None);
-		}
-		
-		if (Gdx.input.isKeyPressed(Input.Keys.UP) && Gdx.input.isKeyPressed(Input.Keys.DOWN) && 
-			Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.LEFT))
-		{
 			player.setMovement(MovementComponent.Movement.None);
 		}
 		

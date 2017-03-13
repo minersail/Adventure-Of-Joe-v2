@@ -1,4 +1,4 @@
-package woohoo.framework.contactcommands;
+ package woohoo.framework.contactcommands;
 
 public interface ContactCommand
 {

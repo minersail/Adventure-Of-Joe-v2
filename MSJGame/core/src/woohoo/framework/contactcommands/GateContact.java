@@ -1,7 +1,7 @@
 package woohoo.framework.contactcommands;
 
 import woohoo.gameobjects.components.GateComponent;
-import woohoo.gameobjects.components.HitboxComponent.ContactType;
+import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.PositionComponent;
 import woohoo.gameworld.Mappers;
 

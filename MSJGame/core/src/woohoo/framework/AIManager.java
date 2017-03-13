@@ -6,8 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
-import woohoo.gameobjects.BaseEntity;
-import woohoo.gameobjects.Character;
 import woohoo.gameobjects.Enemy;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.MovementComponent;
