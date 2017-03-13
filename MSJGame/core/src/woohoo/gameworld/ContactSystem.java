@@ -8,18 +8,20 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import java.util.Iterator;
+import com.badlogic.gdx.utils.Array;
+import java.util.Objects;
+import woohoo.framework.contactcommands.ContactCommand;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.ContactComponent;
-import woohoo.gameobjects.components.HitboxComponent;
-import woohoo.gameobjects.components.MovementComponent;
-import woohoo.gameobjects.components.PositionComponent;
 
 public class ContactSystem extends IteratingSystem
 {
+	private Array<ContactDataPair> collisions;
+	private Array<ContactCommand> commands;
+	
 	public ContactSystem(World world)
 	{
-		super(Family.all(MovementComponent.class, PositionComponent.class, HitboxComponent.class, ContactComponent.class).get());
+		super(Family.all(ContactComponent.class).get());
 		
 		world.setContactListener(new ContactListener() 
 		{
@@ -29,8 +31,7 @@ public class ContactSystem extends IteratingSystem
 				ContactData data1 = (ContactData)contact.getFixtureA().getBody().getUserData();
 				ContactData data2 = (ContactData)contact.getFixtureB().getBody().getUserData();
 				
-				data1.collisions.add(data2);
-				data2.collisions.add(data1);
+				collisions.add(new ContactDataPair(data1, data2));
 			}
 
 			@Override
@@ -39,8 +40,7 @@ public class ContactSystem extends IteratingSystem
 				ContactData data1 = (ContactData)contact.getFixtureA().getBody().getUserData();
 				ContactData data2 = (ContactData)contact.getFixtureB().getBody().getUserData();
 				
-				data1.collisions.removeValue(data2, true);
-				data2.collisions.removeValue(data1, true);
+				collisions.removeValue(new ContactDataPair(data1, data2), false);
 			}
 
 			@Override
@@ -52,24 +52,70 @@ public class ContactSystem extends IteratingSystem
 	}
 	
 	@Override
-	protected void processEntity(Entity entity, float deltaTime) 
+	public void update(float delta)
 	{
-		HitboxComponent hitbox = Mappers.hitboxes.get(entity);
+		super.update(delta);
 		
-		if (hitbox.getContactData().hasCollisions())
+		for (ContactDataPair pair : collisions) // Iterate through all collisions in world
 		{
-			for (Iterator<ContactData> it = hitbox.getContactData().collisions.iterator(); it.hasNext();)
+			for (ContactCommand command : commands) // If the collision
 			{
-				ContactData data = it.next();
-				
-				data.collisions.removeValue(hitbox.getContactData(), true); // Remove the corresponding collision on the other object
-				it.remove();
+				if (command.verify(pair.A(), pair.B()))
+					command.activate(pair.A(), pair.B());
 			}
 		}
 	}
 	
-	private void processContact(Entity entity1, Entity entity2)
+	@Override
+	protected void processEntity(Entity entity, float deltaTime) 
 	{
+		ContactComponent contact = Mappers.contacts.get(entity);
+	}
+	
+	public class ContactDataPair
+	{
+		private ContactData A;
+		private ContactData B;
 		
+		public ContactDataPair(ContactData contactA, ContactData contactB)
+		{
+			A = contactA;
+			B = contactB;
+		}
+		
+		public boolean contains(ContactData contact)
+		{
+			return contact == A || contact == B;
+		}
+		
+		@Override
+		public boolean equals(Object other)
+		{
+			if (!(other instanceof ContactDataPair)) return false;
+			
+			ContactDataPair pair = (ContactDataPair)other;
+			
+			// If the pairs contain the same two ContactDatas
+			return (pair.A == A && pair.B == B) || (pair.A == B && pair.B == A);
+		}
+
+		@Override
+		public int hashCode()
+		{
+			int hash = 7;
+			hash = 31 * hash + Objects.hashCode(this.A);
+			hash = 31 * hash + Objects.hashCode(this.B);
+			return hash;
+		}
+		
+		public ContactData A()
+		{
+			return A;
+		}
+		
+		public ContactData B()
+		{
+			return B;
+		}
 	}
 }

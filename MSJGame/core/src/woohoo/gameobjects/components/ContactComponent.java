@@ -2,10 +2,10 @@ package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Array;
-import woohoo.framework.contactcommands.ContactCommand;
+import woohoo.framework.contactcommands.ContactData;
 
 /**
- * Contains contact data - 
+ * Keeps reference to all ContactDatas for entire entity;
  * @author jordan
  */
 public class ContactComponent implements Component
@@ -20,7 +20,7 @@ public class ContactComponent implements Component
 		Weapon(0x1 << 4),
 		Enemy(0x1 << 5);
 		
-		private int category;
+		private final int category;
 		
 		ContactType(int categoryBit)
 		{
@@ -43,5 +43,5 @@ public class ContactComponent implements Component
 		}
 	}
 	
-	Array<ContactCommand> commands;
+	public Array<ContactData> entityContacts;
 }
