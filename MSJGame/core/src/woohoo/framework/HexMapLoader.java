@@ -16,9 +16,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import woohoo.framework.fixturedata.FixtureData;
+import woohoo.framework.contactcommands.ContactData;
+import woohoo.gameobjects.components.ContactComponent;
+import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.screens.PlayingScreen;
-import woohoo.screens.PlayingScreen.WBodyType;
 
 public class HexMapLoader
 {
@@ -97,9 +98,8 @@ public class HexMapLoader
 					fixtureDef.density = 1f;
 					fixtureDef.friction = 0f;
 
-					Fixture fixture = body.createFixture(fixtureDef);
-					body.setUserData(WBodyType.Wall);
-                    fixture.setUserData(new FixtureData());
+					body.createFixture(fixtureDef);
+					body.setUserData(new ContactData(ContactType.Wall, null));
 				}
 					
 				Cell cell = new Cell();

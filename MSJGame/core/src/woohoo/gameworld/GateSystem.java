@@ -3,9 +3,20 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
+import woohoo.framework.contactcommands.ContactData;
+import woohoo.gameobjects.components.ContactComponent;
+import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.GateComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.PositionComponent;
@@ -21,6 +32,52 @@ public class GateSystem extends IteratingSystem
 	{
 		super(Family.all(GateComponent.class, PositionComponent.class).get());
 		scr = screen;
+	}
+	
+	/**
+	 * Called after entities have been added to the systems
+	 * Uses the gateID in every GateComponent to create a box2D body
+	 * @param area game area to load
+	 */
+	public void initialize(int area)
+	{
+		FileHandle handle = Gdx.files.local("data/gates.xml");
+        
+        XmlReader xml = new XmlReader();
+        Element root = xml.parse(handle.readString());   
+        Element gates = root.getChild(area);      
+        
+        for (Element gateElement : gates.getChildrenByName("gate"))
+        {
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+			// Make it so the XML refers to the top-left coordinate as opposed to center for box2D bodies
+            bodyDef.position.set(gateElement.getFloat("locX") + gateElement.getFloat("sizeX") / 2, gateElement.getFloat("locY") + gateElement.getFloat("sizeY") / 2);
+
+            Body body = screen.getWorld().createBody(bodyDef);
+
+            PolygonShape shape = new PolygonShape();
+            shape.setAsBox(gateElement.getFloat("sizeX") / 2 - 0.02f, gateElement.getFloat("sizeY") / 2 - 0.02f); // subtract 0.02f so slightly smaller than tile
+
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = shape;
+            fixtureDef.isSensor = true;
+
+            body.createFixture(fixtureDef);
+			
+			for (Entity entity : getEntities())
+			{
+				GateComponent gate = Mappers.gates.get(entity);
+				if (gate.gateID == gateElement.getInt("id"))
+				{
+					gate.size = new Vector2(gateElement.getFloat("sizeX"), gateElement.getFloat("sizeY"));
+					gate.position = new Vector2(gateElement.getFloat("destX") + 0.5f, gateElement.getFloat("destY") + gate.getPlayerOffset().y + 0.5f);
+					gate.destArea = gateElement.getInt("destArea");
+					
+					body.setUserData(new ContactData(ContactType.Gate, entity));
+				}
+			}
+        }
 	}
 	
 	@Override

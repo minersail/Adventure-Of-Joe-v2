@@ -1,15 +1,14 @@
 package woohoo.framework.events;
 
 import com.badlogic.gdx.math.Vector2;
-import woohoo.gameobjects.BaseEntity;
-import woohoo.gameobjects.Character;
+import woohoo.gameobjects.components.PositionComponent;
 
 /** 
  * Implementation of EventTrigger based on movement to a location
  *
  * @author jordan
  */
-public class MoveTrigger implements EventTrigger<BaseEntity>
+public class MoveTrigger implements EventTrigger<PositionComponent>
 {
 	private Vector2 position;
 	private float distanceTo;
@@ -28,14 +27,12 @@ public class MoveTrigger implements EventTrigger<BaseEntity>
 	
 	/**
 	 * Only works on subclasses of {@link Character}
-	 * @param entity entity calling the check
+	 * @param component PositionComponent of entity calling the check
 	 * @return Whether or not the entity is close enough to the activation position
 	 */
 	@Override
-	public boolean check(BaseEntity entity)
+	public boolean check(PositionComponent component)
 	{		
-		Character character = (Character)entity;
-
-		return character.distanceTo(position) < distanceTo;
+		return component.position.dst(position) < distanceTo;
 	}
 }

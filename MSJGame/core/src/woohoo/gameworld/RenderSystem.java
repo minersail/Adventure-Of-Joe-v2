@@ -17,8 +17,11 @@ public class RenderSystem extends IteratingSystem
 		super(Family.all(PositionComponent.class).one(MapObjectComponent.class, AnimMapObjectComponent.class).get());
 		
 		renderer = new GameRenderer(map, scale);
-		
-		for (Entity entity : super.getEngine().getEntities())
+	}
+	
+	public void initialize()
+	{		
+		for (Entity entity : super.getEntities())
 		{
 			if (Mappers.mapObjects.has(entity))
 			{
@@ -57,5 +60,10 @@ public class RenderSystem extends IteratingSystem
 			animMapObject.setX(pos.position.x);
 			animMapObject.setY(pos.position.y);
 		}
+	}
+	
+	public GameRenderer getRenderer()
+	{
+		return renderer;
 	}
 }

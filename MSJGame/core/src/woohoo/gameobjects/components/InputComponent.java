@@ -1,8 +1,12 @@
 package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.utils.Array;
+import woohoo.framework.input.InputCommand;
+import woohoo.framework.input.InputState;
 
 public class InputComponent implements Component
 {
-	// Currently the existence of this component just serves as a flag that this entity processes input
+	public Array<InputState> states;
+	public Array<InputCommand> commands;
 }

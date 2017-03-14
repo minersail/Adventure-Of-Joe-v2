@@ -20,19 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.ai.AIDebugger;
-import woohoo.framework.AIManager;
-import woohoo.framework.AlertManager;
-import woohoo.framework.IDManager;
-import woohoo.framework.ContactManager;
-import woohoo.framework.CutsceneManager;
-import woohoo.framework.DialogueManager;
-import woohoo.framework.EntityLoader;
-import woohoo.framework.EventManager;
-import woohoo.framework.GateManager;
-import woohoo.framework.HexMapLoader;
-import woohoo.framework.InputHandler;
-import woohoo.framework.InventoryManager;
-import woohoo.framework.QuestManager;
+import woohoo.framework.*;
 import woohoo.gameobjects.Item;
 import woohoo.gameobjects.NPC;
 import woohoo.gameobjects.Character;
@@ -43,8 +31,7 @@ import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.LOSComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameworld.GameRenderer;
-import woohoo.gameworld.GameEngine;
+import woohoo.gameworld.*;
 import woohoo.msjgame.MSJGame;
 
 public class PlayingScreen implements Screen
@@ -160,14 +147,49 @@ public class PlayingScreen implements Screen
 		
 		// Initialize input
 		input = new InputHandler(this);
+		
+		//--------------------------------------------------------------------------
+		AIStateSystem aiSystem = new AIStateSystem(this);
+		AnimationSystem animationSystem = new AnimationSystem();
+		ContactSystem contactSystem = new ContactSystem(world);
+		EventSystem eventSystem = new EventSystem(this);
+		GateSystem gateSystem = new GateSystem(this);
+		InputSystem inputSystem = new InputSystem(this);
+		ItemSystem itemSystem = new ItemSystem();
+		MovementSystem movementSystem = new MovementSystem();
+		RenderSystem renderSystem = new RenderSystem(map, 1.0f / WORLD_WIDTH);
+		
+		inputSystem.priority = 0;
+		eventSystem.priority = 1;
+		aiSystem.priority = 2;
+		contactSystem.priority = 3;
+		itemSystem.priority = 4;
+		movementSystem.priority = 5;
+		gateSystem.priority = 6;
+		animationSystem.priority = 7;
+		renderSystem.priority = 8;
+		
+		engine.addSystem(aiSystem);
+		engine.addSystem(animationSystem);
+		engine.addSystem(contactSystem);
+		engine.addSystem(eventSystem);
+		engine.addSystem(gateSystem);
+		engine.addSystem(inputSystem);
+		engine.addSystem(itemSystem);
+		engine.addSystem(movementSystem);
+		engine.addSystem(renderSystem);
 	}
 
-    public void initialize()
+    public void initialize(int gameArea)
     {    
-        gates.createGates(currentArea);
-		entityLoader.loadEntities(currentArea);
-		aiManager.initializePathfinding(currentArea);
-		events.createEvents(currentArea);
+		entityLoader.loadEntities(gameArea);
+		engine.getSystem(GateSystem.class).initialize(gameArea);
+		engine.getSystem(AIStateSystem.class).initialize(gameArea, engine.getSystem(RenderSystem.class).getRenderer().getMap(), world);
+		//--------------------------------------------
+        gates.createGates(gameArea);
+		entityLoader.loadEntities(gameArea);
+		aiManager.initializePathfinding(gameArea);
+		events.createEvents(gameArea);
 		
 		state = GameState.Playing;
     }

@@ -18,7 +18,5 @@ public class ItemSystem extends IteratingSystem
 	protected void processEntity(Entity entity, float deltaTime)
 	{
 		ItemDataComponent item = Mappers.items.get(entity);
-		
-		if (item.playerTouched)
 	}
 }

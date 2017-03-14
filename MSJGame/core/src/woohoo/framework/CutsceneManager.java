@@ -1,20 +1,23 @@
 package woohoo.framework;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
+import woohoo.ai.aistates.MoveToState;
+import woohoo.ai.aistates.StayState;
 import woohoo.framework.events.EventListeners;
-import woohoo.gameobjects.BaseEntity;
-import woohoo.gameobjects.Player;
-import woohoo.gameobjects.Character;
 import woohoo.gameobjects.components.AIComponent;
+import woohoo.gameobjects.components.AnimMapObjectComponent;
+import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
 import woohoo.gameobjects.components.DialogueComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameobjects.components.MapObjectComponent.AnimationState;
-import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.gameobjects.components.MovementComponent;
+import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameobjects.components.PositionComponent.Orientation;
+import woohoo.gameworld.Mappers;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.GameState;
 
@@ -22,7 +25,7 @@ public class CutsceneManager
 {
     private PlayingScreen screen;
     
-    private ArrayList<BaseEntity> cutsceneEntities;
+    private ArrayList<Entity> cutsceneEntities;
     private ArrayList<CutsceneAction> cutsceneActions;
 	
 	private EventListeners listeners;
@@ -43,16 +46,8 @@ public class CutsceneManager
 	 */
 	public void update(float delta)
 	{
-		for (BaseEntity entity : cutsceneEntities)
-		{
-			entity.update(delta);
-			
-			if (entity instanceof Player)
-			{
-				screen.getEngine().adjustCamera((Player)entity);
-			}
-		}
-        
+		screen.getEngine().update(delta);
+		
         if (currentAction.isDone(delta))
         {
             int nextAction = cutsceneActions.indexOf(currentAction) + 1;
@@ -124,12 +119,12 @@ public class CutsceneManager
     
     public void endCutscene()
     {
-		for (BaseEntity entity : cutsceneEntities)
+		for (Entity entity : cutsceneEntities)
 		{
-			if (entity instanceof Player)
+			if (Mappers.players.has(entity)) // This is the player
 			{
-				entity.getComponent(AIComponent.class).setAIMode(AIComponent.AIMode.Input);
-				((Player)entity).stop();
+				entity.remove(AIComponent.class);
+				Mappers.movements.get(entity).velocity.setZero();
 			}
 		}
 		
@@ -162,34 +157,37 @@ public class CutsceneManager
     
     public class MovementAction implements CutsceneAction
     {
-        private Character character;
+        private MovementComponent movement;
+		private AIComponent brain;
         private Vector2 targetPosition;
 		private float oldSpeed; // original speed;
 		private float tempSpeed; // temporary speed; allows entities to move faster during cutscenes
         
         public MovementAction(String characterName, float targetX, float targetY, float speed)
         {
-            character = (Character)screen.getEngine().getEntity(characterName);
+			movement = Mappers.movements.get(screen.getEngine().getEntity(characterName));
+			brain = Mappers.ai.get(screen.getEngine().getEntity(characterName));
+			
             targetPosition = new Vector2(targetX, targetY);
-			oldSpeed = character.getSpeed();
+			oldSpeed = movement.speed;
 			tempSpeed = speed;
         }
         
         @Override
         public void start()
         {
-            character.getComponent(AIComponent.class).setTimeStep(0.05f);
-            character.setTarget(targetPosition);
-			character.setSpeed(tempSpeed);
+			brain.timeStep = 0.05f;
+			brain.state = new MoveToState(targetPosition);
+			movement.speed = tempSpeed;
         }
         
         @Override
         public boolean isDone(float delta) 
         {
-			if (character.getComponent(AIComponent.class).getAIMode() == AIComponent.AIMode.Stay)
+			if (brain.state instanceof StayState)
 			{
-				character.setSpeed(oldSpeed);
-				character.getComponent(AIComponent.class).resetTimeStep();
+				movement.speed = oldSpeed;
+				brain.resetTimeStep();
 				return true;
 			}
 			return false;
@@ -221,35 +219,19 @@ public class CutsceneManager
     
     public class RotateAction implements CutsceneAction
     {
-        private Character character;
-        private Direction direction;
+        private PositionComponent entityPosition;
+        private Orientation orientation;
         
         public RotateAction(String characterName, String dir)
         {
-            character = (Character)screen.getEngine().getEntity(characterName);
-            
-            switch (dir.toLowerCase())
-            {
-                case "up":                    
-                    direction = Direction.Up;
-                    break;
-                case "left":
-                    direction = Direction.Left;
-                    break;
-                case "right":
-                    direction = Direction.Right;
-                    break;
-                case "down":
-                default:
-                    direction = Direction.Down;
-                    break;
-            }
+			entityPosition = Mappers.positions.get(screen.getEngine().getEntity(characterName));
+            orientation = Orientation.fromString(dir);
         }
         
         @Override
         public void start()
         {
-            character.setDirection(direction);
+            entityPosition.orientation = orientation;
         }
         
         @Override
@@ -286,38 +268,23 @@ public class CutsceneManager
 	
 	public class AnimateAction implements CutsceneAction
     {
-        private Character character;
+        private AnimMapObjectComponent animationComponent;
 		private AnimationState state;
 		private float actionTime;
 		private float maxTime;
         
         public AnimateAction(String characterName, String animation, float time)
         {
-            character = (Character)screen.getEngine().getEntity(characterName);
+			animationComponent = Mappers.animMapObjects.get(screen.getEngine().getEntity(characterName));
 			maxTime = time;
 			
-			switch(animation.toLowerCase())
-			{
-				case "fight":
-					state = AnimationState.Fighting;
-					break;
-				case "walk":
-					state = AnimationState.Walking;
-					break;
-				case "death":
-					state = AnimationState.Death;
-					break;
-				case "idle":
-				default:
-					state = AnimationState.Idle;
-					break;
-			}
+			state = AnimationState.fromString(animation);
         }
         
         @Override
         public void start()
         {
-            character.getComponent(MapObjectComponent.class).setAnimationState(state);
+			animationComponent.animState = state;
         }
         
         @Override

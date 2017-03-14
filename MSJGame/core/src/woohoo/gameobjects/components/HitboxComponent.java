@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import woohoo.framework.contactcommands.ContactCommand;
 import woohoo.framework.contactcommands.ContactData;
 
 public class HitboxComponent implements Component
@@ -16,7 +15,6 @@ public class HitboxComponent implements Component
 	public Body mass;
 	public Fixture fixture;	
 	public boolean isActive;
-	public ContactCommand contactCommand;
 	
 	public HitboxComponent(World world, boolean enableCollision)
 	{		

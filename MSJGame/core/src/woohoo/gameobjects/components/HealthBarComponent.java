@@ -30,18 +30,6 @@ public class HealthBarComponent extends TextureMapObject implements Component
 		return this;
     }
 	
-	public HealthBarComponent addTo(MapObjects objects)
-	{
-		objects.add(this);
-		return this;
-	}
-	
-	public HealthBarComponent removeFrom(MapObjects objects)
-	{
-		objects.remove(this);
-		return this;
-	}
-    
     public void update(float delta, Vector2 newPosition)
     {   
         setX(newPosition.x);

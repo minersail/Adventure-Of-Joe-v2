@@ -14,4 +14,10 @@ public class ContactData
 {
 	public ContactType type;
 	public Entity owner;
+	
+	public ContactData(ContactType contactType, Entity owningEntity)
+	{
+		type = contactType;
+		owner = owningEntity;
+	}
 }

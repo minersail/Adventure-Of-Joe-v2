@@ -1,27 +1,28 @@
 package woohoo.framework.events;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
-import woohoo.gameobjects.Character;
+import woohoo.gameobjects.components.PositionComponent;
 
-public class MoveEvent implements Event<Character>
+public class MoveEvent implements Event<Entity>
 {
-	Character character;
+	PositionComponent component;
 	Vector2 position;
 	
 	/**
 	 * Switches character's AIMode to MoveTo and moves to given location
-	 * @param moveEntity Must be a character with an AIComponent
+	 * @param comp PositionComponent of the entity to move
 	 * @param pos Position entity will move to
 	 */
-	public MoveEvent(Character moveEntity, Vector2 pos)
+	public MoveEvent(PositionComponent comp, Vector2 pos)
 	{
-		character = moveEntity;
+		component = comp;
 		position = pos;
 	}
 	
 	@Override
 	public void activate()
 	{
-		character.setTarget(position);
+		component.position = position;
 	}
 }

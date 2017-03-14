@@ -6,7 +6,6 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
 import woohoo.ai.AIHeuristic;
@@ -56,10 +55,6 @@ public class AIComponent implements Component
 	private IndexedAStarPathFinder pathFinder;
 	private DefaultGraphPath path;
 	
-	// Reference to player, change later to reference of viable targets to follow
-	private Character targetChar;
-	private Vector2 targetPos;
-	
 	public Direction currentDirection;
     public boolean lockDirection;
 	public float timer;    // Internal timer to keep track of time
@@ -85,16 +80,6 @@ public class AIComponent implements Component
 		{
 			timer = 0;
 			lockDirection = false;
-		}
-		
-		// If moving towards a certain spot
-		if (mode == AIMode.MoveTo)
-		{
-			float dX = currentPos.x - targetPos.x;
-			float dY = currentPos.y - targetPos.y;
-
-			if (Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2)) < 0.5f)
-				mode = AIMode.Stay;
 		}
 	}
 	

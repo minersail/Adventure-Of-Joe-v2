@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.math.Vector2;
 import java.util.HashMap;
 import java.util.Map;
-import woohoo.gameobjects.components.MovementComponent.Direction;
 
 public class AnimMapObjectComponent extends TextureMapObject implements Component
 {

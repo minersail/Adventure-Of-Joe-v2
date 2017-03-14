@@ -1,46 +1,36 @@
 package woohoo.framework.events;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
-import woohoo.gameobjects.Character;
+import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.AIComponent.AIMode;
+import woohoo.gameobjects.components.PositionComponent;
 
-public class AIEvent implements Event<Character>
+//// REWRITE SPLIT INTO AIFOLLOWEVENT, AIMOVEEVENT, ETC
+
+
+public class AIEvent implements Event<Entity>
 {
-	private Character aiChar;
-	private Character followChar; // Will be null unless mode is AIMode.Follow
+	private AIComponent aiChar;
+	private PositionComponent followChar; // Will be null unless mode is AIMode.Follow
 	private AIMode mode;
 	private float x;
 	private float y;
 	
-	public AIEvent(Character character, String aimode, Character follow, float X, float Y)
+	public AIEvent(AIComponent character, String aimode, PositionComponent follow, float X, float Y)
 	{
 		aiChar = character;
 		followChar = follow;
 		x = X;
 		y = Y;
 		
-		switch(aimode.toLowerCase())
-		{
-			case "follow":
-				mode = AIMode.Follow;
-				break;
-			case "moveto":
-				mode = AIMode.MoveTo;
-				break;
-			case "input":
-				mode = AIMode.Input;
-				break;
-			case "stay":
-			default:
-				mode = AIMode.Stay;
-				break;
-		}
+		mode = AIMode.fromString(aimode);
 	}
 	
 	@Override
 	public void activate()
 	{
-		aiChar.setAIMode(mode);
+		aiChar.mode = mode;
 		
 		if (mode == AIMode.Follow)
 		{

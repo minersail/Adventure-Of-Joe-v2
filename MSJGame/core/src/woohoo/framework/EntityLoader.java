@@ -1,16 +1,14 @@
 package woohoo.framework;
 
+import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import woohoo.gameobjects.BaseEntity;
-import woohoo.gameobjects.Character;
-import woohoo.gameobjects.Enemy;
-import woohoo.gameobjects.Item;
-import woohoo.gameobjects.NPC;
+import woohoo.gameobjects.components.AIComponent;
+import woohoo.gameobjects.components.AnimMapObjectComponent;
 import woohoo.screens.PlayingScreen;
 
 public class EntityLoader
@@ -27,57 +25,35 @@ public class EntityLoader
 		FileHandle handle = Gdx.files.local("data/entities.xml");
         
         XmlReader xml = new XmlReader();
-        XmlReader.Element root = xml.parse(handle.readString());       
-        XmlReader.Element entities = root.getChild(area);         
+        Element root = xml.parse(handle.readString());       
+        Element entities = root.getChild(area);         
         
-        for (XmlReader.Element entity : entities.getChildrenByName("entity"))
+        for (Element e : entities.getChildrenByName("entity"))
         {
-			if (!entity.getBoolean("enabled")) continue;
+			if (!e.getBoolean("enabled")) continue;
 			
-			String eClass = entity.get("class");
+			Entity entity = new Entity();
 			
-			BaseEntity base = null;
-			
-			switch (eClass)
+			for (int i = 0; i < e.getChildCount(); i++)
 			{
-				case "npc":					
-					base = entity.getChildByName("characterdata").getBoolean("animated", false) ? 
-						new NPC(screen.getAssets().get("images/entities/" + entity.getChildByName("characterdata").get("texture"), TextureAtlas.class), entity.getChildByName("npcdata").getInt("dialogueid")) :
-						new NPC(screen.getAssets().get("images/entities/" + entity.getChildByName("characterdata").get("texture"), Texture.class), entity.getChildByName("npcdata").getInt("dialogueid")); 
-					break;
-				case "item":
-					base = new Item(screen.getIDManager().getItem(entity.getInt("id")).getItemTexture());
-					Item item = (Item)base;
-					item.setPosition(entity.getFloat("locX"), entity.getFloat("locY"));
-					item.setType(entity.get("type"));
-					item.flipImage();
-					break;
-				case "enemy":
-					base = new Enemy(screen.getAssets().get("images/entities/" + entity.getChildByName("characterdata").get("texture"), Texture.class));
-					Enemy enemy = (Enemy)base;
-					enemy.changeMaxHealth(entity.getFloat("health"));
-					break;
+				Component component = loadComponent(e.getChild(i));
+				entity.add(component);
 			}
-			if (base == null) return;
-			
-			screen.addEntity(base);
-			base.setName(entity.get("name", ""));
-			
-			Element chdata = entity.getChildByName("characterdata");
-			Element aidata = entity.getChildByName("aidata");
-			
-			if (chdata != null)
-			{
-				Character cha = (Character)base;
-				cha.setPosition(chdata.getFloat("locX"), chdata.getFloat("locY"));
-				cha.setSpeed(chdata.getFloat("speed", cha.getSpeed()));
-			}
-			if (aidata != null)
-			{
-				Character cha = (Character)base;
-				cha.setAIMode(aidata.get("mode", "stay"));
-				cha.setMoveTimestep(aidata.getFloat("timestep", 0.5f));
-			}
+		}
+	}
+	
+	private Component loadComponent(Element component)
+	{
+		switch (component.getName())
+		{
+			case "ai":
+				AIComponent brain = new AIComponent();
+				return brain;
+			case "anim":
+				AnimMapObjectComponent animObject = new AnimMapObjectComponent(screen.getAssets().get(component.get("atlas"), TextureAtlas.class));
+				return animObject;
+			case "contact":
+				ContactComponent contact = new ContactComponent();
 		}
 	}
 }

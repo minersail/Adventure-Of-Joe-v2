@@ -3,29 +3,71 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import java.util.Iterator;
+import woohoo.framework.input.*;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.InputComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameobjects.components.MovementComponent;
-import woohoo.gameobjects.components.MovementComponent.Direction;
 import woohoo.screens.PlayingScreen;
 
 public class InputSystem extends IteratingSystem implements InputProcessor
 {
-	public InputSystem()
+	PlayingScreen screen;
+	
+	public InputSystem(PlayingScreen scr)
 	{
 		super(Family.all(InputComponent.class).get());
+		
+		screen = scr;
 	}
 	
 	@Override
 	protected void processEntity(Entity entity, float deltaTime)
 	{
-		for (InputCommand command : Mappers.inputs.get(entity).commands)
+		for (Iterator<InputCommand> it = Mappers.inputs.get(entity).commands.iterator(); it.hasNext();)
 		{
-			command.apply(entity);
+			InputCommand command = it.next();
+			command.execute(entity);
+			it.remove(); // Commands are only executed once
+		}
+		
+		for (InputState state : Mappers.inputs.get(entity).states)
+		{
+			state.execute(entity);
+		}
+	}
+	
+	private void addCommand(InputCommand command)
+	{
+		for (Entity entity : getEntities())
+		{
+			Mappers.inputs.get(entity).commands.add(command);
+		}
+	}
+	
+	private void addState(InputState state)
+	{
+		for (Entity entity : getEntities())
+		{
+			Mappers.inputs.get(entity).states.add(state);
+		}
+	}
+	
+	private void removeState(InputState state)
+	{
+		for (Entity entity : getEntities())
+		{
+			for (Iterator<InputState> it = Mappers.inputs.get(entity).states.iterator(); it.hasNext();)
+			{
+				InputState inputState = it.next();
+				
+				if (inputState.getClass() == state.getClass()) // Compare equality by class (All MoveUpStates should be inherently equal)
+				{
+					it.remove();
+					return;
+				}
+			}
 		}
 	}
 
@@ -38,24 +80,20 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 				switch (keycode) 
 				{            
 					case Input.Keys.UP:
-						player.setMovement(MovementComponent.Movement.Vertical);
-						player.move(MapObjectComponent.Direction.Up);
+						addState(new MoveUpState());
 						break;
 					case Input.Keys.DOWN:
-						player.setMovement(MovementComponent.Movement.Vertical);
-						player.move(MapObjectComponent.Direction.Down);
+						addState(new MoveDownState());
 						break;
 					case Input.Keys.LEFT:
-						player.setMovement(MovementComponent.Movement.Horizontal);
-						player.move(MapObjectComponent.Direction.Left);
+						addState(new MoveLeftState());
 						break;
 					case Input.Keys.RIGHT:
-						player.setMovement(MovementComponent.Movement.Horizontal);
-						player.move(MapObjectComponent.Direction.Right);
+						addState(new MoveRightState());
 						break;
 					case Input.Keys.SPACE:
-						screen.getEngine().checkDialogue(player);
-						screen.getEngine().checkItems(player);
+						addCommand(new PickupItemCommand());
+						addCommand(new NPCTalkCommand());
 						break;
                     case Input.Keys.ESCAPE:
                         screen.getInventoryManager().showInventory();
@@ -64,10 +102,10 @@ public class InputSystem extends IteratingSystem implements InputProcessor
                         screen.getQuestManager().showQuests();
                         break;
 					case Input.Keys.S:
-						System.out.println(player.getPosition());
+						addCommand(new PrintPosCommand());
 						break;
 					case Input.Keys.A:
-						player.attack();
+						addCommand(new PlayerAttackCommand());
 						break;
 				}
 				break;
@@ -107,19 +145,45 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 				break;
 		}
 		
-		if (!Gdx.input.isKeyPressed(Input.Keys.UP) && !Gdx.input.isKeyPressed(Input.Keys.DOWN) && 
-			!Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.LEFT))
-		{
-			player.stop();
-			player.setMovement(MovementComponent.Movement.None);
-		}
-		
+//		if (!Gdx.input.isKeyPressed(Input.Keys.UP) && !Gdx.input.isKeyPressed(Input.Keys.DOWN) && 
+//			!Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.LEFT))
+//		{
+//			player.stop();
+//			player.setMovement(MovementComponent.Movement.None);
+//		}
+//		
 		return false;
 	}
 
 	@Override
 	public boolean keyUp(int keycode)
 	{
+		switch (screen.getState())
+		{
+			case Playing:
+				switch (keycode) {
+					case Input.Keys.UP:
+						removeState(new MoveUpState());
+						break;
+					case Input.Keys.DOWN:
+						removeState(new MoveDownState());
+						break;
+					case Input.Keys.LEFT:
+						removeState(new MoveLeftState());
+						break;
+					case Input.Keys.RIGHT:
+						removeState(new MoveRightState());
+						break;
+				}
+				break;
+				
+			case Dialogue:
+				switch(keycode)
+				{
+					
+				}
+				break;
+		}
 		return false;
 	}
 
@@ -157,54 +221,5 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 	public boolean scrolled(int amount)
 	{
 		return false;
-	}
-	
-	public interface InputCommand
-	{
-		public void apply(Entity entity);
-	}
-	
-	public class MoveUpInput implements InputCommand
-	{
-		@Override
-		public void apply(Entity entity)
-		{
-			if (!Mappers.movements.has(entity)) return;
-			
-			Mappers.movements.get(entity).direction = Direction.Up;
-		}
-	}
-	
-	public class MoveDownInput implements InputCommand
-	{
-		@Override
-		public void apply(Entity entity)
-		{
-			if (!Mappers.movements.has(entity)) return;
-			
-			Mappers.movements.get(entity).direction = Direction.Down;
-		}
-	}
-	
-	public class MoveLeftInput implements InputCommand
-	{
-		@Override
-		public void apply(Entity entity)
-		{
-			if (!Mappers.movements.has(entity)) return;
-			
-			Mappers.movements.get(entity).direction = Direction.Left;
-		}
-	}
-	
-	public class MoveRightInput implements InputCommand
-	{
-		@Override
-		public void apply(Entity entity)
-		{
-			if (!Mappers.movements.has(entity)) return;
-			
-			Mappers.movements.get(entity).direction = Direction.Right;
-		}
 	}
 }

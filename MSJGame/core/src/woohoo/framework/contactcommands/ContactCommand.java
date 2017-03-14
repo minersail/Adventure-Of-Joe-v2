@@ -2,6 +2,15 @@ package woohoo.framework.contactcommands;
 
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 
+/**
+ * Class that takes two ContactData and uses their owner reference to manipulate two
+ * entities that collide
+ * 
+ * ContactCommands are owned by the ContactSystem, and are
+ * 1. General - Fire destroying item occurs between any two fire and items
+ * 2. Global - Code destroying item is not attached to a specific entity
+ * @author jordan
+ */
 public abstract class ContactCommand
 {
 	public ContactType type1;

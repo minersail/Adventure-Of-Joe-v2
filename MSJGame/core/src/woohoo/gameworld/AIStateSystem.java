@@ -3,20 +3,48 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.PositionComponent;
+import woohoo.screens.PlayingScreen;
 
 public class AIStateSystem extends IteratingSystem
 {
-	public AIStateSystem()
+	PlayingScreen screen;
+	
+	public AIStateSystem(PlayingScreen scr)
 	{
-		super(Family.all(MapObjectComponent.class, PositionComponent.class, AIComponent.class).get());
+		super(Family.all(MovementComponent.class, PositionComponent.class, AIComponent.class).get());
+		
+		screen = scr;
+	}
+	
+	public void initialize(int area)
+	{
+		FileHandle handle = Gdx.files.local("data/pathfinding.xml");
+        
+        XmlReader xml = new XmlReader();
+        Element root = xml.parse(handle.readString());    
+		Element data = root.getChild(area);
+		
+		for (Entity entity : getEntities())
+		{
+			AIComponent brain = Mappers.ai.get(entity);
+			brain.initializePathfinding(screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap(), screen.getWorld(), data);
+		}
 	}
 
 	@Override
 	protected void processEntity(Entity entity, float deltaTime)
 	{
+		MovementComponent movement = Mappers.movements.get(entity);
+		PositionComponent position = Mappers.positions.get(entity);
+		AIComponent brain = Mappers.ai.get(entity);
 		
+		movement.direction = brain.state.getDirection(brain, position);
 	}
 }

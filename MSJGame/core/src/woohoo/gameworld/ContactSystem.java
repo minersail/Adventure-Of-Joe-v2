@@ -58,7 +58,7 @@ public class ContactSystem extends IteratingSystem
 		
 		for (ContactDataPair pair : collisions) // Iterate through all collisions in world
 		{
-			for (ContactCommand command : commands) // If the collision
+			for (ContactCommand command : commands) // Iterate through all loaded ContactCommands
 			{
 				if (command.verify(pair.A(), pair.B()))
 					command.activate(pair.A(), pair.B());

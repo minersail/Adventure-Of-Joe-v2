@@ -1,11 +1,13 @@
-package woohoo.framework;
+package woohoo.gameworld;
 
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
-import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.events.AIEvent;
 import woohoo.framework.events.AttributeXMLEvent;
 import woohoo.framework.events.CutsceneEvent;
@@ -15,34 +17,37 @@ import woohoo.framework.events.EventListener;
 import woohoo.framework.events.EventTrigger;
 import woohoo.framework.events.MoveTrigger;
 import woohoo.framework.events.QuestEvent;
+import woohoo.gameobjects.components.EventListenerComponent;
 import woohoo.screens.PlayingScreen;
 
-public class EventManager
+public class EventSystem extends IteratingSystem
 {
 	PlayingScreen screen;
 	
-	public EventManager(PlayingScreen scr)
+	public EventSystem(PlayingScreen scr)
 	{
+		super(Family.all(EventListenerComponent.class).get());
+		
 		screen = scr;
 	}
 	
-	public void createEvents(int area)
+	public void initialize(int area)
 	{
 		FileHandle handle = Gdx.files.local("data/events.xml");
         
         XmlReader xml = new XmlReader();
-        Element root = xml.parse(handle.readString());       
-        Element eventListeners = root.getChild(area);        
+        XmlReader.Element root = xml.parse(handle.readString());       
+        XmlReader.Element eventListeners = root.getChild(area);        
         
-        for (Element eventListener : eventListeners.getChildrenByName("eventlistener"))
+        for (XmlReader.Element eventListener : eventListeners.getChildrenByName("eventlistener"))
         {		
 			if (eventListener.get("state").equals("disabled")) continue;
 			
 			EventTrigger trigger;
 			Event event;
 			
-			Element triggerEl = eventListener.getChildByName("trigger");
-			Array<Element> eventEls = eventListener.getChildrenByName("event");
+			XmlReader.Element triggerEl = eventListener.getChildByName("trigger");
+			Array<XmlReader.Element> eventEls = eventListener.getChildrenByName("event");
 			
 			// Create event trigger
 			switch (triggerEl.get("type").toLowerCase())
@@ -61,7 +66,7 @@ public class EventManager
 			EventListener EL = new EventListener(eventListener.get("state"), eventListener.getInt("id"), area, trigger);
 			
 			// Create events to be activated by the event trigger
-			for (final Element eventEl : eventEls)
+			for (final XmlReader.Element eventEl : eventEls)
 			{				
 				switch (eventEl.get("type").toLowerCase())
 				{
@@ -91,7 +96,7 @@ public class EventManager
 			// Combine the event trigger and events and allocate them to the correct place
 			if (eventListener.get("owner").equals("entity"))
 			{
-				screen.getEngine().getEntity(eventListener.get("entity")).getListeners().addListener(EL);
+				Mappers.eventListeners.get(screen.getEngine().getEntity(eventListener.get("entity"))).listeners.addListener(EL);
 			}
 			else if (eventListener.get("owner").equals("system"))
 			{
@@ -103,5 +108,11 @@ public class EventManager
 				}					
 			}
 		}
+	}
+
+	@Override
+	protected void processEntity(Entity entity, float deltaTime)
+	{
+		Mappers.eventListeners.get(entity).listeners.notifyAll(entity);
 	}
 }

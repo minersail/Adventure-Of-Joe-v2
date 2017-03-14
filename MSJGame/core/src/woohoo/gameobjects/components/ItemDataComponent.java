@@ -37,7 +37,6 @@ public class ItemDataComponent implements Component
     
     public ItemType type;
     public ObjectMap metaData;
-	public boolean playerTouched; // Whether or not the player can pick up the item
     
     public ItemDataComponent(ObjectMap element)
     {
