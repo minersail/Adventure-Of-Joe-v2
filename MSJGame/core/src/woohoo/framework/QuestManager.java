@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.quests.Quest;
 import woohoo.framework.quests.Quest.QuestState;
+import woohoo.gameworld.Mappers;
 import woohoo.screens.PlayingScreen;
 
 public class QuestManager
@@ -50,7 +51,7 @@ public class QuestManager
 			Quest quest = new Quest(questEl.getInt("id"), questEl.get("description"), screen.getAssets().get("ui/quests/" + questEl.get("type") + "quest.png", Texture.class));
 			
 			quest.setState(QuestState.Current);
-			quest.getIndicator().setPosition(questEl.getInt("locX"), questEl.getInt("locY"));
+			Mappers.positions.get(quest.getIndicator()).position.set(questEl.getFloat("locX"), questEl.getFloat("locY"));
 			
 			QuestUI line = new QuestUI(quest, skin);
 			quests.put(quest.getID(), line);
@@ -74,7 +75,7 @@ public class QuestManager
 	
 	public void startQuest(int id)
 	{
-		screen.addEntity(quests.get(id).getQuest().getIndicator());
+		screen.getEngine().addEntity(quests.get(id).getQuest().getIndicator());
 		screen.getAlertManager().alert("quest", quests.get(id).getQuest().getDescription());
 		
 		quests.get(id).setQuestIcon("current");
@@ -82,7 +83,7 @@ public class QuestManager
 	
 	public void endQuest(int id)
 	{
-		screen.removeEntity(quests.get(id).getQuest().getIndicator());
+		screen.getEngine().removeEntity(quests.get(id).getQuest().getIndicator());
 		
 		quests.get(id).setQuestIcon("completed");
 	}

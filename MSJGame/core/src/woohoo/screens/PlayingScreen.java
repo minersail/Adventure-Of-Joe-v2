@@ -1,6 +1,5 @@
 package woohoo.screens;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -21,16 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.ai.AIDebugger;
 import woohoo.framework.*;
-import woohoo.gameobjects.Item;
-import woohoo.gameobjects.NPC;
-import woohoo.gameobjects.Character;
-import woohoo.gameobjects.Enemy;
-import woohoo.gameobjects.QuestIndicator;
-import woohoo.gameobjects.components.MovementComponent;
-import woohoo.gameobjects.components.HealthBarComponent;
-import woohoo.gameobjects.components.InventoryComponent;
-import woohoo.gameobjects.components.LOSComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameworld.*;
 import woohoo.msjgame.MSJGame;
 
@@ -55,18 +43,12 @@ public class PlayingScreen implements Screen
 	final private EntityLoader entityLoader;
 	final private AlertManager alerts;
 	final private QuestManager quests;
-	final private AIManager aiManager;
     final private CutsceneManager cutscenes;
-	final private EventManager events;
     final private InventoryManager inventoryManager;
-	final private ContactManager contacts;
-    final private GateManager gates;
 	final private IDManager idManager;
     final private DialogueManager dialogueManager;
 	final private AssetManager assets;
-	final private InputHandler input;
 	final private HexMapLoader mapLoader;
-	final private GameRenderer renderer;
 	final private GameEngine engine;
 	final private World world;
 	final private Stage ui;
@@ -110,10 +92,6 @@ public class PlayingScreen implements Screen
 		
 		// Create physics
 		world = new World(new Vector2(0, 0), true);	
-		contacts = new ContactManager();
-        
-        // Create gate sensors
-        gates = new GateManager(this);    
 		
 		// Create user interface
 		ui = new Stage();
@@ -125,10 +103,8 @@ public class PlayingScreen implements Screen
 		TiledMap map = mapLoader.load(currentArea);
 		
 		// Draw and update every frame
-		renderer = new GameRenderer(map, 1.0f / WORLD_WIDTH);
 		engine = new GameEngine(this);
 		entityLoader = new EntityLoader(this);
-		engine.loadPlayer();
 		
 		// Create dialogue
 		dialogueManager = new DialogueManager(this, assets.get("ui/uiskin.json", Skin.class));
@@ -136,62 +112,61 @@ public class PlayingScreen implements Screen
 		
 		// Initialize quests
 		quests = new QuestManager(this, assets.get("ui/uiskin.json", Skin.class));
-        
-		
-		aiManager = new AIManager(this);
-		
-		// Create event manager
-		events = new EventManager(this);
-		
 		alerts = new AlertManager(this, assets.get("ui/uiskin.json", Skin.class));
-		
-		// Initialize input
-		input = new InputHandler(this);
 		
 		//--------------------------------------------------------------------------
 		AIStateSystem aiSystem = new AIStateSystem(this);
 		AnimationSystem animationSystem = new AnimationSystem();
 		ContactSystem contactSystem = new ContactSystem(world);
+		DamageSystem damageSystem = new DamageSystem();
 		EventSystem eventSystem = new EventSystem(this);
 		GateSystem gateSystem = new GateSystem(this);
 		InputSystem inputSystem = new InputSystem(this);
 		ItemSystem itemSystem = new ItemSystem();
+		LineOfSightSystem losSystem = new LineOfSightSystem();
 		MovementSystem movementSystem = new MovementSystem();
 		RenderSystem renderSystem = new RenderSystem(map, 1.0f / WORLD_WIDTH);
+		renderSystem.getRenderer().setView(cam);
+		WeaponSystem weaponSystem = new WeaponSystem();
 		
 		inputSystem.priority = 0;
 		eventSystem.priority = 1;
 		aiSystem.priority = 2;
-		contactSystem.priority = 3;
-		itemSystem.priority = 4;
-		movementSystem.priority = 5;
-		gateSystem.priority = 6;
-		animationSystem.priority = 7;
-		renderSystem.priority = 8;
+		weaponSystem.priority = 3;
+		damageSystem.priority = 4;
+		losSystem.priority = 5;
+		contactSystem.priority = 6;
+		itemSystem.priority = 7;
+		movementSystem.priority = 8;
+		gateSystem.priority = 9;
+		animationSystem.priority = 10;
+		renderSystem.priority = 11;
 		
 		engine.addSystem(aiSystem);
 		engine.addSystem(animationSystem);
 		engine.addSystem(contactSystem);
+		engine.addSystem(damageSystem);
 		engine.addSystem(eventSystem);
 		engine.addSystem(gateSystem);
 		engine.addSystem(inputSystem);
 		engine.addSystem(itemSystem);
+		engine.addSystem(losSystem);
 		engine.addSystem(movementSystem);
 		engine.addSystem(renderSystem);
+		engine.addSystem(weaponSystem);
+		
+		state = GameState.Playing;
 	}
 
     public void initialize(int gameArea)
     {    
+		entityLoader.loadPlayer();
 		entityLoader.loadEntities(gameArea);
 		engine.getSystem(GateSystem.class).initialize(gameArea);
-		engine.getSystem(AIStateSystem.class).initialize(gameArea, engine.getSystem(RenderSystem.class).getRenderer().getMap(), world);
-		//--------------------------------------------
-        gates.createGates(gameArea);
-		entityLoader.loadEntities(gameArea);
-		aiManager.initializePathfinding(gameArea);
-		events.createEvents(gameArea);
-		
-		state = GameState.Playing;
+		engine.getSystem(AIStateSystem.class).initialize(gameArea);
+		engine.getSystem(EventSystem.class).initialize(gameArea);
+		engine.getSystem(RenderSystem.class).initialize();
+		engine.getSystem(MovementSystem.class).initialize();
     }
 
     @Override
@@ -201,13 +176,12 @@ public class PlayingScreen implements Screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);	
 		cam.update();
 		runTime += delta;
+		engine.update(delta);
 		
 		switch (state)
 		{
 			case Playing:			
-				engine.update(delta);
 				world.step(delta, 6, 2);
-                gates.updateArea();
 				ui.act();
 				break;
 				
@@ -229,8 +203,6 @@ public class PlayingScreen implements Screen
 		}
 		
 		alerts.act(delta);
-		renderer.setView(cam);
-		renderer.render();
 		//aiDebugger.renderLineOfSight(engine.getEntity("player"), cam);
 		debugRenderer.render(world, cam.combined);
 		ui.draw();
@@ -259,86 +231,10 @@ public class PlayingScreen implements Screen
 				assets.load(handle.path(), Skin.class, new SkinParameter(handle.pathWithoutExtension() + ".atlas"));
 		}
 	}
-	
-	/*
-	Add an entity into the game world
-	
-	Initializes everything necessary for an entity to function
-	
-	Can be used in conjuction with removeEntity() to repeatedly add and remove the same entity
-	*/
-	public void addEntity(Entity entity)
-	{		
-		MapObjects entities = renderer.getMap().getLayers().get("Entities").getObjects();
-		MapObjects items = renderer.getMap().getLayers().get("Items").getObjects();
-		
-		if (entity instanceof Character)
-		{
-			entity.getComponent(MapObjectComponent.class).addTo(entities);
-			entity.getComponent(HealthBarComponent.class).addTo(entities).initializeHealthBar(assets.get("ui/healthbar.pack", TextureAtlas.class));
-			entity.getComponent(MovementComponent.class).createMass(world);
-			entity.getComponent(LOSComponent.class).createMass(world);
-			inventoryManager.loadInventory(entity.getComponent(InventoryComponent.class));
-			
-			if (entity instanceof Enemy)
-			{
-				entity.getComponent(SensorComponent.class).initializeCommand(contacts, world).createMass(world);
-			}
-			else if (entity instanceof NPC)
-			{
-				entity.getComponent(MovementComponent.class).setImmovable(true);
-			}
-		}
-		else if (entity instanceof Item)
-		{
-			entity.getComponent(MapObjectComponent.class).addTo(items);
-			entity.getComponent(SensorComponent.class).initializeCommand(contacts, world).createMass(world);
-		}
-		else if (entity instanceof QuestIndicator)
-		{
-			entity.getComponent(MapObjectComponent.class).addTo(items);
-		}
-		
-		engine.addEntity(entity);
-	}
-	
-	/*
-	Remove an entity from the game world
-	*/
-	public void removeEntity(Entity entity)
-	{	
-		MapObjects entities = renderer.getMap().getLayers().get("Entities").getObjects();
-		MapObjects items = renderer.getMap().getLayers().get("Items").getObjects();
-		
-		if (entity instanceof Character)
-		{
-			entity.getComponent(MapObjectComponent.class).removeFrom(entities);
-			entity.getComponent(HealthBarComponent.class).removeFrom(entities);
-			entity.getComponent(MovementComponent.class).removeMass();
-			entity.getComponent(LOSComponent.class).removeMass();
-			
-			if (entity instanceof Enemy)
-			{
-				entity.getComponent(SensorComponent.class).removeMass();
-			}
-		}
-		else if (entity instanceof Item)
-		{
-			entity.getComponent(MapObjectComponent.class).removeFrom(items);
-			entity.getComponent(SensorComponent.class).removeMass();
-		}
-		else if (entity instanceof QuestIndicator)
-		{
-			entity.getComponent(MapObjectComponent.class).removeFrom(items);
-		}
-		
-		engine.removeEntity(entity);
-	}
-    
+		    
 	public void setState(GameState s)
 	{
 		state = s;
-		if (state == GameState.Dialogue) engine.stopAll();
 	}
 	
 	public void setArea(int area)
@@ -378,11 +274,6 @@ public class PlayingScreen implements Screen
         return world;
     }
     
-    public InputHandler getInput()
-    {
-        return input;
-    }
-    
     public AssetManager getAssets()
     {
         return assets;
@@ -395,7 +286,7 @@ public class PlayingScreen implements Screen
     
     public GameRenderer getRenderer()
     {
-        return renderer;
+        return engine.getSystem(RenderSystem.class).getRenderer();
     }
     
     public Stage getUI()
@@ -412,30 +303,15 @@ public class PlayingScreen implements Screen
 	{
 		return idManager;
 	}
-	
-	public ContactManager getContactManager()
-	{
-		return contacts;
-	}
     
     public InventoryManager getInventoryManager()
     {
         return inventoryManager;
     }
 	
-	public EventManager getEventManager()
-	{
-		return events;
-	}
-	
 	public CutsceneManager getCutsceneManager()
 	{
 		return cutscenes;
-	}
-	
-	public AIManager getAIManager()
-	{
-		return aiManager;
 	}
 	
 	public QuestManager getQuestManager()

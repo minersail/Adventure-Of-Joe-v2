@@ -1,3 +1,5 @@
+// DEPRECATED
+
 //package woohoo.gameobjects;
 //
 //import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -71,17 +73,17 @@
 //		inventory.update(delta);
 //        healthBar.update(delta, collision.getPosition());
 //		brain.update(delta, collision.getPosition());
-		lineOfSight.update(delta);
-		lineOfSight.setPosition(collision.getPosition().x, collision.getPosition().y);
-		lineOfSight.rotate(mapObject.getDirection());
-		
-		collision.setImmovable(brain.getAIMode() == AIMode.Stay);
-		
-		if (brain.getAIMode() != AIMode.Input)
-		{
-			stop();
-			move(brain.calculateDirection(collision.getPosition()));
-		}				
+//		lineOfSight.update(delta);
+//		lineOfSight.setPosition(collision.getPosition().x, collision.getPosition().y);
+//		lineOfSight.rotate(mapObject.getDirection());
+//		
+//		collision.setImmovable(brain.getAIMode() == AIMode.Stay);
+//		
+//		if (brain.getAIMode() != AIMode.Input)
+//		{
+//			stop();
+//			move(brain.calculateDirection(collision.getPosition()));
+//		}				
 //		
 //		if (collision.isStopped() && mapObject.getAnimationState() == AnimationState.Walking)
 //        {
@@ -235,17 +237,17 @@
 //		}
 //		return false;
 //	}
+//
+//	public void changeMaxHealth(float newMax)
+//	{
+//		healthBar.changeMax(newMax);
+//	}
+//    
+//    public void applyDamage(int damage)
+//    {
+//        healthBar.damage(damage);
+//    }
 //	
-	public void changeMaxHealth(float newMax)
-	{
-		healthBar.changeMax(newMax);
-	}
-    
-    public void applyDamage(int damage)
-    {
-        healthBar.damage(damage);
-    }
-	
 //	public void setAIMode(AIMode mode)
 //	{
 //		brain.setAIMode(mode);
@@ -277,12 +279,12 @@
 //	{
 //		brain.setTimeStep(time);
 //	}
-    
-    public void die()
-    {
-        mapObject.setAnimationState(AnimationState.Death);
-        dead = true;
-    }
+//    
+//    public void die()
+//    {
+//        mapObject.setAnimationState(AnimationState.Death);
+//        dead = true;
+//    }
 //	
 //	/**
 //	 * Sets a position for the character to start moving towards
@@ -303,4 +305,4 @@
 //		brain.setTargetCharacter(collision.getPosition(), character);
 //		brain.setAIMode(AIMode.Follow);
 //	}
-}
+//}

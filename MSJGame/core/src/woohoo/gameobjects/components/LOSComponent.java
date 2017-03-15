@@ -8,8 +8,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import woohoo.framework.contactcommands.ContactData;
-import woohoo.gameobjects.components.MapObjectComponent.Direction;
+import woohoo.gameobjects.components.PositionComponent.Orientation;
 
 public class LOSComponent implements Component
 {
@@ -21,7 +20,6 @@ public class LOSComponent implements Component
 		BodyDef bodyDef = new BodyDef();
 		mass = world.createBody(bodyDef);
         mass.setType(BodyDef.BodyType.DynamicBody);
-		mass.setUserData(new ContactData());
 		
 		PolygonShape shape = new PolygonShape();
 		float LOSradius = 5;
@@ -49,20 +47,20 @@ public class LOSComponent implements Component
         fixture.setRestitution(0);
     }
 	
-	public void rotate(Direction direction)
+	public void rotate(Orientation direction)
 	{
 		switch(direction)
 		{
-			case Up:
+			case North:
 				mass.setTransform(mass.getPosition(), 3 * (float)Math.PI / 2);
 				break;
-			case Down:
+			case South:
 				mass.setTransform(mass.getPosition(), (float)Math.PI / 2);
 				break;
-			case Left:
+			case West:
 				mass.setTransform(mass.getPosition(), (float)Math.PI);
 				break;
-			case Right:
+			case East:
 				mass.setTransform(mass.getPosition(), 0);
 				break;
 		}

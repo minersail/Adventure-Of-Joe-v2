@@ -92,8 +92,8 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 						addState(new MoveRightState());
 						break;
 					case Input.Keys.SPACE:
-						addCommand(new PickupItemCommand());
-						addCommand(new NPCTalkCommand());
+						addCommand(new PickupItemCommand(screen.getInventoryManager(), screen.getEngine()));
+						addCommand(new NPCTalkCommand(screen.getDialogueManager(), screen.getEngine()));
 						break;
                     case Input.Keys.ESCAPE:
                         screen.getInventoryManager().showInventory();
@@ -138,7 +138,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 				switch(keycode)
 				{
 					case Input.Keys.NUM_0: // Debug get rid of later
-						screen.getEngine().getPlayer().setAIMode(AIComponent.AIMode.Input);
+						screen.getEngine().getPlayer().remove(AIComponent.class);
 						screen.setState(PlayingScreen.GameState.Playing);
 						break;
 				}

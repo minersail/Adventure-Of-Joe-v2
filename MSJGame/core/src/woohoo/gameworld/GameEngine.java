@@ -3,12 +3,8 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
-import woohoo.gameobjects.Item;
-import woohoo.gameobjects.NPC;
-import woohoo.gameobjects.Player;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.screens.PlayingScreen;
 
@@ -45,15 +41,6 @@ public class GameEngine extends Engine
 	{
 		super.addEntity(entity);
 	}
-	
-	public void loadPlayer()
-	{
-		Player player = new Player(screen.getAssets().get("images/entities/youngjoe.pack", TextureAtlas.class));
-		screen.addEntity(player);
-		player.setPosition(1, 5);
-		player.setName("player");
-		screen.getInventoryManager().fillInventory(player);	
-	}
 	    
     public Entity getPlayer()
     {
@@ -77,51 +64,6 @@ public class GameEngine extends Engine
 		
         Gdx.app.log("ERROR", "Entity does not exist in GameWorld");
         return null;
-	}
-    
-    public ArrayList<NPC> getNPCs()
-    {
-        ArrayList<NPC> npcs = new ArrayList<>();
-        
-        for (Entity entity : getEntities())
-        {
-            if (entity instanceof NPC)
-                npcs.add((NPC)entity);
-        }
-        return npcs;
-    }
-	
-	/*
-	Check to see if the player is facing an NPC
-	*/
-	public boolean checkDialogue(Player player)
-	{
-		for (NPC npc : getNPCs())
-        {
-            if (player.isFacing(npc) && player.distanceTo(npc) < 1.1)
-            {                
-                screen.getDialogueManager().startDialogue(npc.getComponent(DialogueComponent.class));
-				return true;
-            }
-        }
-		
-		return false;
-	}
-	
-	public void checkItems(Entity player)
-	{
-		for (Entity entity : getEntities())
-		{
-			if (entity instanceof Item)
-			{
-				Item item = (Item)entity;
-				if (item.getComponent(SensorComponent.class).hasContact())
-				{
-					screen.getInventoryManager().addItem(player, item);					
-					screen.removeEntity(item);					
-				}
-			}
-		}
 	}
 	
 	/*

@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.contactcommands.ContactData;
-import woohoo.gameobjects.components.ContactComponent;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.GateComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
@@ -31,7 +30,7 @@ public class GateSystem extends IteratingSystem
 	public GateSystem(PlayingScreen scr)
 	{
 		super(Family.all(GateComponent.class, PositionComponent.class).get());
-		scr = screen;
+		screen = scr;
 	}
 	
 	/**
@@ -68,7 +67,7 @@ public class GateSystem extends IteratingSystem
 			for (Entity entity : getEntities())
 			{
 				GateComponent gate = Mappers.gates.get(entity);
-				if (gate.gateID == gateElement.getInt("id"))
+				if (gate.gateID == gateElement.getInt("id")) // Link the existing GateComponents to Box2D bodies
 				{
 					gate.size = new Vector2(gateElement.getFloat("sizeX"), gateElement.getFloat("sizeY"));
 					gate.position = new Vector2(gateElement.getFloat("destX") + 0.5f, gateElement.getFloat("destY") + gate.getPlayerOffset().y + 0.5f);
@@ -116,7 +115,7 @@ public class GateSystem extends IteratingSystem
 		{
 			if (entity != screen.getEngine().getPlayer())
 			{
-				screen.removeEntity(entity);
+				screen.getEngine().removeEntity(entity);
 			}
 		}
 		
@@ -132,9 +131,8 @@ public class GateSystem extends IteratingSystem
 		// Move the player to the entrance of the new map based on where he exited previous map (Took forever to figure out)
         Mappers.positions.get(screen.getEngine().getPlayer()).position.set(triggeredGate.playerPos);
 		
-		screen.getEntityLoader().loadEntities(triggeredGate.destArea);
-		screen.getEventManager().createEvents(triggeredGate.destArea);
-		screen.getAIManager().initializePathfinding(triggeredGate.destArea);
+		// Load all entities, gates, events, pathfinding, etc. for new game area
+		screen.initialize(triggeredGate.destArea);
 		
 		// There's one frame where new map is not quite loaded, so skip the frame. Nobody will even notice
 		screen.getRenderer().skipFrame();

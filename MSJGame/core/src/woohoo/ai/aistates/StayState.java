@@ -13,6 +13,6 @@ public class StayState implements AIState
 	@Override
 	public Direction getDirection(AIComponent ai, PositionComponent pos)
 	{
-		return null;
+		return Direction.None;
 	}
 }

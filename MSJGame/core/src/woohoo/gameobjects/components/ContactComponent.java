@@ -1,35 +1,50 @@
 package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.utils.Array;
-import woohoo.framework.contactcommands.ContactData;
 
 /**
- * Keeps reference to all ContactDatas for entire entity;
  * @author jordan
  */
 public class ContactComponent implements Component
 {
 	public enum ContactType
 	{
-		Player(0x0),
-		Wall(0x1),
-		Gate(0x1 << 1),
-		Item(0x1 << 2),
-		NPC(0x1 << 3),
-		Weapon(0x1 << 4),
-		Enemy(0x1 << 5);
+		Player("player"),
+		Wall("wall"),
+		Gate("gate"),
+		Item("item"),
+		NPC("npc"),
+		Weapon("weapon"),
+		Enemy("enemy"),
+		SightLine("sightline");
 		
-		private final int category;
+		private String text;
 		
-		ContactType(int categoryBit)
+		ContactType(String str)
 		{
-			category = categoryBit;
+			text = str;
+		}
+		
+		public String text()
+		{
+			return text;
+		}
+		
+		public static ContactType fromString(String str) 
+		{
+			for (ContactType b : ContactType.values()) 
+			{
+				if (b.text.equalsIgnoreCase(str))
+				{
+					return b;
+				}
+			}
+			throw new IllegalArgumentException("No Orientation with text " + str + " found.");
 		}
 		
 		public int bits()
 		{
-			return category;
+			return 0x0 << this.ordinal();
 		}
 		
 		public int mask()
@@ -42,6 +57,4 @@ public class ContactComponent implements Component
 			return 0;
 		}
 	}
-	
-	public Array<ContactData> entityContacts;
 }

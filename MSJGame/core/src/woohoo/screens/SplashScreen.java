@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import woohoo.gameworld.InputSystem;
 import woohoo.msjgame.MSJGame;
 
 public class SplashScreen implements Screen, InputProcessor
@@ -50,11 +51,11 @@ public class SplashScreen implements Screen, InputProcessor
 	
 	public void switchToPlay()
 	{		
-        Gdx.input.setInputProcessor(new InputMultiplexer(game.getPlayingScreen().getUI(), game.getPlayingScreen().getInput()));
+        Gdx.input.setInputProcessor(new InputMultiplexer(game.getPlayingScreen().getUI(), game.getPlayingScreen().getEngine().getSystem(InputSystem.class)));
 		game.getPlayingScreen().getRenderer().startFade(Color.BLACK);
 		game.getPlayingScreen().resetData();
 		game.setScreen(game.getPlayingScreen());
-		game.getPlayingScreen().initialize();
+		game.getPlayingScreen().initialize(0);
 	}
 	
 	@Override

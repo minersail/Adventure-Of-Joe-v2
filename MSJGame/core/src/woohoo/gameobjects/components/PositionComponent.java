@@ -42,7 +42,12 @@ public class PositionComponent implements Component
 	
 	public PositionComponent()
 	{
-		position = new Vector2(0, 0);
+		this(0, 0);
+	}
+	
+	public PositionComponent(float startX, float startY)
+	{
+		position = new Vector2(startX, startY);
 		orientation = Orientation.South;
 	}
 }

@@ -5,7 +5,6 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
-import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 
@@ -57,7 +56,7 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 	@Override
 	public void render()
 	{
-		if (fade != null && !fade.equals(Color.WHITE))
+		if (fade != null && !fade.equals(Color.WHITE)) // Fade to normal
 		{
 			super.getBatch().setColor(fade);
 			fade.add(fadeSpeed, fadeSpeed, fadeSpeed, 0);

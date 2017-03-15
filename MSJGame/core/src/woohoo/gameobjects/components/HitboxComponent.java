@@ -1,7 +1,6 @@
 package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -9,16 +8,21 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.framework.contactcommands.ContactData;
+import woohoo.gameobjects.components.ContactComponent.ContactType;
 
 public class HitboxComponent implements Component
 {	
 	public Body mass;
 	public Fixture fixture;	
-	public boolean isActive;
+	public ContactType hitboxType;
 	
-	public HitboxComponent(World world, boolean enableCollision)
+	public HitboxComponent(World world, boolean enableCollision, ContactType type)
 	{		
+		hitboxType = type;
+		
         BodyDef bodyDef = new BodyDef();
+		bodyDef.position.x = 5;
+		bodyDef.position.y = 1;
 		mass = world.createBody(bodyDef);
         mass.setType(BodyDef.BodyType.DynamicBody);
 		
@@ -33,13 +37,6 @@ public class HitboxComponent implements Component
         fixture.setDensity(100f);
         fixture.setFriction(0);
         fixture.setRestitution(0);
-		
-		isActive = true;
-	}
-	
-	public void applyImpulse(float x, float y)
-	{
-		mass.applyLinearImpulse(new Vector2(x, y), mass.getLocalCenter(), true);
 	}
 	
 	public ContactData getContactData()

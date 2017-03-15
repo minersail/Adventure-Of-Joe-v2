@@ -39,6 +39,8 @@ public class AnimationSystem extends IteratingSystem
 		{
 			animated.animString = position.orientation.text() + "_" + animated.animState.text();	
 		}
+		
+		animated.animationTime += deltaTime;
 	}
 	
 	public boolean isFacing(Entity current, Entity target)

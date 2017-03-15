@@ -5,9 +5,12 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
+import woohoo.ai.aistates.StayState;
 import woohoo.gameobjects.components.AIComponent;
+import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.PositionComponent;
 import woohoo.screens.PlayingScreen;
@@ -46,5 +49,12 @@ public class AIStateSystem extends IteratingSystem
 		AIComponent brain = Mappers.ai.get(entity);
 		
 		movement.direction = brain.state.getDirection(brain, position);
+		
+		if (Mappers.hitboxes.has(entity))
+		{
+			HitboxComponent hitbox = Mappers.hitboxes.get(entity);
+			
+			hitbox.mass.setType(brain.state instanceof StayState ? BodyType.StaticBody : BodyType.DynamicBody); // Still entities will not be pushable
+		}
 	}
 }

@@ -2,7 +2,6 @@ package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 
 public class MovementComponent implements Component
 {		
@@ -53,11 +52,16 @@ public class MovementComponent implements Component
 	public Direction direction;
 	public float speed;
 	
-	public MovementComponent(World world)
+	public MovementComponent()
+	{
+		this(1);
+	}
+	
+	public MovementComponent(float entitySpeed)
 	{
 		direction = Direction.None;
 		velocity = new Vector2(0, 0);
-		speed = 1;
+		speed = entitySpeed;
 	}
 	
 	public boolean isStopped(float tolerance)

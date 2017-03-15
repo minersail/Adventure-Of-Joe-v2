@@ -11,6 +11,6 @@ public class MoveRightState implements InputState
 	{
 		if (!Mappers.movements.has(entity)) return;
 
-		Mappers.movements.get(entity).direction = MovementComponent.Direction.Up;
+		Mappers.movements.get(entity).direction = MovementComponent.Direction.Right;
 	}
 }

@@ -1,12 +1,12 @@
 package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Entity;
 import java.util.ArrayList;
-import woohoo.gameobjects.Item;
 
 public class InventoryComponent implements Component
 {
-	private ArrayList<Item> items;
+	private ArrayList<Entity> items;
 	
 	public InventoryComponent()
 	{
@@ -17,17 +17,17 @@ public class InventoryComponent implements Component
 	{
 	}
 	
-	public void addItem(Item item)
+	public void addItem(Entity item)
 	{
 		items.add(item);
 	}
 	
-	public void removeItem(Item item)
+	public void removeItem(Entity item)
 	{
 		items.remove(item);
 	}
 	
-	public ArrayList<Item> getItems()
+	public ArrayList<Entity> getItems()
 	{
 		return items;
 	}

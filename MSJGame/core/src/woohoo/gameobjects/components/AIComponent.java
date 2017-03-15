@@ -6,50 +6,17 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
 import woohoo.ai.AIHeuristic;
 import woohoo.ai.AIMap;
 import woohoo.ai.Node;
-import woohoo.ai.aistates.AIState;
+import woohoo.ai.aistates.*;
 import woohoo.gameobjects.components.MovementComponent.Direction;
 
 public class AIComponent implements Component
 {
-	public enum AIMode
-	{
-		Follow("follow"), 
-		Stay("stay"), 
-		MoveTo("moveto"), 
-		Input("input"), 
-		Random("random"), 
-		Sentry("sentry");
-		
-		private String text;
-		
-		AIMode(String str)
-		{
-			text = str;
-		}
-		
-		public String text()
-		{
-			return text;
-		}
-		
-		public static AIMode fromString(String str) 
-		{
-			for (AIMode b : AIMode.values()) 
-			{
-				if (b.text.equalsIgnoreCase(str))
-				{
-					return b;
-				}
-			}
-			throw new IllegalArgumentException("No AIMode with text " + str + " found.");
-		}
-	}
-	
 	private AIMap nodes;
 	private AIHeuristic heuristic;
 	private IndexedAStarPathFinder pathFinder;
@@ -62,14 +29,37 @@ public class AIComponent implements Component
 	
 	public final float DEFAULT_TIMESTEP = 0.5f;
 	
-	public AIMode mode;
 	public AIState state;
 	
 	public AIComponent()
 	{		
-		mode = AIMode.Stay;
 		timeStep = DEFAULT_TIMESTEP;
 		heuristic = new AIHeuristic();
+	}
+	
+	public AIComponent(String str)
+	{
+		this();
+		if (str.equals("random"))
+		{
+			state = new RandomState();
+		}
+		else if (str.equals("stay"))
+		{
+			state = new StayState();
+		}
+	}
+	
+	public AIComponent(Vector2 target)
+	{
+		this();
+		state = new MoveToState(target);
+	}
+	
+	public AIComponent(PositionComponent target)
+	{
+		this();
+		state = new FollowState(target);
 	}
 	
 	public void update(float delta, Vector2 currentPos)

@@ -8,7 +8,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
-import woohoo.framework.events.AIEvent;
+import woohoo.framework.events.AIFollowEvent;
+import woohoo.framework.events.AIMoveToEvent;
 import woohoo.framework.events.AttributeXMLEvent;
 import woohoo.framework.events.CutsceneEvent;
 import woohoo.framework.events.CutsceneTrigger;
@@ -73,10 +74,13 @@ public class EventSystem extends IteratingSystem
 					case "cutscene":
 						event = new CutsceneEvent(screen.getCutsceneManager(), eventEl.getInt("id"));
 						break;
-					case "ai":
-						event = new AIEvent((Character)screen.getEngine().getEntity(eventEl.get("entity")), eventEl.get("mode"), 
-											eventEl.get("targetChar", null) == null ? null : (Character)screen.getEngine().getEntity(eventEl.get("targetChar")),
-											eventEl.getInt("targetX", 0), eventEl.getInt("targetY", 0));
+					case "aifollow":
+						event = new AIFollowEvent(Mappers.ai.get(screen.getEngine().getEntity(eventEl.get("entity"))), 
+												  Mappers.positions.get(screen.getEngine().getEntity(eventEl.get("targetChar"))));
+						break;
+					case "aimoveto":
+						event = new AIMoveToEvent(Mappers.ai.get(screen.getEngine().getEntity(eventEl.get("entity"))), 
+												  eventEl.getFloat("targetX"), eventEl.getFloat("targetY"));
 						break;
 					case "quest":
 						event = new QuestEvent(eventEl.getInt("id"), eventEl.get("action"), screen.getQuestManager());

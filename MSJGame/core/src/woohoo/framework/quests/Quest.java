@@ -1,7 +1,10 @@
 package woohoo.framework.quests;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
-import woohoo.gameobjects.QuestIndicator;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.PositionComponent;
 
 public class Quest
 {
@@ -11,7 +14,7 @@ public class Quest
 	}
 	
 	protected QuestState questState = QuestState.Unknown;
-	protected QuestIndicator indicator;
+	protected Entity indicator;
 	protected int id;
 	protected String description;
 	
@@ -19,7 +22,12 @@ public class Quest
 	{
 		id = ID;
 		description = desc;
-		indicator = new QuestIndicator(indicatorTexture);
+		
+		indicator = new Entity();
+		MapObjectComponent mapObject = new MapObjectComponent(new TextureRegion(indicatorTexture));
+		PositionComponent position = new PositionComponent();
+		indicator.add(mapObject);
+		indicator.add(position);
 	}
 			
 	public void setState(QuestState state)
@@ -42,7 +50,7 @@ public class Quest
 		return description;
 	}
 	
-	public QuestIndicator getIndicator()
+	public Entity getIndicator()
 	{
 		return indicator;
 	}

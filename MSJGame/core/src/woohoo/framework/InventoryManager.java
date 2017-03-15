@@ -1,5 +1,6 @@
 package woohoo.framework;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
@@ -18,10 +19,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.XmlReader;
-import woohoo.gameobjects.Item;
+import woohoo.framework.contactcommands.ContactData;
+import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.InventoryComponent;
+import woohoo.gameobjects.components.ItemDataComponent;
+import woohoo.gameobjects.components.ItemDataComponent.ItemType;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.WeaponComponent;
+import woohoo.gameworld.Mappers;
 import woohoo.screens.PlayingScreen;
 
 /**
@@ -97,16 +102,23 @@ public class InventoryManager
             @Override
             public void drop(Source source, Payload payload, float x, float y, int pointer) 
             {
-                if (((InventorySlot)source.getActor()).getItem().isWeapon())
+				InventorySlot sourceSlot = (InventorySlot)source.getActor();
+				ItemDataComponent itemData = Mappers.items.get(sourceSlot.getItem());
+				
+                if (itemData.type == ItemType.Weapon)
                 {
-                    screen.getEngine().getPlayer().equip(((InventorySlot)source.getActor()).getItem());
-					screen.getContactManager().addCommand(screen.getEngine().getPlayer().getComponent(WeaponComponent.class).getContactData(), screen.getWorld());
+					WeaponComponent weapon = new WeaponComponent(screen.getWorld());
+					weapon.damage = (float)itemData.metaData.get("damage", "0.25f");
+					weapon.knockback = (float)itemData.metaData.get("knockback", "1");
+					
+					weapon.mass.setUserData(new ContactData(ContactType.Weapon, screen.getEngine().getPlayer()));
+					screen.getEngine().getPlayer().add(weapon);
 					
                     super.drop(source, payload, x, y, pointer);
                 }
                 else
                 {
-					((InventorySlot)source.getActor()).setDragged(false);
+					sourceSlot.setDragged(false);
 					weaponSlot.setColor(Color.WHITE);
                 }
             }
@@ -171,34 +183,32 @@ public class InventoryManager
         
         for (XmlReader.Element e : root.getChildrenByName("item"))
         {	
-            Item item;
-            if (e.getChildByName("metadata") == null)
-            {   // Absoutely disgusting method chain
-                item = new Item(screen.getIDManager().getItem(e.getInt("id")).getItemTexture());
-            }
-            else
-            {   
-                item = new Item(screen.getIDManager().getItem(e.getInt("id")).getItemTexture(), e.getChildByName("metadata").getAttributes());
-            } 
+            Entity item = new Entity();
+			ItemDataComponent itemData = new ItemDataComponent(e.getChildByName("metadata").getAttributes()); // Metadata may be null
+			MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(e.getInt("id")).getItemTexture());
+
+			item.add(itemData);
+			item.add(mapObject);
+			
             inventory.addItem(item);
         }
 	}
 	
 	/**
 	 * Function to fill the inventory UI with a character's inventory
-	 * @param character Character to fill inventory UI with
+	 * @param inventory Character to fill inventory UI with
 	 */
-	public void fillInventory(Character character)
+	public void fillInventory(InventoryComponent inventory)
 	{
-		currentInventory = character.getComponent(InventoryComponent.class);
+		currentInventory = inventory;
 		
 		// Starts at 2 since first two items are "X" button and item slot
 		for (int i = 2; i < table.getCells().size; i++)
 		{		
 			if (i >= currentInventory.getItems().size() + 2) break;
 			
-			Item item = currentInventory.getItems().get(i - 2); // i - 2 because the inventory starts at 0
-			item.flipImage(); // When MapObjectComponent is initialized textures are flipped by default
+			Entity item = currentInventory.getItems().get(i - 2); // i - 2 because the inventory starts at 0
+			Mappers.mapObjects.get(item).getTextureRegion().flip(false, true); // When MapObjectComponent is initialized textures are flipped by default
 			TextureRegion region = new TextureRegion(item.getComponent(MapObjectComponent.class).getTextureRegion());
 			Image image = new Image(region);
 			image.setSize(ITEMX, ITEMY);
@@ -212,12 +222,12 @@ public class InventoryManager
 	 * If the item only needs to be added to the character, instead use only InventoryComponent.addItem()
 	 * 
 	 * Can only be called after fillInventory() has been called at least once
-	 * @param character Character whose inventory item will be added to
+	 * @param inventory InventoryComponent item will be added to
 	 * @param item The item to be added
 	 */
-	public void addItem(Character character, Item item)
+	public void addItem(InventoryComponent inventory, Entity item)
 	{
-		currentInventory = character.getComponent(InventoryComponent.class);
+		currentInventory = inventory;
 		currentInventory.addItem(item);
 		
 		// Starts at 2 since first two items are "X" button and item slot
@@ -227,8 +237,8 @@ public class InventoryManager
 			
 			if (slot.getCount() == 0)
 			{
-				item.flipImage(); // UI is y-up while game world is y-down
-				Image image = new Image(item.getComponent(MapObjectComponent.class).getTextureRegion());
+				Mappers.mapObjects.get(item).getTextureRegion().flip(false, true); // Because the world is in y-down and the UI is in y-up
+				Image image = new Image(Mappers.mapObjects.get(item).getTextureRegion());
 				slot.setImage(image).setItem(item).setCount(1);
 				return;
 			}
@@ -243,7 +253,7 @@ public class InventoryManager
 	 * and drops it into the game world
 	 * @param item item to be dropped
 	 */
-	public void dropItem(Item item)
+	public void dropItem(Entity item)
 	{				
 		// Starts at 1 since first item is "X" button
 		for (int i = 1; i < table.getCells().size; i++)
@@ -255,11 +265,9 @@ public class InventoryManager
 				slot.setItem(null).setImage(new Image(blankItem)).setCount(0);
 
 				currentInventory.removeItem(item);
-				screen.addEntity(item);
 
-				item.setPosition(screen.getEngine().getPlayer().getPosition().x, screen.getEngine().getPlayer().getPosition().y);
-				item.update(0);
-				item.flipImage(); // Because the world is in y-down and the UI is in y-up
+				Mappers.positions.get(item).position = Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy();
+				Mappers.mapObjects.get(item).getTextureRegion().flip(false, true); // Because the world is in y-down and the UI is in y-up
 				return;
 			}
 		}
@@ -274,11 +282,9 @@ public class InventoryManager
 				slot.setItem(null).setImage(new Image(blankItem)).setCount(0);
 
 				currentInventory.removeItem(item);
-				screen.addEntity(item);
 
-				item.setPosition(screen.getEngine().getPlayer().getPosition().x, screen.getEngine().getPlayer().getPosition().y);
-				item.update(0);
-				item.flipImage(); // Because the world is in y-down and the UI is in y-up
+				Mappers.positions.get(item).position = Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy();
+				Mappers.mapObjects.get(item).getTextureRegion().flip(false, true); // Because the world is in y-down and the UI is in y-up
 				return;
 			}
 		}
@@ -291,7 +297,7 @@ public class InventoryManager
 	 */
     public class InventorySlot extends Image
     {
-		private Item item; // Entity, starts as null
+		private Entity item; // Item entity, starts as null
         private Image itemImage; // Scene2D actor used for payload
         private boolean dragged;
 		private int count;
@@ -310,7 +316,7 @@ public class InventoryManager
             return itemImage;
         }
 		
-		public Item getItem()
+		public Entity getItem()
 		{
 			return item;
 		}
@@ -322,9 +328,11 @@ public class InventoryManager
 			return this;
         }
 		
-		public InventorySlot setItem(Item it)
+		public InventorySlot setItem(Entity entity)
 		{
-			item = it;
+			if (Mappers.items.has(entity))			
+				item = entity;
+			
 			return this;
 		}
         
@@ -396,7 +404,7 @@ public class InventoryManager
 
             slot.setDragged(true); // Let the item be freely dragged
 			
-			if (!slot.getItem().isWeapon()) // Grey out boxes this item can't be placed in
+			if (Mappers.items.get(slot.getItem()).type != ItemType.Weapon)// Grey out boxes this item can't be placed in
 			{
 				weaponSlot.setColor(Color.DARK_GRAY);
 			}
@@ -416,11 +424,11 @@ public class InventoryManager
             if (target == null) // Payload was not dropped on a target (e.g. outside the inventory)
             {
                 // Remove the item from the inventory and add it to the world
-                Item dropped = ((InventorySlot)getActor()).getItem();
+                Entity dropped = ((InventorySlot)getActor()).getItem();
 
 				if (((InventorySlot)getActor()).isWeaponSlot())
 				{
-					screen.getEngine().getPlayer().unequip();
+					screen.getEngine().getPlayer().remove(WeaponComponent.class);
 				}
 				
                 dropItem(dropped);
@@ -472,15 +480,15 @@ public class InventoryManager
 				}
 				else
 				{
-					screen.getEngine().getPlayer().unequip();
+					screen.getEngine().getPlayer().remove(WeaponComponent.class);
 				}
 			}
 
             Image sourceImage = sourceSlot.getImage();
             Image targetImage = targetSlot.getImage();
 
-            Item sourceItem = sourceSlot.getItem();
-            Item targetItem = targetSlot.getItem();
+            Entity sourceItem = sourceSlot.getItem();
+            Entity targetItem = targetSlot.getItem();
 
             // If the image was swapped with an empty slot
             if (targetSlot.getCount() == 0) 

@@ -243,18 +243,18 @@ public class CutsceneManager
     
     public class KillAction implements CutsceneAction
     {
-        private Character character;
+        private Entity entity;
 		private float actionTime;
         
         public KillAction(String characterName)
         {
-            character = (Character)screen.getEngine().getEntity(characterName);
+            entity = screen.getEngine().getEntity(characterName);
         }
         
         @Override
         public void start()
         {
-            character.die();
+            Mappers.lives.get(entity).damage(Mappers.lives.get(entity).maxHealth);
         }
         
         @Override

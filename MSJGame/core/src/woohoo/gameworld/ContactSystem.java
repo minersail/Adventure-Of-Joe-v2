@@ -23,6 +23,9 @@ public class ContactSystem extends IteratingSystem
 	{
 		super(Family.all(ContactComponent.class).get());
 		
+		collisions = new Array<>();
+		commands = new Array<>();
+		
 		world.setContactListener(new ContactListener() 
 		{
 			@Override
