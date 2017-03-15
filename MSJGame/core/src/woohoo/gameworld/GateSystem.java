@@ -25,11 +25,11 @@ public class GateSystem extends IteratingSystem
 {
 	private GateComponent triggeredGate;
 	private boolean switchArea;
-	private PlayingScreen screen;
+	private final PlayingScreen screen;
 	
 	public GateSystem(PlayingScreen scr)
 	{
-		super(Family.all(GateComponent.class, PositionComponent.class).get());
+		super(Family.all(GateComponent.class).get());
 		screen = scr;
 	}
 	
@@ -63,19 +63,17 @@ public class GateSystem extends IteratingSystem
             fixtureDef.isSensor = true;
 
             body.createFixture(fixtureDef);
-			
-			for (Entity entity : getEntities())
-			{
-				GateComponent gate = Mappers.gates.get(entity);
-				if (gate.gateID == gateElement.getInt("id")) // Link the existing GateComponents to Box2D bodies
-				{
-					gate.size = new Vector2(gateElement.getFloat("sizeX"), gateElement.getFloat("sizeY"));
-					gate.position = new Vector2(gateElement.getFloat("destX") + 0.5f, gateElement.getFloat("destY") + gate.getPlayerOffset().y + 0.5f);
-					gate.destArea = gateElement.getInt("destArea");
-					
-					body.setUserData(new ContactData(ContactType.Gate, entity));
-				}
-			}
+            
+            Entity entity = new Entity();
+            GateComponent gate = new GateComponent(screen.getWorld());
+            gate.size = new Vector2(gateElement.getFloat("sizeX"), gateElement.getFloat("sizeY"));
+            gate.position = new Vector2(gateElement.getFloat("destX") + 0.5f, gateElement.getFloat("destY") + 0.5f);
+            gate.destArea = gateElement.getInt("destArea");
+            entity.add(gate);
+
+            body.setUserData(new ContactData(ContactType.Gate, entity));
+            
+            screen.getEngine().addEntity(entity);
         }
 	}
 	

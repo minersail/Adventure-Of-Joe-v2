@@ -7,4 +7,9 @@ import com.badlogic.gdx.utils.Array;
 public class PlayerComponent implements Component
 {
 	public Array<Entity> touchedItems; 
+    
+    public PlayerComponent()
+    {
+        touchedItems = new Array<>();
+    }
 }

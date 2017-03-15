@@ -91,6 +91,16 @@ public class ContactSystem extends IteratingSystem
 			return contact == A || contact == B;
 		}
 		
+		public ContactData A()
+		{
+			return A;
+		}
+		
+		public ContactData B()
+		{
+			return B;
+		}
+		
 		@Override
 		public boolean equals(Object other)
 		{
@@ -110,15 +120,11 @@ public class ContactSystem extends IteratingSystem
 			hash = 31 * hash + Objects.hashCode(this.B);
 			return hash;
 		}
-		
-		public ContactData A()
-		{
-			return A;
-		}
-		
-		public ContactData B()
-		{
-			return B;
-		}
+        
+        @Override
+        public String toString()
+        {
+            return "ContactDataPair: " + A.type + "|" + B.type;
+        }
 	}
 }

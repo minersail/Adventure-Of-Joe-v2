@@ -3,6 +3,7 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import java.util.Iterator;
@@ -65,7 +66,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 				if (inputState.getClass() == state.getClass()) // Compare equality by class (All MoveUpStates should be inherently equal)
 				{
 					it.remove();
-					return;
 				}
 			}
 		}
@@ -144,14 +144,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 				}
 				break;
 		}
-		
-//		if (!Gdx.input.isKeyPressed(Input.Keys.UP) && !Gdx.input.isKeyPressed(Input.Keys.DOWN) && 
-//			!Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.LEFT))
-//		{
-//			player.stop();
-//			player.setMovement(MovementComponent.Movement.None);
-//		}
-//		
+        
 		return false;
 	}
 
@@ -184,6 +177,13 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 				}
 				break;
 		}
+		
+		if (!Gdx.input.isKeyPressed(Input.Keys.UP) && !Gdx.input.isKeyPressed(Input.Keys.DOWN) && 
+			!Gdx.input.isKeyPressed(Input.Keys.RIGHT) && !Gdx.input.isKeyPressed(Input.Keys.LEFT))
+		{
+			addCommand(new StopCommand());
+		}
+        
 		return false;
 	}
 

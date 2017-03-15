@@ -28,6 +28,7 @@ public class GameEngine extends Engine
     public void update(float delta)
     {
 		super.update(delta);
+        adjustCamera(getPlayer());
 		runtime += delta;
     }
 	
@@ -96,6 +97,7 @@ public class GameEngine extends Engine
 		}
 		
 		screen.setCamera(newPos.x, newPos.y);
+        getSystem(RenderSystem.class).getRenderer().setView(screen.getCamera());
 	}
 	
 	public ArrayList<Entity> getDuplicateList()

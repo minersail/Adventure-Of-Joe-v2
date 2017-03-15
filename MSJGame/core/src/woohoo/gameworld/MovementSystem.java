@@ -19,7 +19,7 @@ public class MovementSystem extends IteratingSystem
 	{
 		for (Entity entity : getEntities())
 		{
-			Mappers.hitboxes.get(entity).mass.getTransform().setPosition(Mappers.positions.get(entity).position.cpy());
+			Mappers.hitboxes.get(entity).mass.setTransform(Mappers.positions.get(entity).position.cpy().add(0.5f, 0.5f), 0);
 		}
 	}
 
@@ -29,7 +29,7 @@ public class MovementSystem extends IteratingSystem
 		MovementComponent movement = Mappers.movements.get(entity);
 		HitboxComponent hitbox = Mappers.hitboxes.get(entity);
 		PositionComponent position = Mappers.positions.get(entity);
-		
+        
 		switch (movement.direction)
 		{
 			case Up:
@@ -51,7 +51,7 @@ public class MovementSystem extends IteratingSystem
 			
 		hitbox.mass.setLinearVelocity(movement.velocity);
 		
-		position.position = hitbox.mass.getPosition().cpy();
+		position.position = hitbox.mass.getPosition().cpy().sub(0.5f, 0.5f); // Center vs top-left
 	}
 	
 	public void stopAll()

@@ -21,8 +21,6 @@ public class HitboxComponent implements Component
 		hitboxType = type;
 		
         BodyDef bodyDef = new BodyDef();
-		bodyDef.position.x = 5;
-		bodyDef.position.y = 1;
 		mass = world.createBody(bodyDef);
         mass.setType(BodyDef.BodyType.DynamicBody);
 		
@@ -33,7 +31,7 @@ public class HitboxComponent implements Component
 		fixtureDef.shape = shape;
 		
         fixture = mass.createFixture(fixtureDef);
-		fixture.setSensor(enableCollision);
+		fixture.setSensor(!enableCollision);
         fixture.setDensity(100f);
         fixture.setFriction(0);
         fixture.setRestitution(0);

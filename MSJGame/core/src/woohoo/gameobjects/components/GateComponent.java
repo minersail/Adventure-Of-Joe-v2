@@ -12,13 +12,10 @@ public class GateComponent implements Component
 	public Vector2 size;
 	public Vector2 playerPos; // Where the player will exit the gate
 	public int destArea;
-	public int gateID; // Used to link to the gates.xml file
 	public boolean triggered;
 
-    public GateComponent(World world, int id)
-    {        
-		gateID = id;
-		
+    public GateComponent(World world)
+    {        		
         // setPlayerOffset() must be called before playerPos can be used
         playerOffset = null;
 		playerPos = null;

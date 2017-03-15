@@ -53,8 +53,8 @@ public class RenderSystem extends IteratingSystem
 		{
 			MapObjectComponent mapObject = Mappers.mapObjects.get(entity);
 			
-			mapObject.setX(pos.position.x - 0.5f);
-			mapObject.setY(pos.position.y - 0.5f);			
+			mapObject.setX(pos.position.x);
+			mapObject.setY(pos.position.y);			
 		
 			if (Mappers.opacities.has(entity))
 			{
@@ -68,15 +68,15 @@ public class RenderSystem extends IteratingSystem
 		{
 			AnimMapObjectComponent animMapObject = Mappers.animMapObjects.get(entity);
 			
-			animMapObject.setX(pos.position.x - 0.5f);
-			animMapObject.setY(pos.position.y - 0.5f);
+			animMapObject.setX(pos.position.x);
+			animMapObject.setY(pos.position.y);
 		}
 		else if (Mappers.healthBars.has(entity))
 		{
 			HealthBarComponent healthBar = Mappers.healthBars.get(entity);
 			
-			healthBar.setX(pos.position.x - 0.5f);
-			healthBar.setY(pos.position.y - 0.5f);
+			healthBar.setX(pos.position.x);
+			healthBar.setY(pos.position.y);
 		}
 	}
 	

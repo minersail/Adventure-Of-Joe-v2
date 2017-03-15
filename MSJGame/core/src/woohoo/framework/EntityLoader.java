@@ -4,8 +4,6 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.signals.Listener;
-import com.badlogic.ashley.signals.Signal;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
@@ -81,7 +79,7 @@ public class EntityLoader
 		EventListenerComponent eventListener = new EventListenerComponent();
 		HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), true, ContactType.Player);
 		InputComponent input = new InputComponent();
-		MovementComponent movement = new MovementComponent();
+		MovementComponent movement = new MovementComponent(2);
 		PlayerComponent playerComp = new PlayerComponent();
 
 		screen.getInventoryManager().fillInventory(inventory);
@@ -152,9 +150,6 @@ public class EntityLoader
 				break;
 			case "eventlistener":
 				base = new EventListenerComponent();
-				break;
-			case "gate":
-				base = new GateComponent(screen.getWorld(), component.getInt("id"));
 				break;
 			case "healthbar":
 				base = new HealthBarComponent(screen.getAssets().get("healthbar.pack", TextureAtlas.class));
