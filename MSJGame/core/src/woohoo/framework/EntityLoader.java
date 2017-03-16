@@ -140,7 +140,7 @@ public class EntityLoader
 					base = new AIComponent();
 				break;
 			case "anim":
-				base = new AnimMapObjectComponent(screen.getAssets().get(component.get("atlas"), TextureAtlas.class));
+				base = new AnimMapObjectComponent(screen.getAssets().get("images/entities/" + component.get("atlas"), TextureAtlas.class));
 				break;
 			case "contact":
 				base = new ContactComponent();
@@ -176,7 +176,7 @@ public class EntityLoader
 				base = new LOSComponent(screen.getWorld());
 				break;
 			case "mapobject":
-				base = new MapObjectComponent(new TextureRegion(screen.getAssets().get(component.get("texture"), Texture.class)));
+				base = new MapObjectComponent(new TextureRegion(screen.getAssets().get("images/entities/" + component.get("texture"), Texture.class)));
 				break;
 			case "movement":
 				base = new MovementComponent(component.getFloat("speed"));

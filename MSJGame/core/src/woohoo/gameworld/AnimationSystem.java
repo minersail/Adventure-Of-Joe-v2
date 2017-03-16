@@ -6,7 +6,9 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
 import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
 import woohoo.gameobjects.components.MovementComponent;
+import woohoo.gameobjects.components.MovementComponent.Direction;
 import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameobjects.components.PositionComponent.Orientation;
 
 public class AnimationSystem extends IteratingSystem
 {
@@ -21,6 +23,9 @@ public class AnimationSystem extends IteratingSystem
 		AnimMapObjectComponent animated = Mappers.animMapObjects.get(entity);
 		MovementComponent movement = Mappers.movements.get(entity);
 		PositionComponent position = Mappers.positions.get(entity);
+        
+        if (movement.direction != Direction.None)
+            position.orientation = Orientation.fromString(movement.direction.text()); // The enums have built in strings for conversion
 		
 		if (movement.isStopped(0.25f))
 		{

@@ -18,8 +18,8 @@ import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.GateComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameobjects.components.PositionComponent;
 import woohoo.screens.PlayingScreen;
+import woohoo.screens.PlayingScreen.GameState;
 
 public class GateSystem extends IteratingSystem
 {
@@ -88,8 +88,8 @@ public class GateSystem extends IteratingSystem
 			switchArea = true;
 		}
 		
-        if (switchArea) // Boolean check instead of instantaneous call is necessary so
-		{                // that the area switching does not take place during world.step();
+        if (switchArea && screen.getState() == GameState.Playing) // Boolean check instead of instantaneous call is necessary so
+		{                                                         // that the area switching does not take place during world.step();
 			updateArea();
 		}                   
 	}
@@ -103,9 +103,10 @@ public class GateSystem extends IteratingSystem
         Array<Body> bodies = new Array<>();
 		screen.getWorld().getBodies(bodies);
 		
-		for (Body body: bodies)
+		for (Body body : bodies)
 		{
-			screen.getWorld().destroyBody(body);
+            if (((ContactData)body.getUserData()).owner != screen.getEngine().getPlayer())
+                screen.getWorld().destroyBody(body);
 		}
 		
 		// Remove all entities from game world		
@@ -130,6 +131,7 @@ public class GateSystem extends IteratingSystem
         Mappers.positions.get(screen.getEngine().getPlayer()).position.set(triggeredGate.playerPos);
 		
 		// Load all entities, gates, events, pathfinding, etc. for new game area
+        screen.setArea(triggeredGate.destArea);
 		screen.initialize(triggeredGate.destArea);
 		
 		// There's one frame where new map is not quite loaded, so skip the frame. Nobody will even notice

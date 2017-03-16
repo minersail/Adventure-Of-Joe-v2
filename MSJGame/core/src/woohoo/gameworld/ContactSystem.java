@@ -10,8 +10,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import java.util.Objects;
-import woohoo.framework.contactcommands.ContactCommand;
-import woohoo.framework.contactcommands.ContactData;
+import woohoo.framework.contactcommands.*;
 import woohoo.gameobjects.components.ContactComponent;
 
 public class ContactSystem extends IteratingSystem
@@ -25,6 +24,9 @@ public class ContactSystem extends IteratingSystem
 		
 		collisions = new Array<>();
 		commands = new Array<>();
+        commands.add(new GateContact());
+        commands.add(new EnemyHitContact());
+        commands.add(new ItemContact());
 		
 		world.setContactListener(new ContactListener() 
 		{

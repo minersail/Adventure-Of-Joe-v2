@@ -17,7 +17,9 @@ import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.PositionComponent;
 import woohoo.gameobjects.components.PositionComponent.Orientation;
+import woohoo.gameworld.AIStateSystem;
 import woohoo.gameworld.Mappers;
+import woohoo.gameworld.RenderSystem;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.GameState;
 
@@ -68,6 +70,11 @@ public class CutsceneManager
     
     public void startCutscene(int cutsceneID)
     {
+        // Add AIComponent to Player to control him during cutscenes
+        AIComponent cutsceneController = new AIComponent("stay");
+        screen.getEngine().getPlayer().add(cutsceneController);
+        screen.getEngine().getSystem(AIStateSystem.class).initialize(screen.getEngine().getPlayer(), screen.currentArea);
+        
         FileHandle handle = Gdx.files.local("data/cutscenes.xml");
         
         XmlReader xml = new XmlReader();
@@ -127,6 +134,8 @@ public class CutsceneManager
 				Mappers.movements.get(entity).velocity.setZero();
 			}
 		}
+        
+        screen.getEngine().getPlayer().remove(AIComponent.class);
 		
         cutsceneEntities.clear();
         cutsceneActions.clear();
@@ -167,7 +176,6 @@ public class CutsceneManager
         {
 			movement = Mappers.movements.get(screen.getEngine().getEntity(characterName));
 			brain = Mappers.ai.get(screen.getEngine().getEntity(characterName));
-			
             targetPosition = new Vector2(targetX, targetY);
 			oldSpeed = movement.speed;
 			tempSpeed = speed;
