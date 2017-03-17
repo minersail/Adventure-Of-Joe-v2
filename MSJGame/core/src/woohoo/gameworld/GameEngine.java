@@ -45,25 +45,18 @@ public class GameEngine extends Engine
 	    
     public Entity getPlayer()
     {
-        for (Entity entity : getEntities())
-        {
-            if (Mappers.ids.get(entity).name.equals("player"))
-                return entity;
-        }
-        
-        Gdx.app.log("ERROR", "Player does not exist in GameWorld");
-        return null;
+        return getEntity("player");
     }
 	
 	public Entity getEntity(String name)
 	{
 		for (Entity entity : getEntities())
         {
-			if (Mappers.ids.get(entity).name.equals(name))
+			if (Mappers.ids.has(entity) && Mappers.ids.get(entity).name.equals(name))
 				return entity;
         }
 		
-        Gdx.app.log("ERROR", "Entity does not exist in GameWorld");
+        Gdx.app.log("ERROR", "Entity " + name + " does not exist in GameWorld");
         return null;
 	}
 	

@@ -98,13 +98,13 @@ public class PlayingScreen implements Screen
         inventoryManager = new InventoryManager(this, assets.get("ui/inventory.pack", TextureAtlas.class),
                                                 assets.get("ui/uiskin.json", Skin.class));
 		
-		// Create map
-		mapLoader = new HexMapLoader(this);
-		TiledMap map = mapLoader.load(currentArea);
-		
 		// Draw and update every frame
 		engine = new GameEngine(this);
 		entityLoader = new EntityLoader(this);
+		
+		// Create map
+		mapLoader = new HexMapLoader(this);
+		TiledMap map = mapLoader.load(currentArea);		
 		
 		// Create dialogue
 		dialogueManager = new DialogueManager(this, assets.get("ui/uiskin.json", Skin.class));

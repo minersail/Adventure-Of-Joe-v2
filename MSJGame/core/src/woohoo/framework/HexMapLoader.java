@@ -1,5 +1,6 @@
 package woohoo.framework;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
@@ -97,7 +98,10 @@ public class HexMapLoader
 					fixtureDef.friction = 0f;
 
 					body.createFixture(fixtureDef);
-					body.setUserData(new ContactData(ContactType.Wall, null));
+					
+					Entity wall = new Entity();
+					screen.getEngine().addEntity(wall);
+					body.setUserData(new ContactData(ContactType.Wall, wall));
 				}
 					
 				Cell cell = new Cell();
