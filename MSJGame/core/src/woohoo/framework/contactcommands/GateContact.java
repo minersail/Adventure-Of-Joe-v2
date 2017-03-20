@@ -26,10 +26,16 @@ public class GateContact extends ContactCommand
 			contactB = temp;
 		}
 		
+		
 		GateComponent gate = Mappers.gates.get(contactA.owner);
+		PositionComponent gatePos = Mappers.positions.get(contactA.owner);
 		PositionComponent playerPos = Mappers.positions.get(contactB.owner);
-
-		gate.setPlayerOffset(playerPos.position.cpy().sub(gate.position)); // Distance from center of player to center of gate
-		gate.triggered = true;
+		
+		if (gate.enabled)
+		{
+			gate.setPlayerOffset(playerPos.position.cpy().sub(gatePos.position)); // Distance from top-left of player to top-left of gate
+			gate.triggered = true;
+			gate.enabled = false; // Gate can only activate once
+		}
 	}
 }

@@ -59,7 +59,7 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	public int currentArea = 1;
+	public int currentArea = 0;
 	
     private float runTime;
 	
@@ -118,7 +118,7 @@ public class PlayingScreen implements Screen
 		AIStateSystem aiSystem = new AIStateSystem(this);
 		AnimationSystem animationSystem = new AnimationSystem();
 		ContactSystem contactSystem = new ContactSystem(world);
-		DamageSystem damageSystem = new DamageSystem();
+		DamageSystem damageSystem = new DamageSystem(this);
 		EventSystem eventSystem = new EventSystem(this);
 		GateSystem gateSystem = new GateSystem(this);
 		InputSystem inputSystem = new InputSystem(this);
@@ -155,12 +155,13 @@ public class PlayingScreen implements Screen
 		engine.addSystem(renderSystem);
 		engine.addSystem(weaponSystem);
 		
+		entityLoader.loadPlayer();
+		
 		state = GameState.Playing;
 	}
 
     public void initialize(int gameArea)
     {    
-		entityLoader.loadPlayer();
 		entityLoader.loadEntities(gameArea);
 		engine.getSystem(GateSystem.class).initialize(gameArea);
 		engine.getSystem(AIStateSystem.class).initialize(gameArea);
@@ -180,7 +181,8 @@ public class PlayingScreen implements Screen
 		
 		switch (state)
 		{
-			case Playing:			
+			case Playing:
+				engine.getSystem(GateSystem.class).updateArea(); // Only works outside of the engine update loop
 				world.step(delta, 6, 2);
 				ui.act();
 				break;
@@ -203,7 +205,6 @@ public class PlayingScreen implements Screen
 		}
 		
 		alerts.act(delta);
-		//aiDebugger.renderLineOfSight(engine.getEntity("player"), cam);
 		debugRenderer.render(world, cam.combined);
 		ui.draw();
     }

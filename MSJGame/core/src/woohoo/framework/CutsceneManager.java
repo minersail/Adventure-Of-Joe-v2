@@ -1,9 +1,15 @@
 package woohoo.framework;
 
+import woohoo.framework.animation.IdleAnimState;
+import woohoo.framework.animation.AnimationState;
+import woohoo.framework.animation.DeathAnimState;
+import woohoo.framework.animation.WalkAnimState;
+import woohoo.framework.animation.FightAnimState;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
@@ -12,14 +18,13 @@ import woohoo.ai.aistates.StayState;
 import woohoo.framework.events.EventListeners;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
-import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.MovementComponent;
+import woohoo.gameobjects.components.MovementComponent.Direction;
 import woohoo.gameobjects.components.PositionComponent;
 import woohoo.gameobjects.components.PositionComponent.Orientation;
 import woohoo.gameworld.AIStateSystem;
 import woohoo.gameworld.Mappers;
-import woohoo.gameworld.RenderSystem;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.PlayingScreen.GameState;
 
@@ -48,7 +53,7 @@ public class CutsceneManager
 	 */
 	public void update(float delta)
 	{
-		screen.getEngine().update(delta);
+		//screen.getEngine().update(delta);
 		
         if (currentAction.isDone(delta))
         {
@@ -131,11 +136,10 @@ public class CutsceneManager
 			if (Mappers.players.has(entity)) // This is the player
 			{
 				entity.remove(AIComponent.class);
-				Mappers.movements.get(entity).velocity.setZero();
+				Mappers.movements.get(entity).direction = Direction.None;
+				Mappers.hitboxes.get(entity).mass.setType(BodyDef.BodyType.DynamicBody);
 			}
 		}
-        
-        screen.getEngine().getPlayer().remove(AIComponent.class);
 		
         cutsceneEntities.clear();
         cutsceneActions.clear();
@@ -228,11 +232,13 @@ public class CutsceneManager
     public class RotateAction implements CutsceneAction
     {
         private PositionComponent entityPosition;
+		private MovementComponent entityMovement;
         private Orientation orientation;
         
         public RotateAction(String characterName, String dir)
         {
 			entityPosition = Mappers.positions.get(screen.getEngine().getEntity(characterName));
+			entityMovement = Mappers.movements.get(screen.getEngine().getEntity(characterName));
             orientation = Orientation.fromString(dir);
         }
         
@@ -240,6 +246,7 @@ public class CutsceneManager
         public void start()
         {
             entityPosition.orientation = orientation;
+			entityMovement.direction = Direction.None;
         }
         
         @Override
@@ -262,7 +269,7 @@ public class CutsceneManager
         @Override
         public void start()
         {
-            Mappers.lives.get(entity).damage(Mappers.lives.get(entity).maxHealth);
+            Mappers.lives.get(entity).damage(Mappers.lives.get(entity).maxHealth); // Damage for max health
         }
         
         @Override
@@ -286,20 +293,34 @@ public class CutsceneManager
 			animationComponent = Mappers.animMapObjects.get(screen.getEngine().getEntity(characterName));
 			maxTime = time;
 			
-			state = AnimationState.fromString(animation);
+			switch(animation)
+			{
+				case "fight":
+					state = new FightAnimState(time);
+					break;
+				case "walk":
+					state = new WalkAnimState();
+					break;
+				case "idle":
+					state = new IdleAnimState();
+					break;
+				case "death":
+					state = new DeathAnimState();
+					break;
+			}
         }
         
         @Override
         public void start()
         {
-			animationComponent.animState = state;
+			animationComponent.setAnimationState(state);
         }
         
         @Override
         public boolean isDone(float delta) 
         {
             actionTime += delta;
-			// Time it takes to play out death animation, maybe customize later
+			
 			return actionTime > maxTime;
         }   
     }

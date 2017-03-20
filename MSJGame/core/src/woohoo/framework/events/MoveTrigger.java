@@ -2,7 +2,6 @@ package woohoo.framework.events;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
-import woohoo.gameobjects.components.PositionComponent;
 import woohoo.gameworld.Mappers;
 
 /** 
@@ -22,8 +21,7 @@ public class MoveTrigger implements EventTrigger<Entity>
 	 */
 	public MoveTrigger(Vector2 pos, float dist)
 	{
-		// Switch from top-left corner to center
-		position = new Vector2(pos.x + 0.5f, pos.y + 0.5f);
+		position = pos;
 		distanceTo = dist;
 	}
 	

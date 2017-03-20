@@ -20,6 +20,6 @@ public class MoveToState implements AIState
 		if (pos.position.dst(target) < 0.5f)
 			ai.state = new StayState();
 		
-		return ai.getDirection(pos.position, target);
+		return ai.getDirectionFromPath(pos.position, target);
 	}
 }

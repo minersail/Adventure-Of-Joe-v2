@@ -1,5 +1,7 @@
 package woohoo.gameobjects.components;
 
+import woohoo.framework.animation.IdleAnimState;
+import woohoo.framework.animation.AnimationState;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -10,42 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AnimMapObjectComponent extends TextureMapObject implements Component
-{
-    public enum AnimationState
-    {
-        Walking("walk"),
-		Idle("idle"), 
-		Fighting("fight"), 
-		Death("death");
-		
-		private String text;
-		
-		AnimationState(String str)
-		{
-			text = str;
-		}
-		
-		public String text()
-		{
-			return text;
-		}
-		
-		public static AnimationState fromString(String str) 
-		{
-			for (AnimationState b : AnimationState.values()) 
-			{
-				if (b.text.equalsIgnoreCase(str))
-				{
-					return b;
-				}
-			}
-			throw new IllegalArgumentException("No AnimationState with text " + str + " found.");
-		}
-    }
+{	
+    private AnimationState animState;	
+	private Map<String, Animation<TextureRegion>> animation;	
 	
 	public String animString;	
-    public AnimationState animState;	
-	public Map<String, Animation<TextureRegion>> animation;	
 	public float animationTime = 0;
 	
 	public Vector2 size;
@@ -69,9 +40,9 @@ public class AnimMapObjectComponent extends TextureMapObject implements Componen
 		addAnimation("death", atlas, 0.5f, Animation.PlayMode.NORMAL);
 		
 		size = new Vector2(1, 1);
-		animState = AnimationState.Idle;
 		animationTime = 0;
 		animString = "down_idle";
+		setAnimationState(new IdleAnimState());
 	}
 	
 	public void update(float delta, Vector2 newPosition)
@@ -82,13 +53,10 @@ public class AnimMapObjectComponent extends TextureMapObject implements Componen
 		setY(newPosition.y);
 	}
 	
-	public void setAnimationState(AnimationState state)
+	public final void setAnimationState(AnimationState state)
 	{
-		// Both of these have linear animations
-		if (state == AnimationState.Death || state == AnimationState.Fighting)
-			animationTime = 0;
-			
 		animState = state;
+		animState.enter(this);
 	}
 	
 	public AnimationState getAnimationState()

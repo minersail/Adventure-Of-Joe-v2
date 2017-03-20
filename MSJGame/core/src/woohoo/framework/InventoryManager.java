@@ -27,6 +27,7 @@ import woohoo.gameobjects.components.ItemDataComponent.ItemType;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.gameworld.Mappers;
+import woohoo.gameworld.WeaponSystem;
 import woohoo.screens.PlayingScreen;
 
 /**
@@ -108,11 +109,12 @@ public class InventoryManager
                 if (itemData.type == ItemType.Weapon)
                 {
 					WeaponComponent weapon = new WeaponComponent(screen.getWorld());
-					weapon.damage = (float)itemData.metaData.get("damage", "0.25f");
-					weapon.knockback = (float)itemData.metaData.get("knockback", "1");
+					weapon.damage = Float.parseFloat((String)itemData.metaData.get("damage", "0.25f"));
+					weapon.knockback = Float.parseFloat((String)itemData.metaData.get("knockback", "1"));
 					
 					weapon.mass.setUserData(new ContactData(ContactType.Weapon, screen.getEngine().getPlayer()));
 					screen.getEngine().getPlayer().add(weapon);
+					screen.getEngine().getSystem(WeaponSystem.class).equip(screen.getEngine().getPlayer(), weapon);
 					
                     super.drop(source, payload, x, y, pointer);
                 }
@@ -184,7 +186,7 @@ public class InventoryManager
         for (XmlReader.Element e : root.getChildrenByName("item"))
         {	
             Entity item = new Entity();
-			ItemDataComponent itemData = new ItemDataComponent(e.getChildByName("metadata").getAttributes()); // Metadata may be null
+			ItemDataComponent itemData = new ItemDataComponent(e.getChildByName("metadata") == null ? null : e.getChildByName("metadata").getAttributes()); // Metadata may be null
 			MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(e.getInt("id")).getItemTexture());
 
 			item.add(itemData);
@@ -329,10 +331,8 @@ public class InventoryManager
         }
 		
 		public InventorySlot setItem(Entity entity)
-		{
-			if (Mappers.items.has(entity))			
-				item = entity;
-			
+		{		
+			item = entity;	
 			return this;
 		}
         

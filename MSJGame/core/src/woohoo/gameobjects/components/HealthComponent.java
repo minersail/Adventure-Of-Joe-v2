@@ -7,8 +7,9 @@ public class HealthComponent implements Component
 	public float maxHealth;
 	public float currentHealth;
 	public boolean invulnerable;
+	public boolean dead;
 	
-	private float incomingDamage;
+	private float incomingDamage; // Running total of all damage entity has taken this game tick
 	
 	public HealthComponent()
 	{

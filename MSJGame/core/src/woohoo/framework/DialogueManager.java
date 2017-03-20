@@ -56,9 +56,9 @@ public class DialogueManager
 		name.setText(dia.getCurrentLine().name());
 		face.setDrawable(faceRegion);
 		
-		screen.getUI().getActors().add(message);
-		screen.getUI().getActors().add(name);
-		screen.getUI().getActors().add(face);
+		screen.getUI().addActor(message);
+		screen.getUI().addActor(name);
+		screen.getUI().addActor(face);
 		
 		screen.setState(GameState.Dialogue);
     }
@@ -103,9 +103,9 @@ public class DialogueManager
 	
 	public void endDialogue(GameState newState)
 	{
-		screen.getUI().getActors().removeValue(message, false);
-		screen.getUI().getActors().removeValue(name, false);
-		screen.getUI().getActors().removeValue(face, false);
+		message.remove();
+		name.remove();
+		face.remove();
 		
 		screen.setState(newState);
 	}

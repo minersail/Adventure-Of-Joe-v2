@@ -12,7 +12,7 @@ public class RandomState implements AIState
 
 	@Override
 	public Direction getDirection(AIComponent ai, PositionComponent pos)
-	{
+	{		
 		int random = (int)Math.floor(Math.random() * Direction.values().length + 1);
 		
 		switch(random)
@@ -24,10 +24,10 @@ public class RandomState implements AIState
 			case 2:
 				return Direction.Left;
 			case 3:
-				return Direction.Right;		
+				return Direction.Right;
+			case 4:
+			default:
+				return Direction.None;
 		}
-		
-		// If random returns 4, return null (meaning entity stops)
-		return null;
 	}
 }

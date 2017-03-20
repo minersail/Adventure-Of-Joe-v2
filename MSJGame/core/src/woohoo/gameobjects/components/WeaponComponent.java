@@ -38,7 +38,7 @@ public class WeaponComponent implements Component
 		
         fixture = mass.createFixture(fixtureDef);
 		fixture.setSensor(true);
-        fixture.setDensity(100f);
+        fixture.setDensity(.001f);
         fixture.setFriction(0);
         fixture.setRestitution(0);
 		

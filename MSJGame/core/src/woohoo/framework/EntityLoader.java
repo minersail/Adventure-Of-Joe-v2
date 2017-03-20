@@ -51,20 +51,6 @@ public class EntityLoader
 			@Override
 			public void entityRemoved(Entity entity)
 			{
-				if (Mappers.hitboxes.has(entity))
-				{
-					screen.getWorld().destroyBody(Mappers.hitboxes.get(entity).mass);
-				}
-				
-				if (Mappers.sightLines.has(entity))
-				{
-					screen.getWorld().destroyBody(Mappers.sightLines.get(entity).mass);
-				}
-				
-				if (Mappers.weapons.has(entity))
-				{
-					screen.getWorld().destroyBody(Mappers.weapons.get(entity).mass);
-				}
 			}
 		});	
 	}	
@@ -82,6 +68,7 @@ public class EntityLoader
 		MovementComponent movement = new MovementComponent(2);
 		PlayerComponent playerComp = new PlayerComponent();
 
+		screen.getInventoryManager().loadInventory(inventory);
 		screen.getInventoryManager().fillInventory(inventory);
 		hitbox.mass.setUserData(new ContactData(ContactType.Player, player));
 		
@@ -113,7 +100,7 @@ public class EntityLoader
 			Entity entity = new Entity();
 			
 			for (int i = 0; i < e.getChildCount(); i++)
-			{
+			{  
 				loadComponent(entity, e.getChild(i));
 			}
 			

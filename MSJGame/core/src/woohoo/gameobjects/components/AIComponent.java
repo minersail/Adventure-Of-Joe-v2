@@ -6,7 +6,6 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
 import woohoo.ai.AIHeuristic;
@@ -43,6 +42,7 @@ public class AIComponent implements Component
 		if (str.equals("random"))
 		{
 			state = new RandomState();
+			timeStep = 1.5f;
 		}
 		else if (str.equals("stay"))
 		{
@@ -62,17 +62,9 @@ public class AIComponent implements Component
 		state = new FollowState(target);
 	}
 	
-	public void update(float delta, Vector2 currentPos)
-	{
-		timer += delta;
-		
-		if (timer > timeStep)
-		{
-			timer = 0;
-			lockDirection = false;
-		}
-	}
-	
+	/*
+	Generates pathfinding grid
+	*/
 	public void initializePathfinding(Map map, World world, Element data)
 	{
 		int topRow = 0, botRow = 0, leftCol = 0, rightCol = 0;		
@@ -96,6 +88,9 @@ public class AIComponent implements Component
 		path = new DefaultGraphPath();
 	}
 	
+	/*
+	Runs the pathfinding algorithm and stores the resulting path in path
+	*/
 	private void calculatePath(Vector2 current, Vector2 target)
 	{
 		Node nodeStart = nodes.get(Math.round(current.x), Math.round(current.y));
@@ -110,7 +105,7 @@ public class AIComponent implements Component
 		pathFinder.searchNodePath(nodeStart, nodeEnd, heuristic, path);
 	}
 	
-	public Direction getDirection(Vector2 current, Vector2 target)
+	public Direction getDirectionFromPath(Vector2 current, Vector2 target)
 	{		
 		calculatePath(current, target);
 		

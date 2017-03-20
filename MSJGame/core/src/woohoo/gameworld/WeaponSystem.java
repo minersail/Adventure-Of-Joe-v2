@@ -20,26 +20,31 @@ public class WeaponSystem extends IteratingSystem
 	{
 		WeaponComponent weapon = Mappers.weapons.get(entity);
 		
-		setAngle(weapon, Mappers.positions.get(entity).orientation);
-		
-		// Check if weapon is done with swing
-		float rotation = weapon.mass.getTransform().getRotation();
-		if (rotation < 0) rotation += 2 * (float)Math.PI;
-		
-		// Between 95% and 105% of the desired angle
-		float upperBound = 0.95f * (weapon.weaponAngle + 2 * (float)Math.PI / 3);
-		float lowerBound = 1.05f * (weapon.weaponAngle + 2 * (float)Math.PI / 3);
-		
-		if (lowerBound > 2 * (float)Math.PI) lowerBound -= 2 * (float)Math.PI;
-		if (upperBound > 2 * (float)Math.PI) upperBound -= 2 * (float)Math.PI;
-		
-		if (rotation >= upperBound && rotation <= lowerBound)
-		{
-			weapon.isActive = false;
-			weapon.mass.setTransform(weapon.mass.getTransform().getPosition(), weapon.weaponAngle);
-			weapon.mass.setAngularVelocity(0);
-			weapon.mass.setFixedRotation(true);
-		}
+		System.out.println(weapon.mass.getInertia());
+		weapon.mass(500, true);
+//		
+//		setAngle(weapon, Mappers.positions.get(entity).orientation);
+//		
+//		// Check if weapon is done with swing
+//		float rotation = weapon.mass.getTransform().getRotation();
+//		if (rotation < 0) rotation += 2 * (float)Math.PI;
+//		
+//		// Between 95% and 105% of the desired angle
+//		float upperBound = 0.95f * (weapon.weaponAngle + 2 * (float)Math.PI / 3);
+//		float lowerBound = 1.05f * (weapon.weaponAngle + 2 * (float)Math.PI / 3);
+//		
+//		if (lowerBound > 2 * (float)Math.PI) lowerBound -= 2 * (float)Math.PI;
+//		if (upperBound > 2 * (float)Math.PI) upperBound -= 2 * (float)Math.PI;
+//		
+//		//System.out.println(upperBound + " | " + rotation + " | " + lowerBound);
+//		//System.out.println(weapon.mass.isFixedRotation());
+//		if (rotation >= lowerBound && rotation <= upperBound)
+//		{
+//			weapon.isActive = false;
+//			weapon.mass.setTransform(weapon.mass.getTransform().getPosition(), weapon.weaponAngle);
+//			weapon.mass.setAngularVelocity(0);
+//			weapon.mass.setFixedRotation(true);
+//		}
 	}
 	
 	public void equip(Entity equipped, WeaponComponent weapon)
@@ -59,13 +64,13 @@ public class WeaponSystem extends IteratingSystem
 	{
 		switch (dir)
 		{
-			case East:
+			case West:
 				weapon.weaponAngle = 2 * (float)Math.PI / 3;
 				break;
 			case North:
 				weapon.weaponAngle = 7 * (float)Math.PI / 6;
 				break;
-			case West:
+			case East:
 				weapon.weaponAngle = 5 * (float)Math.PI / 3;
 				break;
 			case South:
