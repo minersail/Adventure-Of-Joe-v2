@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
-import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.screens.PlayingScreen;
 
 /*
@@ -68,7 +67,7 @@ public class GameEngine extends Engine
 		Vector2 p = Mappers.positions.get(player).position;
 		Vector2 newPos = new Vector2(p);
 				
-		if (screen.mapWidth > screen.WORLD_WIDTH)
+		if (screen.mapWidth + 1 > screen.WORLD_WIDTH)
 		{
 			newPos.x = Math.min(Math.max(newPos.x, screen.WORLD_WIDTH / 2), screen.mapWidth - screen.WORLD_WIDTH / 2);
 		}

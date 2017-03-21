@@ -41,13 +41,14 @@ public class HexMapLoader
         Texture tileset = screen.getAssets().get("images/tilesets/tileset" + tilesetNum + ".png", Texture.class);
         Texture decorationTileset = screen.getAssets().get("images/tilesets/d_tileset" + d_tilesetNum + ".png", Texture.class);
         
-		FileHandle mapHandle = Gdx.files.local("maps/" + area + ".txt");
+		FileHandle mapHandle = Gdx.files.internal("maps/" + area + ".txt");
 		String map = mapHandle.readString();
-
-		String[] rows = map.split("\n");
-		int mapWidth = rows[0].length() / 9;
-		int mapHeight = rows.length;		
-		
+															// NOTES AFTER A FRUSTRATING DEBUG SESSION
+		String[] rows = map.split("\n");					// For some reason, libgdx will turn \n into some random combination of \r\n.
+		System.out.println(rows[0].length());				// To prevent this, use Gdx.files.internal, rather than Gdx.files.local.
+		int mapWidth = (rows[0].length() + 1) / 9;			// All maps used by this game will ONLY have a \n at the end of each line.
+		int mapHeight = rows.length;						// The final line's \n is optional (works either way).
+															
 		TiledMapTileLayer layer1 = new TiledMapTileLayer(mapWidth, mapHeight, 16, 16);
 		TiledMapTileLayer layer2 = new TiledMapTileLayer(mapWidth, mapHeight, 16, 16);
         
@@ -57,7 +58,8 @@ public class HexMapLoader
 		{
 			String[] tiles = row.split(" ");
 			for (String tile : tiles)
-			{
+			{	
+				System.out.println((int)tile.charAt(0));
                 int decorRot = Integer.parseInt(tile.substring(1, 2), 16);
                 int decorID = Integer.parseInt(tile.substring(2, 4), 16);
 				int funcID = Integer.parseInt(tile.substring(4, 6), 16);
