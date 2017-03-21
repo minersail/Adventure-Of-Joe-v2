@@ -15,7 +15,11 @@
 		</eventlistener>
 	</area>
 	<area id="1">
+<<<<<<< HEAD
 		<eventlistener state="disabled" owner="entity" entity="player" id="0">
+=======
+		<eventlistener state="autodisable" owner="entity" entity="player" id="0">
+>>>>>>> origin/master
 			<trigger dist="2" locX="2" locY="7" type="move"/>
 			<event type="cutscene" id="1"/>
 		</eventlistener>
@@ -31,10 +35,17 @@
 			<event entity="robber1" targetChar="player" type="aifollow"/>
 			<event entity="robber2" targetChar="player" type="aifollow"/>
 			<event action="start" type="quest" id="1"/>
+<<<<<<< HEAD
 			<event value="false" selectorvalue="mother" selectorname="name" elementname="entity" type="editxml" attribute="enabled" area="1" filename="entities.xml"/>
 			<event value="false" selectorvalue="robert" selectorname="name" elementname="entity" type="editxml" attribute="enabled" area="1" filename="entities.xml"/>
 			<event value="false" selectorvalue="mother" selectorname="name" elementname="entity" type="editxml" attribute="enabled" area="2" filename="entities.xml"/>
 			<event value="false" selectorvalue="robert" selectorname="name" elementname="entity" type="editxml" attribute="enabled" area="2" filename="entities.xml"/>
+=======
+			<event value="false" selectorvalue="mother" elementname="entity" type="editxml" selectorname="name" attribute="enabled" area="1" filename="entities.xml"/>
+			<event value="false" selectorvalue="robert" elementname="entity" type="editxml" selectorname="name" attribute="enabled" area="1" filename="entities.xml"/>
+			<event value="false" selectorvalue="mother" elementname="entity" type="editxml" selectorname="name" attribute="enabled" area="2" filename="entities.xml"/>
+			<event value="false" selectorvalue="robert" elementname="entity" type="editxml" selectorname="name" attribute="enabled" area="2" filename="entities.xml"/>
+>>>>>>> origin/master
 		</eventlistener>
 		<eventlistener state="autodisable" owner="entity" entity="player" id="2">
 			<trigger dist="1" locX="20" locY="6" type="move"/>
