@@ -10,8 +10,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import woohoo.gameobjects.components.PositionComponent.Orientation;
 
-/*
-*/
+/**
+ * Class containing the box2D components of a weapon
+ */
 public class WeaponComponent implements Component
 {    
 	public Body mass;
@@ -38,9 +39,7 @@ public class WeaponComponent implements Component
 		
         fixture = mass.createFixture(fixtureDef);
 		fixture.setSensor(true);
-        fixture.setDensity(.001f);
-        fixture.setFriction(0);
-        fixture.setRestitution(0);
+        fixture.setDensity(0.01f);
 		
 		isActive = true;
     }    
@@ -50,7 +49,8 @@ public class WeaponComponent implements Component
 		isActive = true;
 		mass.setFixedRotation(false);
 		mass.setTransform(mass.getTransform().getPosition(), weaponAngle);
-		mass.setAngularVelocity(0);
+		//mass.setAngularVelocity(0);
 		mass.applyTorque(0.8f, true);
+		System.out.println("swing");
 	}
 }

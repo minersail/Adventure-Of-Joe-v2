@@ -23,6 +23,7 @@ public class ItemContact extends ContactCommand
 		
 		PlayerComponent player = Mappers.players.get(contactB.owner);
 		
-		player.touchedItems.add(contactA.owner);
+		if (!player.touchedItems.contains(contactA.owner, true)) // Don't put the same item in twice
+			player.touchedItems.add(contactA.owner);
 	}
 }

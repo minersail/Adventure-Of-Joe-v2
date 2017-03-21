@@ -33,8 +33,6 @@ public class HitboxComponent implements Component
         fixture = mass.createFixture(fixtureDef);
 		fixture.setSensor(!enableCollision);
         fixture.setDensity(100f);
-        fixture.setFriction(0);
-        fixture.setRestitution(0);
 	}
 	
 	public ContactData getContactData()

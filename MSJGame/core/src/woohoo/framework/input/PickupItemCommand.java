@@ -1,6 +1,7 @@
 package woohoo.framework.input;
 
 import com.badlogic.ashley.core.Entity;
+import java.util.Iterator;
 import woohoo.framework.InventoryManager;
 import woohoo.gameworld.GameEngine;
 import woohoo.gameworld.Mappers;
@@ -21,10 +22,15 @@ public class PickupItemCommand implements InputCommand
 	{
 		if (Mappers.players.get(entity) == null) return;
 		
-		for (Entity item : Mappers.players.get(entity).touchedItems)
+		for (Iterator<Entity> it = Mappers.players.get(entity).touchedItems.iterator(); it.hasNext();)
 		{
+			Entity item = it.next();
+			
 			manager.addItem(Mappers.inventories.get(entity), item);
 			engine.removeEntity(item);
+			Mappers.hitboxes.get(entity).mass.getWorld().destroyBody(Mappers.hitboxes.get(entity).mass);
+			
+			it.remove();
 		}
 	}
 }

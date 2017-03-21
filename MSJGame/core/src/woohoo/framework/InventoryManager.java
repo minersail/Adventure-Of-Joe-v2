@@ -21,12 +21,15 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.XmlReader;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.ItemDataComponent;
 import woohoo.gameobjects.components.ItemDataComponent.ItemType;
 import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.PositionComponent;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.gameworld.Mappers;
+import woohoo.gameworld.RenderSystem;
 import woohoo.gameworld.WeaponSystem;
 import woohoo.screens.PlayingScreen;
 
@@ -188,9 +191,11 @@ public class InventoryManager
             Entity item = new Entity();
 			ItemDataComponent itemData = new ItemDataComponent(e.getChildByName("metadata") == null ? null : e.getChildByName("metadata").getAttributes()); // Metadata may be null
 			MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(e.getInt("id")).getItemTexture());
+			PositionComponent position = new PositionComponent();
 
 			item.add(itemData);
 			item.add(mapObject);
+			item.add(position);
 			
             inventory.addItem(item);
         }
@@ -270,6 +275,13 @@ public class InventoryManager
 
 				Mappers.positions.get(item).position = Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy();
 				Mappers.mapObjects.get(item).getTextureRegion().flip(false, true); // Because the world is in y-down and the UI is in y-up
+				
+				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, ContactType.Item);
+				hitbox.mass.setTransform(Mappers.positions.get(item).position.cpy().add(0.5f, 0.5f), 0);
+				item.add(hitbox);
+				
+				screen.getEngine().addEntity(item);
+				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get("Items").getObjects().add(Mappers.mapObjects.get(item));
 				return;
 			}
 		}
@@ -287,6 +299,13 @@ public class InventoryManager
 
 				Mappers.positions.get(item).position = Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy();
 				Mappers.mapObjects.get(item).getTextureRegion().flip(false, true); // Because the world is in y-down and the UI is in y-up
+				
+				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, ContactType.Item);
+				hitbox.mass.setTransform(Mappers.positions.get(item).position.cpy().add(0.5f, 0.5f), 0);
+				item.add(hitbox);
+				
+				screen.getEngine().addEntity(item);
+				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get("Items").getObjects().add(Mappers.mapObjects.get(item));
 				return;
 			}
 		}
