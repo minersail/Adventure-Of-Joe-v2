@@ -29,6 +29,6 @@ public class SentryState implements AIState
 		if (index >= positions.size)
 			index = 0;
 		
-		return ai.getDirection(pos.position, target);
+		return ai.getDirectionFromPath(pos.position, target);
 	}
 }

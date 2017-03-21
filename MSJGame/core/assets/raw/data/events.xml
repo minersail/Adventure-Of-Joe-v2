@@ -29,8 +29,8 @@
 		</eventlistener>
 		<eventlistener id="1" owner="system" system="cutscene" state="autodisable">
 			<trigger type="cutscene" />
-			<event type="ai" entity="robber1" mode="follow" targetChar="player" />
-			<event type="ai" entity="robber2" mode="follow" targetChar="player" />
+			<event type="aifollow" entity="robber1" targetChar="player" />
+			<event type="aifollow" entity="robber2" targetChar="player" />
 			<event type="quest" id="1" action="start" />
 			<event type="editxml" filename="entities.xml" elementname="entity" selectorname="name" selectorvalue="mother" attribute="enabled" value="false" area="1"/>
 			<event type="editxml" filename="entities.xml" elementname="entity" selectorname="name" selectorvalue="robert" attribute="enabled" value="false" area="1"/>
@@ -44,7 +44,7 @@
 	</area>
 	<area id="3">
 		<eventlistener id="0" owner="entity" entity="player" state="autodisable">
-			<trigger type="move" locX="3" locY="2" dist=".5" />
+			<trigger type="move" locX="3" locY="2" dist="1.5" />
 			<event type="cutscene" id="3" />
 		</eventlistener>
 	</area>

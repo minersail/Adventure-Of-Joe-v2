@@ -26,6 +26,10 @@ public class AIStateSystem extends IteratingSystem
 		screen = scr;
 	}
 	
+	/**
+	 * Initializes pathfinding grid for all entities in current game area
+	 * @param area
+	 */
 	public void initialize(int area)
 	{
 		FileHandle handle = Gdx.files.local("data/pathfinding.xml");
@@ -41,7 +45,13 @@ public class AIStateSystem extends IteratingSystem
 		}
 	}
     
-    public void initialize(Entity entity, int area)
+	/**
+	 * Initializes pathfinding grid for a single entity. <br>
+	 * Useful when AIComponents are added to an entity after the global initialization
+	 * @param entity
+	 * @param area
+	 */
+	public void initialize(Entity entity, int area)
     {
         FileHandle handle = Gdx.files.local("data/pathfinding.xml");
         
@@ -60,7 +70,13 @@ public class AIStateSystem extends IteratingSystem
 		PositionComponent position = Mappers.positions.get(entity);
 		AIComponent brain = Mappers.ai.get(entity);
 		
-		movement.direction = brain.state.getDirection(brain, position);
+		brain.timer += deltaTime;
+		
+		if (brain.timer >= brain.timeStep) // Only recalculates pathfinding after a certain interval
+		{
+			movement.direction = brain.state.getDirection(brain, position);
+			brain.timer = 0;
+		}
 		
 		if (Mappers.hitboxes.has(entity))
 		{

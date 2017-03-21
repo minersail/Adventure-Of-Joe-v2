@@ -17,6 +17,7 @@ import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.*;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameworld.Mappers;
+import woohoo.gameworld.RenderSystem;
 import woohoo.screens.PlayingScreen;
 
 public class EntityLoader
@@ -27,46 +28,9 @@ public class EntityLoader
 	{
 		screen = scr;
 		
-		screen.getEngine().addEntityListener(Family.one(HitboxComponent.class, LOSComponent.class, WeaponComponent.class).get(), new EntityListener()
-		{
-			@Override
-			public void entityAdded(Entity entity)
-			{
-				if (Mappers.hitboxes.has(entity))
-				{
-					Mappers.hitboxes.get(entity).mass.setUserData(new ContactData(Mappers.hitboxes.get(entity).hitboxType, entity));
-				}
-				
-				if (Mappers.sightLines.has(entity))
-				{
-					Mappers.sightLines.get(entity).mass.setUserData(new ContactData(ContactType.SightLine, entity));
-				}
-				
-				if (Mappers.weapons.has(entity))
-				{
-					Mappers.weapons.get(entity).mass.setUserData(new ContactData(ContactType.Weapon, entity));
-				}
-			}
-
-			@Override
-			public void entityRemoved(Entity entity)
-			{
-				if (Mappers.hitboxes.has(entity))
-				{
-					screen.getWorld().destroyBody(Mappers.hitboxes.get(entity).mass);
-				}
-				
-				if (Mappers.sightLines.has(entity))
-				{
-					screen.getWorld().destroyBody(Mappers.sightLines.get(entity).mass);
-				}
-				
-				if (Mappers.weapons.has(entity))
-				{
-					screen.getWorld().destroyBody(Mappers.weapons.get(entity).mass);
-				}
-			}
-		});	
+		screen.getEngine().addEntityListener(Family.one(HitboxComponent.class, LOSComponent.class, WeaponComponent.class).get(), new ContactDataListener());
+		screen.getEngine().addEntityListener(Family.one(MapObjectComponent.class, AnimMapObjectComponent.class).get(), new MapObjectListener());
+		
 	}	
 	
 	public void loadPlayer()
@@ -82,6 +46,7 @@ public class EntityLoader
 		MovementComponent movement = new MovementComponent(2);
 		PlayerComponent playerComp = new PlayerComponent();
 
+		screen.getInventoryManager().loadInventory(inventory);
 		screen.getInventoryManager().fillInventory(inventory);
 		hitbox.mass.setUserData(new ContactData(ContactType.Player, player));
 		
@@ -113,7 +78,7 @@ public class EntityLoader
 			Entity entity = new Entity();
 			
 			for (int i = 0; i < e.getChildCount(); i++)
-			{
+			{  
 				loadComponent(entity, e.getChild(i));
 			}
 			
@@ -198,5 +163,71 @@ public class EntityLoader
 		}
 		
 		entity.add(base);
+	}
+	
+	public class ContactDataListener implements EntityListener
+	{
+		@Override
+		public void entityAdded(Entity entity)
+		{
+			if (Mappers.hitboxes.has(entity))
+			{
+				Mappers.hitboxes.get(entity).mass.setUserData(new ContactData(Mappers.hitboxes.get(entity).hitboxType, entity));
+			}
+
+			if (Mappers.sightLines.has(entity))
+			{
+				Mappers.sightLines.get(entity).mass.setUserData(new ContactData(ContactType.SightLine, entity));
+			}
+
+			if (Mappers.weapons.has(entity))
+			{
+				Mappers.weapons.get(entity).mass.setUserData(new ContactData(ContactType.Weapon, entity));
+			}
+		}
+
+		@Override
+		public void entityRemoved(Entity entity)
+		{
+		}
+	}
+	
+	public class MapObjectListener implements EntityListener
+	{
+		@Override
+		public void entityAdded(Entity entity) 
+		{
+			if (Mappers.mapObjects.has(entity))
+			{
+				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get(getLayerString(entity)).getObjects().add(Mappers.mapObjects.get(entity));
+			}
+			else if (Mappers.animMapObjects.has(entity))
+			{
+				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get(getLayerString(entity)).getObjects().add(Mappers.animMapObjects.get(entity));
+			}
+		}
+
+		@Override
+		public void entityRemoved(Entity entity) 
+		{
+//			System.out.println(Mappers.mapObjects.has(entity));
+//			if (Mappers.mapObjects.has(entity))
+//			{
+//				System.out.println("bye");
+//				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get(getLayerString(entity)).getObjects().remove(Mappers.mapObjects.get(entity));
+//			}
+//			else if (Mappers.animMapObjects.has(entity))
+//			{
+//				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get(getLayerString(entity)).getObjects().remove(Mappers.animMapObjects.get(entity));
+//			}
+		}		
+		
+		private String getLayerString(Entity entity)
+		{
+			if (Mappers.items.has(entity))
+				return "Items";
+			else
+				return "Entities";
+		}
 	}
 }

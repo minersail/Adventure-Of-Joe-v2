@@ -24,6 +24,8 @@ public class ItemDataComponent implements Component
 		
 		public static ItemType fromString(String str) 
 		{
+			if (str == null) return Item;
+			
 			for (ItemType b : ItemType.values()) 
 			{
 				if (b.text.equalsIgnoreCase(str))
@@ -40,15 +42,7 @@ public class ItemDataComponent implements Component
     
     public ItemDataComponent(ObjectMap element)
     {
-		if (element == null)
-		{
-			metaData = new ObjectMap();
-			type = ItemType.Item;
-		}
-		else
-		{
-			metaData = element;
-			type = ItemType.fromString((String)element.get("type"));
-		}
+		metaData = element;
+		type = ItemType.fromString((String)element.get("type"));
     }          
 }

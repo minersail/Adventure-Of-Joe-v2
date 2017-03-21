@@ -8,17 +8,21 @@ public class GateComponent implements Component
 {
     private Vector2 playerOffset;
 	
-	public Vector2 position;
+	public Vector2 position; // NOT gate's position, but rather it's intended teleportation spot
 	public Vector2 size;
 	public Vector2 playerPos; // Where the player will exit the gate
 	public int destArea;
-	public boolean triggered;
+	public boolean triggered; // Whether the gate was activated
+	public boolean enabled; // Whether the gate can be activated again
 
     public GateComponent(World world)
     {        		
         // setPlayerOffset() must be called before playerPos can be used
         playerOffset = null;
 		playerPos = null;
+		
+		triggered = false;
+		enabled = true;
     }
 
     public void setPlayerOffset(Vector2 offset)

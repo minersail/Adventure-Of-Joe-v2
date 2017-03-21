@@ -1,7 +1,7 @@
 package woohoo.framework.input;
 
 import com.badlogic.ashley.core.Entity;
-import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
+import woohoo.framework.animation.FightAnimState;
 import woohoo.gameworld.Mappers;
 
 public class PlayerAttackCommand implements InputCommand
@@ -15,7 +15,7 @@ public class PlayerAttackCommand implements InputCommand
 		
 		if (Mappers.animMapObjects.has(entity))
 		{
-			Mappers.animMapObjects.get(entity).animState = AnimationState.Fighting;
+			Mappers.animMapObjects.get(entity).setAnimationState(new FightAnimState());
 		}
 	}
 }

@@ -16,6 +16,6 @@ public class FollowState implements AIState
 	@Override
 	public Direction getDirection(AIComponent ai, PositionComponent pos)
 	{
-		return ai.getDirection(pos.position, target.position);
+		return ai.getDirectionFromPath(pos.position, target.position);
 	}
 }

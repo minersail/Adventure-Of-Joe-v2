@@ -13,28 +13,13 @@ import woohoo.gameobjects.components.PositionComponent;
 
 public class RenderSystem extends IteratingSystem
 {
-	private GameRenderer renderer;
+	private final GameRenderer renderer;
 	
 	public RenderSystem(TiledMap map, float scale)
 	{
 		super(Family.all(PositionComponent.class).one(MapObjectComponent.class, AnimMapObjectComponent.class, HealthBarComponent.class).get());
 		
 		renderer = new GameRenderer(map, scale);
-	}
-	
-	public void initialize()
-	{		
-		for (Entity entity : super.getEntities())
-		{
-			if (Mappers.mapObjects.has(entity))
-			{
-				renderer.getMap().getLayers().get("Entities").getObjects().add(Mappers.mapObjects.get(entity));
-			}
-			else if (Mappers.animMapObjects.has(entity))
-			{
-				renderer.getMap().getLayers().get("Entities").getObjects().add(Mappers.animMapObjects.get(entity));
-			}
-		}
 	}
 	
 	@Override

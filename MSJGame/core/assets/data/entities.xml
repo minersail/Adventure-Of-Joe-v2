@@ -8,7 +8,6 @@
 			<contact />
 			<dialogue id="" />
 			<eventlistener />
-			<gate id="" />
 			<healthbar />
 			<health max="" />
 			<hitbox collides="" type=""/>
@@ -28,7 +27,7 @@
 	<area id="0">
 	</area>
 	<area id="1">
-		<entity enabled="true">
+		<entity enabled="true" name="mother">
 			<id name="mother" />
 			<ai state="stay" />
 			<anim atlas="mother.pack" />
@@ -38,7 +37,7 @@
 			<movement speed="1" />
 			<position x="7" y="6" />
 		</entity>
-		<entity enabled="true">
+		<entity enabled="true" name="robert">
 			<id name="robert" />
 			<ai state="stay" />
 			<anim atlas="robert.pack" />
@@ -50,7 +49,7 @@
 		</entity>
 	</area>
 	<area id="2">
-		<entity enabled="true">
+		<entity enabled="true" name="mother">
 			<id name="mother" />
 			<ai state="stay" />
 			<anim atlas="mother.pack" />
@@ -60,7 +59,7 @@
 			<movement speed="1" />
 			<position x="-2" y="2" />
 		</entity>
-		<entity enabled="true">
+		<entity enabled="true" name="robert">
 			<id name="robert" />
 			<ai state="stay" />
 			<anim atlas="robert.pack" />
@@ -70,7 +69,7 @@
 			<movement speed="1" />
 			<position x="-3" y="2" />
 		</entity>
-		<entity enabled="true">
+		<entity enabled="true" name="robber1">
 			<id name="robber1" />
 			<ai state="stay" />
 			<anim atlas="robber.pack" />
@@ -80,7 +79,7 @@
 			<movement speed="1.25" />
 			<position x="1" y="5" />
 		</entity>
-		<entity enabled="true">
+		<entity enabled="true" name="robber2">
 			<id name="robber2" />
 			<ai state="stay" />
 			<anim atlas="robber.pack" />
@@ -92,7 +91,7 @@
 		</entity>
 	</area>
 	<area id="3">
-		<entity enabled="true">
+		<entity enabled="true" name="bollin">
 			<id name="bollin" />
 			<ai state="stay" />
 			<anim atlas="oldman.pack" />
@@ -102,7 +101,7 @@
 			<movement speed="1" />
 			<position x="3" y="11" />
 		</entity>
-		<entity enabled="true">
+		<entity enabled="true" name="guard">
 			<id name="guard" />
 			<ai state="stay" />
 			<anim atlas="robert.pack" />
@@ -114,7 +113,7 @@
 		</entity>
 	</area>
 	<area id="4">
-		<entity enabled="true">
+		<entity enabled="true" name="woman1">
 			<id name="woman1" />
 			<ai state="random" />
 			<anim atlas="woman1.pack" />
@@ -124,7 +123,7 @@
 			<movement speed="1" />
 			<position x="10" y="4" />
 		</entity>
-		<entity enabled="true">
+		<entity enabled="true" name="woman2">
 			<id name="woman2" />
 			<ai state="random" />
 			<anim atlas="woman1.pack" />

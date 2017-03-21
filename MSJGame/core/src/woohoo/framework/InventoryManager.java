@@ -21,12 +21,16 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.XmlReader;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.ItemDataComponent;
 import woohoo.gameobjects.components.ItemDataComponent.ItemType;
 import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.PositionComponent;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.gameworld.Mappers;
+import woohoo.gameworld.RenderSystem;
+import woohoo.gameworld.WeaponSystem;
 import woohoo.screens.PlayingScreen;
 
 /**
@@ -108,11 +112,12 @@ public class InventoryManager
                 if (itemData.type == ItemType.Weapon)
                 {
 					WeaponComponent weapon = new WeaponComponent(screen.getWorld());
-					weapon.damage = (float)itemData.metaData.get("damage", "0.25f");
-					weapon.knockback = (float)itemData.metaData.get("knockback", "1");
+					weapon.damage = Float.parseFloat((String)itemData.metaData.get("damage", "0.25f"));
+					weapon.knockback = Float.parseFloat((String)itemData.metaData.get("knockback", "1"));
 					
 					weapon.mass.setUserData(new ContactData(ContactType.Weapon, screen.getEngine().getPlayer()));
 					screen.getEngine().getPlayer().add(weapon);
+					screen.getEngine().getSystem(WeaponSystem.class).equip(screen.getEngine().getPlayer(), weapon);
 					
                     super.drop(source, payload, x, y, pointer);
                 }
@@ -184,12 +189,8 @@ public class InventoryManager
         for (XmlReader.Element e : root.getChildrenByName("item"))
         {	
             Entity item = new Entity();
-			ItemDataComponent itemData = new ItemDataComponent(e.getChildByName("metadata").getAttributes()); // Metadata may be null
-			MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(e.getInt("id")).getItemTexture());
-
-			item.add(itemData);
-			item.add(mapObject);
-			
+			ItemDataComponent itemData = new ItemDataComponent(e.getChildByName("metadata").getAttributes());
+			item.add(itemData);			
             inventory.addItem(item);
         }
 	}
@@ -208,8 +209,9 @@ public class InventoryManager
 			if (i >= currentInventory.getItems().size() + 2) break;
 			
 			Entity item = currentInventory.getItems().get(i - 2); // i - 2 because the inventory starts at 0
-			Mappers.mapObjects.get(item).getTextureRegion().flip(false, true); // When MapObjectComponent is initialized textures are flipped by default
-			TextureRegion region = new TextureRegion(item.getComponent(MapObjectComponent.class).getTextureRegion());
+			
+			// Use the id from the itemdatacomponent to retrive a texture from the id manager
+			TextureRegion region = new TextureRegion(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
 			Image image = new Image(region);
 			image.setSize(ITEMX, ITEMY);
 			
@@ -240,6 +242,13 @@ public class InventoryManager
 				Mappers.mapObjects.get(item).getTextureRegion().flip(false, true); // Because the world is in y-down and the UI is in y-up
 				Image image = new Image(Mappers.mapObjects.get(item).getTextureRegion());
 				slot.setImage(image).setItem(item).setCount(1);
+				
+				// Remove unnecessary components while item is transferred to inventory
+				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get("Items").getObjects().remove(Mappers.mapObjects.get(item));
+				item.remove(MapObjectComponent.class);
+				screen.getWorld().destroyBody(Mappers.hitboxes.get(item).mass);
+				item.remove(HitboxComponent.class);
+				item.remove(PositionComponent.class);
 				return;
 			}
 		}
@@ -266,8 +275,17 @@ public class InventoryManager
 
 				currentInventory.removeItem(item);
 
-				Mappers.positions.get(item).position = Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy();
-				Mappers.mapObjects.get(item).getTextureRegion().flip(false, true); // Because the world is in y-down and the UI is in y-up
+				// Create position/mapObject components to go along with the item
+				PositionComponent position = new PositionComponent(Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy());
+				MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
+				
+				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, ContactType.Item);
+				hitbox.mass.setTransform(position.position.cpy().add(0.5f, 0.5f), 0);
+				item.add(hitbox);
+				item.add(position);
+				item.add(mapObject);
+				
+				screen.getEngine().addEntity(item);
 				return;
 			}
 		}
@@ -283,8 +301,17 @@ public class InventoryManager
 
 				currentInventory.removeItem(item);
 
-				Mappers.positions.get(item).position = Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy();
-				Mappers.mapObjects.get(item).getTextureRegion().flip(false, true); // Because the world is in y-down and the UI is in y-up
+				// Create position/mapObject components to go along with the item
+				PositionComponent position = new PositionComponent(Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy());
+				MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
+				
+				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, ContactType.Item);
+				hitbox.mass.setTransform(position.position.cpy().add(0.5f, 0.5f), 0);
+				item.add(hitbox);
+				item.add(position);
+				item.add(mapObject);
+				
+				screen.getEngine().addEntity(item);
 				return;
 			}
 		}
@@ -329,10 +356,8 @@ public class InventoryManager
         }
 		
 		public InventorySlot setItem(Entity entity)
-		{
-			if (Mappers.items.has(entity))			
-				item = entity;
-			
+		{		
+			item = entity;	
 			return this;
 		}
         

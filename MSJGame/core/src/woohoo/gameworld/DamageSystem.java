@@ -3,16 +3,22 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import woohoo.gameobjects.components.AnimMapObjectComponent;
-import woohoo.gameobjects.components.AnimMapObjectComponent.AnimationState;
+import woohoo.framework.animation.DeathAnimState;
+import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.HealthComponent;
+import woohoo.gameobjects.components.HitboxComponent;
+import woohoo.screens.PlayingScreen;
 
 public class DamageSystem extends IteratingSystem
 {
-	public DamageSystem()
+	private PlayingScreen screen;
+	
+	public DamageSystem(PlayingScreen scr)
 	{
 		super(Family.all(HealthComponent.class).get());
+		
+		screen = scr;
 	}
 	
 	@Override
@@ -27,12 +33,25 @@ public class DamageSystem extends IteratingSystem
 			HealthBarComponent healthBar = Mappers.healthBars.get(entity);
 			healthBar.percentLeft = life.currentHealth / life.maxHealth;
 		}
-		
+			
+		if (life.currentHealth <= 0 && !life.dead) // Only run kill code once
+			kill(entity);
+	}
+	
+	private void kill(Entity entity)
+	{		
 		if (Mappers.animMapObjects.has(entity))
 		{
-			AnimMapObjectComponent animation = Mappers.animMapObjects.get(entity);
-			if (life.currentHealth <= 0)
-				animation.animState = AnimationState.Death;
+			Mappers.animMapObjects.get(entity).setAnimationState(new DeathAnimState());
 		}
+		
+		if (Mappers.hitboxes.has(entity))
+		{
+			screen.getWorld().destroyBody(Mappers.hitboxes.get(entity).mass);
+			entity.remove(HitboxComponent.class);
+		}
+		
+		entity.remove(DialogueComponent.class);
+		Mappers.lives.get(entity).dead = true;
 	}
 }

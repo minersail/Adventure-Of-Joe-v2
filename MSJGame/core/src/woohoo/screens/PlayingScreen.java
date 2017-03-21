@@ -59,7 +59,7 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	public int currentArea = 1;
+	public int currentArea = 0;
 	
     private float runTime;
 	
@@ -118,15 +118,15 @@ public class PlayingScreen implements Screen
 		AIStateSystem aiSystem = new AIStateSystem(this);
 		AnimationSystem animationSystem = new AnimationSystem();
 		ContactSystem contactSystem = new ContactSystem(world);
-		DamageSystem damageSystem = new DamageSystem();
+		DamageSystem damageSystem = new DamageSystem(this);
 		EventSystem eventSystem = new EventSystem(this);
 		GateSystem gateSystem = new GateSystem(this);
 		InputSystem inputSystem = new InputSystem(this);
 		ItemSystem itemSystem = new ItemSystem();
 		LineOfSightSystem losSystem = new LineOfSightSystem();
 		MovementSystem movementSystem = new MovementSystem();
+		PlayerSystem playerSystem = new PlayerSystem();
 		RenderSystem renderSystem = new RenderSystem(map, 1.0f / WORLD_WIDTH);
-		renderSystem.getRenderer().setView(cam);
 		WeaponSystem weaponSystem = new WeaponSystem();
 		
 		inputSystem.priority = 0;
@@ -135,12 +135,13 @@ public class PlayingScreen implements Screen
 		weaponSystem.priority = 3;
 		damageSystem.priority = 4;
 		losSystem.priority = 5;
-		contactSystem.priority = 6;
-		itemSystem.priority = 7;
-		movementSystem.priority = 8;
-		gateSystem.priority = 9;
-		animationSystem.priority = 10;
-		renderSystem.priority = 11;
+		playerSystem.priority = 6;
+		contactSystem.priority = 7;
+		itemSystem.priority = 8;
+		movementSystem.priority = 9;
+		gateSystem.priority = 10;
+		animationSystem.priority = 11;
+		renderSystem.priority = 12;
 		
 		engine.addSystem(aiSystem);
 		engine.addSystem(animationSystem);
@@ -152,20 +153,21 @@ public class PlayingScreen implements Screen
 		engine.addSystem(itemSystem);
 		engine.addSystem(losSystem);
 		engine.addSystem(movementSystem);
+		engine.addSystem(playerSystem);
 		engine.addSystem(renderSystem);
 		engine.addSystem(weaponSystem);
+		
+		entityLoader.loadPlayer();
 		
 		state = GameState.Playing;
 	}
 
     public void initialize(int gameArea)
     {    
-		entityLoader.loadPlayer();
 		entityLoader.loadEntities(gameArea);
 		engine.getSystem(GateSystem.class).initialize(gameArea);
 		engine.getSystem(AIStateSystem.class).initialize(gameArea);
 		engine.getSystem(EventSystem.class).initialize(gameArea);
-		engine.getSystem(RenderSystem.class).initialize();
 		engine.getSystem(MovementSystem.class).initialize();
     }
 
@@ -180,7 +182,8 @@ public class PlayingScreen implements Screen
 		
 		switch (state)
 		{
-			case Playing:			
+			case Playing:
+				engine.getSystem(GateSystem.class).updateArea(); // Only works outside of the engine update loop
 				world.step(delta, 6, 2);
 				ui.act();
 				break;
@@ -203,7 +206,6 @@ public class PlayingScreen implements Screen
 		}
 		
 		alerts.act(delta);
-		//aiDebugger.renderLineOfSight(engine.getEntity("player"), cam);
 		debugRenderer.render(world, cam.combined);
 		ui.draw();
     }
@@ -368,14 +370,4 @@ public class PlayingScreen implements Screen
     {
 
     }
-	
-	public void resetData()
-	{
-		FileHandle raw = Gdx.files.internal("raw/data");
-		
-		for (FileHandle handle : raw.list())
-		{
-			handle.copyTo(Gdx.files.local("data/" + handle.name()));
-		}
-	}
 }

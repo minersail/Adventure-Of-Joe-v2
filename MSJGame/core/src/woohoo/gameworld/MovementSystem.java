@@ -29,6 +29,9 @@ public class MovementSystem extends IteratingSystem
 		MovementComponent movement = Mappers.movements.get(entity);
 		HitboxComponent hitbox = Mappers.hitboxes.get(entity);
 		PositionComponent position = Mappers.positions.get(entity);
+		
+        if (movement.direction != MovementComponent.Direction.None)
+            position.orientation = PositionComponent.Orientation.fromString(movement.direction.text()); // The enums have built in strings for conversion
         
 		switch (movement.direction)
 		{

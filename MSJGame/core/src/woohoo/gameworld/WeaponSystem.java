@@ -20,6 +20,8 @@ public class WeaponSystem extends IteratingSystem
 	{
 		WeaponComponent weapon = Mappers.weapons.get(entity);
 		
+		//weapon.mass(500, true);
+		
 		setAngle(weapon, Mappers.positions.get(entity).orientation);
 		
 		// Check if weapon is done with swing
@@ -33,6 +35,8 @@ public class WeaponSystem extends IteratingSystem
 		if (lowerBound > 2 * (float)Math.PI) lowerBound -= 2 * (float)Math.PI;
 		if (upperBound > 2 * (float)Math.PI) upperBound -= 2 * (float)Math.PI;
 		
+		//System.out.println(upperBound + " | " + rotation + " | " + lowerBound);
+		//System.out.println(weapon.mass.isFixedRotation());
 		if (rotation >= upperBound && rotation <= lowerBound)
 		{
 			weapon.isActive = false;
@@ -47,8 +51,8 @@ public class WeaponSystem extends IteratingSystem
 		equipped.add(weapon);
         
         RevoluteJointDef jointDef = new RevoluteJointDef();
-        jointDef.bodyA = Mappers.hitboxes.get(equipped).mass;
-        jointDef.bodyB = weapon.mass;
+        jointDef.bodyB = Mappers.hitboxes.get(equipped).mass;
+        jointDef.bodyA = weapon.mass;
         
         Mappers.hitboxes.get(equipped).mass.getWorld().createJoint(jointDef);
 			
@@ -59,13 +63,13 @@ public class WeaponSystem extends IteratingSystem
 	{
 		switch (dir)
 		{
-			case East:
+			case West:
 				weapon.weaponAngle = 2 * (float)Math.PI / 3;
 				break;
 			case North:
 				weapon.weaponAngle = 7 * (float)Math.PI / 6;
 				break;
-			case West:
+			case East:
 				weapon.weaponAngle = 5 * (float)Math.PI / 3;
 				break;
 			case South:

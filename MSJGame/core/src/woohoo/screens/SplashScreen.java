@@ -53,7 +53,6 @@ public class SplashScreen implements Screen, InputProcessor
 	{		
         Gdx.input.setInputProcessor(new InputMultiplexer(game.getPlayingScreen().getUI(), game.getPlayingScreen().getEngine().getSystem(InputSystem.class)));
 		game.getPlayingScreen().getRenderer().startFade(Color.BLACK);
-		game.getPlayingScreen().resetData();
 		game.setScreen(game.getPlayingScreen());
 		game.getPlayingScreen().initialize(game.getPlayingScreen().currentArea);
 	}

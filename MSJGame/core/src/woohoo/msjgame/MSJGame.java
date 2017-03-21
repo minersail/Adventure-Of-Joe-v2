@@ -2,6 +2,7 @@ package woohoo.msjgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.SplashScreen;
 
@@ -13,6 +14,7 @@ public class MSJGame extends Game
 	@Override
 	public void create()
 	{
+		resetData();
 		playingScreen = new PlayingScreen(this);
 		splashScreen = new SplashScreen(this);
 		
@@ -40,5 +42,15 @@ public class MSJGame extends Game
 	public SplashScreen getSplashScreen()
 	{
 		return splashScreen;
+	}
+	
+	public void resetData()
+	{
+		FileHandle raw = Gdx.files.internal("raw/data");
+		
+		for (FileHandle handle : raw.list())
+		{
+			handle.copyTo(Gdx.files.local("data/" + handle.name()));
+		}
 	}
 }

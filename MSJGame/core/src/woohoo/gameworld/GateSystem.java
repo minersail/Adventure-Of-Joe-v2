@@ -15,11 +15,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.contactcommands.ContactData;
+import woohoo.gameobjects.components.AnimMapObjectComponent;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.GateComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.PositionComponent;
 import woohoo.screens.PlayingScreen;
-import woohoo.screens.PlayingScreen.GameState;
 
 public class GateSystem extends IteratingSystem
 {
@@ -67,9 +67,11 @@ public class GateSystem extends IteratingSystem
             Entity entity = new Entity();
             GateComponent gate = new GateComponent(screen.getWorld());
             gate.size = new Vector2(gateElement.getFloat("sizeX"), gateElement.getFloat("sizeY"));
-            gate.position = new Vector2(gateElement.getFloat("destX") + 0.5f, gateElement.getFloat("destY") + 0.5f);
+            gate.position = new Vector2(gateElement.getFloat("destX"), gateElement.getFloat("destY")); // Top-left of spawn position
             gate.destArea = gateElement.getInt("destArea");
+			PositionComponent position = new PositionComponent(gateElement.getFloat("locX"), gateElement.getFloat("locY"));
             entity.add(gate);
+			entity.add(position);
 
             body.setUserData(new ContactData(ContactType.Gate, entity));
             
@@ -86,12 +88,8 @@ public class GateSystem extends IteratingSystem
 		{
 			triggeredGate = gate;
 			switchArea = true;
-		}
-		
-        if (switchArea && screen.getState() == GameState.Playing) // Boolean check instead of instantaneous call is necessary so
-		{                                                         // that the area switching does not take place during world.step();
-			updateArea();
-		}                   
+			gate.triggered = false;
+		}                 
 	}
 	
 	/*
@@ -99,10 +97,12 @@ public class GateSystem extends IteratingSystem
     */
     public void updateArea()
 	{ 
-		// Clear all walls and gates
+		if (!switchArea) return;
+		
         Array<Body> bodies = new Array<>();
 		screen.getWorld().getBodies(bodies);
 		
+		// Clear all bodies, except for player
 		for (Body body : bodies)
 		{
             if (((ContactData)body.getUserData()).owner != screen.getEngine().getPlayer())
@@ -112,7 +112,7 @@ public class GateSystem extends IteratingSystem
 		// Remove all entities from game world		
 		for (Entity entity : screen.getEngine().getDuplicateList())
 		{
-			if (entity != screen.getEngine().getPlayer())
+			if (entity != screen.getEngine().getPlayer()) // Except player
 			{
 				screen.getEngine().removeEntity(entity);
 			}
@@ -122,9 +122,9 @@ public class GateSystem extends IteratingSystem
 		Mappers.eventListeners.get(screen.getEngine().getPlayer()).listeners.clearListeners();
 		screen.getCutsceneManager().getListeners().clearListeners();
 		
-		// Just fancy way to move all objects from old map to new map (Change in future to just player)
+		// Create new map, discarding old one
 		final TiledMap map = screen.getMapLoader().load(triggeredGate.destArea);
-		map.getLayers().get("Entities").getObjects().add(screen.getEngine().getPlayer().getComponent(MapObjectComponent.class));
+		map.getLayers().get("Entities").getObjects().add(screen.getEngine().getPlayer().getComponent(AnimMapObjectComponent.class));
 		screen.getRenderer().setMap(map);
         
 		// Move the player to the entrance of the new map based on where he exited previous map (Took forever to figure out)
