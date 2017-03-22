@@ -18,6 +18,7 @@ import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.GateComponent;
+import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.PositionComponent;
 import woohoo.screens.PlayingScreen;
 
@@ -125,6 +126,7 @@ public class GateSystem extends IteratingSystem
 		// Create new map, discarding old one
 		final TiledMap map = screen.getMapLoader().load(triggeredGate.destArea);
 		map.getLayers().get("Entities").getObjects().add(screen.getEngine().getPlayer().getComponent(AnimMapObjectComponent.class));
+		map.getLayers().get("Entities").getObjects().add(screen.getEngine().getPlayer().getComponent(HealthBarComponent.class));
 		screen.getRenderer().setMap(map);
         
 		// Move the player to the entrance of the new map based on where he exited previous map (Took forever to figure out)

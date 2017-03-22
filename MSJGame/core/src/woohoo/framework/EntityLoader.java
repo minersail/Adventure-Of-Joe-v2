@@ -29,7 +29,7 @@ public class EntityLoader
 		screen = scr;
 		
 		screen.getEngine().addEntityListener(Family.one(HitboxComponent.class, LOSComponent.class, WeaponComponent.class).get(), new ContactDataListener());
-		screen.getEngine().addEntityListener(Family.one(MapObjectComponent.class, AnimMapObjectComponent.class).get(), new MapObjectListener());
+		screen.getEngine().addEntityListener(Family.one(MapObjectComponent.class, AnimMapObjectComponent.class, HealthBarComponent.class).get(), new MapObjectListener());
 		
 	}	
 	
@@ -41,6 +41,8 @@ public class EntityLoader
 		IDComponent id = new IDComponent("player");
 		InventoryComponent inventory = new InventoryComponent();
 		EventListenerComponent eventListener = new EventListenerComponent();
+		HealthComponent life = new HealthComponent(100);
+		HealthBarComponent healthBar = new HealthBarComponent(screen.getAssets().get("ui/healthbar.pack", TextureAtlas.class));
 		HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), true, ContactType.Player);
 		InputComponent input = new InputComponent();
 		MovementComponent movement = new MovementComponent(2);
@@ -55,6 +57,8 @@ public class EntityLoader
 		player.add(id);
 		player.add(inventory);
 		player.add(eventListener);
+		player.add(life);
+		player.add(healthBar);
 		player.add(hitbox);
 		player.add(input);
 		player.add(movement);
@@ -201,9 +205,15 @@ public class EntityLoader
 			{
 				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get(getLayerString(entity)).getObjects().add(Mappers.mapObjects.get(entity));
 			}
-			else if (Mappers.animMapObjects.has(entity))
+			
+			if (Mappers.animMapObjects.has(entity))
 			{
 				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get(getLayerString(entity)).getObjects().add(Mappers.animMapObjects.get(entity));
+			}
+			
+			if (Mappers.healthBars.has(entity))
+			{
+				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get(getLayerString(entity)).getObjects().add(Mappers.healthBars.get(entity));
 			}
 		}
 

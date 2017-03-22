@@ -48,7 +48,7 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
         else if (object instanceof HealthBarComponent)
         {
             HealthBarComponent healthBar = (HealthBarComponent)object;
-            
+			
             healthBar.draw(batch);
         }
 	}

@@ -25,6 +25,9 @@ public class DamageSystem extends IteratingSystem
 	protected void processEntity(Entity entity, float deltaTime)
 	{
 		HealthComponent life = Mappers.lives.get(entity);
+		
+		life.damageCooldown = Math.max(0, life.damageCooldown - deltaTime);		
+		
 		life.currentHealth = Math.max(0, life.currentHealth - life.getIncomingDamage());
 		life.resetDamage();
 		

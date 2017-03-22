@@ -9,6 +9,8 @@ public class HealthComponent implements Component
 	public boolean invulnerable;
 	public boolean dead;
 	
+	public float damageCooldown; // Timer so that entities only take damage once every X seconds
+	
 	private float incomingDamage; // Running total of all damage entity has taken this game tick
 	
 	public HealthComponent()
@@ -24,8 +26,11 @@ public class HealthComponent implements Component
     
     public void damage(float damage)
     {
-        if (!invulnerable)
+        if (!invulnerable && damageCooldown == 0)
+		{
 			incomingDamage += damage;
+			damageCooldown = 0.5f;
+		}
     }
 	
 	public float getIncomingDamage()

@@ -25,7 +25,8 @@ public class ContactSystem extends IteratingSystem
 		collisions = new Array<>();
 		commands = new Array<>();
         commands.add(new GateContact());
-        commands.add(new EnemyHitContact());
+        commands.add(new EnemyHitByPlayerContact());
+        commands.add(new EnemyTouchPlayerContact());
         commands.add(new ItemContact());
 		
 		world.setContactListener(new ContactListener() 

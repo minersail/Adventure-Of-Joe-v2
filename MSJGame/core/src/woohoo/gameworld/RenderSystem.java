@@ -49,14 +49,16 @@ public class RenderSystem extends IteratingSystem
 				mapObject.setColor(new Color(1, 1, 1, opacity.calculateOpacity()));
 			}
 		}
-		else if (Mappers.animMapObjects.has(entity))
+		
+		if (Mappers.animMapObjects.has(entity))
 		{
 			AnimMapObjectComponent animMapObject = Mappers.animMapObjects.get(entity);
 			
 			animMapObject.setX(pos.position.x);
 			animMapObject.setY(pos.position.y);
 		}
-		else if (Mappers.healthBars.has(entity))
+		
+		if (Mappers.healthBars.has(entity))
 		{
 			HealthBarComponent healthBar = Mappers.healthBars.get(entity);
 			

@@ -36,13 +36,13 @@
 			<event value="false" selectorvalue="mother" elementname="entity" type="editxml" selectorname="name" attribute="enabled" area="2" filename="entities.xml"/>
 			<event value="false" selectorvalue="robert" elementname="entity" type="editxml" selectorname="name" attribute="enabled" area="2" filename="entities.xml"/>
 		</eventlistener>
-		<eventlistener state="disabled" owner="entity" entity="player" id="2">
+		<eventlistener state="autodisable" owner="entity" entity="player" id="2">
 			<trigger dist="1" locX="20" locY="6" type="move"/>
 			<event action="end" type="quest" id="1"/>
 		</eventlistener>
 	</area>
 	<area id="3">
-		<eventlistener state="disabled" owner="entity" entity="player" id="0">
+		<eventlistener state="autodisable" owner="entity" entity="player" id="0">
 			<trigger dist="1.5" locX="3" locY="2" type="move"/>
 			<event type="cutscene" id="3"/>
 		</eventlistener>

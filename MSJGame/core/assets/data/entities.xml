@@ -48,7 +48,7 @@
 			<ai state="stay"/>
 			<anim atlas="robber.pack"/>
 			<dialogue id="3"/>
-			<health max="1"/>
+			<health max="10"/>
 			<hitbox collides="true" type="enemy"/>
 			<movement speed="1.25"/>
 			<position x="1" y="5"/>
@@ -58,7 +58,7 @@
 			<ai state="stay"/>
 			<anim atlas="robber.pack"/>
 			<dialogue id="4"/>
-			<health max="1"/>
+			<health max="10"/>
 			<hitbox collides="true" type="enemy"/>
 			<movement speed="1.25"/>
 			<position x="3" y="5"/>

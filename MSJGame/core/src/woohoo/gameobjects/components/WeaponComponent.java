@@ -41,7 +41,7 @@ public class WeaponComponent implements Component
 		fixture.setSensor(true);
         fixture.setDensity(1f);
 		
-		isActive = true;
+		isActive = false;
     }    
 	
 	public void swing()

@@ -6,9 +6,9 @@ import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.gameworld.Mappers;
 
-public class EnemyHitContact extends ContactCommand
+public class EnemyHitByPlayerContact extends ContactCommand
 {
-	public EnemyHitContact()
+	public EnemyHitByPlayerContact()
 	{
 		super(ContactType.Weapon, ContactType.Enemy);
 	}
@@ -42,6 +42,9 @@ public class EnemyHitContact extends ContactCommand
 			case East:			
 				hitbox.mass.applyForceToCenter(new Vector2(weapon.knockback * 100000, 0), true);
 				break;
-		}
+		}		
+		
+		if (Mappers.lives.has(contactB.owner))
+			Mappers.lives.get(contactB.owner).damage(1);		
 	}
 }
