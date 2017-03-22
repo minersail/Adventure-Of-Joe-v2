@@ -45,7 +45,7 @@ public class HexMapLoader
 		String map = mapHandle.readString();
 															// NOTES AFTER A FRUSTRATING DEBUG SESSION
 		String[] rows = map.split("\n");					// For some reason, libgdx will turn \n into some random combination of \r\n.
-		System.out.println(rows[0].length());				// To prevent this, use Gdx.files.internal, rather than Gdx.files.local.
+															// To prevent this, use Gdx.files.internal, rather than Gdx.files.local.
 		int mapWidth = (rows[0].length() + 1) / 9;			// All maps used by this game will ONLY have a \n at the end of each line.
 		int mapHeight = rows.length;						// The final line's \n is optional (works either way).
 															
@@ -59,7 +59,6 @@ public class HexMapLoader
 			String[] tiles = row.split(" ");
 			for (String tile : tiles)
 			{	
-				System.out.println((int)tile.charAt(0));
                 int decorRot = Integer.parseInt(tile.substring(1, 2), 16);
                 int decorID = Integer.parseInt(tile.substring(2, 4), 16);
 				int funcID = Integer.parseInt(tile.substring(4, 6), 16);

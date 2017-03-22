@@ -269,25 +269,7 @@ public class InventoryManager
 		{
 			InventorySlot slot = (InventorySlot)table.getCells().get(i).getActor();
 			
-			if (slot.getItem() != null && slot.getItem().equals(item))
-			{
-				slot.setItem(null).setImage(new Image(blankItem)).setCount(0);
-
-				currentInventory.removeItem(item);
-
-				// Create position/mapObject components to go along with the item
-				PositionComponent position = new PositionComponent(Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy());
-				MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
-				
-				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, ContactType.Item);
-				hitbox.mass.setTransform(position.position.cpy().add(0.5f, 0.5f), 0);
-				item.add(hitbox);
-				item.add(position);
-				item.add(mapObject);
-				
-				screen.getEngine().addEntity(item);
-				return;
-			}
+			if (drop(item, slot)) return;
 		}
 		
 		// Check both tables
@@ -295,26 +277,41 @@ public class InventoryManager
 		{
 			InventorySlot slot = (InventorySlot)table2.getCells().get(i).getActor();
 			
-			if (slot.getItem() != null && slot.getItem().equals(item))
-			{
-				slot.setItem(null).setImage(new Image(blankItem)).setCount(0);
-
-				currentInventory.removeItem(item);
-
-				// Create position/mapObject components to go along with the item
-				PositionComponent position = new PositionComponent(Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy());
-				MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
-				
-				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, ContactType.Item);
-				hitbox.mass.setTransform(position.position.cpy().add(0.5f, 0.5f), 0);
-				item.add(hitbox);
-				item.add(position);
-				item.add(mapObject);
-				
-				screen.getEngine().addEntity(item);
-				return;
-			}
+			if (drop(item, slot)) return;
 		}
+	}
+	
+	/**
+	 * Utility function, saves me from typing the exact same thing in both item for loops
+	 * @param item item from dropItem()
+	 * @param slot slot from dropItem()
+	 * @return true if the item was successfully dropped
+	 */
+	private boolean drop(Entity item, InventorySlot slot)
+	{		
+		if (slot.getItem() != null && slot.getItem().equals(item))
+		{			
+			// Create empty slot
+			slot.setItem(null).setImage(new Image(blankItem)).setCount(0);
+
+			currentInventory.removeItem(item);
+
+			// Create position/mapObject components to go along with the item
+			PositionComponent position = new PositionComponent(Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy());
+			MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
+
+			HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, ContactType.Item);
+			hitbox.mass.setTransform(position.position.cpy().add(0.5f, 0.5f), 0);
+			item.add(hitbox);
+			item.add(position);
+			item.add(mapObject);
+
+			screen.getEngine().addEntity(item);
+			return true;
+		}
+		
+		// Item was not in slot
+		return false;
 	}
 	
 	/**
@@ -453,7 +450,7 @@ public class InventoryManager
 
 				if (((InventorySlot)getActor()).isWeaponSlot())
 				{
-					screen.getEngine().getPlayer().remove(WeaponComponent.class);
+					screen.getEngine().getSystem(WeaponSystem.class).unequip(screen.getEngine().getPlayer());
 				}
 				
                 dropItem(dropped);
@@ -505,7 +502,7 @@ public class InventoryManager
 				}
 				else
 				{
-					screen.getEngine().getPlayer().remove(WeaponComponent.class);
+					screen.getEngine().getSystem(WeaponSystem.class).unequip(screen.getEngine().getPlayer());
 				}
 			}
 

@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.quests.Quest;
 import woohoo.framework.quests.Quest.QuestState;
 import woohoo.gameworld.Mappers;
+import woohoo.gameworld.RenderSystem;
 import woohoo.screens.PlayingScreen;
 
 public class QuestManager
@@ -73,6 +74,7 @@ public class QuestManager
 		quests.get(id).setQuestIcon("discovered");
 	}
 	
+	// Adds indicator, creates popup
 	public void startQuest(int id)
 	{
 		screen.getEngine().addEntity(quests.get(id).getQuest().getIndicator());
@@ -81,8 +83,10 @@ public class QuestManager
 		quests.get(id).setQuestIcon("current");
 	}
 	
+	// Removes indicator
 	public void endQuest(int id)
 	{
+		screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get("Entities").getObjects().remove(Mappers.mapObjects.get(quests.get(id).getQuest().getIndicator()));
 		screen.getEngine().removeEntity(quests.get(id).getQuest().getIndicator());
 		
 		quests.get(id).setQuestIcon("completed");

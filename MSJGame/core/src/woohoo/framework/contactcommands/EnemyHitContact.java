@@ -26,19 +26,21 @@ public class EnemyHitContact extends ContactCommand
 		HitboxComponent hitbox = Mappers.hitboxes.get(contactB.owner);
 		WeaponComponent weapon = Mappers.weapons.get(contactA.owner);
 		
+		if (!weapon.isActive) return;
+		
 		switch(Mappers.weapons.get(contactA.owner).weaponDirection)
 		{
 			case North:			
-				hitbox.mass.applyLinearImpulse(new Vector2(0, -weapon.knockback), hitbox.mass.getLocalCenter(), true);
+				hitbox.mass.applyForceToCenter(new Vector2(0, -weapon.knockback * 100000), true);
 				break;
 			case South:			
-				hitbox.mass.applyLinearImpulse(new Vector2(0, weapon.knockback), hitbox.mass.getLocalCenter(), true);
+				hitbox.mass.applyForceToCenter(new Vector2(0, weapon.knockback * 100000), true);
 				break;
 			case West:			
-				hitbox.mass.applyLinearImpulse(new Vector2(-weapon.knockback, 0), hitbox.mass.getLocalCenter(), true);
+				hitbox.mass.applyForceToCenter(new Vector2(-weapon.knockback * 100000, 0), true);
 				break;
 			case East:			
-				hitbox.mass.applyLinearImpulse(new Vector2(weapon.knockback, 0), hitbox.mass.getLocalCenter(), true);
+				hitbox.mass.applyForceToCenter(new Vector2(weapon.knockback * 100000, 0), true);
 				break;
 		}
 	}

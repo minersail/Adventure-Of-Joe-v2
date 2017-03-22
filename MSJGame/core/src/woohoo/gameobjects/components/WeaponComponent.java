@@ -39,7 +39,7 @@ public class WeaponComponent implements Component
 		
         fixture = mass.createFixture(fixtureDef);
 		fixture.setSensor(true);
-        fixture.setDensity(0.01f);
+        fixture.setDensity(1f);
 		
 		isActive = true;
     }    
@@ -49,8 +49,6 @@ public class WeaponComponent implements Component
 		isActive = true;
 		mass.setFixedRotation(false);
 		mass.setTransform(mass.getTransform().getPosition(), weaponAngle);
-		//mass.setAngularVelocity(0);
-		mass.applyTorque(0.8f, true);
-		System.out.println("swing");
+		mass.setAngularVelocity(50);
 	}
 }

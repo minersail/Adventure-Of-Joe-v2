@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.OpacityComponent;
 import woohoo.gameobjects.components.PositionComponent;
 
 public class Quest
@@ -14,7 +15,7 @@ public class Quest
 	}
 	
 	protected QuestState questState = QuestState.Unknown;
-	protected Entity indicator;
+	protected Entity indicator; // Entity representing quest on map (location marker, etc.)
 	protected int id;
 	protected String description;
 	
@@ -26,8 +27,10 @@ public class Quest
 		indicator = new Entity();
 		MapObjectComponent mapObject = new MapObjectComponent(new TextureRegion(indicatorTexture));
 		PositionComponent position = new PositionComponent();
+		OpacityComponent opacity = new OpacityComponent();
 		indicator.add(mapObject);
 		indicator.add(position);
+		indicator.add(opacity);
 	}
 			
 	public void setState(QuestState state)
