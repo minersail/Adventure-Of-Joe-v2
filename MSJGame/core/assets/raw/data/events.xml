@@ -36,6 +36,11 @@
 			<event type="editxml" filename="entities.xml" elementname="entity" selectorname="name" selectorvalue="robert" attribute="enabled" value="false" area="1"/>
 			<event type="editxml" filename="entities.xml" elementname="entity" selectorname="name" selectorvalue="mother" attribute="enabled" value="false" area="2"/>
 			<event type="editxml" filename="entities.xml" elementname="entity" selectorname="name" selectorvalue="robert" attribute="enabled" value="false" area="2"/>
+			<event type="hitboxtype" contacttype="chaser" entity="robber1" />
+			<event type="hitboxtype" contacttype="chaser" entity="robber2" />
+			<event type="addcomponent" entity="player">
+				<chase />
+			</event>
 		</eventlistener>
 		<eventlistener id="2" owner="entity" entity="player" state="autodisable">
 			<trigger type="move" locX="20" locY="6" dist="1" />

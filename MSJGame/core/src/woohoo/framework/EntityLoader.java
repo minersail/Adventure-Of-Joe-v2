@@ -90,7 +90,7 @@ public class EntityLoader
 		}	
 	}
 	
-	private void loadComponent(Entity entity, Element component)
+	public void loadComponent(Entity entity, Element component)
 	{
 		Component base;
 		
@@ -110,6 +110,9 @@ public class EntityLoader
 				break;
 			case "anim":
 				base = new AnimMapObjectComponent(screen.getAssets().get("images/entities/" + component.get("atlas"), TextureAtlas.class));
+				break;
+			case "chase":
+				base = new ChaseComponent();
 				break;
 			case "contact":
 				base = new ContactComponent();

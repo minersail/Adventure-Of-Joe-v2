@@ -16,6 +16,7 @@ public class ContactComponent implements Component
 		NPC("npc"),
 		Weapon("weapon"),
 		Enemy("enemy"),
+		Chaser("chaser"),
 		SightLine("sightline");
 		
 		private String text;

@@ -8,16 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
-import woohoo.framework.events.AIFollowEvent;
-import woohoo.framework.events.AIMoveToEvent;
-import woohoo.framework.events.AttributeXMLEvent;
-import woohoo.framework.events.CutsceneEvent;
-import woohoo.framework.events.CutsceneTrigger;
-import woohoo.framework.events.Event;
-import woohoo.framework.events.EventListener;
-import woohoo.framework.events.EventTrigger;
-import woohoo.framework.events.MoveTrigger;
-import woohoo.framework.events.QuestEvent;
+import woohoo.framework.events.*;
 import woohoo.gameobjects.components.EventListenerComponent;
 import woohoo.screens.PlayingScreen;
 
@@ -88,6 +79,12 @@ public class EventSystem extends IteratingSystem
 					case "editxml":
 						event = new AttributeXMLEvent(eventEl.get("filename"), eventEl.get("attribute"), eventEl.get("value"), eventEl.getInt("area"), 
 													  eventEl.get("elementname"), eventEl.get("selectorname"), eventEl.get("selectorvalue"));
+						break;
+					case "hitboxtype":
+						event = new HitboxTypeEvent(eventEl.get("contacttype"), Mappers.hitboxes.get(screen.getEngine().getEntity(eventEl.get("entity"))));
+						break;
+					case "addcomponent":
+						event = new AddComponentEvent(screen.getEntityLoader(), screen.getEngine().getEntity(eventEl.get("entity")), eventEl.getChild(0));
 						break;
 					default:
 						event = null;
