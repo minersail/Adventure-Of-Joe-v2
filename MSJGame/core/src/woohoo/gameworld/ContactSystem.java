@@ -28,6 +28,7 @@ public class ContactSystem extends IteratingSystem
         commands.add(new EnemyHitByPlayerContact());
         commands.add(new EnemyTouchPlayerContact());
         commands.add(new ItemContact());
+        commands.add(new ChaseContact());
 		
 		world.setContactListener(new ContactListener() 
 		{
@@ -37,7 +38,9 @@ public class ContactSystem extends IteratingSystem
 				ContactData data1 = (ContactData)contact.getFixtureA().getBody().getUserData();
 				ContactData data2 = (ContactData)contact.getFixtureB().getBody().getUserData();
 				
-				collisions.add(new ContactDataPair(data1, data2));
+				ContactDataPair pair = new ContactDataPair(data1, data2);
+				collisions.add(pair);
+				//System.out.println("Added: " + pair);
 			}
 
 			@Override
@@ -46,7 +49,9 @@ public class ContactSystem extends IteratingSystem
 				ContactData data1 = (ContactData)contact.getFixtureA().getBody().getUserData();
 				ContactData data2 = (ContactData)contact.getFixtureB().getBody().getUserData();
 				
-				collisions.removeValue(new ContactDataPair(data1, data2), false);
+				ContactDataPair pair = new ContactDataPair(data1, data2);
+				collisions.removeValue(pair, false);
+				//System.out.println("Removed: " + pair);
 			}
 
 			@Override

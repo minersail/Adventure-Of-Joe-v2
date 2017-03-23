@@ -6,6 +6,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
+import woohoo.gameobjects.components.ChaseComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.OpacityComponent;
@@ -17,7 +18,7 @@ public class RenderSystem extends IteratingSystem
 	
 	public RenderSystem(TiledMap map, float scale)
 	{
-		super(Family.all(PositionComponent.class).one(MapObjectComponent.class, AnimMapObjectComponent.class, HealthBarComponent.class).get());
+		super(Family.all(PositionComponent.class).one(MapObjectComponent.class, AnimMapObjectComponent.class, HealthBarComponent.class, ChaseComponent.class).get());
 		
 		renderer = new GameRenderer(map, scale);
 	}
@@ -64,6 +65,14 @@ public class RenderSystem extends IteratingSystem
 			
 			healthBar.setX(pos.position.x);
 			healthBar.setY(pos.position.y);
+		}
+		
+		if (Mappers.chasers.has(entity))
+		{
+			ChaseComponent chaseBar = Mappers.chasers.get(entity);
+			
+			chaseBar.setX(pos.position.x);
+			chaseBar.setY(pos.position.y - chaseBar.METER_HEIGHT);
 		}
 	}
 	

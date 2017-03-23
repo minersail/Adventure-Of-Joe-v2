@@ -30,7 +30,7 @@ public class EntityLoader
 		
 		screen.getEngine().addEntityListener(Family.one(HitboxComponent.class, LOSComponent.class, WeaponComponent.class).get(), new ContactDataListener());
 		screen.getEngine().addEntityListener(Family.one(MapObjectComponent.class, AnimMapObjectComponent.class, HealthBarComponent.class).get(), new MapObjectListener());
-		
+		screen.getEngine().addEntityListener(Family.all(ChaseComponent.class).get(), new ChaseListener());		
 	}	
 	
 	public void loadPlayer()
@@ -112,7 +112,7 @@ public class EntityLoader
 				base = new AnimMapObjectComponent(screen.getAssets().get("images/entities/" + component.get("atlas"), TextureAtlas.class));
 				break;
 			case "chase":
-				base = new ChaseComponent();
+				base = new ChaseComponent(screen.getAssets().get("ui/chasebar.pack", TextureAtlas.class));
 				break;
 			case "contact":
 				base = new ContactComponent();
@@ -218,6 +218,11 @@ public class EntityLoader
 			{
 				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get(getLayerString(entity)).getObjects().add(Mappers.healthBars.get(entity));
 			}
+			
+			if (Mappers.chasers.has(entity))
+			{
+				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get(getLayerString(entity)).getObjects().add(Mappers.chasers.get(entity));
+			}
 		}
 
 		@Override
@@ -242,5 +247,22 @@ public class EntityLoader
 			else
 				return "Entities";
 		}
+	}
+	
+	public class ChaseListener implements EntityListener
+	{
+		@Override
+		public void entityAdded(Entity entity) 
+		{
+			if (Mappers.chasers.has(entity))
+			{
+				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get("Entities").getObjects().add(Mappers.chasers.get(entity));
+			}
+		}
+
+		@Override
+		public void entityRemoved(Entity entity) 
+		{
+		}		
 	}
 }

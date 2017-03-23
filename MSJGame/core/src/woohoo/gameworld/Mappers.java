@@ -20,6 +20,7 @@ public class Mappers
 	public static ComponentMapper<WeaponComponent> weapons = ComponentMapper.getFor(WeaponComponent.class);
 	public static ComponentMapper<PlayerComponent> players = ComponentMapper.getFor(PlayerComponent.class);
 	public static ComponentMapper<HealthComponent> lives = ComponentMapper.getFor(HealthComponent.class);
+	public static ComponentMapper<ChaseComponent> chasers = ComponentMapper.getFor(ChaseComponent.class);
 	public static ComponentMapper<LOSComponent> sightLines = ComponentMapper.getFor(LOSComponent.class);
 	public static ComponentMapper<InputComponent> inputs = ComponentMapper.getFor(InputComponent.class);
 	public static ComponentMapper<GateComponent> gates = ComponentMapper.getFor(GateComponent.class);

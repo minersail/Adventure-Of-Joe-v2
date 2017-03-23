@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
+import woohoo.gameobjects.components.ChaseComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.MapObjectComponent;
 
@@ -50,6 +51,11 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
             HealthBarComponent healthBar = (HealthBarComponent)object;
 			
             healthBar.draw(batch);
+        }	
+        else if (object instanceof ChaseComponent)
+        {
+            ChaseComponent chaseBar = (ChaseComponent)object;
+            chaseBar.draw(batch);
         }
 	}
 	
