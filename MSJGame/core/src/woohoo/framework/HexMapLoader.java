@@ -42,12 +42,12 @@ public class HexMapLoader
         Texture decorationTileset = screen.getAssets().get("images/tilesets/d_tileset" + d_tilesetNum + ".png", Texture.class);
         
 		FileHandle mapHandle = Gdx.files.internal("maps/" + area + ".txt");
-		String map = mapHandle.readString();
+		String map = mapHandle.readString().replace("\r", "");		
 															// NOTES AFTER A FRUSTRATING DEBUG SESSION
 		String[] rows = map.split("\n");					// For some reason, libgdx will turn \n into some random combination of \r\n.
 															// To prevent this, use Gdx.files.internal, rather than Gdx.files.local.
-		int mapWidth = (rows[0].length() + 1) / 9;			// All maps used by this game will ONLY have a \n at the end of each line.
-		int mapHeight = rows.length;						// The final line's \n is optional (works either way).
+		int mapWidth = (rows[0].length() + 1) / 9;			// All maps used by this game may have \r\n, or \n. \rs will be filtered out.
+		int mapHeight = rows.length;						// The final line's newline is optional (works either way).
 															
 		TiledMapTileLayer layer1 = new TiledMapTileLayer(mapWidth, mapHeight, 16, 16);
 		TiledMapTileLayer layer2 = new TiledMapTileLayer(mapWidth, mapHeight, 16, 16);
