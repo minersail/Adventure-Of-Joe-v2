@@ -3,6 +3,7 @@ package woohoo.msjgame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import woohoo.screens.GameOverScreen;
 import woohoo.screens.PlayingScreen;
 import woohoo.screens.SplashScreen;
 
@@ -10,6 +11,7 @@ public class MSJGame extends Game
 {	
 	PlayingScreen playingScreen;
 	SplashScreen splashScreen;
+	GameOverScreen gameOverScreen;
 	
 	@Override
 	public void create()
@@ -17,6 +19,7 @@ public class MSJGame extends Game
 		resetData();
 		playingScreen = new PlayingScreen(this);
 		splashScreen = new SplashScreen(this);
+		gameOverScreen = new GameOverScreen(this);
 		
 		setScreen(splashScreen);
 		Gdx.input.setInputProcessor(splashScreen);
@@ -42,6 +45,11 @@ public class MSJGame extends Game
 	public SplashScreen getSplashScreen()
 	{
 		return splashScreen;
+	}
+	
+	public GameOverScreen getGameOverScreen()
+	{
+		return gameOverScreen;
 	}
 	
 	public void resetData()

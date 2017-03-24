@@ -30,6 +30,7 @@ public class PlayingScreen implements Screen
     public final int T_TILE_HEIGHT = 16;
 	
 	private GameState state;
+	final private MSJGame game;
 	
 	final private OrthographicCamera cam; // Manages aspect ratio, zoom, and position of camera
 	final private FitViewport viewport; // Helper class for camera
@@ -55,12 +56,14 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	public int currentArea = 3;
+	public int currentArea = 2;
 	
     private float runTime;
 	
-	public PlayingScreen(MSJGame game)
+	public PlayingScreen(MSJGame g)
 	{
+		game = g;
+		
 		// Set up camera
         cam = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);
         cam.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT);
@@ -175,7 +178,7 @@ public class PlayingScreen implements Screen
 		cam.update();
 		runTime += delta;
 		engine.update(delta);
-		state.update(this, delta);		
+		state.update(this, delta);
 		ui.act();
 		alerts.act(delta);
 		debugRenderer.render(world, cam.combined);
@@ -221,6 +224,11 @@ public class PlayingScreen implements Screen
 	public GameState getState()
 	{
 		return state;
+	}
+	
+	public void gameOver()
+	{
+		game.setScreen(game.getGameOverScreen());
 	}
 	
 	public void scrollCamera(float deltaX, float deltaY)

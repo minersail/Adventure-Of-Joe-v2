@@ -42,4 +42,9 @@ public class HealthComponent implements Component
 	{
 		incomingDamage = 0;
 	}
+	
+	public void kill()
+	{
+		currentHealth = 0;
+	}
 }

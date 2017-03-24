@@ -27,7 +27,7 @@ public class ChaseContact extends ContactCommand
 			chase.chaseMeter++;
 		else
 		{
-			// Game over
+			Mappers.lives.get(contactB.owner).kill();
 		}
 	}
 }

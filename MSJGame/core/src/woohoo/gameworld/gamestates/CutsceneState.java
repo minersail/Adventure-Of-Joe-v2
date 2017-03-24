@@ -22,5 +22,6 @@ public class CutsceneState implements GameState
 	public void exit(PlayingScreen screen)
 	{
 		screen.getEngine().getSystem(ContactSystem.class).setProcessing(true);
+		screen.getEngine().getSystem(ContactSystem.class).clearContacts();
 	}
 }

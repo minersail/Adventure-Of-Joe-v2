@@ -12,14 +12,14 @@ import woohoo.msjgame.MSJGame;
 
 public class SplashScreen implements Screen, InputProcessor
 {
-	private MSJGame game;
+	private final MSJGame game;
 	
-	private SpriteBatch batcher;
-	private Texture background;
+	private final SpriteBatch batcher;
+	private final Texture background;
 	
-	private Color batchColor;
+	private final Color batchColor;
 	private boolean fading;
-	private float fadeSpeed = 0.1f;//0.01f;
+	private final float fadeSpeed = 0.1f;//0.01f;
 	
 	public SplashScreen(MSJGame g)
 	{
@@ -27,7 +27,7 @@ public class SplashScreen implements Screen, InputProcessor
 		
 		batcher = new SpriteBatch();
 		batcher.enableBlending();
-		background = new Texture("images/splash/title.png");
+		background = new Texture("images/screens/title.png");
 		batchColor = new Color(Color.WHITE);
 	}
 	

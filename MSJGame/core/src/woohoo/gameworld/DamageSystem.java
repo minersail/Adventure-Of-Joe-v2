@@ -45,7 +45,8 @@ public class DamageSystem extends IteratingSystem
 	{		
 		if (Mappers.animMapObjects.has(entity))
 		{
-			Mappers.animMapObjects.get(entity).setAnimationState(new DeathAnimState());
+			if (Mappers.animMapObjects.get(entity).getAnimation("death") != null)
+				Mappers.animMapObjects.get(entity).setAnimationState(new DeathAnimState());
 		}
 		
 		if (Mappers.hitboxes.has(entity))
@@ -56,5 +57,10 @@ public class DamageSystem extends IteratingSystem
 		
 		entity.remove(DialogueComponent.class);
 		Mappers.lives.get(entity).dead = true;
+		
+		if (Mappers.players.has(entity))
+		{
+			screen.gameOver();
+		}
 	}
 }

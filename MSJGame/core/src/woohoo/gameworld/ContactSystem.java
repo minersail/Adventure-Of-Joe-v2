@@ -34,7 +34,7 @@ public class ContactSystem extends IteratingSystem
 		{
 			@Override
 			public void beginContact(Contact contact)
-			{
+			{				
 				ContactData data1 = (ContactData)contact.getFixtureA().getBody().getUserData();
 				ContactData data2 = (ContactData)contact.getFixtureB().getBody().getUserData();
 				
@@ -63,7 +63,6 @@ public class ContactSystem extends IteratingSystem
 	@Override
 	public void update(float delta)
 	{
-		System.out.println(2);
 		super.update(delta);
 		
 		for (ContactDataPair pair : collisions) // Iterate through all collisions in world
@@ -80,6 +79,11 @@ public class ContactSystem extends IteratingSystem
 	protected void processEntity(Entity entity, float deltaTime) 
 	{
 		ContactComponent contact = Mappers.contacts.get(entity);
+	}
+	
+	public void clearContacts()
+	{
+		collisions.clear();
 	}
 	
 	public class ContactDataPair

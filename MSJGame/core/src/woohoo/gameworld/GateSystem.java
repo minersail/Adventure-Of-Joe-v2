@@ -139,6 +139,9 @@ public class GateSystem extends IteratingSystem
 		// There's one frame where new map is not quite loaded, so skip the frame. Nobody will even notice
 		screen.getRenderer().skipFrame();
 		
+		// Clear contacts from old screen
+		screen.getEngine().getSystem(ContactSystem.class).clearContacts();
+		
 		switchArea = false;
 	}
 }
