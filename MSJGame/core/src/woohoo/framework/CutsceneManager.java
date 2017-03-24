@@ -25,8 +25,9 @@ import woohoo.gameobjects.components.PositionComponent;
 import woohoo.gameobjects.components.PositionComponent.Orientation;
 import woohoo.gameworld.AIStateSystem;
 import woohoo.gameworld.Mappers;
+import woohoo.gameworld.gamestates.CutsceneState;
+import woohoo.gameworld.gamestates.PlayingState;
 import woohoo.screens.PlayingScreen;
-import woohoo.screens.PlayingScreen.GameState;
 
 public class CutsceneManager
 {
@@ -53,8 +54,6 @@ public class CutsceneManager
 	 */
 	public void update(float delta)
 	{
-		//screen.getEngine().update(delta);
-		
         if (currentAction.isDone(delta))
         {
             int nextAction = cutsceneActions.indexOf(currentAction) + 1;
@@ -124,7 +123,7 @@ public class CutsceneManager
 			}
         }
         
-        screen.setState(GameState.Cutscene);
+        screen.setState(new CutsceneState());
         currentAction = cutsceneActions.get(0);
         currentAction.start();
     }
@@ -143,7 +142,7 @@ public class CutsceneManager
 		
         cutsceneEntities.clear();
         cutsceneActions.clear();
-        screen.setState(GameState.Playing);
+        screen.setState(new PlayingState());
     }
 	
 	public EventListeners getListeners()
@@ -225,7 +224,7 @@ public class CutsceneManager
         public boolean isDone(float delta) 
         {
 			// GameState gets switched to Dialogue during start(), then goes back to cutscene during endDialogue()
-            return screen.getState() == GameState.Cutscene;
+            return screen.getState() instanceof CutsceneState;
         }   
     }
     

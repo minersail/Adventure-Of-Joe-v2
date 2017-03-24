@@ -20,15 +20,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.ai.AIDebugger;
 import woohoo.framework.*;
 import woohoo.gameworld.*;
+import woohoo.gameworld.gamestates.*;
 import woohoo.msjgame.MSJGame;
 
 public class PlayingScreen implements Screen
-{    
-	public enum GameState
-	{
-		Playing, Dialogue, Inventory, Cutscene, Quests
-	}	
-	
+{    	
 	/* Dimensions of tiles on the spritesheet */
     public final int T_TILE_WIDTH = 16;
     public final int T_TILE_HEIGHT = 16;
@@ -59,7 +55,7 @@ public class PlayingScreen implements Screen
 	public int mapWidth;
 	public int mapHeight;
 	
-	public int currentArea = 2;
+	public int currentArea = 0;
 	
     private float runTime;
 	
@@ -159,7 +155,7 @@ public class PlayingScreen implements Screen
 		
 		entityLoader.loadPlayer();
 		
-		state = GameState.Playing;
+		state = new PlayingState();
 	}
 
     public void initialize(int gameArea)
@@ -179,32 +175,8 @@ public class PlayingScreen implements Screen
 		cam.update();
 		runTime += delta;
 		engine.update(delta);
-		
-		switch (state)
-		{
-			case Playing:
-				engine.getSystem(GateSystem.class).updateArea(); // Only works outside of the engine update loop
-				world.step(delta, 6, 2);
-				ui.act();
-				break;
-				
-			case Cutscene:		
-				cutscenes.update(delta);
-				world.step(delta, 6, 2);
-				ui.act();
-				break;
-				
-            case Dialogue:
-				engine.animate(delta);
-				ui.act();
-				break;
-				
-			case Quests:
-			case Inventory:				
-				ui.act();
-				break;
-		}
-		
+		state.update(this, delta);		
+		ui.act();
 		alerts.act(delta);
 		debugRenderer.render(world, cam.combined);
 		ui.draw();
@@ -236,7 +208,9 @@ public class PlayingScreen implements Screen
 		    
 	public void setState(GameState s)
 	{
+		state.exit(this);
 		state = s;
+		state.enter(this);
 	}
 	
 	public void setArea(int area)

@@ -8,8 +8,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import java.util.Iterator;
 import woohoo.framework.input.*;
-import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.InputComponent;
+import woohoo.gameworld.gamestates.*;
 import woohoo.screens.PlayingScreen;
 
 public class InputSystem extends IteratingSystem implements InputProcessor
@@ -74,75 +74,79 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 	@Override
 	public boolean keyDown(int keycode)
 	{
-		switch (screen.getState())
+		if (screen.getState() instanceof PlayingState)
 		{
-			case Playing:
-				switch (keycode) 
-				{            
-					case Input.Keys.UP:
-						addState(new MoveUpState());
-						break;
-					case Input.Keys.DOWN:
-						addState(new MoveDownState());
-						break;
-					case Input.Keys.LEFT:
-						addState(new MoveLeftState());
-						break;
-					case Input.Keys.RIGHT:
-						addState(new MoveRightState());
-						break;
-					case Input.Keys.SPACE:
-						addCommand(new PickupItemCommand(screen.getInventoryManager(), screen.getEngine()));
-						addCommand(new NPCTalkCommand(screen.getDialogueManager(), screen.getEngine()));
-						break;
-                    case Input.Keys.ESCAPE:
-                        screen.getInventoryManager().showInventory();
-                        break;
-                    case Input.Keys.F1:
-                        screen.getQuestManager().showQuests();
-                        break;
-					case Input.Keys.S:
-						addCommand(new PrintPosCommand());
-						break;
-					case Input.Keys.A:
-						addCommand(new PlayerAttackCommand());
-						break;
-				}
-				break;
-			
-			case Dialogue:
-				switch (keycode)
-				{
-					case Input.Keys.SPACE:
-						screen.getDialogueManager().advanceDialogue();
-				}
-				break;
-			
-			case Inventory:
-				switch (keycode)
-				{
-					case Input.Keys.ESCAPE:
-						screen.getInventoryManager().closeInventory();
-				}
-				break;
-			
-			case Quests:
-				switch (keycode)
-				{
-					case Input.Keys.F1:
-						screen.getQuestManager().closeQuests();
-				}
-				break;
+			switch (keycode) 
+			{            
+				case Input.Keys.UP:
+					addState(new MoveUpState());
+					break;
+				case Input.Keys.DOWN:
+					addState(new MoveDownState());
+					break;
+				case Input.Keys.LEFT:
+					addState(new MoveLeftState());
+					break;
+				case Input.Keys.RIGHT:
+					addState(new MoveRightState());
+					break;
+				case Input.Keys.SPACE:
+					addCommand(new PickupItemCommand(screen.getInventoryManager(), screen.getEngine()));
+					addCommand(new NPCTalkCommand(screen.getDialogueManager(), screen.getEngine()));
+					break;
+				case Input.Keys.ESCAPE:
+					screen.setState(new InventoryState());
+					break;
+				case Input.Keys.F1:
+					screen.setState(new QuestState());
+					break;
+				case Input.Keys.S:
+					addCommand(new PrintPosCommand());
+					break;
+				case Input.Keys.A:
+					addCommand(new PlayerAttackCommand());
+					break;
+			}
+		}
+		else if (screen.getState() instanceof DialogueState)
+		{
+			switch (keycode)
+			{
+				case Input.Keys.SPACE:
+					screen.getDialogueManager().advanceDialogue();
+					break;
+			}
+		}
+		else if (screen.getState() instanceof InventoryState)
+		{
+			switch (keycode)
+			{
+				case Input.Keys.F1:
+					screen.setState(new QuestState());
+					break;
+				case Input.Keys.ESCAPE:
+					screen.setState(new PlayingState());
+					break;
+			}
+		}
+		else if (screen.getState() instanceof QuestState)
+		{
+			switch (keycode)
+			{
+				case Input.Keys.F1:
+					screen.setState(new PlayingState());
+					break;
+				case Input.Keys.ESCAPE:
+					screen.setState(new InventoryState());
+					break;
+			}
+		}
+		else if (screen.getState() instanceof CutsceneState)
+		{
+			switch(keycode)
+			{
 				
-			case Cutscene:
-				switch(keycode)
-				{
-					case Input.Keys.NUM_0: // Debug get rid of later
-						screen.getEngine().getPlayer().remove(AIComponent.class);
-						screen.setState(PlayingScreen.GameState.Playing);
-						break;
-				}
-				break;
+			}
 		}
         
 		return false;
@@ -151,31 +155,29 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 	@Override
 	public boolean keyUp(int keycode)
 	{
-		switch (screen.getState())
+		if (screen.getState() instanceof PlayingState)
 		{
-			case Playing:
-				switch (keycode) {
-					case Input.Keys.UP:
-						removeState(new MoveUpState());
-						break;
-					case Input.Keys.DOWN:
-						removeState(new MoveDownState());
-						break;
-					case Input.Keys.LEFT:
-						removeState(new MoveLeftState());
-						break;
-					case Input.Keys.RIGHT:
-						removeState(new MoveRightState());
-						break;
-				}
-				break;
-				
-			case Dialogue:
-				switch(keycode)
-				{
-					
-				}
-				break;
+			switch (keycode) {
+				case Input.Keys.UP:
+					removeState(new MoveUpState());
+					break;
+				case Input.Keys.DOWN:
+					removeState(new MoveDownState());
+					break;
+				case Input.Keys.LEFT:
+					removeState(new MoveLeftState());
+					break;
+				case Input.Keys.RIGHT:
+					removeState(new MoveRightState());
+					break;
+			}
+		}
+		else if (screen.getState() instanceof DialogueState)
+		{
+			switch(keycode)
+			{
+
+			}
 		}
 		
 		if (!Gdx.input.isKeyPressed(Input.Keys.UP) && !Gdx.input.isKeyPressed(Input.Keys.DOWN) && 

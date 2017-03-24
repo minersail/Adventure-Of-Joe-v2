@@ -31,6 +31,8 @@ import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.gameworld.Mappers;
 import woohoo.gameworld.RenderSystem;
 import woohoo.gameworld.WeaponSystem;
+import woohoo.gameworld.gamestates.InventoryState;
+import woohoo.gameworld.gamestates.PlayingState;
 import woohoo.screens.PlayingScreen;
 
 /**
@@ -93,7 +95,7 @@ public class InventoryManager
                 @Override
                 public void clicked(InputEvent event, float x, float y)
                 {
-                    closeInventory();
+                    screen.setState(new PlayingState());
                 }
             }        
         );		
@@ -165,14 +167,12 @@ public class InventoryManager
     {
         screen.getUI().addActor(table);
         screen.getUI().addActor(table2);
-        screen.setState(PlayingScreen.GameState.Inventory);
     }
 	
 	public void closeInventory()
 	{
 		table.remove();
 		table2.remove();
-        screen.setState(PlayingScreen.GameState.Playing);
 	}
     
 	/**

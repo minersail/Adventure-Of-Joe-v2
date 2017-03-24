@@ -96,14 +96,12 @@ public class QuestManager
 	{
 		screen.getUI().addActor(pane);
 		screen.getUI().addActor(header);
-		screen.setState(PlayingScreen.GameState.Quests);
 	}
 	
 	public void closeQuests()
 	{
 		pane.remove();
 		header.remove();
-		screen.setState(PlayingScreen.GameState.Playing);
 	}
 	
 	public Quest getQuest(int id)

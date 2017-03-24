@@ -7,8 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import woohoo.gameobjects.components.DialogueComponent;
+import woohoo.gameworld.gamestates.CutsceneState;
+import woohoo.gameworld.gamestates.DialogueState;
+import woohoo.gameworld.gamestates.GameState;
+import woohoo.gameworld.gamestates.PlayingState;
 import woohoo.screens.PlayingScreen;
-import woohoo.screens.PlayingScreen.GameState;
 
 public class DialogueManager
 {
@@ -60,7 +63,7 @@ public class DialogueManager
 		screen.getUI().addActor(name);
 		screen.getUI().addActor(face);
 		
-		screen.setState(GameState.Dialogue);
+		screen.setState(new DialogueState());
     }
 	
 	public void advanceDialogue()
@@ -68,7 +71,7 @@ public class DialogueManager
 		currentDialogue.advance();
 		if (currentDialogue.getCurrentLine() == null)
 		{
-			endDialogue(GameState.Playing);
+			endDialogue(new PlayingState());
 			return;
 		}
 		
@@ -78,15 +81,15 @@ public class DialogueManager
 			{
 				case "LOOP":
 					currentDialogue.loop();
-					endDialogue(GameState.Playing);
+					endDialogue(new PlayingState());
 					break;
 				case "BREAK":
 					currentDialogue.advance();
-					endDialogue(GameState.Playing);
+					endDialogue(new PlayingState());
 					break;
 				case "CUTSCENE":
 					currentDialogue.advance();
-					endDialogue(GameState.Cutscene);
+					endDialogue(new CutsceneState());
 					break;
 				default:
 					break;

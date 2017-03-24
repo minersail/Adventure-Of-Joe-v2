@@ -56,12 +56,4 @@ public class MovementSystem extends IteratingSystem
 		
 		position.position = hitbox.mass.getPosition().cpy().sub(0.5f, 0.5f); // Center vs top-left
 	}
-	
-	public void stopAll()
-	{
-		for (Entity entity : getEntities())
-		{
-			Mappers.movements.get(entity).velocity = Vector2.Zero;
-		}
-	}
 }
