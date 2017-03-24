@@ -133,6 +133,26 @@
 			<movement speed="1" />
 			<position x="3" y="4" />
 		</entity>
+		<entity enabled="true" name="guard1">
+			<id name="guard1" />
+			<ai state="stay" />
+			<anim atlas="robert.pack" />
+			<dialogue id="1" />
+			<health max="1" />
+			<hitbox collides="true" type="npc" />
+			<movement speed="1.5" />
+			<position x="18" y="9" />
+		</entity>
+		<entity enabled="true" name="guard2">
+			<id name="guard2" />
+			<ai state="stay" />
+			<anim atlas="robert.pack" />
+			<dialogue id="1" />
+			<health max="1" />
+			<hitbox collides="true" type="npc" />
+			<movement speed="1.5" />
+			<position x="20" y="9" />
+		</entity>
 	</area>
 	<area id="5">
 	</area>

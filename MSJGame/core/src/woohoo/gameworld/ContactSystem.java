@@ -40,7 +40,6 @@ public class ContactSystem extends IteratingSystem
 				
 				ContactDataPair pair = new ContactDataPair(data1, data2);
 				collisions.add(pair);
-				//System.out.println("Added: " + pair);
 			}
 
 			@Override
@@ -51,7 +50,6 @@ public class ContactSystem extends IteratingSystem
 				
 				ContactDataPair pair = new ContactDataPair(data1, data2);
 				collisions.removeValue(pair, false);
-				//System.out.println("Removed: " + pair);
 			}
 
 			@Override
@@ -65,6 +63,7 @@ public class ContactSystem extends IteratingSystem
 	@Override
 	public void update(float delta)
 	{
+		System.out.println(2);
 		super.update(delta);
 		
 		for (ContactDataPair pair : collisions) // Iterate through all collisions in world
