@@ -6,9 +6,11 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader.TextureAtlasParameter;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
@@ -23,7 +25,7 @@ import woohoo.gameworld.*;
 import woohoo.gameworld.gamestates.*;
 import woohoo.msjgame.MSJGame;
 
-public class PlayingScreen implements Screen
+public class PlayingScreen implements Screen, Fadeable
 {    	
 	/* Dimensions of tiles on the spritesheet */
     public final int T_TILE_WIDTH = 16;
@@ -181,7 +183,7 @@ public class PlayingScreen implements Screen
 		state.update(this, delta);
 		ui.act();
 		alerts.act(delta);
-		debugRenderer.render(world, cam.combined);
+		//debugRenderer.render(world, cam.combined);
 		ui.draw();
     }
 	
@@ -313,6 +315,17 @@ public class PlayingScreen implements Screen
 		return entityLoader;
 	}
 
+	@Override
+	public Batch getBatch()
+	{
+		return getRenderer().getBatch();
+	}
+	
+	public void startNarration(int narrationID)
+	{
+		game.switchToNarration(narrationID);
+	}
+
     @Override
     public void resize(int width, int height)
     {
@@ -326,6 +339,8 @@ public class PlayingScreen implements Screen
     @Override
     public void show()
     {
+		game.getFader().startFade(this, Color.BLACK, Color.WHITE, 0.005f);
+		
         System.out.println("GameScreen - show called");
     }
 

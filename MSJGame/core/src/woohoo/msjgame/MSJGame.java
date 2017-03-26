@@ -2,16 +2,23 @@ package woohoo.msjgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.files.FileHandle;
+import woohoo.gameworld.InputSystem;
 import woohoo.screens.GameOverScreen;
+import woohoo.screens.NarrationScreen;
 import woohoo.screens.PlayingScreen;
+import woohoo.screens.ScreenFader;
 import woohoo.screens.SplashScreen;
 
 public class MSJGame extends Game
 {	
-	PlayingScreen playingScreen;
-	SplashScreen splashScreen;
-	GameOverScreen gameOverScreen;
+	private PlayingScreen playingScreen;
+	private SplashScreen splashScreen;
+	private GameOverScreen gameOverScreen;
+	private NarrationScreen narrationScreen;
+	
+	private ScreenFader fader;
 	
 	@Override
 	public void create()
@@ -20,6 +27,9 @@ public class MSJGame extends Game
 		playingScreen = new PlayingScreen(this);
 		splashScreen = new SplashScreen(this);
 		gameOverScreen = new GameOverScreen(this);
+		narrationScreen = new NarrationScreen(this);
+		
+		fader = new ScreenFader();
 		
 		setScreen(splashScreen);
 		Gdx.input.setInputProcessor(splashScreen);
@@ -28,13 +38,22 @@ public class MSJGame extends Game
 	@Override
 	public void render()
 	{
+		fader.fadeScreen();
 		super.render();
 	}
 	
-	@Override
-	public void dispose ()
+	public void switchToPlay()
+	{		
+        Gdx.input.setInputProcessor(new InputMultiplexer(playingScreen.getUI(), playingScreen.getEngine().getSystem(InputSystem.class)));
+		setScreen(playingScreen);
+		playingScreen.initialize(playingScreen.currentArea);
+	}
+	
+	public void switchToNarration(int id)
 	{
-		super.dispose();
+		Gdx.input.setInputProcessor(narrationScreen);
+		setScreen(narrationScreen);
+		narrationScreen.showNarration(id);
 	}
 	
 	public PlayingScreen getPlayingScreen()
@@ -52,6 +71,16 @@ public class MSJGame extends Game
 		return gameOverScreen;
 	}
 	
+	public NarrationScreen getNarrationScreen()
+	{
+		return narrationScreen;
+	}
+	
+	public ScreenFader getFader()
+	{
+		return fader;
+	}
+	
 	public void resetData()
 	{
 		FileHandle raw = Gdx.files.internal("raw/data");
@@ -60,5 +89,11 @@ public class MSJGame extends Game
 		{
 			handle.copyTo(Gdx.files.local("data/" + handle.name()));
 		}
+	}
+	
+	@Override
+	public void dispose()
+	{
+		super.dispose();
 	}
 }

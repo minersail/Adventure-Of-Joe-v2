@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
+import woohoo.gameobjects.components.ChaseComponent;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.GateComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
@@ -70,6 +71,7 @@ public class GateSystem extends IteratingSystem
             gate.size = new Vector2(gateElement.getFloat("sizeX"), gateElement.getFloat("sizeY"));
             gate.position = new Vector2(gateElement.getFloat("destX"), gateElement.getFloat("destY")); // Top-left of spawn position
             gate.destArea = gateElement.getInt("destArea");
+			gate.narrationID = gateElement.getInt("narration", -1);
 			PositionComponent position = new PositionComponent(gateElement.getFloat("locX"), gateElement.getFloat("locY"));
             entity.add(gate);
 			entity.add(position);
@@ -134,13 +136,20 @@ public class GateSystem extends IteratingSystem
 		
 		// Load all entities, gates, events, pathfinding, etc. for new game area
         screen.setArea(triggeredGate.destArea);
-		screen.initialize(triggeredGate.destArea);
+		
+		if (triggeredGate.narrationID == -1)
+			screen.initialize(triggeredGate.destArea);
+		else
+			screen.startNarration(triggeredGate.narrationID);
 		
 		// There's one frame where new map is not quite loaded, so skip the frame. Nobody will even notice
 		screen.getRenderer().skipFrame();
 		
 		// Clear contacts from old screen
 		screen.getEngine().getSystem(ContactSystem.class).clearContacts();
+		
+		// Temporary fix
+		screen.getEngine().getPlayer().remove(ChaseComponent.class);
 		
 		switchArea = false;
 	}

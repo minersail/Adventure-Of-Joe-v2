@@ -14,6 +14,7 @@ public class GateComponent implements Component
 	public int destArea;
 	public boolean triggered; // Whether the gate was activated
 	public boolean enabled; // Whether the gate can be activated again
+	public int narrationID; // -1 if no narration will popup, otherwise an ID that will link to XML
 
     public GateComponent(World world)
     {        		

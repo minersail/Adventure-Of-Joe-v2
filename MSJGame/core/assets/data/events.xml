@@ -21,12 +21,12 @@
 		</eventlistener>
 	</area>
 	<area id="2">
-		<eventlistener state="disabled" owner="entity" entity="player" id="0">
+		<eventlistener state="autodisable" owner="entity" entity="player" id="0">
 			<trigger dist=".5" locX="2" locY="6" type="move"/>
 			<event type="cutscene" id="2"/>
 			<event action="discover" type="quest" id="1"/>
 		</eventlistener>
-		<eventlistener state="disabled" owner="system" id="1" system="cutscene">
+		<eventlistener state="autodisable" owner="system" id="1" system="cutscene">
 			<trigger type="cutscene"/>
 			<event entity="robber1" targetChar="player" type="aifollow"/>
 			<event entity="robber2" targetChar="player" type="aifollow"/>
@@ -41,13 +41,13 @@
 				<chase/>
 			</event>
 		</eventlistener>
-		<eventlistener state="autodisable" owner="entity" entity="player" id="2">
+		<eventlistener state="disabled" owner="entity" entity="player" id="2">
 			<trigger dist="1" locX="20" locY="6" type="move"/>
 			<event action="end" type="quest" id="1"/>
 		</eventlistener>
 	</area>
 	<area id="3">
-		<eventlistener state="autodisable" owner="entity" entity="player" id="0">
+		<eventlistener state="disabled" owner="entity" entity="player" id="0">
 			<trigger dist="1.5" locX="3" locY="2" type="move"/>
 			<event type="cutscene" id="3"/>
 		</eventlistener>

@@ -16,8 +16,6 @@ Anything that is drawn will be managed by this class
 public class GameRenderer extends OrthogonalTiledMapRenderer
 {    
 	private boolean skipNextFrame;
-	private Color fade;
-	private float fadeSpeed = 0.005f;
 	
     public GameRenderer(TiledMap map, float scale)
 	{
@@ -61,13 +59,7 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 	
 	@Override
 	public void render()
-	{
-		if (fade != null && !fade.equals(Color.WHITE)) // Fade to normal
-		{
-			super.getBatch().setColor(fade);
-			fade.add(fadeSpeed, fadeSpeed, fadeSpeed, 0);
-		}
-		
+	{		
 		if (!skipNextFrame)
 			super.render();
 		else
@@ -78,10 +70,5 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 	public void skipFrame()
 	{
 		skipNextFrame = true;
-	}
-	
-	public void startFade(Color color)
-	{
-		fade = color.cpy();
 	}
 }

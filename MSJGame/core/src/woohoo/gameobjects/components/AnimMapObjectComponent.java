@@ -76,7 +76,7 @@ public class AnimMapObjectComponent extends TextureMapObject implements Componen
 	
 	private void addAnimation(String name, TextureAtlas atlas, float frameTime, Animation.PlayMode mode)
 	{
-		if (atlas.findRegions(name) != null)
+		if (atlas.findRegions(name).size > 0) // Animations are not missing
 			animation.put(name, new Animation<TextureRegion>(frameTime, atlas.findRegions(name), mode));
 	}
 }
