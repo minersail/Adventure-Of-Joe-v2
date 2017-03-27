@@ -16,7 +16,7 @@
 		default: { background: default-rect, font: text, fontColor: special }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-		default: { font: text, fontColor: green }
+		default: { up: default-rect, down: default-rect-down, font: text, fontColor: green }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		default: { down: default-rect-down, up: default-rect }

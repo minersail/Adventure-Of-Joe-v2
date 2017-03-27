@@ -26,8 +26,8 @@ public class NarrationScreen implements Screen, InputProcessor, Fadeable
 	private final Image background;
 	
 	private final Array<String> narration;
+	private final int MARGIN_X = 100;
 	private int narrIndex;
-	private boolean switched;
 	
 	public NarrationScreen(MSJGame g)
 	{
@@ -45,7 +45,8 @@ public class NarrationScreen implements Screen, InputProcessor, Fadeable
 		text = new Label("", new LabelStyle(skin.getFont("text"), Color.WHITE));
 		text.setAlignment(Align.center);
 		text.setWrap(true);
-		text.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		text.setSize(Gdx.graphics.getWidth() - 2 * MARGIN_X, Gdx.graphics.getHeight());
+		text.setX(MARGIN_X);
 		
 		stage.addActor(background);
 		stage.addActor(text);
@@ -75,6 +76,7 @@ public class NarrationScreen implements Screen, InputProcessor, Fadeable
 	@Override
 	public void render(float delta)
 	{				
+		// When the outro fade is complete switch text and start intro fade
 		if (Gdx.input.getInputProcessor() == null && !game.getFader().isFading())
 		{
 			game.getFader().startFade(this, Color.BLACK, Color.WHITE, 0.01f);

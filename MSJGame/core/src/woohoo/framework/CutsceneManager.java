@@ -154,6 +154,11 @@ public class CutsceneManager
 	{
 		return cutsceneActions.size() - 1 - cutsceneActions.indexOf(currentAction);
 	}
+	
+	public ArrayList<Entity> getEntities()
+	{
+		return cutsceneEntities;
+	}
     
     public interface CutsceneAction
     {

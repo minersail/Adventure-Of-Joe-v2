@@ -89,6 +89,13 @@
 			<movement speed="1.25" />
 			<position x="3" y="5" />
 		</entity>
+		<entity enabled="true" name="test">
+			<id name="test" />
+			<anim atlas="oldman.pack" />
+			<dialogue id="5" />
+			<hitbox collides="true" type="npc" />
+			<position x="18" y="8" />
+		</entity>
 	</area>
 	<area id="3">
 		<entity enabled="true" name="bollin">

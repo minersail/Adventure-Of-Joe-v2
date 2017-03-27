@@ -3,16 +3,21 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.math.Vector2;
 import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.gamestates.PlayingState;
+import woohoo.screens.PlayingScreen;
 
 public class MovementSystem extends IteratingSystem
 {
-	public MovementSystem()
+	PlayingScreen screen;
+	
+	public MovementSystem(PlayingScreen scr)
 	{
 		super(Family.all(MovementComponent.class, PositionComponent.class, HitboxComponent.class).get());
+		
+		screen = scr;
 	}
 	
 	public void initialize()
@@ -26,6 +31,9 @@ public class MovementSystem extends IteratingSystem
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) 
 	{		
+		// Only entities in the cutscene should be able to move during cutscenes
+		if (!(screen.getState() instanceof PlayingState) && !screen.getCutsceneManager().getEntities().contains(entity)) return;
+		
 		MovementComponent movement = Mappers.movements.get(entity);
 		HitboxComponent hitbox = Mappers.hitboxes.get(entity);
 		PositionComponent position = Mappers.positions.get(entity);

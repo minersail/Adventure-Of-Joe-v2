@@ -42,6 +42,8 @@
 	</dialogue>
 	<dialogue id="3">
 		<line character="5" name="Captain Willy" text="Wake up! You can't sleep here." />
+		<line character="0" name="Joe" text="Ugh... Who are you?" />
+		<line character="-1" name="Command" text="CUTSCENE" />
 		<line character="0" name="Joe" text="You know, I was having a pretty nice dream." />
 		<line character="0" name="Joe" text="There was a gigantic hot dog and.." />
 		<line character="5" name="Captain Willy" text="I don't care about your hot dog. Where's your documentation?" />

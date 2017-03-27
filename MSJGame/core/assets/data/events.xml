@@ -53,12 +53,12 @@
 		</eventlistener>
 	</area>
 	<area id="4">
-		<eventlistener state="autodisable" owner="entity" entity="player" id="0">
+		<eventlistener state="disabled" owner="entity" entity="player" id="0">
 			<trigger dist=".5" locX="19" locY="9" type="move"/>
 			<event type="cutscene" id="4"/>
 			<event action="discover" type="quest" id="2"/>
 		</eventlistener>
-		<eventlistener state="autodisable" owner="system" id="1" system="cutscene">
+		<eventlistener state="disabled" owner="system" id="1" system="cutscene">
 			<trigger type="cutscene"/>
 			<event entity="guard1" targetChar="player" type="aifollow"/>
 			<event entity="guard2" targetChar="player" type="aifollow"/>

@@ -1,11 +1,15 @@
 package woohoo.framework;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameworld.gamestates.CutsceneState;
 import woohoo.gameworld.gamestates.DialogueState;
@@ -16,21 +20,24 @@ import woohoo.screens.PlayingScreen;
 public class DialogueManager
 {
 	private PlayingScreen screen;
+	private Skin skin;
     private DialogueComponent currentDialogue;
     private Image face;
 	private Label message;
 	private Label name;
+	private Array<TextButton> choices;
 	
 	private final int MARGIN = 100;
 	private final int NAMEWIDTH = 100;
 	private final int NAMEHEIGHT = 100;
     
-    public DialogueManager(PlayingScreen scr, Skin skin)
+    public DialogueManager(PlayingScreen scr, Skin sk)
     {
 		screen = scr;
+		skin = sk;
 				
 		message = new Label("", skin);
-		message.setSize(Gdx.graphics.getWidth() - MARGIN * 2 - NAMEWIDTH, 100);
+		message.setSize(Gdx.graphics.getWidth() - MARGIN * 2 - NAMEWIDTH, NAMEHEIGHT);
 		message.setPosition(MARGIN + NAMEWIDTH, 0);
 		message.setAlignment(Align.center);
 		message.setWrap(true);
@@ -47,6 +54,8 @@ public class DialogueManager
 		face.setSize(64, 64);
 		face.setPosition(MARGIN + 18, 30);
 		face.setAlign(Align.center);
+		
+		choices = new Array<>();
     }
     
     public void startDialogue(DialogueComponent dia)
@@ -68,6 +77,9 @@ public class DialogueManager
 	
 	public void advanceDialogue()
 	{
+		// Disable space bar while choices are up
+		if (choices.size > 0) return;
+		
 		currentDialogue.advance();
 		if (currentDialogue.getCurrentLine() == null)
 		{
@@ -77,6 +89,11 @@ public class DialogueManager
 		
 		if (currentDialogue.getCurrentLine().id() == -1)
 		{
+			if (currentDialogue.getCurrentLine().name().equals("Choice"))
+			{
+				currentDialogue.advanceToChoiceEnd();
+			}
+			
 			switch (currentDialogue.getCurrentLine().text())
 			{
 				case "LOOP":
@@ -91,6 +108,12 @@ public class DialogueManager
 					currentDialogue.advance();
 					endDialogue(new CutsceneState());
 					break;
+				case "CHOICE":
+					startChoices();
+					break;
+				case "ENDCHOICE":
+					advanceDialogue();
+					return;
 				default:
 					break;
 			}
@@ -102,6 +125,55 @@ public class DialogueManager
 		message.setText(currentDialogue.getCurrentLine().text());
 		name.setText(currentDialogue.getCurrentLine().name());	
 		face.setDrawable(faceRegion);
+	}
+	
+	private void startChoices()
+	{
+		int choiceNum = currentDialogue.getCurrentLine().choices();
+		Array<String> choiceStrings = currentDialogue.getChoices();
+		
+		for (int i = 0; i < currentDialogue.getCurrentLine().choices(); i++)
+		{
+			final TextButton choice = new TextButton("", skin);
+			choice.setSize(message.getWidth() / choiceNum, message.getHeight());
+			choice.setOrigin(Align.center);
+			choice.getLabel().setFontScale(0.6f);
+			choice.getLabel().setWrap(true);
+			choice.setPosition(message.getX() + i * choice.getWidth(), message.getY());
+			choice.setText(choiceStrings.get(i));
+			
+			choice.addListener(new ClickListener()
+			{
+				private int choice;
+				
+				@Override
+				public void clicked(InputEvent event, float x, float y)
+				{
+					currentDialogue.advanceChoice(choice);
+					endChoices();
+				}
+				
+				public ClickListener initialize(int id)
+				{
+					choice = id;
+					return this;
+				}
+			}.initialize(i));
+			
+			screen.getUI().addActor(choice);
+			choices.add(choice);
+		}
+	}
+	
+	private void endChoices()
+	{
+		for (TextButton choiceButton : choices)
+		{
+			choiceButton.remove();
+		}
+
+		choices.clear();
+		advanceDialogue();
 	}
 	
 	public void endDialogue(GameState newState)

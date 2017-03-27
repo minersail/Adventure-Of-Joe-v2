@@ -36,6 +36,9 @@
 		<action type="move" name="guard" locX="4" locY="5" speed="2" />
 		<action type="rotate" name="guard" direction="up" />
 		<action type="dialogue" />
+		<action type="move" name="player" locX="4" locY="2" speed="2" />
+		<action type="rotate" name="player" direction="down" />
+		<action type="dialogue" />
 		<action type="move" name="bollin" locX="3" locY="5" speed="2" />
 		<action type="dialogue" />
 		<action type="move" name="player" locX="2" locY="4" speed="4" />
@@ -44,6 +47,6 @@
 	<cutscene id="4">
 		<entity name="player" />
 		<action type="dialogue" />
-		<action type="move" name="player" locX="14" locY="12" speed="2" />
+		<action type="move" name="player" locX="18" locY="12" speed="2" />
 	</cutscene>
 </cutscenes>

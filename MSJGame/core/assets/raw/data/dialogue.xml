@@ -23,4 +23,21 @@
 		<line character="3" name="Robber 2" text="Isn't it past your bedtime?" />
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
+	<dialogue id="5">
+		<line character="4" name="Bollin" text="Isn't it past your bedtime?" />
+		<line character="-1" name="Command" text="CHOICE" choices="3" />
+		<line character="-1" name="Choice" text="Yes, sir." />
+		<line character="4" name="Bollin" text="Good boy." />
+		<line character="-1" name="Choice" text="Nah, not really." />
+		<line character="4" name="Bollin" text="Yes, it is." />
+		<line character="0" name="Joe" text="Nuh uh." />
+		<line character="-1" name="Choice" text="BUHUHUHALLELAH" />
+		<line character="4" name="Bollin" text="Please give me some of whatever you're on." />
+		<line character="-1" name="Command" text="ENDCHOICE" />
+		<line character="0" name="Joe" text="I'm off now, nice seeing you." />
+		<line character="0" name="Joe" text="Heh, not really." />
+		<line character="4" name="Bollin" text="What?" />
+		<line character="0" name="Joe" text="Uh, nothing." />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue>
 </dialogues>
