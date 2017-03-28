@@ -131,28 +131,16 @@
 			<id name="woman1" />
 			<ai state="random" />
 			<anim atlas="woman1.pack" />
-			<dialogue id="1" />
-			<health max="1" />
+			<dialogue id="5" />
 			<hitbox collides="true" type="npc" />
 			<movement speed="1" />
 			<position x="10" y="4" />
-		</entity>
-		<entity enabled="true" name="woman2">
-			<id name="woman2" />
-			<ai state="random" />
-			<anim atlas="woman1.pack" />
-			<dialogue id="1" />
-			<health max="1" />
-			<hitbox collides="true" type="npc" />
-			<movement speed="1" />
-			<position x="3" y="4" />
 		</entity>
 		<entity enabled="true" name="guard1">
 			<id name="guard1" />
 			<ai state="stay" />
 			<anim atlas="robert.pack" />
-			<dialogue id="1" />
-			<health max="1" />
+			<dialogue id="6" />
 			<hitbox collides="true" type="npc" />
 			<movement speed="1.5" />
 			<position x="18" y="9" />
@@ -161,14 +149,46 @@
 			<id name="guard2" />
 			<ai state="stay" />
 			<anim atlas="robert.pack" />
-			<dialogue id="1" />
-			<health max="1" />
+			<dialogue id="6" />
 			<hitbox collides="true" type="npc" />
 			<movement speed="1.5" />
 			<position x="20" y="9" />
 		</entity>
 	</area>
 	<area id="5">
+		<entity enabled="true" name="guard1">
+			<id name="guard1" />
+			<ai state="stay" />
+			<anim atlas="robert.pack" />
+			<hitbox collides="true" type="npc" />
+			<lineofsight />
+			<movement speed="1.8" />
+			<position x="3" y="-2" />
+		</entity>
+		<entity enabled="true" name="guard2">
+			<id name="guard2" />
+			<ai state="sentry">
+				<patrol x="3" y="11" />
+				<patrol x="3" y="18" />
+			</ai>
+			<anim atlas="robert.pack" />
+			<hitbox collides="true" type="npc" />
+			<lineofsight />
+			<movement speed="1.8" />
+			<position x="3" y="18" />
+		</entity>
+		<entity enabled="true" name="guard3">
+			<id name="guard3" />
+			<ai state="sentry">
+				<patrol x="19" y="7" />
+				<patrol x="8" y="7" />
+			</ai>
+			<anim atlas="robert.pack" />
+			<hitbox collides="true" type="npc" />
+			<lineofsight />
+			<movement speed="1.8" />
+			<position x="19" y="7" />
+		</entity>
 	</area>
 	<area id="6">
 	</area>

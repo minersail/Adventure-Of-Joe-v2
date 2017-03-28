@@ -64,4 +64,11 @@
 		<line character="5" name="Guard Richard" text="What? Get back here!" />
 		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
+	<dialogue id="5">
+		<line character="5" name="Captain Willy" text="Where'd he go?" />
+		<line character="5" name="Guard Richard" text="Uh, not sure." />
+		<line character="5" name="Captain Willy" text="Everyone patrol, on alert." />
+		<line character="5" name="Captain Willy" text="He's not leaving Pintel." />
+		<line character="-1" name="Command" text="CUTSCENE" />
+	</dialogue>
 </dialogues>

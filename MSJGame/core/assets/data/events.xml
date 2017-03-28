@@ -72,6 +72,21 @@
 		</eventlistener>
 	</area>
 	<area id="5">
+		<eventlistener id="0" owner="entity" entity="player" state="enabled">
+			<trigger type="move" locX="3" locY="2" dist="1.5" />
+			<event type="aisentry" entity="guard1">
+				<patrol x="3" y="0" />
+				<patrol x="3" y="5" />
+			</event>
+			<event type="addcomponent" entity="player">
+				<chase />
+			</event>
+		</eventlistener>
+		<eventlistener id="1" owner="entity" entity="player" state="autodisable">
+			<trigger type="move" locX="1" locY="6" dist=".25" />
+			<event type="cutscene" id="5" />
+			<event type="quest" id="2" action="end" />
+		</eventlistener>
 	</area>
 	<area id="6">
 	</area>

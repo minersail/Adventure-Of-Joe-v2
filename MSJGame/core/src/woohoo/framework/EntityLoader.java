@@ -38,7 +38,7 @@ public class EntityLoader
 	{
 		Entity player = new Entity();
 		AnimMapObjectComponent mapObject = new AnimMapObjectComponent(screen.getAssets().get("images/entities/youngjoe.pack", TextureAtlas.class));
-		PositionComponent position = new PositionComponent(19, 8);
+		PositionComponent position = new PositionComponent(2, 0);
 		IDComponent id = new IDComponent("player");
 		InventoryComponent inventory = new InventoryComponent();
 		EventListenerComponent eventListener = new EventListenerComponent();

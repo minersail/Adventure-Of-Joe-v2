@@ -8,6 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.events.*;
 import woohoo.gameobjects.components.EventListenerComponent;
 import woohoo.screens.PlayingScreen;
@@ -72,6 +73,15 @@ public class EventSystem extends IteratingSystem
 					case "aimoveto":
 						event = new AIMoveToEvent(Mappers.ai.get(screen.getEngine().getEntity(eventEl.get("entity"))), 
 												  eventEl.getFloat("targetX"), eventEl.getFloat("targetY"));
+						break;
+					case "aisentry":
+						Array<Vector2> patrol = new Array<>();
+						for (Element patrolEl : eventEl.getChildrenByName("patrol"))
+						{
+							patrol.add(new Vector2(patrolEl.getFloat("x"), patrolEl.getFloat("y")));
+						}
+						
+						event = new AISentryEvent(Mappers.ai.get(screen.getEngine().getEntity(eventEl.get("entity"))), patrol);
 						break;
 					case "quest":
 						event = new QuestEvent(eventEl.getInt("id"), eventEl.get("action"), screen.getQuestManager());

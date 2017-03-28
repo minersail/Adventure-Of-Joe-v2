@@ -35,32 +35,31 @@ public class LineOfSightSystem extends IteratingSystem
 		
 		los.rotate(pos.orientation);
 		
-		if (los.seesPlayer) // Gains sight of player
+		if (los.playerNotSeenTime == 0) // Gains sight of player
 		{
 			if (Mappers.ai.has(entity))
 			{
 				AIComponent brain = Mappers.ai.get(entity);
-				if (brain.getState() instanceof SentryState)
+				if (brain.getState() instanceof SentryState) // If ai is in sentry mode
 				{
 					brain.setState(new FollowState(Mappers.positions.get(screen.getEngine().getPlayer())));
 				}
 			}
 		}
-		else // Lost sight of player
+		else if (los.playerNotSeenTime > 5) // Lost sight of player for 5 secs
 		{
 			if (Mappers.ai.has(entity))
 			{
 				AIComponent brain = Mappers.ai.get(entity);
-				// If AI was a sentry, and is now following, and has lost sight, and is a distance away from player (whew)
+				// If AI was a sentry, and is now following, and has lost sight
 				// CHANGE TO TIMER LATER
-				if (brain.getState() instanceof FollowState && brain.getCachedState() instanceof SentryState &&
-					Mappers.positions.get(screen.getEngine().getPlayer()).position.dst(Mappers.positions.get(entity).position) > 10)
+				if (brain.getState() instanceof FollowState && brain.getCachedState() instanceof SentryState)
 				{
 					brain.setState(brain.getCachedState());
 				}
 			}
 		}
 		
-		los.seesPlayer = false; // Set it at false, to be re-set to true if true, else stays as false
+		los.playerNotSeenTime += deltaTime; // If player is seen again the total time will be reset to 0
 	}
 }

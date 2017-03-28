@@ -48,7 +48,7 @@ public class PlayerSightedContact extends ContactCommand
 		
 		if (data.fixture == Mappers.hitboxes.get(contactA.owner).fixture)
 		{
-			Mappers.sightLines.get(contactB.owner).seesPlayer = true;
+			Mappers.sightLines.get(contactB.owner).playerNotSeenTime = 0;
 		}
 	}
 	

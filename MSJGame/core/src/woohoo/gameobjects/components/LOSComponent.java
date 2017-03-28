@@ -14,7 +14,7 @@ public class LOSComponent implements Component
 {
 	public Body mass;
 	public Fixture fixture;
-	public boolean seesPlayer;
+	public float playerNotSeenTime; // Time since player was last spotted
 	
     public LOSComponent(World world) 
     {
