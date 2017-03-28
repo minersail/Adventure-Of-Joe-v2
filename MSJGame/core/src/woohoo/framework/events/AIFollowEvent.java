@@ -19,6 +19,6 @@ public class AIFollowEvent implements Event<Entity>
 	@Override
 	public void activate()
 	{
-		aiChar.state = new FollowState(followChar);
+		aiChar.setState(new FollowState(followChar));
 	}	
 }

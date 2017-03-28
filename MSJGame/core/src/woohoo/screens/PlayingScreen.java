@@ -124,7 +124,7 @@ public class PlayingScreen implements Screen, Fadeable
 		GateSystem gateSystem = new GateSystem(this);
 		InputSystem inputSystem = new InputSystem(this);
 		ItemSystem itemSystem = new ItemSystem();
-		LineOfSightSystem losSystem = new LineOfSightSystem();
+		LineOfSightSystem losSystem = new LineOfSightSystem(this);
 		MovementSystem movementSystem = new MovementSystem(this);
 		PlayerSystem playerSystem = new PlayerSystem();
 		RenderSystem renderSystem = new RenderSystem(map, 1.0f / WORLD_WIDTH);
@@ -183,7 +183,7 @@ public class PlayingScreen implements Screen, Fadeable
 		state.update(this, delta);
 		ui.act();
 		alerts.act(delta);
-		//debugRenderer.render(world, cam.combined);
+		debugRenderer.render(world, cam.combined);
 		ui.draw();
     }
 	

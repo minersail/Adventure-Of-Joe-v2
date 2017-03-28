@@ -19,6 +19,6 @@ public class AIMoveToEvent implements Event<Entity>
 	@Override
 	public void activate()
 	{
-		aiChar.state = new MoveToState(target);
+		aiChar.setState(new MoveToState(target));
 	}	
 }

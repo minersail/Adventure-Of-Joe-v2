@@ -29,6 +29,7 @@ public class ContactSystem extends IteratingSystem
         commands.add(new EnemyTouchPlayerContact());
         commands.add(new ItemContact());
         commands.add(new ChaseContact());
+		commands.add(new PlayerSightedContact());
 		
 		world.setContactListener(new ContactListener() 
 		{

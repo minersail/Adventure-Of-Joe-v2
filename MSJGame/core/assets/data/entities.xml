@@ -91,9 +91,16 @@
 		</entity>
 		<entity enabled="true" name="test">
 			<id name="test" />
+			<ai state="sentry">
+				<patrol x="18" y="9" />
+				<patrol x="18" y="14" />
+				<patrol x="6" y="18" />
+			</ai>
 			<anim atlas="oldman.pack" />
 			<dialogue id="5" />
 			<hitbox collides="true" type="npc" />
+			<lineofsight />
+			<movement speed="1.25" />
 			<position x="18" y="8" />
 		</entity>
 	</area>

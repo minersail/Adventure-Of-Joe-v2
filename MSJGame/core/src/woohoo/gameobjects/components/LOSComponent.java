@@ -14,6 +14,7 @@ public class LOSComponent implements Component
 {
 	public Body mass;
 	public Fixture fixture;
+	public boolean seesPlayer;
 	
     public LOSComponent(World world) 
     {
@@ -31,7 +32,8 @@ public class LOSComponent implements Component
 		float SIN80 = (float)Math.sin(1.4);
 		float COS80 = (float)Math.cos(1.4);
 		
-		Vector2[] vertices = {new Vector2(0, 0), new Vector2(LOSradius * SIN60, LOSradius * COS60), new Vector2(LOSradius * SIN70, LOSradius * COS70), 
+		// Cone shape
+		Vector2[] vertices = {new Vector2(-0.1f, 0), new Vector2(LOSradius * SIN60, LOSradius * COS60), new Vector2(LOSradius * SIN70, LOSradius * COS70), 
 							  new Vector2(LOSradius * SIN80, LOSradius * COS80), new Vector2(LOSradius * SIN60, LOSradius * -COS60),
 							  new Vector2(LOSradius * SIN70, LOSradius * -COS70), new Vector2(LOSradius * SIN80, LOSradius * -COS80)};
 		

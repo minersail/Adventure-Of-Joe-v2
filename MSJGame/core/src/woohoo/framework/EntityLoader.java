@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.security.InvalidParameterException;
@@ -105,6 +106,14 @@ public class EntityLoader
 					base = new AIComponent(Mappers.positions.get(screen.getEngine().getEntity(component.get("target"))));
 				else if (component.get("state").equals("moveto"))
 					base = new AIComponent(new Vector2(component.getFloat("targetX"), component.getFloat("targetY")));
+				else if (component.get("state").equals("sentry"))
+				{
+					Array<Vector2> patrol = new Array<>();
+					for (Element patrolLoc : component.getChildrenByName("patrol"))
+						patrol.add(new Vector2(patrolLoc.getFloat("x"), patrolLoc.getFloat("y")));
+					
+					base = new AIComponent(patrol);
+				}
 				else
 					base = new AIComponent();
 				break;

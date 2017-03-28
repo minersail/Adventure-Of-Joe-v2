@@ -149,6 +149,15 @@ public class AIMap implements IndexedGraph<Node>
 		return nodes.size;
 	}
 	
+	public Node getRandomNode()
+	{
+		// Random int between 0 and size
+		int random = (int)Math.floor(Math.random() * nodes.size);
+		
+		// Use the random int to get an index from the keys, then retrieve a node based on that index
+		return nodes.get(nodes.keys().toArray().items[random]);
+	}
+	
 	public boolean contains(int index)
 	{
 		return nodes.containsKey(index);

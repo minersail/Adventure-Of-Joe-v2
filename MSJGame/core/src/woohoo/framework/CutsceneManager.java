@@ -193,14 +193,14 @@ public class CutsceneManager
         public void start()
         {
 			brain.timeStep = 0.05f;
-			brain.state = new MoveToState(targetPosition);
+			brain.setState(new MoveToState(targetPosition));
 			movement.speed = tempSpeed;
         }
         
         @Override
         public boolean isDone(float delta) 
         {
-			if (brain.state instanceof StayState)
+			if (brain.getState() instanceof StayState)
 			{
 				movement.speed = oldSpeed;
 				brain.resetTimeStep();

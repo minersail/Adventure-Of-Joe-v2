@@ -18,7 +18,7 @@ public class MoveToState implements AIState
 	public Direction getDirection(AIComponent ai, PositionComponent pos)
 	{
 		if (pos.position.dst(target) < 0.5f)
-			ai.state = new StayState();
+			ai.setState(new StayState());
 		
 		return ai.getDirectionFromPath(pos.position, target);
 	}

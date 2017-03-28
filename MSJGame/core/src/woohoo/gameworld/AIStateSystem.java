@@ -74,7 +74,7 @@ public class AIStateSystem extends IteratingSystem
 		
 		if (brain.timer >= brain.timeStep) // Only recalculates pathfinding after a certain interval
 		{
-			movement.direction = brain.state.getDirection(brain, position);
+			movement.direction = brain.getState().getDirection(brain, position);
 			brain.timer = 0;
 		}
 		
@@ -82,7 +82,7 @@ public class AIStateSystem extends IteratingSystem
 		{
 			HitboxComponent hitbox = Mappers.hitboxes.get(entity);
 			
-			hitbox.mass.setType(brain.state instanceof StayState ? BodyType.StaticBody : BodyType.DynamicBody); // Still entities will not be pushable
+			hitbox.mass.setType(brain.getState() instanceof StayState ? BodyType.StaticBody : BodyType.DynamicBody); // Still entities will not be pushable
 		}
 	}
 }

@@ -3,14 +3,22 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import woohoo.ai.aistates.FollowState;
+import woohoo.ai.aistates.SentryState;
+import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.LOSComponent;
 import woohoo.gameobjects.components.PositionComponent;
+import woohoo.screens.PlayingScreen;
 
 public class LineOfSightSystem extends IteratingSystem
 {
-	public LineOfSightSystem()
+	PlayingScreen screen;
+	
+	public LineOfSightSystem(PlayingScreen scr)
 	{
 		super(Family.all(LOSComponent.class, PositionComponent.class).get());
+		
+		screen = scr;
 	}
 	
 	@Override
@@ -19,7 +27,40 @@ public class LineOfSightSystem extends IteratingSystem
 		LOSComponent los = Mappers.sightLines.get(entity);
 		PositionComponent pos = Mappers.positions.get(entity);
 		
-		los.mass.getTransform().setPosition(pos.position.cpy());
+		// If hitbox exists use hitbox position
+		if (Mappers.hitboxes.has(entity))
+			los.mass.setTransform(Mappers.hitboxes.get(entity).mass.getPosition(), 0);
+		else // Use default position
+			los.mass.setTransform(pos.position.cpy(), 0);
+		
 		los.rotate(pos.orientation);
+		
+		if (los.seesPlayer) // Gains sight of player
+		{
+			if (Mappers.ai.has(entity))
+			{
+				AIComponent brain = Mappers.ai.get(entity);
+				if (brain.getState() instanceof SentryState)
+				{
+					brain.setState(new FollowState(Mappers.positions.get(screen.getEngine().getPlayer())));
+				}
+			}
+		}
+		else // Lost sight of player
+		{
+			if (Mappers.ai.has(entity))
+			{
+				AIComponent brain = Mappers.ai.get(entity);
+				// If AI was a sentry, and is now following, and has lost sight, and is a distance away from player (whew)
+				// CHANGE TO TIMER LATER
+				if (brain.getState() instanceof FollowState && brain.getCachedState() instanceof SentryState &&
+					Mappers.positions.get(screen.getEngine().getPlayer()).position.dst(Mappers.positions.get(entity).position) > 10)
+				{
+					brain.setState(brain.getCachedState());
+				}
+			}
+		}
+		
+		los.seesPlayer = false; // Set it at false, to be re-set to true if true, else stays as false
 	}
 }

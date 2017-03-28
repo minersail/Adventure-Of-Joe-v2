@@ -6,6 +6,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
 import woohoo.ai.AIHeuristic;
@@ -28,12 +29,14 @@ public class AIComponent implements Component
 	
 	public final float DEFAULT_TIMESTEP = 0.5f;
 	
-	public AIState state;
+	private AIState cache; // Previous state
+	private AIState state; // Current state
 	
 	public AIComponent()
 	{		
 		timeStep = DEFAULT_TIMESTEP;
 		heuristic = new AIHeuristic();
+		cache = null;
 	}
 	
 	public AIComponent(String str)
@@ -62,6 +65,12 @@ public class AIComponent implements Component
 		state = new FollowState(target);
 	}
 	
+	public AIComponent(Array<Vector2> patrol)
+	{
+		this();
+		state = new SentryState(patrol);
+	}
+	
 	/*
 	Generates pathfinding grid
 	*/
@@ -86,6 +95,22 @@ public class AIComponent implements Component
 		nodes = new AIMap(map, world, extraNodes, topRow, botRow, leftCol, rightCol);
 		pathFinder = new IndexedAStarPathFinder(nodes);
 		path = new DefaultGraphPath();
+	}
+	
+	public void setState(AIState newState)
+	{
+		cache = state;
+		state = newState;
+	}
+	
+	public AIState getState()
+	{
+		return state;
+	}
+	
+	public AIState getCachedState()
+	{
+		return cache;
 	}
 	
 	/*
