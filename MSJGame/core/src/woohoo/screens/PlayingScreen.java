@@ -58,7 +58,7 @@ public class PlayingScreen implements Screen, Fadeable
 	public int mapWidth;
 	public int mapHeight;
 	
-	public int currentArea = 5;
+	public int currentArea = 3;
 	
     private float runTime;
 	

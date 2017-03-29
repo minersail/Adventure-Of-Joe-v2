@@ -45,14 +45,6 @@ public class AnimMapObjectComponent extends TextureMapObject implements Componen
 		setAnimationState(new IdleAnimState());
 	}
 	
-	public void update(float delta, Vector2 newPosition)
-	{
-		animationTime += delta;
-		
-		setX(newPosition.x);
-		setY(newPosition.y);
-	}
-	
 	public final void setAnimationState(AnimationState state)
 	{
 		animState = state;

@@ -25,13 +25,13 @@ public class EventListener<T>
 		
 		switch(state)
 		{
-			case "enabled":
+			case "enabled": // Event will load every time player re-enters screen
 				listenerState = EventListenerState.Enabled;
 				break;
-			case "disabled":
+			case "disabled": // Event will not load
 				listenerState = EventListenerState.Disabled;
 				break;
-			case "autodisable":
+			case "autodisable": // Event will load first time player enters screen
 				listenerState = EventListenerState.Autodisable;
 				break;
 		}

@@ -29,17 +29,17 @@ public class EventSystem extends IteratingSystem
 		FileHandle handle = Gdx.files.local("data/events.xml");
         
         XmlReader xml = new XmlReader();
-        XmlReader.Element root = xml.parse(handle.readString());       
-        XmlReader.Element eventListeners = root.getChild(area);        
+        Element root = xml.parse(handle.readString());       
+        Element eventListeners = root.getChild(area);        
         
-        for (XmlReader.Element eventListener : eventListeners.getChildrenByName("eventlistener"))
+        for (Element eventListener : eventListeners.getChildrenByName("eventlistener"))
         {		
 			if (eventListener.get("state").equals("disabled")) continue;
 			
 			EventTrigger trigger;
 			Event event;
 			
-			XmlReader.Element triggerEl = eventListener.getChildByName("trigger");
+			Element triggerEl = eventListener.getChildByName("trigger");
 			Array<XmlReader.Element> eventEls = eventListener.getChildrenByName("event");
 			
 			// Create event trigger
@@ -47,6 +47,9 @@ public class EventSystem extends IteratingSystem
 			{
 				case "move":
 					trigger = new MoveTrigger(new Vector2(triggerEl.getFloat("locX"), triggerEl.getFloat("locY")), triggerEl.getFloat("dist"));
+					break;
+				case "screen":
+					trigger = new ScreenTrigger();
 					break;
 				case "cutscene":
 					trigger = new CutsceneTrigger();
@@ -59,7 +62,7 @@ public class EventSystem extends IteratingSystem
 			EventListener EL = new EventListener(eventListener.get("state"), eventListener.getInt("id"), area, trigger);
 			
 			// Create events to be activated by the event trigger
-			for (final XmlReader.Element eventEl : eventEls)
+			for (final Element eventEl : eventEls)
 			{				
 				switch (eventEl.get("type").toLowerCase())
 				{

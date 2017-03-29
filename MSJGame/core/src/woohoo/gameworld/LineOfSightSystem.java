@@ -52,7 +52,6 @@ public class LineOfSightSystem extends IteratingSystem
 			{
 				AIComponent brain = Mappers.ai.get(entity);
 				// If AI was a sentry, and is now following, and has lost sight
-				// CHANGE TO TIMER LATER
 				if (brain.getState() instanceof FollowState && brain.getCachedState() instanceof SentryState)
 				{
 					brain.setState(brain.getCachedState());

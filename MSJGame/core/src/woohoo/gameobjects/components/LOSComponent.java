@@ -44,7 +44,7 @@ public class LOSComponent implements Component
 		
         fixture = mass.createFixture(fixtureDef);
 		fixture.setSensor(true);
-        fixture.setDensity(100f);
+        fixture.setDensity(0.01f);
         fixture.setFriction(0);
         fixture.setRestitution(0);
     }

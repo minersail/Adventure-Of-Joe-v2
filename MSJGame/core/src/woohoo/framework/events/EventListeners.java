@@ -30,9 +30,9 @@ public class EventListeners<T>
 					targetListener.setAttribute("state", "disabled");
 
 					handle.writeString(root.toString(), false);
-					
-					iter.remove();
 				}
+					
+				iter.remove();
 			}
 		}
 	}
