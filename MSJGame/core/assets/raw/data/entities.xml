@@ -12,7 +12,7 @@
 			<health max="" />
 			<hitbox collides="" type=""/>
 			<input />
-			<inventory />
+			<inventory id="" />
 			<itemdata>
 				<metadata />
 			</itemdata>
@@ -98,6 +98,7 @@
 			</ai>
 			<anim atlas="oldman.pack" />
 			<dialogue id="5" />
+			<inventory id="1" />
 			<hitbox collides="true" type="npc" />
 			<lineofsight />
 			<movement speed="1.25" />

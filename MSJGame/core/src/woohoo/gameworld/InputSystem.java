@@ -95,7 +95,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 					addCommand(new NPCTalkCommand(screen.getDialogueManager(), screen.getEngine()));
 					break;
 				case Input.Keys.ESCAPE:
-					screen.setState(new InventoryState());
+					addCommand(new InventoryOpenCommand(screen.getInventoryManager(), screen.getEngine()));
 					break;
 				case Input.Keys.F1:
 					screen.setState(new QuestState());
@@ -137,7 +137,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 					screen.setState(new PlayingState());
 					break;
 				case Input.Keys.ESCAPE:
-					screen.setState(new InventoryState());
+					addCommand(new InventoryOpenCommand(screen.getInventoryManager(), screen.getEngine()));
 					break;
 			}
 		}

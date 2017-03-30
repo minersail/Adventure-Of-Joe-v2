@@ -38,9 +38,9 @@ public class EntityLoader
 	{
 		Entity player = new Entity();
 		AnimMapObjectComponent mapObject = new AnimMapObjectComponent(screen.getAssets().get("images/entities/youngjoe.pack", TextureAtlas.class));
-		PositionComponent position = new PositionComponent(2, 2);
+		PositionComponent position = new PositionComponent(2, 7);
 		IDComponent id = new IDComponent("player");
-		InventoryComponent inventory = new InventoryComponent();
+		InventoryComponent inventory = new InventoryComponent(0);
 		EventListenerComponent eventListener = new EventListenerComponent();
 		HealthComponent life = new HealthComponent(100);
 		HealthBarComponent healthBar = new HealthBarComponent(screen.getAssets().get("ui/healthbar.pack", TextureAtlas.class));
@@ -49,8 +49,7 @@ public class EntityLoader
 		MovementComponent movement = new MovementComponent(2);
 		PlayerComponent playerComp = new PlayerComponent();
 
-		screen.getInventoryManager().loadInventory(inventory);
-		screen.getInventoryManager().fillInventory(inventory);
+		screen.getInventoryManager().fillInventory(inventory, true);
 		hitbox.mass.setUserData(new ContactData(ContactType.Player, player));
 		
 		player.add(mapObject);
@@ -148,7 +147,7 @@ public class EntityLoader
 				base = new InputComponent();
 				break;
 			case "inventory":
-				base = new InventoryComponent();
+				base = new InventoryComponent(component.getInt("id"));
 				break;
 			case "itemdata":
 				base = new ItemDataComponent(component.getChildByName("metadata").getAttributes());

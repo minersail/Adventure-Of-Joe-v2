@@ -7,7 +7,6 @@ public class InventoryState implements GameState
 	@Override
 	public void enter(PlayingScreen screen)
 	{
-		screen.getInventoryManager().showInventory();
 	}
 
 	@Override

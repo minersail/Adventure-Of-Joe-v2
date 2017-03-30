@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.HitboxComponent;
@@ -61,7 +62,7 @@ public class InventoryManager
 	private final TextureRegion slotBackground;
 	private final TextureRegion blankItem;
     
-	private InventoryComponent currentInventory;
+	private InventoryComponent otherInventory; // Inventory of the other character; null if only player inventory is open
     private PlayingScreen screen;
 	private Table table;
 	private Table table2;
@@ -166,7 +167,15 @@ public class InventoryManager
     public void showInventory() 
     {
         screen.getUI().addActor(table);
-        screen.getUI().addActor(table2);
+		screen.setState(new InventoryState());
+    } 
+	
+	public void showInventory(InventoryComponent other) 
+    {
+		showInventory();
+		
+		fillInventory(other, false);
+		screen.getUI().addActor(table2);
     }
 	
 	public void closeInventory()
@@ -174,63 +183,61 @@ public class InventoryManager
 		table.remove();
 		table2.remove();
 	}
-    
-	/**
-	 * Function to load InventoryComponents from XML
-	 * @param inventory InventoryComponent to load
-	 */
-    public void loadInventory(InventoryComponent inventory)
-    {        
-        FileHandle handle = Gdx.files.local("data/inventory.xml");
-        
-        XmlReader xml = new XmlReader();
-        XmlReader.Element root = xml.parse(handle.readString());    
-        
-        for (XmlReader.Element e : root.getChildrenByName("item"))
-        {	
-            Entity item = new Entity();
-			ItemDataComponent itemData = new ItemDataComponent(e.getChildByName("metadata").getAttributes());
-			item.add(itemData);			
-            inventory.addItem(item);
-        }
-	}
 	
-	/**
-	 * Function to fill the inventory UI with a character's inventory
-	 * @param inventory Character to fill inventory UI with
-	 */
-	public void fillInventory(InventoryComponent inventory)
+	public void fillPlayerInventory()
 	{
-		currentInventory = inventory;
+		InventoryComponent inventory = Mappers.inventories.get(screen.getEngine().getPlayer());
 		
 		// Starts at 2 since first two items are "X" button and item slot
 		for (int i = 2; i < table.getCells().size; i++)
 		{		
-			if (i >= currentInventory.getItems().size() + 2) break;
-			
-			Entity item = currentInventory.getItems().get(i - 2); // i - 2 because the inventory starts at 0
-			
+			if (i >= inventory.getItems().size() + 2) break;
+
+			Entity item = inventory.getItems().get(i - 2); // i - 2 because the inventory starts at 0
+
 			// Use the id from the itemdatacomponent to retrive a texture from the id manager
 			TextureRegion region = new TextureRegion(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
 			Image image = new Image(region);
 			image.setSize(ITEMX, ITEMY);
-			
+
 			((InventorySlot)table.getCells().get(i).getActor()).setImage(image).setItem(item).setCount(1);
 		}
 	}
 	
 	/**
-	 * Function to add a single item into both the inventory of the character passed in and the UI
-	 * If the item only needs to be added to the character, instead use only InventoryComponent.addItem()
+	 * Function to fill the inventory UI with a character's inventory
+	 * @param inventory Character to fill inventory UI with
+	 * @param player Whether or not to fill player's inventory (left) or other (right)
+	 */
+	public void fillInventory(InventoryComponent inventory, boolean player)
+	{
+		otherInventory = inventory;
+		
+		// Starts at 0 (right side of table)
+		for (int i = 0; i < table2.getCells().size; i++)
+		{		
+			if (i >= otherInventory.getItems().size()) break;
+
+			Entity item = otherInventory.getItems().get(i);
+
+			// Use the id from the itemdatacomponent to retrive a texture from the id manager
+			TextureRegion region = new TextureRegion(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
+			Image image = new Image(region);
+			image.setSize(ITEMX, ITEMY);
+
+			((InventorySlot)table2.getCells().get(i).getActor()).setImage(image).setItem(item).setCount(1);
+		}
+	}
+	
+	/**
+	 * Function to add a single item into the inventory of the character
 	 * 
 	 * Can only be called after fillInventory() has been called at least once
-	 * @param inventory InventoryComponent item will be added to
 	 * @param item The item to be added
 	 */
-	public void addItem(InventoryComponent inventory, Entity item)
+	public void addItem(Entity item)
 	{
-		currentInventory = inventory;
-		currentInventory.addItem(item);
+		Mappers.inventories.get(screen.getEngine().getPlayer()).addItem(item);
 		
 		// Starts at 2 since first two items are "X" button and item slot
 		for (int i = 2; i < table.getCells().size; i++)
@@ -294,7 +301,7 @@ public class InventoryManager
 			// Create empty slot
 			slot.setItem(null).setImage(new Image(blankItem)).setCount(0);
 
-			currentInventory.removeItem(item);
+			Mappers.inventories.get(screen.getEngine().getPlayer()).removeItem(item);
 
 			// Create position/mapObject components to go along with the item
 			PositionComponent position = new PositionComponent(Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy());
