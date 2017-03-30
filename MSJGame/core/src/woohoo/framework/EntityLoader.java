@@ -49,7 +49,7 @@ public class EntityLoader
 		MovementComponent movement = new MovementComponent(2);
 		PlayerComponent playerComp = new PlayerComponent();
 
-		screen.getInventoryManager().fillInventory(inventory, true);
+		screen.getInventoryManager().fillPlayerInventory(inventory);
 		hitbox.mass.setUserData(new ContactData(ContactType.Player, player));
 		
 		player.add(mapObject);

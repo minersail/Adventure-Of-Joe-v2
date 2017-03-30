@@ -26,7 +26,7 @@ public class PickupItemCommand implements InputCommand
 		{
 			Entity item = it.next();
 			
-			manager.addItem(Mappers.inventories.get(entity), item);
+			manager.addItem(item);
 			engine.removeEntity(item);
 			
 			it.remove();
