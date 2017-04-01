@@ -1,5 +1,6 @@
 package woohoo.framework;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import woohoo.gameobjects.components.DialogueComponent;
+import woohoo.gameworld.Mappers;
 import woohoo.gameworld.gamestates.CutsceneState;
 import woohoo.gameworld.gamestates.DialogueState;
 import woohoo.gameworld.gamestates.GameState;
@@ -21,6 +23,7 @@ public class DialogueManager
 {
 	private PlayingScreen screen;
 	private Skin skin;
+	private Entity dialogueEntity;
     private DialogueComponent currentDialogue;
     private Image face;
 	private Label message;
@@ -58,14 +61,27 @@ public class DialogueManager
 		choices = new Array<>();
     }
     
-    public void startDialogue(DialogueComponent dia)
+	/*
+	Dialogue was started by entity
+	*/
+    public void startDialogue(Entity entity)
     {
-        currentDialogue = dia;
+		dialogueEntity = entity;
+		startDialogue(Mappers.dialogues.get(entity));
+    }
+	
+	/*
+	Dialogue was not started by entity, but rather by cutscene manager
+	*/
+	public void startDialogue(DialogueComponent component)
+	{
+		currentDialogue = component;
 		
-		TextureRegionDrawable faceRegion = new TextureRegionDrawable(screen.getIDManager().getCharacter(dia.getCurrentLine().id()).getFace());
+		// Use the id of the dialogue line to map to a face using the id manager
+		TextureRegionDrawable faceRegion = new TextureRegionDrawable(screen.getIDManager().getCharacter(currentDialogue.getCurrentLine().id()).getFace());
 		
-        message.setText(dia.getCurrentLine().text());
-		name.setText(dia.getCurrentLine().name());
+        message.setText(currentDialogue.getCurrentLine().text());
+		name.setText(currentDialogue.getCurrentLine().name());
 		face.setDrawable(faceRegion);
 		
 		screen.getUI().addActor(message);
@@ -73,7 +89,7 @@ public class DialogueManager
 		screen.getUI().addActor(face);
 		
 		screen.setState(new DialogueState());
-    }
+	}
 	
 	public void advanceDialogue()
 	{
@@ -113,6 +129,11 @@ public class DialogueManager
 					break;
 				case "ENDCHOICE":
 					advanceDialogue();
+					return; // Return instead of break so that message/face don't crash the program
+				case "INVENTORY":
+					if (dialogueEntity != null)
+						screen.getInventoryManager().showInventory(Mappers.inventories.get(dialogueEntity));
+					toggleUI(false);
 					return;
 				default:
 					break;
@@ -183,6 +204,19 @@ public class DialogueManager
 		face.remove();
 		
 		screen.setState(newState);
+		dialogueEntity = null;
+	}
+	
+	/**
+	 * Should only be used if ui should disappear mid-dialogue (such as opening an inventory)
+	 * Otherwise use endDialogue()
+	 * @param visible whether to make them visible or not
+	 */
+	public void toggleUI(boolean visible)
+	{
+		message.setVisible(visible);
+		name.setVisible(visible);
+		face.setVisible(visible);
 	}
 	
 	public DialogueComponent getCurrentDialogue()

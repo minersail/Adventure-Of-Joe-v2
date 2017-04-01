@@ -40,6 +40,9 @@
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 	<dialogue id="6">
-		<line character="5" name="Guard" text="Come back here, you delinquent." />
+		<line character="6" name="Merchant" text="Welcome to my shop!" />
+		<line character="-1" name="Command" text="INVENTORY" />
+		<line character="6" name="Merchant" text="Goodbye!" />
+		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 </dialogues>

@@ -39,7 +39,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 		}
 	}
 	
-	private void addCommand(InputCommand command)
+	public void addCommand(InputCommand command)
 	{
 		for (Entity entity : getEntities())
 		{
@@ -47,7 +47,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 		}
 	}
 	
-	private void addState(InputState state)
+	public void addState(InputState state)
 	{
 		for (Entity entity : getEntities())
 		{
@@ -55,7 +55,10 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 		}
 	}
 	
-	private void removeState(InputState state)
+	/*
+	States will not be automatically removed
+	*/
+	public void removeState(InputState state)
 	{
 		for (Entity entity : getEntities())
 		{
@@ -95,7 +98,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 					addCommand(new NPCTalkCommand(screen.getDialogueManager(), screen.getEngine()));
 					break;
 				case Input.Keys.ESCAPE:
-					addCommand(new InventoryOpenCommand(screen.getInventoryManager(), screen.getEngine()));
+					addCommand(new InventoryOpenCommand(screen.getInventoryManager()));
 					break;
 				case Input.Keys.F1:
 					screen.setState(new QuestState());
@@ -121,11 +124,8 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 		{
 			switch (keycode)
 			{
-				case Input.Keys.F1:
-					screen.setState(new QuestState());
-					break;
 				case Input.Keys.ESCAPE:
-					screen.setState(new PlayingState());
+					addCommand(new InventoryCloseCommand(screen));
 					break;
 			}
 		}
@@ -135,9 +135,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor
 			{
 				case Input.Keys.F1:
 					screen.setState(new PlayingState());
-					break;
-				case Input.Keys.ESCAPE:
-					addCommand(new InventoryOpenCommand(screen.getInventoryManager(), screen.getEngine()));
 					break;
 			}
 		}

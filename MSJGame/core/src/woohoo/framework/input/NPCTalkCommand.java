@@ -7,7 +7,6 @@ import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.PositionComponent;
 import woohoo.gameworld.AnimationSystem;
 import woohoo.gameworld.GameEngine;
-import woohoo.gameworld.Mappers;
 
 public class NPCTalkCommand implements InputCommand
 {
@@ -30,7 +29,7 @@ public class NPCTalkCommand implements InputCommand
 			
 			if (engine.getSystem(AnimationSystem.class).isFacing(player, npc) && playerPos.position.dst(npcPos.position) < 1.5f)
 			{
-				manager.startDialogue(Mappers.dialogues.get(npc));
+				manager.startDialogue(npc);
 			}
 		}
 	}

@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.contactcommands.ContactData;
+import woohoo.framework.input.InventoryCloseCommand;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.InventoryComponent;
@@ -30,11 +31,11 @@ import woohoo.gameobjects.components.ItemDataComponent.ItemType;
 import woohoo.gameobjects.components.MapObjectComponent;
 import woohoo.gameobjects.components.PositionComponent;
 import woohoo.gameobjects.components.WeaponComponent;
+import woohoo.gameworld.InputSystem;
 import woohoo.gameworld.Mappers;
 import woohoo.gameworld.RenderSystem;
 import woohoo.gameworld.WeaponSystem;
 import woohoo.gameworld.gamestates.InventoryState;
-import woohoo.gameworld.gamestates.PlayingState;
 import woohoo.screens.PlayingScreen;
 
 /**
@@ -42,7 +43,12 @@ import woohoo.screens.PlayingScreen;
  * @author jordan
  */
 public class InventoryManager
-{
+{	
+	public enum SlotType
+	{
+		Player, Other, Weapon
+	};
+	
     public final int INVENTORY_WIDTH = 5;
     public final int INVENTORY_HEIGHT = 8;
     public final int ITEMX = 64;
@@ -97,7 +103,7 @@ public class InventoryManager
                 @Override
                 public void clicked(InputEvent event, float x, float y)
                 {
-                    screen.setState(new PlayingState());
+                    screen.getEngine().getSystem(InputSystem.class).addCommand(new InventoryCloseCommand(screen));
                 }
             }        
         );		
@@ -196,47 +202,84 @@ public class InventoryManager
 		Element root = reader.parse(handle.readString());
 		Element playerInv = root.getChild(0);
 		
-		// Clear player inventory
+		// Clear xml player inventory
 		for (Element item : playerInv.getChildrenByName("item"))
 		{
 			item.remove();
 		}
 		
-		for (int i = 0; i < table.getCells().size; i++)
+		// Write player inventory to xml
+		for (int i = 1; i < table.getCells().size; i++)
 		{
 			InventorySlot slot = (InventorySlot)table.getCells().get(i).getActor();
 			if (slot.getItem() != null)
 			{
 				Element element = new Element("item", playerInv);
+				Element metadata = new Element("metadata", element);
 				
+				// Convert the entity's inventorycomponent's metadata objectmap to xml
 				ObjectMap.Entries<String, String> entries = Mappers.items.get(slot.getItem()).metaData.entries();
 				while (entries.hasNext())
 				{
 					ObjectMap.Entry<String, String> entry = entries.next();
-					element.setAttribute(entry.key, entry.value);
+					metadata.setAttribute(entry.key, entry.value);
 				}
+				element.addChild(metadata);
 				playerInv.addChild(element);
 			}
 		}
 		
-		if (otherInventory != null) // if 
+		if (otherInventory != null) // if closing from screen with two inventories
 		{
-			Element targetElement = getElement(root);
+			Element objectInv = root.getChild(otherInventory.id);
+			
+			// Clear xml other's inventory
+			for (Element item : objectInv.getChildrenByName("item"))
+			{
+				item.remove();
+			}
+			
+			for (int i = 0; i < table2.getCells().size; i++)
+			{
+				InventorySlot slot = (InventorySlot)table2.getCells().get(i).getActor();
+				if (slot.getItem() != null)
+				{
+					Element element = new Element("item", objectInv);
+					Element metadata = new Element("metadata", element);
 
-			targetElement.setAttribute(attributeName, attributeValue);
-			handle.writeString(root.toString(), false);
+					// Convert the entity's inventorycomponent's metadata objectmap to xml
+					ObjectMap.Entries<String, String> entries = Mappers.items.get(slot.getItem()).metaData.entries();
+					while (entries.hasNext())
+					{
+						ObjectMap.Entry<String, String> entry = entries.next();
+						metadata.setAttribute(entry.key, entry.value);
+					}
+					element.addChild(metadata);
+					objectInv.addChild(element);
+				}
+			}
 		}
+		handle.writeString(root.toString(), false);
 		
 		table.remove();
 		table2.remove();
 		
-		otherInventory = null; // otherInventory only exists when there is another inventory
+		otherInventory = null; // ensure inventory functions aren't called when the ui isn't open
 		
-		for (int i = 0; i < table2.getCells().size; i++) // Empty inventory
+		for (int i = 0; i < table2.getCells().size; i++) // Empty inventory ui
 		{
 			InventorySlot slot = (InventorySlot)table2.getCells().get(i).getActor();
 			slot.empty();
 		}
+	}
+	
+	/**
+	 * Whether or not the inventory as it is was opened from a dialogue (e.g. shop, chest)
+	 * @return false if opened by using escape (just player inventory)
+	 */
+	public boolean openedFromDialogue()
+	{
+		return otherInventory != null;
 	}
 	
 	public void fillPlayerInventory(InventoryComponent inventory)
@@ -354,11 +397,6 @@ public class InventoryManager
 	{
 		return Mappers.inventories.get(screen.getEngine().getPlayer());
 	}
-	
-	public enum SlotType
-	{
-		Player, Other, Weapon
-	};
 	
 	/**
 	 * Stores the image data for a single slot in the inventory UI
@@ -495,6 +533,9 @@ public class InventoryManager
         @Override
         public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) 
         {
+            ((InventorySlot)getActor()).setDragged(false);
+			weaponSlot.setColor(Color.WHITE);
+			
             if (target == null) // Payload was not dropped on a target (e.g. outside the inventory)
             {
 				// Can't drop items out of a shopkeeper or chest
@@ -510,9 +551,6 @@ public class InventoryManager
 				
                 dropItem(dropped);
             }
-
-            ((InventorySlot)getActor()).setDragged(false);
-			weaponSlot.setColor(Color.WHITE);
         }
     }
     

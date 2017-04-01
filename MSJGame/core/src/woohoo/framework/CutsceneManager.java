@@ -90,6 +90,7 @@ public class CutsceneManager
             cutsceneEntities.add(screen.getEngine().getEntity(e.get("name")));
         }
 		
+		// Dialogue component is not attached to any entity, but rather the cutscene manager itself
 		DialogueComponent component = new DialogueComponent(cutsceneID, true);
         
         for (Element e : cutscene.getChildrenByName("action"))

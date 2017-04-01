@@ -192,5 +192,35 @@
 	<area id="6">
 	</area>
 	<area id="7">
+		<entity enabled="true" name="merchant1">
+			<id name="merchant1" />
+			<ai state="stay" />
+			<anim atlas="woman1.pack" />
+			<dialogue id="6" />
+			<hitbox collides="true" type="npc" />
+			<inventory id="1" />
+			<movement speed="1" />
+			<position x="8" y="12" />
+		</entity>
+		<entity enabled="true" name="merchant2">
+			<id name="merchant2" />
+			<ai state="stay" />
+			<anim atlas="woman1.pack" />
+			<dialogue id="6" />
+			<hitbox collides="true" type="npc" />
+			<inventory id="1" />
+			<movement speed="1" />
+			<position x="8" y="17" />
+		</entity>
+		<entity enabled="true" name="merchant3">
+			<id name="merchant3" />
+			<ai state="stay" />
+			<anim atlas="woman1.pack" />
+			<dialogue id="6" />
+			<hitbox collides="true" type="npc" />
+			<inventory id="1" />
+			<movement speed="1" />
+			<position x="8" y="22" />
+		</entity>
 	</area>
 </entities>
