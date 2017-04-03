@@ -20,5 +20,8 @@
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		default: { down: default-rect-down, up: default-rect }
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+		default: { background: default-window, titleFont: text }
 	}
 }

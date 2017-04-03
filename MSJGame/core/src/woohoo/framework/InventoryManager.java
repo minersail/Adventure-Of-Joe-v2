@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
@@ -95,7 +96,7 @@ public class InventoryManager
 		blankItem = atlas.findRegion("blank");
                 
         closeButton = new TextButton("x", skin);
-        weaponSlot = new InventorySlot(slotBackground, blankItem);
+        weaponSlot = new InventorySlot(slotBackground, blankItem, skin);
 		weaponSlot.setType(SlotType.Weapon);
         table.add(closeButton).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);   
         table.add(weaponSlot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
@@ -153,7 +154,7 @@ public class InventoryManager
             for (int j = 0; j < INVENTORY_WIDTH; j++)
             {
 				// Player inventory
-                InventorySlot slot = new InventorySlot(slotBackground, blankItem);
+                InventorySlot slot = new InventorySlot(slotBackground, blankItem, skin);
 				slot.setType(SlotType.Player);
                 table.add(slot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
 
@@ -161,7 +162,7 @@ public class InventoryManager
                 dnd.addTarget(new InventoryTarget(slot));
 				
 				// Other inventory
-                InventorySlot slot2 = new InventorySlot(slotBackground, blankItem);
+                InventorySlot slot2 = new InventorySlot(slotBackground, blankItem, skin);
 				slot2.setType(SlotType.Other);
                 table2.add(slot2).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
 
@@ -423,6 +424,7 @@ public class InventoryManager
 	 */
     public class InventorySlot extends Image
     {
+        private InventoryToolTip tooltip;
 		private Entity item; // Item entity, starts as null
         private Image itemImage; // Scene2D actor used for payload
         private boolean dragged;
@@ -430,11 +432,13 @@ public class InventoryManager
 		
 		private SlotType type;
         
-        public InventorySlot(TextureRegion background, TextureRegion itemSprite)
+        public InventorySlot(TextureRegion background, TextureRegion itemSprite, Skin skin)
         {
             super(background);
             itemImage = new Image(itemSprite);
             itemImage.setSize(ITEMX, ITEMY);
+            tooltip = new InventoryToolTip(skin);
+            screen.getUI().addActor(tooltip);
         }
         
         public Image getImage()
@@ -456,7 +460,9 @@ public class InventoryManager
 		
 		public InventorySlot setItem(Entity entity)
 		{		
-			item = entity;	
+			item = entity;
+            if (entity != null)
+                tooltip.setName(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getName());
 			return this;
 		}
         
@@ -499,11 +505,19 @@ public class InventoryManager
 			return count;
 		}
         
+        public InventoryToolTip getToolTip()
+        {
+            return tooltip;
+        }
+        
         @Override
         public void draw(Batch batch, float parentAlpha)
         {
             super.draw(batch, parentAlpha);            
             itemImage.draw(batch, parentAlpha);
+            
+            tooltip.setPosition(getX() + 20, getY() + 20);
+            tooltip.draw(batch, parentAlpha);
             
             if (!dragged)
             {            
@@ -653,6 +667,27 @@ public class InventoryManager
             targetSlot.setImage(sourceImage).setItem(sourceItem).setCount(1);
 			
 			weaponSlot.setColor(Color.WHITE);
+        }
+    }
+    
+    public class InventoryToolTip extends Window 
+    {
+        private Label description;
+        
+        public InventoryToolTip(Skin skin)
+        {
+            super("", skin);
+            super.setSize(300, 200);
+            
+            description = new Label("", skin);
+            description.setWrap(true);
+            //description.setSize(super.getWidth(), super.getHeight() - 100);
+            super.add(description);
+        }
+        
+        public void setDescription(String message)
+        {
+            description.setText(message);
         }
     }
 }
