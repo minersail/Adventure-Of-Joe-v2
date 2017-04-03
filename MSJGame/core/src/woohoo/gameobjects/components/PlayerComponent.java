@@ -6,7 +6,8 @@ import com.badlogic.gdx.utils.Array;
 
 public class PlayerComponent implements Component
 {
-	public Array<Entity> touchedItems; 
+	public Array<Entity> touchedItems;
+	public int money;
     
     public PlayerComponent()
     {

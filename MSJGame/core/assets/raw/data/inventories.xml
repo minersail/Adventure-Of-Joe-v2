@@ -8,12 +8,12 @@
 			<metadata id="1" count="1" />
 		</item>
 		<item>
-			<metadata id="2" count="1" type="weapon" damage="0.25" knockback="1"/>
+			<metadata id="2" count="1" type="weapon" damage="0.25" knockback="1" />
 		</item>
 	</inventory>
 	<inventory id="1">
 		<item>
-			<metadata id="0" count="1" />
+			<metadata id="0" count="1" buy="2" sell="5" />
 		</item>
 	</inventory>
 </inventories>

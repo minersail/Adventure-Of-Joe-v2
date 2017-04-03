@@ -126,7 +126,7 @@ public class PlayingScreen implements Screen, Fadeable
 		ItemSystem itemSystem = new ItemSystem();
 		LineOfSightSystem losSystem = new LineOfSightSystem(this);
 		MovementSystem movementSystem = new MovementSystem(this);
-		PlayerSystem playerSystem = new PlayerSystem();
+		PlayerSystem playerSystem = new PlayerSystem(this);
 		RenderSystem renderSystem = new RenderSystem(map, 1.0f / WORLD_WIDTH);
 		WeaponSystem weaponSystem = new WeaponSystem();
 		

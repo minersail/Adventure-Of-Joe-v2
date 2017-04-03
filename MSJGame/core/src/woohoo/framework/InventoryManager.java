@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
+import java.util.Iterator;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.framework.input.InventoryCloseCommand;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
@@ -74,6 +76,7 @@ public class InventoryManager
 	private Table table;
 	private Table table2;
 	private TextButton closeButton;
+	private Label moneyLabel;
 	private InventorySlot weaponSlot;
 
 	/**
@@ -168,6 +171,9 @@ public class InventoryManager
             table.row();
 			table2.row();
         }
+		
+		moneyLabel = new Label("", skin);
+		table.add(moneyLabel).colspan(INVENTORY_WIDTH).prefSize((ITEMX + ITEMBORDERX) * INVENTORY_WIDTH, ITEMY);
 
         table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         table.align(Align.left);
@@ -209,8 +215,10 @@ public class InventoryManager
 		}
 		
 		// Write player inventory to xml
-		for (int i = 1; i < table.getCells().size; i++)
+		for (int i = 0; i < table.getCells().size; i++)
 		{
+			if (!(table.getCells().get(i).getActor() instanceof InventorySlot)) continue;
+			
 			InventorySlot slot = (InventorySlot)table.getCells().get(i).getActor();
 			if (slot.getItem() != null)
 			{
@@ -282,14 +290,23 @@ public class InventoryManager
 		return otherInventory != null;
 	}
 	
+	public void updateMoney(int newMoney)
+	{
+		moneyLabel.setText(Integer.toString(newMoney));
+	}
+	
 	public void fillPlayerInventory(InventoryComponent inventory)
 	{
-		// Starts at 2 since first two items are "X" button and item slot
-		for (int i = 2; i < table.getCells().size; i++)
+		Iterator<Entity> iterator = inventory.getItems().iterator();
+		
+		for (int i = 0; i < table.getCells().size; i++)
 		{		
-			if (i >= inventory.getItems().size() + 2) break;
-
-			Entity item = inventory.getItems().get(i - 2); // i - 2 because the inventory starts at 0
+			// If table item is not invetory slot (x button, gold display) or is a Weapon slot
+			if (!(table.getCells().get(i).getActor() instanceof InventorySlot) || 
+				((InventorySlot)table.getCells().get(i).getActor()).getType() == SlotType.Weapon) continue;
+			
+			if (!iterator.hasNext()) return; // Finished loading player inventory
+			Entity item = iterator.next();
 
 			// Use the id from the itemdatacomponent to retrive a texture from the id manager
 			TextureRegion region = new TextureRegion(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
@@ -332,10 +349,11 @@ public class InventoryManager
 	{
 		Mappers.inventories.get(screen.getEngine().getPlayer()).addItem(item);
 		
-		// Starts at 2 since first two items are "X" button and item slot
-		for (int i = 2; i < table.getCells().size; i++)
+		for (int i = 0; i < table.getCells().size; i++)
 		{		
+			if (!(table.getCells().get(i).getActor() instanceof InventorySlot)) continue;
 			InventorySlot slot = (InventorySlot)table.getCells().get(i).getActor();
+			if (slot.getType() == SlotType.Weapon) continue;
 			
 			if (slot.getCount() == 0)
 			{
@@ -364,9 +382,9 @@ public class InventoryManager
 	 */
 	public void dropItem(Entity item)
 	{				
-		// Starts at 1 since first item is "X" button
-		for (int i = 1; i < table.getCells().size; i++)
+		for (int i = 0; i < table.getCells().size; i++)
 		{
+			if (!(table.getCells().get(i).getActor() instanceof InventorySlot)) continue;
 			InventorySlot slot = (InventorySlot)table.getCells().get(i).getActor();
 			
 			if (slot.getItem() != null && slot.getItem().equals(item))
@@ -603,12 +621,14 @@ public class InventoryManager
 				Entity item = sourceSlot.getItem();
 				playerInventory().removeItem(item);
 				otherInventory.addItem(item);
+				Mappers.players.get(screen.getEngine().getPlayer()).money += Integer.parseInt((String)Mappers.items.get(item).metaData.get("sell"));
 			}// Dropped from other's inventory to the player's
 			else if (sourceSlot.getType() == SlotType.Other && targetSlot.getType() == SlotType.Player)
 			{
 				Entity item = sourceSlot.getItem();
 				otherInventory.removeItem(item);
 				playerInventory().addItem(item);
+				Mappers.players.get(screen.getEngine().getPlayer()).money -= Integer.parseInt((String)Mappers.items.get(item).metaData.get("buy"));
 			}
 
             Image sourceImage = sourceSlot.getImage();

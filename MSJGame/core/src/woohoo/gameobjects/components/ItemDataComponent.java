@@ -44,5 +44,10 @@ public class ItemDataComponent implements Component
     {
 		metaData = element;
 		type = ItemType.fromString((String)element.get("type"));
+		
+		// Default keys will ensure no crashes
+		metaData.put("count", element.get("count", "1"));
+		metaData.put("sell", element.get("sell", "0"));
+		metaData.put("buy", element.get("buy", "0"));
     }          
 }

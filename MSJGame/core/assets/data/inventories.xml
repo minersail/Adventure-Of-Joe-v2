@@ -1,15 +1,18 @@
 <inventories>
 	<inventory id="0">
 		<item>
-			<metadata id="0" count="1"/>
+			<metadata sell="0" buy="0" id="0" count="1"/>
 		</item>
 		<item>
-			<metadata id="1" count="1"/>
+			<metadata sell="0" buy="0" id="1" count="1"/>
 		</item>
 		<item>
-			<metadata count="1" type="weapon" knockback="1" id="2" damage="0.25"/>
+			<metadata sell="0" count="1" buy="0" type="weapon" knockback="1" id="2" damage="0.25"/>
 		</item>
 	</inventory>
 	<inventory id="1">
+		<item>
+			<metadata sell="5" buy="2" id="0" count="1"/>
+		</item>
 	</inventory>
 </inventories>
