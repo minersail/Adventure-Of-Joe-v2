@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -100,6 +102,7 @@ public class InventoryManager
 		weaponSlot.setType(SlotType.Weapon);
         table.add(closeButton).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);   
         table.add(weaponSlot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
+		table.addActor(weaponSlot.getToolTip());
         table.row();
         
         closeButton.addListener(new ClickListener()
@@ -157,6 +160,7 @@ public class InventoryManager
                 InventorySlot slot = new InventorySlot(slotBackground, blankItem, skin);
 				slot.setType(SlotType.Player);
                 table.add(slot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
+				table.addActor(slot.getToolTip()); // addActor() instead of add() so that the tooltips float rather than mess up cell formatting
 
                 dnd.addSource(new InventorySource(slot));
                 dnd.addTarget(new InventoryTarget(slot));
@@ -165,6 +169,7 @@ public class InventoryManager
                 InventorySlot slot2 = new InventorySlot(slotBackground, blankItem, skin);
 				slot2.setType(SlotType.Other);
                 table2.add(slot2).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
+				table2.addActor(slot2.getToolTip());
 
                 dnd.addSource(new InventorySource(slot2));
                 dnd.addTarget(new InventoryTarget(slot2));
@@ -437,8 +442,25 @@ public class InventoryManager
             super(background);
             itemImage = new Image(itemSprite);
             itemImage.setSize(ITEMX, ITEMY);
+			
             tooltip = new InventoryToolTip(skin);
-            screen.getUI().addActor(tooltip);
+			tooltip.setVisible(false);			
+			screen.getUI().addListener(new InputListener()
+			{
+				@Override
+				public boolean mouseMoved(InputEvent event, float x, float y)
+				{
+					Vector2 local = itemImage.stageToLocalCoordinates(new Vector2(x, y));
+					boolean overTooltip = itemImage.hit(local.x, local.y, false) != null;
+					
+					if (item != null)
+					{
+						tooltip.setVisible(overTooltip);
+						tooltip.toFront();
+					}
+					return false;
+				}
+			});
         }
         
         public Image getImage()
@@ -462,7 +484,9 @@ public class InventoryManager
 		{		
 			item = entity;
             if (entity != null)
-                tooltip.setName(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getName());
+                tooltip.setTitle(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getName());
+			else
+				tooltip.setVisible(false);
 			return this;
 		}
         
@@ -516,8 +540,7 @@ public class InventoryManager
             super.draw(batch, parentAlpha);            
             itemImage.draw(batch, parentAlpha);
             
-            tooltip.setPosition(getX() + 20, getY() + 20);
-            tooltip.draw(batch, parentAlpha);
+            tooltip.setPosition(itemImage.getX() + getWidth(), itemImage.getY() - tooltip.getHeight());
             
             if (!dragged)
             {            
@@ -671,23 +694,26 @@ public class InventoryManager
     }
     
     public class InventoryToolTip extends Window 
-    {
-        private Label description;
-        
+    {        
         public InventoryToolTip(Skin skin)
         {
             super("", skin);
             super.setSize(300, 200);
-            
-            description = new Label("", skin);
-            description.setWrap(true);
-            //description.setSize(super.getWidth(), super.getHeight() - 100);
-            super.add(description);
+			super.setMovable(false); // Will automatically move with item
+			
+			super.getTitleLabel().setFontScale(0.40f);
+			
+			super.add("", "text", "special"); // Adds blank label using font "text" and color "special" specified in the uiskin.json
         }
+		
+		public void setTitle(String message)
+		{
+			getTitleLabel().setText(message);
+		}
         
         public void setDescription(String message)
         {
-            description.setText(message);
+			((Label)super.getCells().get(0).getActor()).setText(message);
         }
     }
 }
