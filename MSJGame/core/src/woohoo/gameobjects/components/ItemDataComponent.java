@@ -38,16 +38,20 @@ public class ItemDataComponent implements Component
     }
     
     public ItemType type;
-    public ObjectMap metaData;
+	public int id;			   // Contains id used to get texture/name/description from idmanager
+    public ObjectMap metaData; // Contains extra data
+	public ObjectMap baseData; // Contains texture, name, and description
     
-    public ItemDataComponent(ObjectMap element)
+    public ItemDataComponent(int ID, ObjectMap meta, ObjectMap base)
     {
-		metaData = element;
-		type = ItemType.fromString((String)element.get("type"));
+		id = ID;
+		metaData = meta;
+		baseData = base;
+		type = ItemType.fromString((String)meta.get("type"));
 		
 		// Default keys will ensure no crashes
-		metaData.put("count", element.get("count", "1"));
-		metaData.put("sell", element.get("sell", "0"));
-		metaData.put("buy", element.get("buy", "0"));
+		metaData.put("count", meta.get("count", "1"));
+		metaData.put("sell", meta.get("sell", "0"));
+		metaData.put("buy", meta.get("buy", "0"));
     }          
 }

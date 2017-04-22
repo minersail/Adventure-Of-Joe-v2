@@ -1,13 +1,21 @@
 package woohoo.framework;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.utils.IntMap.Entry;
+import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 /*
-Class managing data for a character
+Class managing data for character/items
 
 Does NOT represent the in-game physics, position, etc.
 
@@ -16,25 +24,35 @@ Think of it like an imdb style list of all characters
 public class IDManager
 {
 	private ArrayList<CharacterData> characters;
-	private ArrayList<ItemData> items;
+	private IntMap<ItemData> items;
 	
 	public IDManager(AssetManager manager)
 	{
 		characters = new ArrayList<>();
-		items = new ArrayList<>();
+		items = new IntMap<>();
 		
         for (String name : manager.getAssetNames())
         {
             if (name.startsWith("images/faces/"))            
                 createCharacter(manager, name); // Regex to remove .png and file path
-            
-            if (name.startsWith("images/items/"))            
-                createItem(manager, name);
         }
+		
+		FileHandle handle = Gdx.files.local("data/items.xml");
+        
+        XmlReader xml = new XmlReader();
+        Element root = xml.parse(handle.readString());
+        
+        for (int i = 0; i < root.getChildCount(); i++)
+		{
+			Element e = root.getChild(i);
+			
+			ItemData itemdata = new ItemData(manager.get("images/items/" + e.get("texture"), Texture.class), e.get("name"), e.get("description"));
+				
+			items.put(i, itemdata);
+		}
 		
 		// For some reason they start backwards
 		Collections.sort(characters);
-		Collections.sort(items);		
 	}
 	
 	public CharacterData getCharacter(int ID)
@@ -65,7 +83,7 @@ public class IDManager
     
     public ItemData getItem(int ID)
 	{
-		if (ID >= items.size())
+		if (ID >= items.size)
 			return null;
 		
 		return items.get(ID);
@@ -73,20 +91,19 @@ public class IDManager
 	
 	public ItemData getItem(String name)
 	{
-		for (ItemData data : items)
-        {
-            if (data.getName().equals(name))
-            {
-                return data;
-            }
-        }
+		Iterator<Entry<ItemData>> iter = items.iterator();
+		
+		while (iter.hasNext())
+		{
+			Entry<ItemData> entry = iter.next();
+			
+			if (entry.value.getName().equals(name))
+			{
+				return entry.value;
+			}
+		}
+		
         return null;
-	}
-    
-	private void createItem(AssetManager manager, String filename)
-	{
-		ItemData data = new ItemData(manager.get(filename, Texture.class), filename);
-		items.add(data);
 	}
     
     public class CharacterData implements Comparable<CharacterData>
@@ -124,17 +141,17 @@ public class IDManager
 		}
     }
     
-    public class ItemData implements Comparable<ItemData>
+    public class ItemData
     {
         private TextureRegion item;
         private String name;
-		private int ID;
+		private String description;
 
-        public ItemData(Texture texture, String str)
+        public ItemData(Texture texture, String itemName, String itemDescription)
         {
             item = new TextureRegion(texture);
-            name = str.replaceAll(".+_(.+)\\..*", "$1"); // Remove file path and extension
-			ID = Integer.parseInt(str.replaceAll("\\D+","")); // Get only numbers in string
+            name = itemName;
+			description = itemDescription;
         }
 
         public TextureRegion getItemTexture()
@@ -147,15 +164,20 @@ public class IDManager
             return name;
         }
 		
-		public int getID()
+		public String getDescription()
 		{
-			return ID;
+			return description;
 		}
-
-		@Override
-		public int compareTo(ItemData o)
+		
+		public ObjectMap toObjectMap()
 		{
-			return getID() - o.getID();
+			ObjectMap map = new ObjectMap();
+			
+			map.put("texture", item);
+			map.put("name", name);
+			map.put("description", description);
+			
+			return map;
 		}
     }
 }

@@ -26,8 +26,10 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.Iterator;
+import woohoo.framework.IDManager.ItemData;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.framework.input.InventoryCloseCommand;
+import woohoo.gameobjects.components.ContactComponent;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.InventoryComponent;
@@ -41,6 +43,10 @@ import woohoo.gameworld.Mappers;
 import woohoo.gameworld.RenderSystem;
 import woohoo.gameworld.WeaponSystem;
 import woohoo.gameworld.gamestates.InventoryState;
+import woohoo.inventory.InventorySlot;
+import woohoo.inventory.InventorySource;
+import woohoo.inventory.InventoryTarget;
+import woohoo.inventory.WeaponTarget;
 import woohoo.screens.PlayingScreen;
 
 /**
@@ -54,19 +60,19 @@ public class InventoryManager
 		Player, Other, Weapon
 	};
 	
-    public final int INVENTORY_WIDTH = 5;
-    public final int INVENTORY_HEIGHT = 8;
-    public final int ITEMX = 64;
-    public final int ITEMY = 64;
-	public final int ITEMBORDERX = 8;
-	public final int ITEMBORDERY = 8;
+    public static final int INVENTORY_WIDTH = 5;
+    public static final int INVENTORY_HEIGHT = 8;
+    public static final int ITEMX = 64;
+    public static final int ITEMY = 64;
+	public static final int ITEMBORDERX = 8;
+	public static final int ITEMBORDERY = 8;
 	
 	public final int PADDING_LEFT = 100;
 	public final int PADDING_RIGHT = 100;
-	public final int INVENTORY_BOTTOM = (Gdx.graphics.getHeight() - ((INVENTORY_HEIGHT + 1) * ITEMY)) / 2;
-	public final int INVENTORY_TOP = INVENTORY_BOTTOM + (INVENTORY_HEIGHT * ITEMY);
-	public final int INVENTORY_LEFT = PADDING_LEFT;
-	public final int INVENTORY_RIGHT = INVENTORY_LEFT + (INVENTORY_WIDTH * ITEMX);
+//	public final int INVENTORY_BOTTOM = (Gdx.graphics.getHeight() - ((INVENTORY_HEIGHT + 1) * ITEMY)) / 2;
+//	public final int INVENTORY_TOP = INVENTORY_BOTTOM + (INVENTORY_HEIGHT * ITEMY);
+//	public final int INVENTORY_LEFT = PADDING_LEFT;
+//	public final int INVENTORY_RIGHT = INVENTORY_LEFT + (INVENTORY_WIDTH * ITEMX);
 	
 	public final int DRAG_OFFSET_X = 32;
 	public final int DRAG_OFFSET_Y = -32;
@@ -98,7 +104,7 @@ public class InventoryManager
 		blankItem = atlas.findRegion("blank");
                 
         closeButton = new TextButton("x", skin);
-        weaponSlot = new InventorySlot(slotBackground, blankItem, skin);
+        weaponSlot = new InventorySlot(slotBackground, blankItem, skin, screen.getUI());
 		weaponSlot.setType(SlotType.Weapon);
         table.add(closeButton).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);   
         table.add(weaponSlot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
@@ -119,33 +125,7 @@ public class InventoryManager
 		
 		// Initialize weapon slot
         dnd.addSource(new InventorySource(weaponSlot));
-        dnd.addTarget(new InventoryTarget(weaponSlot) // Weapon slot has special function when dropped to
-        {
-            @Override
-            public void drop(Source source, Payload payload, float x, float y, int pointer) 
-            {
-				InventorySlot sourceSlot = (InventorySlot)source.getActor();
-				ItemDataComponent itemData = Mappers.items.get(sourceSlot.getItem());
-				
-                if (itemData.type == ItemType.Weapon)
-                {
-					WeaponComponent weapon = new WeaponComponent(screen.getWorld());
-					weapon.damage = Float.parseFloat((String)itemData.metaData.get("damage", "0.25f"));
-					weapon.knockback = Float.parseFloat((String)itemData.metaData.get("knockback", "1"));
-					
-					weapon.mass.setUserData(new ContactData(ContactType.Weapon, screen.getEngine().getPlayer()));
-					screen.getEngine().getPlayer().add(weapon);
-					screen.getEngine().getSystem(WeaponSystem.class).equip(screen.getEngine().getPlayer(), weapon);
-					
-                    super.drop(source, payload, x, y, pointer);
-                }
-                else
-                {
-					sourceSlot.setDragged(false);
-					weaponSlot.setColor(Color.WHITE);
-                }
-            }
-        });
+        dnd.addTarget(new WeaponTarget(weaponSlot));
         
 		// Drag settings
         dnd.setDragActorPosition(DRAG_OFFSET_X, DRAG_OFFSET_Y);
@@ -157,7 +137,7 @@ public class InventoryManager
             for (int j = 0; j < INVENTORY_WIDTH; j++)
             {
 				// Player inventory
-                InventorySlot slot = new InventorySlot(slotBackground, blankItem, skin);
+                InventorySlot slot = new InventorySlot(slotBackground, blankItem, skin, screen.getUI());
 				slot.setType(SlotType.Player);
                 table.add(slot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
 				table.addActor(slot.getToolTip()); // addActor() instead of add() so that the tooltips float rather than mess up cell formatting
@@ -166,7 +146,7 @@ public class InventoryManager
                 dnd.addTarget(new InventoryTarget(slot));
 				
 				// Other inventory
-                InventorySlot slot2 = new InventorySlot(slotBackground, blankItem, skin);
+                InventorySlot slot2 = new InventorySlot(slotBackground, blankItem, skin, screen.getUI());
 				slot2.setType(SlotType.Other);
                 table2.add(slot2).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
 				table2.addActor(slot2.getToolTip());
@@ -230,6 +210,8 @@ public class InventoryManager
 			{
 				Element element = new Element("item", playerInv);
 				Element metadata = new Element("metadata", element);
+				
+				element.setAttribute("id", Integer.toString(Mappers.items.get(slot.getItem()).id));
 				
 				// Convert the entity's inventorycomponent's metadata objectmap to xml
 				ObjectMap.Entries<String, String> entries = Mappers.items.get(slot.getItem()).metaData.entries();
@@ -301,6 +283,31 @@ public class InventoryManager
 		moneyLabel.setText(Integer.toString(newMoney));
 	}
 	
+	/**
+	 * Loads an inventoryComponent from XML
+	 * @param comp component to load
+	 */
+	public void loadFromXML(InventoryComponent comp)
+	{
+		FileHandle handle = Gdx.files.local("data/inventories.xml");
+        
+        XmlReader xml = new XmlReader();
+        XmlReader.Element root = xml.parse(handle.readString());
+		XmlReader.Element inventoryEl = root.getChild(comp.id);
+        
+        for (XmlReader.Element e : inventoryEl.getChildrenByName("item"))
+        {	
+            Entity item = new Entity();
+			
+			ItemData data = screen.getIDManager().getItem(e.getInt("id"));
+			
+			ItemDataComponent itemData = new ItemDataComponent(e.getInt("id"), e.getChildByName("metadata").getAttributes(), data.toObjectMap());
+			item.add(itemData);
+			
+            comp.addItem(item);
+        }
+	}
+	
 	public void fillPlayerInventory(InventoryComponent inventory)
 	{
 		Iterator<Entity> iterator = inventory.getItems().iterator();
@@ -315,7 +322,7 @@ public class InventoryManager
 			Entity item = iterator.next();
 
 			// Use the id from the itemdatacomponent to retrive a texture from the id manager
-			TextureRegion region = new TextureRegion(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
+			TextureRegion region = (TextureRegion)Mappers.items.get(item).baseData.get("texture");
 			Image image = new Image(region);
 			image.setSize(ITEMX, ITEMY);
 
@@ -337,7 +344,7 @@ public class InventoryManager
 			Entity item = inventory.getItems().get(i);
 
 			// Use the id from the itemdatacomponent to retrive a texture from the id manager
-			TextureRegion region = new TextureRegion(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
+			TextureRegion region = (TextureRegion)Mappers.items.get(item).baseData.get("texture");
 			Image image = new Image(region);
 			image.setSize(ITEMX, ITEMY);
 
@@ -416,304 +423,46 @@ public class InventoryManager
 		}
 	}
 	
+	public InventorySlot getWeaponSlot()
+	{
+		return weaponSlot;
+	}
+	
+	public void equipWeapon(Entity item)
+	{		
+		ItemDataComponent itemData = Mappers.items.get(item);
+		
+		WeaponComponent weapon = new WeaponComponent(screen.getWorld());
+		weapon.damage = Float.parseFloat((String)itemData.metaData.get("damage", "0.25f"));
+		weapon.knockback = Float.parseFloat((String)itemData.metaData.get("knockback", "1"));
+
+		weapon.mass.setUserData(new ContactData(ContactComponent.ContactType.Weapon, screen.getEngine().getPlayer()));
+		screen.getEngine().getPlayer().add(weapon);
+		screen.getEngine().getSystem(WeaponSystem.class).equip(screen.getEngine().getPlayer(), weapon);
+	}
+	
+	public void unequipWeapon()
+	{
+		screen.getEngine().getSystem(WeaponSystem.class).unequip(screen.getEngine().getPlayer());
+	}
+	
+	public void sellItem(Entity item)
+	{
+		playerInventory().removeItem(item);
+		otherInventory.addItem(item);
+		Mappers.players.get(screen.getEngine().getPlayer()).money += Integer.parseInt((String)Mappers.items.get(item).metaData.get("sell"));
+	}
+	
+	public void buyItem(Entity item)
+	{
+		otherInventory.removeItem(item);
+		playerInventory().addItem(item);
+		Mappers.players.get(screen.getEngine().getPlayer()).money -= Integer.parseInt((String)Mappers.items.get(item).metaData.get("buy"));
+	}
+	
 	// Shortcut for accessing the player's inventory component
 	private InventoryComponent playerInventory()
 	{
 		return Mappers.inventories.get(screen.getEngine().getPlayer());
 	}
-	
-	/**
-	 * Stores the image data for a single slot in the inventory UI
-	 * 
-	 * Setters return this item for method chaining
-	 */
-    public class InventorySlot extends Image
-    {
-        private InventoryToolTip tooltip;
-		private Entity item; // Item entity, starts as null
-        private Image itemImage; // Scene2D actor used for payload
-        private boolean dragged;
-		private int count;
-		
-		private SlotType type;
-        
-        public InventorySlot(TextureRegion background, TextureRegion itemSprite, Skin skin)
-        {
-            super(background);
-            itemImage = new Image(itemSprite);
-            itemImage.setSize(ITEMX, ITEMY);
-			
-            tooltip = new InventoryToolTip(skin);
-			tooltip.setVisible(false);			
-			screen.getUI().addListener(new InputListener()
-			{
-				@Override
-				public boolean mouseMoved(InputEvent event, float x, float y)
-				{
-					Vector2 local = itemImage.stageToLocalCoordinates(new Vector2(x, y));
-					boolean overTooltip = itemImage.hit(local.x, local.y, false) != null;
-					
-					if (item != null)
-					{
-						tooltip.setVisible(overTooltip);
-						tooltip.toFront();
-					}
-					return false;
-				}
-			});
-        }
-        
-        public Image getImage()
-        {
-            return itemImage;
-        }
-		
-		public Entity getItem()
-		{
-			return item;
-		}
-        
-        public InventorySlot setImage(Image image)
-        {
-            itemImage = image;			
-            itemImage.setSize(ITEMX, ITEMY);
-			return this;
-        }
-		
-		public InventorySlot setItem(Entity entity)
-		{		
-			item = entity;
-            if (entity != null)
-                tooltip.setTitle(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getName());
-			else
-				tooltip.setVisible(false);
-			return this;
-		}
-        
-        public InventorySlot setDragged(boolean drag)
-        {
-            dragged = drag;			
-			return this;
-        }
-		
-		public InventorySlot setType(SlotType stype)
-		{
-			type = stype;
-			return this;
-		}
-		
-		public InventorySlot setCount(int newCount)
-		{
-			count = newCount;
-			return this;
-		}
-		
-		public InventorySlot empty()
-		{
-			this.setItem(null).setImage(new Image(blankItem)).setCount(0);
-			return this;
-		}
-		
-		public boolean isDragged()
-		{
-			return dragged;
-		}
-		
-		public SlotType getType()
-		{
-			return type;
-		}
-		
-		public int getCount()
-		{
-			return count;
-		}
-        
-        public InventoryToolTip getToolTip()
-        {
-            return tooltip;
-        }
-        
-        @Override
-        public void draw(Batch batch, float parentAlpha)
-        {
-            super.draw(batch, parentAlpha);            
-            itemImage.draw(batch, parentAlpha);
-            
-            tooltip.setPosition(itemImage.getX() + getWidth(), itemImage.getY() - tooltip.getHeight());
-            
-            if (!dragged)
-            {            
-                itemImage.setPosition(getX() + ITEMBORDERX / 2, getY() + ITEMBORDERY / 2);   
-            }
-        }
-    }
-    
-    /**
-     *
-     */
-    private class InventorySource extends Source
-    {
-        public InventorySource(InventorySlot slot)
-        {
-            super(slot);
-        }
-
-		/*
-		Called when a drag is started
-		*/
-        @Override
-        public Payload dragStart(InputEvent event, float x, float y, int pointer)
-        {
-            InventorySlot slot = (InventorySlot)getActor(); // Get source
-            // Can't drag empty frame
-            if (slot.getCount() == 0) return null;
-
-            slot.setDragged(true); // Let the item be freely dragged
-			
-			if (Mappers.items.get(slot.getItem()).type != ItemType.Weapon)// Grey out boxes this item can't be placed in
-			{
-				weaponSlot.setColor(Color.DARK_GRAY);
-			}
-
-            Payload payload = new Payload();
-            payload.setDragActor(slot.getImage());
-
-            return payload;
-        }
-
-		/*
-		Called when a drag is stopped
-		*/
-        @Override
-        public void dragStop(InputEvent event, float x, float y, int pointer, Payload payload, Target target) 
-        {
-            ((InventorySlot)getActor()).setDragged(false);
-			weaponSlot.setColor(Color.WHITE);
-			
-            if (target == null) // Payload was not dropped on a target (e.g. outside the inventory)
-            {
-				// Can't drop items out of a shopkeeper or chest
-				if (((InventorySlot)getActor()).getType() == SlotType.Other) return;
-				
-                // Remove the item from the inventory and add it to the world
-                Entity dropped = ((InventorySlot)getActor()).getItem();
-
-				if (((InventorySlot)getActor()).getType() == SlotType.Weapon)
-				{
-					screen.getEngine().getSystem(WeaponSystem.class).unequip(screen.getEngine().getPlayer());
-				}
-				
-                dropItem(dropped);
-            }
-        }
-    }
-    
-    private class InventoryTarget extends Target
-    {
-        public InventoryTarget(InventorySlot slot)
-        {
-            super(slot);
-        }
-        
-		/*
-		Called when a payload is moved over a target
-		*/
-        @Override
-        public boolean drag(Source source, Payload payload, float x, float y, int pointer) 
-        {
-            return true;
-        }
-
-		/*
-		Called when a payload moves out of a target's bounds
-		*/
-        @Override
-        public void reset(Source source, Payload payload) {}
-
-        /*
-		Called when the payload is dropped on a target		
-        */
-        @Override
-        public void drop(Source source, Payload payload, float x, float y, int pointer) 
-        {			
-			// Switch the images, items, item counts, etc. of the two inventory slots
-            InventorySlot sourceSlot = (InventorySlot)source.getActor();
-            InventorySlot targetSlot = (InventorySlot)getActor();
-			
-			if (sourceSlot.getType() == SlotType.Weapon) // If the item was dragged from the weapon slot
-			{
-				if (targetSlot.getItem() != null)
-				{	// Prevent non-weapons from going into weapon slot if weapon switches with them
-					sourceSlot.setDragged(false);
-					return;
-				}
-				else
-				{
-					screen.getEngine().getSystem(WeaponSystem.class).unequip(screen.getEngine().getPlayer());
-				}
-			} // Dropped from player's inventory to the other's
-			else if (sourceSlot.getType() == SlotType.Player && targetSlot.getType() == SlotType.Other)
-			{
-				Entity item = sourceSlot.getItem();
-				playerInventory().removeItem(item);
-				otherInventory.addItem(item);
-				Mappers.players.get(screen.getEngine().getPlayer()).money += Integer.parseInt((String)Mappers.items.get(item).metaData.get("sell"));
-			}// Dropped from other's inventory to the player's
-			else if (sourceSlot.getType() == SlotType.Other && targetSlot.getType() == SlotType.Player)
-			{
-				Entity item = sourceSlot.getItem();
-				otherInventory.removeItem(item);
-				playerInventory().addItem(item);
-				Mappers.players.get(screen.getEngine().getPlayer()).money -= Integer.parseInt((String)Mappers.items.get(item).metaData.get("buy"));
-			}
-
-            Image sourceImage = sourceSlot.getImage();
-            Image targetImage = targetSlot.getImage();
-
-            Entity sourceItem = sourceSlot.getItem();
-            Entity targetItem = targetSlot.getItem();
-
-            // If the image was swapped with an empty slot
-            if (targetSlot.getCount() == 0) 
-            {
-                sourceSlot.setCount(0);
-            }
-
-            if (targetItem != null) 
-                sourceSlot.setItem(targetItem);
-            else
-                sourceSlot.setItem(null);
-
-            // Switch items
-            sourceSlot.setImage(targetImage).setDragged(false);
-            targetSlot.setImage(sourceImage).setItem(sourceItem).setCount(1);
-			
-			weaponSlot.setColor(Color.WHITE);
-        }
-    }
-    
-    public class InventoryToolTip extends Window 
-    {        
-        public InventoryToolTip(Skin skin)
-        {
-            super("", skin);
-            super.setSize(300, 200);
-			super.setMovable(false); // Will automatically move with item
-			
-			super.getTitleLabel().setFontScale(0.40f);
-			
-			super.add("", "text", "special"); // Adds blank label using font "text" and color "special" specified in the uiskin.json
-        }
-		
-		public void setTitle(String message)
-		{
-			getTitleLabel().setText(message);
-		}
-        
-        public void setDescription(String message)
-        {
-			((Label)super.getCells().get(0).getActor()).setText(message);
-        }
-    }
 }

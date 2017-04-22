@@ -31,7 +31,8 @@ public class EntityLoader
 		
 		screen.getEngine().addEntityListener(Family.one(HitboxComponent.class, LOSComponent.class, WeaponComponent.class).get(), new ContactDataListener());
 		screen.getEngine().addEntityListener(Family.one(MapObjectComponent.class, AnimMapObjectComponent.class, HealthBarComponent.class).get(), new MapObjectListener());
-		screen.getEngine().addEntityListener(Family.all(ChaseComponent.class).get(), new ChaseListener());		
+		screen.getEngine().addEntityListener(Family.all(ChaseComponent.class).get(), new ChaseListener());
+		screen.getEngine().addEntityListener(Family.all(InventoryComponent.class).get(), new InventoryListener());
 	}	
 	
 	public void loadPlayer()
@@ -48,9 +49,6 @@ public class EntityLoader
 		InputComponent input = new InputComponent();
 		MovementComponent movement = new MovementComponent(2);
 		PlayerComponent playerComp = new PlayerComponent();
-
-		screen.getInventoryManager().fillPlayerInventory(inventory);
-		hitbox.mass.setUserData(new ContactData(ContactType.Player, player));
 		
 		player.add(mapObject);
 		player.add(position);
@@ -65,6 +63,7 @@ public class EntityLoader
 		player.add(playerComp);
 		
 		screen.getEngine().addEntity(player);
+		screen.getInventoryManager().fillPlayerInventory(inventory);
 	}
 	
 	public void loadEntities(int area)
@@ -150,7 +149,8 @@ public class EntityLoader
 				base = new InventoryComponent(component.getInt("id"));
 				break;
 			case "itemdata":
-				base = new ItemDataComponent(component.getChildByName("metadata").getAttributes());
+				base = new ItemDataComponent(component.getInt("id"), component.getChildByName("metadata").getAttributes(), 
+											 screen.getIDManager().getItem(component.getInt("id")).toObjectMap());
 				break;
 			case "lineofsight":
 				base = new LOSComponent(screen.getWorld());
@@ -272,5 +272,23 @@ public class EntityLoader
 		public void entityRemoved(Entity entity) 
 		{
 		}		
+	}
+	
+	public class InventoryListener implements EntityListener
+	{
+		@Override
+		public void entityAdded(Entity entity)
+		{
+			if (Mappers.inventories.has(entity))
+			{
+				screen.getInventoryManager().loadFromXML(Mappers.inventories.get(entity));
+			}
+		}
+		
+		@Override
+		public void entityRemoved(Entity entity)
+		{
+			
+		}
 	}
 }

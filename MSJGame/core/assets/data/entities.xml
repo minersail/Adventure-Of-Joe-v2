@@ -13,7 +13,7 @@
 			<hitbox collides="" type=""/>
 			<input />
 			<inventory id="" />
-			<itemdata>
+			<itemdata id="">
 				<metadata />
 			</itemdata>
 			<lineofsight />
@@ -119,7 +119,7 @@
 		<entity enabled="true" name="guard">
 			<id name="guard" />
 			<ai state="stay" />
-			<anim atlas="robert.pack" />
+			<anim atlas="guard.pack" />
 			<dialogue id="4" />
 			<health max="1" />
 			<hitbox collides="true" type="npc" />
@@ -140,7 +140,7 @@
 		<entity enabled="true" name="guard1">
 			<id name="guard1" />
 			<ai state="stay" />
-			<anim atlas="robert.pack" />
+			<anim atlas="guard.pack" />
 			<hitbox collides="true" type="npc" />
 			<movement speed="2" />
 			<position x="18" y="9" />
@@ -148,7 +148,7 @@
 		<entity enabled="true" name="guard2">
 			<id name="guard2" />
 			<ai state="stay" />
-			<anim atlas="robert.pack" />
+			<anim atlas="guard.pack" />
 			<hitbox collides="true" type="npc" />
 			<movement speed="2" />
 			<position x="20" y="9" />
@@ -158,7 +158,7 @@
 		<entity enabled="true" name="guard1">
 			<id name="guard1" />
 			<ai state="stay" />
-			<anim atlas="robert.pack" />
+			<anim atlas="guard.pack" />
 			<hitbox collides="true" type="chaser" />
 			<lineofsight />
 			<movement speed="2" />
@@ -170,7 +170,7 @@
 				<patrol x="3" y="14" />
 				<patrol x="3" y="18" />
 			</ai>
-			<anim atlas="robert.pack" />
+			<anim atlas="guard.pack" />
 			<hitbox collides="true" type="chaser" />
 			<lineofsight />
 			<movement speed="2.5" />
@@ -182,7 +182,7 @@
 				<patrol x="19" y="7" />
 				<patrol x="8" y="7" />
 			</ai>
-			<anim atlas="robert.pack" />
+			<anim atlas="guard.pack" />
 			<hitbox collides="true" type="chaser" />
 			<lineofsight />
 			<movement speed="2.5" />
