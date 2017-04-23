@@ -10,8 +10,6 @@ import com.badlogic.gdx.utils.IntMap.Entry;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 
 /*
@@ -23,41 +21,52 @@ Think of it like an imdb style list of all characters
  */
 public class IDManager
 {
-	private ArrayList<CharacterData> characters;
+	private IntMap<CharacterData> characters;
 	private IntMap<ItemData> items;
 	
 	public IDManager(AssetManager manager)
 	{
-		characters = new ArrayList<>();
+		characters = new IntMap<>();
 		items = new IntMap<>();
 		
-        for (String name : manager.getAssetNames())
-        {
-            if (name.startsWith("images/faces/"))            
-                createCharacter(manager, name); // Regex to remove .png and file path
-        }
-		
-		FileHandle handle = Gdx.files.local("data/items.xml");
-        
-        XmlReader xml = new XmlReader();
-        Element root = xml.parse(handle.readString());
-        
-        for (int i = 0; i < root.getChildCount(); i++)
+		// Load items
 		{
-			Element e = root.getChild(i);
-			
-			ItemData itemdata = new ItemData(manager.get("images/items/" + e.get("texture"), Texture.class), e.get("name"), e.get("description"));
-				
-			items.put(i, itemdata);
+			FileHandle handle = Gdx.files.local("data/items.xml");
+
+			XmlReader xml = new XmlReader();
+			Element root = xml.parse(handle.readString());
+
+			for (int i = 0; i < root.getChildCount(); i++)
+			{
+				Element e = root.getChild(i);
+
+				ItemData itemdata = new ItemData(manager.get("images/items/" + e.get("texture"), Texture.class), e.get("name"), e.get("description"));
+
+				items.put(e.getInt("id"), itemdata);
+			}
 		}
 		
-		// For some reason they start backwards
-		Collections.sort(characters);
+		// Load characters
+		{
+			FileHandle handle = Gdx.files.local("data/characters.xml");
+
+			XmlReader xml = new XmlReader();
+			Element root = xml.parse(handle.readString());
+
+			for (int i = 0; i < root.getChildCount(); i++)
+			{
+				Element e = root.getChild(i);
+				
+				CharacterData characterData = new CharacterData(manager.get("images/faces/" + e.get("texture"), Texture.class), e.get("name"));
+
+				characters.put(e.getInt("id"), characterData);
+			}
+		}
 	}
 	
 	public CharacterData getCharacter(int ID)
 	{
-		if (ID >= characters.size())
+		if (ID >= characters.size)
 			return null;
 		
 		return characters.get(ID);
@@ -65,20 +74,19 @@ public class IDManager
 	
 	public CharacterData getCharacter(String name)
 	{
-		for (CharacterData data : characters)
-        {
-            if (data.getName().equals(name))
-            {
-                return data;
-            }
-        }
+		Iterator<Entry<CharacterData>> iter = characters.iterator();
+		
+		while (iter.hasNext())
+		{
+			Entry<CharacterData> entry = iter.next();
+			
+			if (entry.value.getName().equals(name))
+			{
+				return entry.value;
+			}
+		}
+		
         return null;
-	}
-    
-	private void createCharacter(AssetManager manager, String filename)
-	{
-		CharacterData data = new CharacterData(manager.get(filename, Texture.class), filename);
-		characters.add(data);
 	}
     
     public ItemData getItem(int ID)
@@ -106,17 +114,15 @@ public class IDManager
         return null;
 	}
     
-    public class CharacterData implements Comparable<CharacterData>
+    public class CharacterData
     {
         private TextureRegion face;
         private String name;
-		private int ID;
 
         public CharacterData(Texture texture, String str)
         {
             face = new TextureRegion(texture);
-            name = str.replaceAll(".+_(.+)\\..*", "$1"); // Remove file path and extension
-			ID = Integer.parseInt(str.replaceAll("\\D+","")); // Get only numbers in string
+            name = str;
         }
 
         public TextureRegion getFace()
@@ -128,17 +134,6 @@ public class IDManager
         {
             return name;
         }
-		
-		public int getID()
-		{
-			return ID;
-		}
-
-		@Override
-		public int compareTo(CharacterData o)
-		{
-			return getID() - o.getID();
-		}
     }
     
     public class ItemData

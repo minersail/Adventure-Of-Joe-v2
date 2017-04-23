@@ -18,6 +18,8 @@ public class SelectAction implements InventoryAction
 	@Override
 	public void run(InventoryManager im)
 	{		
+		if (selected.getItem() == null) return;
+		
 		if (Mappers.items.get(selected.getItem()).type != ItemDataComponent.ItemType.Weapon)// Grey out boxes this item can't be placed in
 		{
 			im.getWeaponSlot().setColor(Color.DARK_GRAY);

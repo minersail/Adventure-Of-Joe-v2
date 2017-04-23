@@ -12,6 +12,7 @@ public class InventoryState implements GameState
 	@Override
 	public void update(PlayingScreen screen, float delta)
 	{
+		screen.getInventoryManager().act(delta);
 	}
 
 	@Override

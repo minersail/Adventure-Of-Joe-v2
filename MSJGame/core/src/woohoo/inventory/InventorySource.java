@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
 import woohoo.framework.InventoryManager;
+import woohoo.inventory.InventorySlot.SlotType;
 import woohoo.inventory.inventoryactions.DeselectAction;
 import woohoo.inventory.inventoryactions.DropAction;
 import woohoo.inventory.inventoryactions.InventoryAction;
@@ -59,7 +60,7 @@ public class InventorySource extends Source implements SlotListener
 		if (target == null) // Payload was not dropped on a target (e.g. outside the inventory)
 		{
 			// Can't drop items out of a shopkeeper or chest
-			if (((InventorySlot) getActor()).getType() == InventoryManager.SlotType.Other)
+			if (((InventorySlot) getActor()).getType() == SlotType.Other)
 			{
 				return;
 			}

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
 import woohoo.framework.InventoryManager;
+import woohoo.inventory.InventorySlot.SlotType;
 import woohoo.inventory.inventoryactions.BuyAction;
 import woohoo.inventory.inventoryactions.DeselectAction;
 import woohoo.inventory.inventoryactions.InventoryAction;
@@ -48,7 +49,7 @@ public class InventoryTarget extends Target implements SlotListener
 		InventorySlot sourceSlot = (InventorySlot)source.getActor();
 		InventorySlot targetSlot = (InventorySlot)getActor();
 
-		if (sourceSlot.getType() == InventoryManager.SlotType.Weapon) // If the item was dragged from the weapon slot
+		if (sourceSlot.getType() == SlotType.Weapon) // If the item was dragged from the weapon slot
 		{
 			if (targetSlot.getItem() != null)
 			{	// Prevent non-weapons from going into weapon slot if weapon switches with them
@@ -60,26 +61,30 @@ public class InventoryTarget extends Target implements SlotListener
 				actions.add(new UnequipWeaponAction());
 			}
 		} // Dropped from player's inventory to the other's
-		else if (sourceSlot.getType() == InventoryManager.SlotType.Player && targetSlot.getType() == InventoryManager.SlotType.Other)
+		else if (sourceSlot.getType() == SlotType.Player && targetSlot.getType() == SlotType.Other)
 		{
 			Entity item = sourceSlot.getItem();
 			actions.add(new SellAction(item));
 		} // Dropped from other's inventory to the player's
-		else if (sourceSlot.getType() == InventoryManager.SlotType.Other && targetSlot.getType() == InventoryManager.SlotType.Player)
+		else if (sourceSlot.getType() == SlotType.Other && targetSlot.getType() == SlotType.Player)
 		{
 			Entity item = sourceSlot.getItem();
 			actions.add(new BuyAction(item));
 		}
 
+		// Temporary variables for the switch to work
 		Image sourceImage = sourceSlot.getImage();
 		Image targetImage = targetSlot.getImage();
 
 		Entity sourceItem = sourceSlot.getItem();
 		Entity targetItem = targetSlot.getItem();
+		
+		int sourceCount = sourceSlot.getCount();
+		int targetCount = targetSlot.getCount();
 
 		// Switch items
-		sourceSlot.setImage(targetImage).setItem(targetItem).setCount(targetSlot.getCount()).setDragged(false);
-		targetSlot.setImage(sourceImage).setItem(sourceItem).setCount(sourceSlot.getCount());
+		sourceSlot.setImage(targetImage).setItem(targetItem).setCount(targetCount).setDragged(false);
+		targetSlot.setImage(sourceImage).setItem(sourceItem).setCount(sourceCount);
 
 		actions.add(new DeselectAction(sourceItem));
 	}

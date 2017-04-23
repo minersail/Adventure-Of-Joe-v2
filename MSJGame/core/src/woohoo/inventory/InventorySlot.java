@@ -19,6 +19,11 @@ import woohoo.gameworld.Mappers;
 */
 public class InventorySlot extends Image
 {
+	public enum SlotType
+	{
+		Player, Other, Weapon
+	};
+	
 	private TextureRegion background; // Reference to background
 	
 	private InventoryTooltip tooltip;	
@@ -28,14 +33,14 @@ public class InventorySlot extends Image
 	private boolean dragged;
 	private int count;
 
-	private InventoryManager.SlotType type;
+	private SlotType type;
 
-	public InventorySlot(TextureRegion backgroundRegion, TextureRegion itemSprite, Skin skin, Stage ui)
+	public InventorySlot(TextureRegion border, TextureRegion backgroundRegion, Skin skin, Stage ui)
 	{
-		super(backgroundRegion);
+		super(border);
 		background = backgroundRegion;
 		
-		itemImage = new Image(itemSprite);
+		itemImage = new Image(backgroundRegion);
 		itemImage.setSize(InventoryManager.ITEMX, InventoryManager.ITEMY);
 
 		tooltip = new InventoryTooltip(skin);
@@ -94,7 +99,7 @@ public class InventorySlot extends Image
 		return this;
 	}
 
-	public InventorySlot setType(InventoryManager.SlotType stype)
+	public InventorySlot setType(SlotType stype)
 	{
 		type = stype;
 		return this;
@@ -117,7 +122,7 @@ public class InventorySlot extends Image
 		return dragged;
 	}
 
-	public InventoryManager.SlotType getType()
+	public SlotType getType()
 	{
 		return type;
 	}

@@ -39,7 +39,7 @@ public class WeaponComponent implements Component
 		
         fixture = mass.createFixture(fixtureDef);
 		fixture.setSensor(true);
-        fixture.setDensity(1f);
+        fixture.setDensity(0.001f);
 		
 		isActive = false;
     }    

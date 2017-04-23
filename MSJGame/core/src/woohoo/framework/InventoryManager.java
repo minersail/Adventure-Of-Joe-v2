@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -44,9 +45,13 @@ import woohoo.gameworld.RenderSystem;
 import woohoo.gameworld.WeaponSystem;
 import woohoo.gameworld.gamestates.InventoryState;
 import woohoo.inventory.InventorySlot;
+import woohoo.inventory.InventorySlot.SlotType;
 import woohoo.inventory.InventorySource;
 import woohoo.inventory.InventoryTarget;
+import woohoo.inventory.SlotListener;
+import woohoo.inventory.WeaponSource;
 import woohoo.inventory.WeaponTarget;
+import woohoo.inventory.inventoryactions.InventoryAction;
 import woohoo.screens.PlayingScreen;
 
 /**
@@ -55,11 +60,6 @@ import woohoo.screens.PlayingScreen;
  */
 public class InventoryManager
 {	
-	public enum SlotType
-	{
-		Player, Other, Weapon
-	};
-	
     public static final int INVENTORY_WIDTH = 5;
     public static final int INVENTORY_HEIGHT = 8;
     public static final int ITEMX = 64;
@@ -87,6 +87,8 @@ public class InventoryManager
 	private TextButton closeButton;
 	private Label moneyLabel;
 	private InventorySlot weaponSlot;
+	
+	private Array<SlotListener> listeners;
 
 	/**
 	 * Initializes the UI with blank items, to be later filled with fillInventory()
@@ -99,6 +101,7 @@ public class InventoryManager
         screen = scr;
         table = new Table();
         table2 = new Table();
+		listeners = new Array<>();
 		
         slotBackground = atlas.findRegion("itemframe");
 		blankItem = atlas.findRegion("blank");
@@ -124,8 +127,14 @@ public class InventoryManager
         DragAndDrop dnd = new DragAndDrop();
 		
 		// Initialize weapon slot
-        dnd.addSource(new InventorySource(weaponSlot));
-        dnd.addTarget(new WeaponTarget(weaponSlot));
+		WeaponSource weaponSource = new WeaponSource(weaponSlot);
+		WeaponTarget weaponTarget = new WeaponTarget(weaponSlot);
+		
+		dnd.addSource(weaponSource);
+        dnd.addTarget(weaponTarget);
+		
+		listeners.add(weaponSource);
+		listeners.add(weaponTarget);
         
 		// Drag settings
         dnd.setDragActorPosition(DRAG_OFFSET_X, DRAG_OFFSET_Y);
@@ -142,8 +151,15 @@ public class InventoryManager
                 table.add(slot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
 				table.addActor(slot.getToolTip()); // addActor() instead of add() so that the tooltips float rather than mess up cell formatting
 
-                dnd.addSource(new InventorySource(slot));
-                dnd.addTarget(new InventoryTarget(slot));
+				// Source/targets for first slot
+				InventorySource source1 = new InventorySource(slot);
+				InventoryTarget target1 = new InventoryTarget(slot);
+				
+                dnd.addSource(source1);
+                dnd.addTarget(target1);
+				
+				listeners.add(source1);
+				listeners.add(target1);
 				
 				// Other inventory
                 InventorySlot slot2 = new InventorySlot(slotBackground, blankItem, skin, screen.getUI());
@@ -151,8 +167,15 @@ public class InventoryManager
                 table2.add(slot2).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
 				table2.addActor(slot2.getToolTip());
 
-                dnd.addSource(new InventorySource(slot2));
-                dnd.addTarget(new InventoryTarget(slot2));
+				// Source/targets for second slot
+				InventorySource source2 = new InventorySource(slot2);
+				InventoryTarget target2 = new InventoryTarget(slot2);
+				
+                dnd.addSource(source2);
+                dnd.addTarget(target2);
+				
+				listeners.add(source2);
+				listeners.add(target2);
             }
             table.row();
 			table2.row();
@@ -169,6 +192,20 @@ public class InventoryManager
         table2.align(Align.right);
 		table2.padRight(PADDING_RIGHT);
     }
+	
+	public void act(float delta)
+	{
+		for (SlotListener listener : listeners)
+		{
+			for (Iterator<InventoryAction> iter = listener.getActions().iterator(); iter.hasNext();)
+			{
+				InventoryAction action = iter.next();
+				
+				action.run(this);
+				iter.remove();
+			}
+		}
+	}
 
     public void showInventory() 
     {
@@ -242,6 +279,8 @@ public class InventoryManager
 				{
 					Element element = new Element("item", objectInv);
 					Element metadata = new Element("metadata", element);
+					
+					element.setAttribute("id", Integer.toString(Mappers.items.get(slot.getItem()).id));
 
 					// Convert the entity's inventorycomponent's metadata objectmap to xml
 					ObjectMap.Entries<String, String> entries = Mappers.items.get(slot.getItem()).metaData.entries();
