@@ -131,7 +131,7 @@ public class EntityLoader
 				base = new EventListenerComponent();
 				break;
 			case "healthbar":
-				base = new HealthBarComponent(screen.getAssets().get("healthbar.pack", TextureAtlas.class));
+				base = new HealthBarComponent(screen.getAssets().get("ui/healthbar.pack", TextureAtlas.class));
 				break;
 			case "health":
 				base = new HealthComponent(component.getInt("max"));

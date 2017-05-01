@@ -223,4 +223,8 @@
 			<position x="8" y="22" />
 		</entity>
 	</area>
+	<area id="8">
+	</area>
+	<area id="9">
+	</area>
 </entities>

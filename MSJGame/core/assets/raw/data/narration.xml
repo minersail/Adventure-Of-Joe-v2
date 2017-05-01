@@ -5,4 +5,7 @@
 		<line text="Forced to raise himself as an orphan, Joe has had to steal in order to survive." />
 		<line text="After breaking into an unoccupied house, Joe falls asleep after a hearty meal..." />
 	</scene>
+	<scene id="1">
+		<line text="Insert narration here." />
+	</scene>
 </narration>
