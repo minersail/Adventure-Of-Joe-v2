@@ -8,7 +8,8 @@ public class ItemDataComponent implements Component
     public enum ItemType // Used in ItemMetaData
     {
         Item("item"),
-		Weapon("weapon");
+		Weapon("weapon"),
+		Money("money");
 		
 		private String text;
 		
@@ -47,7 +48,7 @@ public class ItemDataComponent implements Component
 		id = ID;
 		metaData = meta;
 		baseData = base;
-		type = ItemType.fromString((String)meta.get("type"));
+		type = ItemType.fromString((String)meta.get("type", "item"));
 		
 		// Default keys will ensure no crashes
 		metaData.put("count", meta.get("count", "1"));

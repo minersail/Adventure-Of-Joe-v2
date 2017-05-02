@@ -1,14 +1,9 @@
 package woohoo.inventory;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
-import woohoo.framework.contactcommands.ContactData;
-import woohoo.gameobjects.components.ContactComponent;
 import woohoo.gameobjects.components.ItemDataComponent;
-import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.gameworld.Mappers;
-import woohoo.gameworld.WeaponSystem;
 import woohoo.inventory.inventoryactions.DeselectAction;
 import woohoo.inventory.inventoryactions.EquipWeaponAction;
 
@@ -34,7 +29,7 @@ public class WeaponTarget extends InventoryTarget
 		else
 		{
 			sourceSlot.setDragged(false);
-			actions.add(new DeselectAction(sourceSlot.getItem()));
+			actions.add(new DeselectAction());
 		}
 	}
 }

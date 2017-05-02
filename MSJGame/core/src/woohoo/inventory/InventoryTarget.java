@@ -6,7 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
-import woohoo.framework.InventoryManager;
+import woohoo.gameobjects.components.ItemDataComponent.ItemType;
+import woohoo.gameworld.Mappers;
 import woohoo.inventory.InventorySlot.SlotType;
 import woohoo.inventory.inventoryactions.BuyAction;
 import woohoo.inventory.inventoryactions.DeselectAction;
@@ -14,6 +15,9 @@ import woohoo.inventory.inventoryactions.InventoryAction;
 import woohoo.inventory.inventoryactions.SellAction;
 import woohoo.inventory.inventoryactions.UnequipWeaponAction;
 
+/**
+ * Code for every inventory slot to define behavior when dragged to
+ */
 public class InventoryTarget extends Target implements SlotListener
 {
 	protected Array<InventoryAction> actions;
@@ -70,6 +74,13 @@ public class InventoryTarget extends Target implements SlotListener
 		{
 			Entity item = sourceSlot.getItem();
 			actions.add(new BuyAction(item));
+            
+            if (Mappers.items.get(item).type == ItemType.Money)
+            {
+                actions.add(new DeselectAction());
+                targetSlot.empty();
+                return; // Money just disappears; no need to swap anything
+            }
 		}
 
 		// Temporary variables for the switch to work
@@ -86,7 +97,7 @@ public class InventoryTarget extends Target implements SlotListener
 		sourceSlot.setImage(targetImage).setItem(targetItem).setCount(targetCount).setDragged(false);
 		targetSlot.setImage(sourceImage).setItem(sourceItem).setCount(sourceCount);
 
-		actions.add(new DeselectAction(sourceItem));
+		actions.add(new DeselectAction());
 	}
 
 	@Override

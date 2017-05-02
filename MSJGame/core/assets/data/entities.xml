@@ -243,6 +243,18 @@
 		</entity>
 	</area>
 	<area id="8">
+	</area>
+	<area id="9">
+	</area>
+	<area id="10">
+	</area>
+	<area id="11">
+	</area>
+	<area id="12">
+	</area>
+	<area id="13">
+	</area>
+	<area id="14">
 		<entity enabled="true" name="spawner">
 			<id name="spawn1" />
 			<position x="5" y="9" />
@@ -257,6 +269,6 @@
 			<position x="5" y="8" />
 		</entity>
 	</area>
-	<area id="9">
+	<area id="15">
 	</area>
 </entities>

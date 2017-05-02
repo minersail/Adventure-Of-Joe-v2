@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
-import woohoo.framework.InventoryManager;
 import woohoo.inventory.InventorySlot.SlotType;
 import woohoo.inventory.inventoryactions.DeselectAction;
 import woohoo.inventory.inventoryactions.DropAction;
@@ -14,7 +13,7 @@ import woohoo.inventory.inventoryactions.InventoryAction;
 import woohoo.inventory.inventoryactions.SelectAction;
 
 /**
- *
+ * Code for every inventory slot to define behavior when dragged from
  */
 public class InventorySource extends Source implements SlotListener
 {
@@ -69,7 +68,7 @@ public class InventorySource extends Source implements SlotListener
 			Entity dropped = ((InventorySlot) getActor()).getItem();
 
 			actions.add(new DropAction(dropped));
-			actions.add(new DeselectAction(dropped));
+			actions.add(new DeselectAction());
 		}
 	}
 

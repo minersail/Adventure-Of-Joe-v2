@@ -8,6 +8,12 @@
 	<area id="5" tileset="1" d_tileset="1" />
 	<area id="6" tileset="1" d_tileset="1" />
 	<area id="7" tileset="1" d_tileset="1" />
-	<area id="8" tileset="1" d_tileset="1" />
-	<area id="9" tileset="1" d_tileset="1" />
+	<area id="8" tileset="2" d_tileset="2" />
+	<area id="9" tileset="2" d_tileset="2" />
+	<area id="10" tileset="2" d_tileset="2" />
+	<area id="11" tileset="2" d_tileset="2" />
+	<area id="12" tileset="2" d_tileset="2" />
+	<area id="13" tileset="2" d_tileset="2" />
+	<area id="14" tileset="1" d_tileset="1" />
+	<area id="15" tileset="1" d_tileset="1" />
 </areas>
