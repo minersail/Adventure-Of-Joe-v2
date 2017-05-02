@@ -63,9 +63,11 @@
 			<trigger type="cutscene" />
 			<event type="aifollow" entity="guard1" targetChar="player" />
 			<event type="aifollow" entity="guard2" targetChar="player" />
+			<event type="aifollow" entity="captain" targetChar="player" />
 			<event type="quest" id="2" action="start" />
 			<event type="hitboxtype" contacttype="chaser" entity="guard1" />
 			<event type="hitboxtype" contacttype="chaser" entity="guard2" />
+			<event type="hitboxtype" contacttype="chaser" entity="captain" />
 			<event type="addcomponent" entity="player">
 				<chase />
 			</event>

@@ -63,6 +63,9 @@
 		<line character="0" name="Joe" text="Can't talk, gotta pee." />
 		<line character="5" name="Guard Richard" text="What? Get back here!" />
 		<line character="-1" name="Command" text="CUTSCENE" />
+		<line character="4" name="Bollin" text="What are you sitting there for, you fools!?" />
+		<line character="4" name="Bollin" text="AVENGE MY TURKEY SANDWICH!" />
+		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
 	<dialogue id="5">
 		<line character="5" name="Captain Willy" text="Where'd he go?" />

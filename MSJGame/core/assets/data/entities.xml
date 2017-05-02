@@ -138,12 +138,30 @@
 			<movement speed="1" />
 			<position x="10" y="4" />
 		</entity>
+		<entity enabled="true" name="bollin">
+			<id name="bollin" />
+			<ai state="stay" />
+			<anim atlas="oldman.pack" />
+			<health max="1" />
+			<hitbox collides="true" type="npc" />
+			<movement speed="1" />
+			<position x="19" y="7" />
+		</entity>
+		<entity enabled="true" name="captain">
+			<id name="captain" />
+			<ai state="stay" />
+			<anim atlas="guard.pack" />
+			<health max="1" />
+			<hitbox collides="true" type="npc" />
+			<movement speed="1.8" />
+			<position x="19" y="8" />
+		</entity>
 		<entity enabled="true" name="guard1">
 			<id name="guard1" />
 			<ai state="stay" />
 			<anim atlas="guard.pack" />
 			<hitbox collides="true" type="npc" />
-			<movement speed="2" />
+			<movement speed="1.5" />
 			<position x="18" y="9" />
 		</entity>
 		<entity enabled="true" name="guard2">
@@ -151,7 +169,7 @@
 			<ai state="stay" />
 			<anim atlas="guard.pack" />
 			<hitbox collides="true" type="npc" />
-			<movement speed="2" />
+			<movement speed="1.5" />
 			<position x="20" y="9" />
 		</entity>
 	</area>
@@ -174,7 +192,7 @@
 			<anim atlas="guard.pack" />
 			<hitbox collides="true" type="chaser" />
 			<lineofsight />
-			<movement speed="2.5" />
+			<movement speed="1.5" />
 			<position x="3" y="18" />
 		</entity>
 		<entity enabled="true" name="guard3">
@@ -186,7 +204,7 @@
 			<anim atlas="guard.pack" />
 			<hitbox collides="true" type="chaser" />
 			<lineofsight />
-			<movement speed="2.5" />
+			<movement speed="1.5" />
 			<position x="19" y="7" />
 		</entity>
 	</area>
@@ -227,9 +245,8 @@
 	<area id="8">
 		<entity enabled="true" name="spawner">
 			<id name="spawn1" />
-			<hitbox collides="true" type="npc" />
 			<position x="5" y="9" />
-			<spawn entity="spawner" />
+			<spawn entity="robber1" />
 		</entity>
 		<entity enabled="false" name="robber1">
 			<id name="robber1" />
