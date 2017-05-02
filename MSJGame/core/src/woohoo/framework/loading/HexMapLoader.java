@@ -1,4 +1,4 @@
-package woohoo.framework;
+package woohoo.framework.loading;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;

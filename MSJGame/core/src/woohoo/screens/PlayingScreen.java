@@ -1,5 +1,7 @@
 package woohoo.screens;
 
+import woohoo.framework.loading.EntityLoader;
+import woohoo.framework.loading.HexMapLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -128,21 +130,23 @@ public class PlayingScreen implements Screen, Fadeable
 		MovementSystem movementSystem = new MovementSystem(this);
 		PlayerSystem playerSystem = new PlayerSystem(this);
 		RenderSystem renderSystem = new RenderSystem(map, 1.0f / WORLD_WIDTH);
+		SpawnSystem spawnSystem = new SpawnSystem(this);
 		WeaponSystem weaponSystem = new WeaponSystem();
 		
-		inputSystem.priority = 0;
-		eventSystem.priority = 1;
-		aiSystem.priority = 2;
-		weaponSystem.priority = 3;
-		damageSystem.priority = 4;
-		losSystem.priority = 5;
-		playerSystem.priority = 6;
-		contactSystem.priority = 7;
-		itemSystem.priority = 8;
-		movementSystem.priority = 9;
-		gateSystem.priority = 10;
-		animationSystem.priority = 11;
-		renderSystem.priority = 12;
+		inputSystem.priority	 = 0;
+		eventSystem.priority	 = 1;
+		spawnSystem.priority	 = 2;
+		aiSystem.priority		 = 3;
+		weaponSystem.priority	 = 4;
+		damageSystem.priority	 = 5;
+		losSystem.priority       = 6;
+		playerSystem.priority    = 7;
+		contactSystem.priority   = 8;
+		itemSystem.priority      = 9;
+		movementSystem.priority  = 10;
+		gateSystem.priority      = 11;
+		animationSystem.priority = 12;
+		renderSystem.priority	 = 13;
 		
 		engine.addSystem(aiSystem);
 		engine.addSystem(animationSystem);
@@ -156,6 +160,7 @@ public class PlayingScreen implements Screen, Fadeable
 		engine.addSystem(movementSystem);
 		engine.addSystem(playerSystem);
 		engine.addSystem(renderSystem);
+		engine.addSystem(spawnSystem);
 		engine.addSystem(weaponSystem);
 		
 		entityLoader.loadPlayer();
@@ -169,6 +174,7 @@ public class PlayingScreen implements Screen, Fadeable
 		engine.getSystem(GateSystem.class).initialize(gameArea);
 		engine.getSystem(AIStateSystem.class).initialize(gameArea);
 		engine.getSystem(EventSystem.class).initialize(gameArea);
+		engine.getSystem(SpawnSystem.class).initialize(gameArea);
 		engine.getSystem(MovementSystem.class).initialize();
     }
 

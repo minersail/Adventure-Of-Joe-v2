@@ -150,6 +150,7 @@ public class GateSystem extends IteratingSystem
 		
 		// Temporary fix
 		screen.getEngine().getPlayer().remove(ChaseComponent.class);
+		Mappers.inputs.get(screen.getEngine().getPlayer()).states.clear();
 		
 		switchArea = false;
 	}

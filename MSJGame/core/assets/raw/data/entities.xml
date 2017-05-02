@@ -21,6 +21,7 @@
 			<movement speed="" />
 			<opacity />
 			<position x="" y="" />
+			<spawn entity="" time="" />
 			<weapon />
 		</entity>
 	</template-->
@@ -224,6 +225,19 @@
 		</entity>
 	</area>
 	<area id="8">
+		<entity enabled="true" name="spawner">
+			<id name="spawn1" />
+			<position x="5" y="9" />
+			<spawn entity="robber1" />
+		</entity>
+		<entity enabled="false" name="robber1">
+			<id name="robber1" />
+			<ai state="follow" target="player" />
+			<anim atlas="robber.pack" />
+			<hitbox collides="true" type="enemy" />
+			<movement speed="1" />
+			<position x="5" y="8" />
+		</entity>
 	</area>
 	<area id="9">
 	</area>

@@ -24,8 +24,13 @@ public class MovementSystem extends IteratingSystem
 	{
 		for (Entity entity : getEntities())
 		{
-			Mappers.hitboxes.get(entity).mass.setTransform(Mappers.positions.get(entity).position.cpy().add(0.5f, 0.5f), 0);
+			initialize(entity);
 		}
+	}
+	
+	public void initialize(Entity entity)
+	{
+		Mappers.hitboxes.get(entity).mass.setTransform(Mappers.positions.get(entity).position.cpy().add(0.5f, 0.5f), 0);
 	}
 
 	@Override

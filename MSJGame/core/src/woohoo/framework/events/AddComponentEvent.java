@@ -2,7 +2,7 @@ package woohoo.framework.events;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import woohoo.framework.EntityLoader;
+import woohoo.framework.loading.EntityLoader;
 
 public class AddComponentEvent<T> implements Event<T> 
 {

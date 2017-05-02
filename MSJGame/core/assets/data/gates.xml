@@ -37,6 +37,8 @@
 		<gate locX="27" locY="12" sizeX="1" sizeY="3" destArea="8" destX="1" destY="4" narration="1" />
 	</area>
 	<area id="8">
-		<gate locX="29" locY="4" sizeX="1" sizeY="4" destArea="5" destX="0" destY="4" />
+		<gate locX="29" locY="4" sizeX="1" sizeY="4" destArea="9" destX="0" destY="4" />
+	</area>
+	<area id="9">
 	</area>
 </gates>

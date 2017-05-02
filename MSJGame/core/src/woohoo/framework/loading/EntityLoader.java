@@ -1,4 +1,4 @@
-package woohoo.framework;
+package woohoo.framework.loading;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
@@ -78,15 +78,21 @@ public class EntityLoader
         {
 			if (!e.getBoolean("enabled")) continue;
 			
-			Entity entity = new Entity();
-			
-			for (int i = 0; i < e.getChildCount(); i++)
-			{  
-				loadComponent(entity, e.getChild(i));
-			}
-			
-			screen.getEngine().addEntity(entity);
+			loadEntity(new EntityMold(e)); // Load entity
 		}	
+	}
+	
+	public Entity loadEntity(EntityMold mold)
+	{
+		Entity entity = new Entity();
+
+		for (Element component : mold.getData())
+		{
+			loadComponent(entity, component);
+		}
+		screen.getEngine().addEntity(entity);
+		
+		return entity;
 	}
 	
 	public void loadComponent(Entity entity, Element component)
@@ -169,6 +175,9 @@ public class EntityLoader
 				break;
 			case "position":
 				base = new PositionComponent(component.getFloat("x"), component.getFloat("y"));
+				break;
+			case "spawn":
+				base = new SpawnComponent(component.get("entity"), component.getFloat("time", 1.0f));
 				break;
 			case "weapon":
 				base = new WeaponComponent(screen.getWorld());

@@ -22,6 +22,7 @@ public class Mappers
 	public static ComponentMapper<HealthComponent> lives = ComponentMapper.getFor(HealthComponent.class);
 	public static ComponentMapper<ChaseComponent> chasers = ComponentMapper.getFor(ChaseComponent.class);
 	public static ComponentMapper<LOSComponent> sightLines = ComponentMapper.getFor(LOSComponent.class);
+	public static ComponentMapper<SpawnComponent> spawns = ComponentMapper.getFor(SpawnComponent.class);
 	public static ComponentMapper<InputComponent> inputs = ComponentMapper.getFor(InputComponent.class);
 	public static ComponentMapper<GateComponent> gates = ComponentMapper.getFor(GateComponent.class);
 	public static ComponentMapper<IDComponent> ids = ComponentMapper.getFor(IDComponent.class);
