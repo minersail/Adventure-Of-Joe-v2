@@ -211,46 +211,96 @@
 	<area id="6">
 	</area>
 	<area id="7">
-		<entity enabled="true" name="merchant1">
-			<id name="merchant1" />
+		<entity enabled="true" name="brewer">
+			<id name="brewer" />
 			<ai state="stay" />
 			<anim atlas="woman1.pack" />
 			<dialogue id="6" />
 			<hitbox collides="true" type="npc" />
 			<inventory id="1" />
 			<movement speed="1" />
-			<position x="8" y="12" />
+			<position x="10" y="13" />
 		</entity>
-		<entity enabled="true" name="merchant2">
-			<id name="merchant2" />
+		<entity enabled="true" name="farmer">
+			<id name="farmer" />
 			<ai state="stay" />
 			<anim atlas="woman1.pack" />
 			<dialogue id="6" />
 			<hitbox collides="true" type="npc" />
-			<inventory id="1" />
+			<inventory id="2" />
 			<movement speed="1" />
-			<position x="8" y="17" />
+			<position x="10" y="20" />
 		</entity>
-		<entity enabled="true" name="merchant3">
-			<id name="merchant3" />
+		<entity enabled="true" name="blacksmith">
+			<id name="blacksmith" />
 			<ai state="stay" />
 			<anim atlas="woman1.pack" />
 			<dialogue id="6" />
 			<hitbox collides="true" type="npc" />
-			<inventory id="1" />
+			<inventory id="3" />
 			<movement speed="1" />
-			<position x="8" y="22" />
+			<position x="18" y="13" />
+		</entity>
+		<entity enabled="true" name="armorer">
+			<id name="armorer" />
+			<ai state="stay" />
+			<anim atlas="woman1.pack" />
+			<dialogue id="6" />
+			<hitbox collides="true" type="npc" />
+			<inventory id="4" />
+			<movement speed="1" />
+			<position x="16" y="18" />
 		</entity>
 	</area>
 	<area id="8">
 	</area>
 	<area id="9">
+		<entity enabled="true" name="chest">
+			<id name="chest" />
+			<ai state="stay" />
+			<dialogue id="7" />
+			<hitbox collides="true" type="npc" />
+			<inventory id="5" />
+			<mapobject texture="indoorchest1.png" />
+			<movement speed="1" />
+			<position x="1" y="5" />
+		</entity>	
 	</area>
 	<area id="10">
+		<entity enabled="true" name="chest">
+			<id name="chest" />
+			<ai state="stay" />
+			<dialogue id="7" />
+			<hitbox collides="true" type="npc" />
+			<inventory id="5" />
+			<mapobject texture="indoorchest1.png" />
+			<movement speed="1" />
+			<position x="4" y="1" />
+		</entity>	
 	</area>
 	<area id="11">
 	</area>
 	<area id="12">
+		<entity enabled="true" name="chest">
+			<id name="chest" />
+			<ai state="stay" />
+			<dialogue id="7" />
+			<hitbox collides="true" type="npc" />
+			<inventory id="5" />
+			<mapobject texture="indoorchest1.png" />
+			<movement speed="1" />
+			<position x="3" y="4" />
+		</entity>	
+		<entity enabled="true" name="chest">
+			<id name="chest" />
+			<ai state="stay" />
+			<dialogue id="7" />
+			<hitbox collides="true" type="npc" />
+			<inventory id="5" />
+			<mapobject texture="indoorchest1.png" />
+			<movement speed="1" />
+			<position x="4" y="4" />
+		</entity>	
 	</area>
 	<area id="13">
 	</area>

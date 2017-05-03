@@ -81,6 +81,7 @@ public class PlayingScreen implements Screen, Fadeable
 		// Load assets
 		assets = new AssetManager();
 		loadAssets("images/entities", "pack");
+		loadAssets("images/entities", "png");
 		loadAssets("images/faces", "png");
 		loadAssets("images/items", "png");
 		loadAssets("images/tilesets", "png");

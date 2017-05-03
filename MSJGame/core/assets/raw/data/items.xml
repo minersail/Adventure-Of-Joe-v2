@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <items>
 	<item id="0" texture="stick.png" name="Stick" description="It'll probably break before your enemies do." />
-	<item id="1" texture="greenstick.png" name="Green Stick" description="A stick that was dipped in... goo?" />
-	<item id="2" texture="purplestick.png" name="Purple Stick" description="I got nothing for this stick." />
+	<item id="1" texture="swordwood.png" name="Wood Sword" description="" />
+	<item id="2" texture="swordunrefined.png" name="Rusty Sword" description="" />
+	<item id="3" texture="swordsteel.png" name="Steel Sword" description="" />
+	<item id="4" texture="swordrefined.png" name="Refined Sword" description="" />
+	<item id="5" texture="armorleather.png" name="Leather Armor" description="" />
+	<item id="6" texture="armorunrefined.png" name="Rusty Armor" description="" />
+	<item id="7" texture="armorsteel.png" name="Steel Armor" description="" />
+	<item id="8" texture="armorrefined.png" name="Refined Armor" description="" />
+	<item id="9" texture="money.png" name="Money" description="" />
+	<item id="10" texture="potionred.png" name="Red Potion" description="" />
+	<item id="11" texture="potiongreen.png" name="Green Potion" description="" />
+	<item id="12" texture="potionyellow.png" name="Yellow Potion" description="" />
+	<item id="13" texture="beer.png" name="Beer" description="" />
+	<item id="14" texture="apple.png" name="Apple" description="" />
+	<item id="15" texture="bread.png" name="Bread" description="" />
 </items>

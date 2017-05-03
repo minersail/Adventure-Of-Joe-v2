@@ -45,4 +45,7 @@
 		<line character="6" name="Merchant" text="Goodbye!" />
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
+	<dialogue id="7">
+		<line character="-1" name="Command" text="INVENTORY" />
+	</dialogue>
 </dialogues>

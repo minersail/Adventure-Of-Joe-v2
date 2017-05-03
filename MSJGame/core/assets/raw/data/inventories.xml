@@ -2,21 +2,68 @@
 <inventories>
 	<inventory id="0">
 		<item id="0">
-			<metadata count="1" />
-		</item>
-		<item id="1">
-			<metadata count="1" />
-		</item>
-		<item id="2">
 			<metadata count="1" type="weapon" damage="0.25" knockback="1" />
 		</item>
 	</inventory>
 	<inventory id="1">
-		<item id="0">
-			<metadata count="1" buy="2" sell="5" />
+		<item id="10">
+			<metadata count="1" buy="5" sell="2" />
 		</item>
-		<item id="0">
-			<metadata count="1" type="money" buy="-5" sell="0" />
+		<item id="11">
+			<metadata count="1" buy="5" sell="2" />
+		</item>
+		<item id="12">
+			<metadata count="1" buy="5" sell="2" />
+		</item>
+		<item id="13">
+			<metadata count="1" buy="5" sell="2" />
+		</item>
+	</inventory>
+	<inventory id="2">
+		<item id="14">
+			<metadata count="1" buy="5" sell="2" />
+		</item>
+		<item id="14">
+			<metadata count="1" buy="5" sell="2" />
+		</item>
+		<item id="15">
+			<metadata count="1" buy="5" sell="2" />
+		</item>
+	</inventory>
+	<inventory id="3">
+		<item id="1">
+			<metadata count="1" buy="5" sell="2" />
+		</item>
+		<item id="2">
+			<metadata count="1" buy="5" sell="2" />
+		</item>
+	</inventory>
+	<inventory id="4">
+		<item id="5">
+			<metadata count="1" buy="5" sell="2" />
+		</item>
+		<item id="6">
+			<metadata count="1" buy="5" sell="2" />
+		</item>
+	</inventory>
+	<inventory id="5">
+		<item id="9">
+			<metadata count="1" buy="-5" sell="0" />
+		</item>
+	</inventory>
+	<inventory id="6">
+		<item id="9">
+			<metadata count="1" buy="-3" sell="0" />
+		</item>
+	</inventory>
+	<inventory id="7">
+		<item id="9">
+			<metadata count="1" buy="-2" sell="0" />
+		</item>
+	</inventory>
+	<inventory id="8">
+		<item id="9">
+			<metadata count="1" buy="-5" sell="0" />
 		</item>
 	</inventory>
 </inventories>
