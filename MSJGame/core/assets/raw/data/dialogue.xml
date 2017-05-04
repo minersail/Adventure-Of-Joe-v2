@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Each dialogue represents an encounter with an NPC per game area -->
 <dialogues>
-	<!-- Dialogue 0 is reserved for NPCs that do not speak -->
+	<!-- Dialogue 0 is reserved for chests -->
 	<dialogue id="0">
-		<line character="0" name="Joe" text="I don't want to talk to that person." />
+		<line character="-1" name="Command" text="INVENTORY" />
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 	<dialogue id="1">
@@ -40,12 +40,50 @@
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 	<dialogue id="6">
-		<line character="6" name="Merchant" text="Welcome to my shop!" />
+		<line character="6" name="Brewer" text="Welcome to my shop!" />
 		<line character="-1" name="Command" text="INVENTORY" />
-		<line character="6" name="Merchant" text="Goodbye!" />
+		<line character="6" name="Brewer" text="Goodbye!" />
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 	<dialogue id="7">
+		<line character="6" name="Farmer" text="Welcome to my shop!" />
 		<line character="-1" name="Command" text="INVENTORY" />
+		<line character="6" name="Farmer" text="Goodbye!" />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue>
+	<dialogue id="8">
+		<line character="6" name="Blacksmith" text="Welcome to my shop!" />
+		<line character="-1" name="Command" text="INVENTORY" />
+		<line character="6" name="Blacksmith" text="Goodbye!" />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue>
+	<dialogue id="9">
+		<line character="6" name="Armorer" text="Welcome to my shop!" />
+		<line character="-1" name="Command" text="INVENTORY" />
+		<line character="6" name="Armorer" text="Goodbye!" />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue>
+	<dialogue id="10">
+		<line character="0" name="Joe" text="Hey.." />
+		<line character="7" name="Haystack guy" text="Yeah, I got lots of it." />
+		<line character="0" name="Joe" text="I need somewhere to lay low." />
+		<line character="0" name="Joe" text="I pissed off the guards one too many times." />
+		<line character="7" name="Haystack guy" text="I guess you could say it was the last straw." />
+		<line character="0" name="Joe" text="Uh..yeah." />
+		<line character="0" name="Joe" text="Can I get a ride?" />
+		<line character="7" name="Haystack guy" text="Well, I am about to leave for Carrigum." />
+		<line character="7" name="Haystack guy" text="Let me finish stacking this hay and I'll get you a ride." />
+		<line character="-1" name="Command" text="BREAK" />
+		<line character="0" name="Joe" text="You done loading?" />
+		<line character="7" name="Haystack guy" text="Got all the equipment you need?" />
+		<line character="7" name="Haystack guy" text="I won't be able to give you a ride back." />
+		<line character="-1" name="Command" text="CHOICE" choices="2" />
+		<line character="-1" name="Choice" text="Yes" />
+		<line character="0" name="Joe" text="Yeah, I'm ready." />
+		<line character="-1" name="Choice" text="No" />
+		<line character="0" name="Joe" text="Uh, on second thought, let me get some stuff first." />
+		<line character="7" name="Haystack guy" text="I'll be waiting here." />
+		<line character="-1" name="Command" text="ENDCHOICE" />
+		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 </dialogues>

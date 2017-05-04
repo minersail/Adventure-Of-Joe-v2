@@ -3,6 +3,9 @@ package woohoo.gameobjects.components;
 import com.badlogic.ashley.core.Component;
 
 /**
+ * Not being used at the moment other than for the enum declaration
+ * All collision code should instead be in ContactCommands and ContactData, stored in box2D bodies
+ * See ContactSystem and EntityLoader
  * @author jordan
  */
 public class ContactComponent implements Component

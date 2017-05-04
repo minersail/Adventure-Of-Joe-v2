@@ -33,6 +33,9 @@ public class DialogueComponent implements Component
         {
             sequence.add(new DialogueLine(e.get("name"), e.get("text"), e.getInt("character"), e.getInt("choices", -1)));
         }
+		
+		// -1 represents the beginning state
+		index = -1; // The first interaction with the NPC will advance index to 0
     }
     
     public DialogueLine getCurrentLine()
@@ -54,7 +57,7 @@ public class DialogueComponent implements Component
 	public void advanceChoice(int choice)
 	{
 		int i = index;
-		while (choice >= 0)
+		while (choice >= 0) // Skip towards to the picked choice
 		{
 			i++;
 			if (sequence.get(i).name().equals("Choice"))
@@ -87,7 +90,7 @@ public class DialogueComponent implements Component
 			}
 		}
 		
-		if (!foundLoop) index = 0;
+		if (!foundLoop) index = -1;
 	}
 	
 	/**

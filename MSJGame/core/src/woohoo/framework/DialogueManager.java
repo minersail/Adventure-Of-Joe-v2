@@ -75,20 +75,14 @@ public class DialogueManager
 	*/
 	public void startDialogue(DialogueComponent component)
 	{
-		currentDialogue = component;
-		
-		// Use the id of the dialogue line to map to a face using the id manager
-		TextureRegionDrawable faceRegion = new TextureRegionDrawable(screen.getIDManager().getCharacter(currentDialogue.getCurrentLine().id()).getFace());
-		
-        message.setText(currentDialogue.getCurrentLine().text());
-		name.setText(currentDialogue.getCurrentLine().name());
-		face.setDrawable(faceRegion);
+		currentDialogue = component;		
 		
 		screen.getUI().addActor(message);
 		screen.getUI().addActor(name);
 		screen.getUI().addActor(face);
 		
 		screen.setState(new DialogueState());
+		advanceDialogue();
 	}
 	
 	public void advanceDialogue()
@@ -141,6 +135,7 @@ public class DialogueManager
 			return;
 		}
 		
+		// Use the id of the dialogue line to map to a face using the id manager
 		TextureRegionDrawable faceRegion = new TextureRegionDrawable(screen.getIDManager().getCharacter(currentDialogue.getCurrentLine().id()).getFace());
 		
 		message.setText(currentDialogue.getCurrentLine().text());
@@ -174,6 +169,7 @@ public class DialogueManager
 					endChoices();
 				}
 				
+				// Pseudo-constructor for anonymous class
 				public ClickListener initialize(int id)
 				{
 					choice = id;

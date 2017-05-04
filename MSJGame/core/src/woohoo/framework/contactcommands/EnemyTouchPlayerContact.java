@@ -27,16 +27,16 @@ public class EnemyTouchPlayerContact extends ContactCommand
 		switch(Mappers.positions.get(contactA.owner).orientation)
 		{
 			case North:			
-				hitbox.mass.applyForceToCenter(new Vector2(0, -50000), true);
+				hitbox.mass.applyForceToCenter(new Vector2(0, -10000), true);
 				break;
 			case South:			
-				hitbox.mass.applyForceToCenter(new Vector2(0, 50000), true);
+				hitbox.mass.applyForceToCenter(new Vector2(0, 10000), true);
 				break;
 			case West:			
-				hitbox.mass.applyForceToCenter(new Vector2(-50000, 0), true);
+				hitbox.mass.applyForceToCenter(new Vector2(-10000, 0), true);
 				break;
 			case East:			
-				hitbox.mass.applyForceToCenter(new Vector2(50000, 0), true);
+				hitbox.mass.applyForceToCenter(new Vector2(10000, 0), true);
 				break;
 		}
 		

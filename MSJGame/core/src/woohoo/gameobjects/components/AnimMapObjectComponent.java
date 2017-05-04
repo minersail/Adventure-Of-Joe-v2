@@ -6,20 +6,16 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.objects.TextureMapObject;
-import com.badlogic.gdx.math.Vector2;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AnimMapObjectComponent extends TextureMapObject implements Component
+public class AnimMapObjectComponent extends SizedMapObject implements Component
 {	
     private AnimationState animState;	
 	private Map<String, Animation<TextureRegion>> animation;	
 	
 	public String animString;	
 	public float animationTime = 0;
-	
-	public Vector2 size;
 	
 	public AnimMapObjectComponent(TextureAtlas atlas)
     {
@@ -39,7 +35,6 @@ public class AnimMapObjectComponent extends TextureMapObject implements Componen
 		addAnimation("down_fight", atlas, 0.166f, Animation.PlayMode.NORMAL);
 		addAnimation("death", atlas, 0.5f, Animation.PlayMode.NORMAL);
 		
-		size = new Vector2(1, 1);
 		animationTime = 0;
 		animString = "down_idle";
 		setAnimationState(new IdleAnimState());

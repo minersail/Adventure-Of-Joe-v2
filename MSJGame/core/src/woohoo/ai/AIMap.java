@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
@@ -161,6 +162,12 @@ public class AIMap implements IndexedGraph<Node>
 	public boolean contains(int index)
 	{
 		return nodes.containsKey(index);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return nodes.toString();
 	}
 	
 	/**

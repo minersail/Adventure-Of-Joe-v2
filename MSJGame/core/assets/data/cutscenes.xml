@@ -47,11 +47,12 @@
 	<cutscene id="4">
 		<entity name="player" />
 		<entity name="bollin" />
+		<entity name="captain" />
 		<action type="dialogue" />
 		<action type="move" name="player" locX="18" locY="12" speed="2" />
 		<action type="dialogue" />
 		<action type="move" name="captain" locX="19" locY="11" speed="2" />
-		<action type="move" name="bollin" locX="19" locY="9" speed="2" />
+		<action type="move" name="bollin" locX="19" locY="10" speed="2" />
 	</cutscene>
 	<cutscene id="5">
 		<entity name="player" />

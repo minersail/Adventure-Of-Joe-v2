@@ -129,15 +129,6 @@
 		</entity>
 	</area>
 	<area id="4">
-		<entity enabled="true" name="woman1">
-			<id name="woman1" />
-			<ai state="random" />
-			<anim atlas="woman1.pack" />
-			<dialogue id="5" />
-			<hitbox collides="true" type="npc" />
-			<movement speed="1" />
-			<position x="10" y="4" />
-		</entity>
 		<entity enabled="true" name="bollin">
 			<id name="bollin" />
 			<ai state="stay" />
@@ -211,6 +202,15 @@
 	<area id="6">
 	</area>
 	<area id="7">
+		<entity enabled="true" name="auna">
+			<id name="auna" />
+			<ai state="random" />
+			<anim atlas="woman1.pack" />
+			<dialogue id="5" />
+			<hitbox collides="true" type="npc" />
+			<movement speed="1" />
+			<position x="10" y="4" />
+		</entity>
 		<entity enabled="true" name="brewer">
 			<id name="brewer" />
 			<ai state="stay" />
@@ -251,6 +251,16 @@
 			<movement speed="1" />
 			<position x="16" y="18" />
 		</entity>
+		<entity enabled="true" name="haystackguy">
+			<id name="haystackguy" />
+			<ai state="stay" />
+			<anim atlas="haystackguy.pack" />
+			<dialogue id="6" />
+			<hitbox collides="true" type="npc" />
+			<inventory id="2" />
+			<movement speed="1" />
+			<position x="10" y="20" />
+		</entity>
 	</area>
 	<area id="8">
 	</area>
@@ -258,7 +268,7 @@
 		<entity enabled="true" name="chest">
 			<id name="chest" />
 			<ai state="stay" />
-			<dialogue id="7" />
+			<dialogue id="0" />
 			<hitbox collides="true" type="npc" />
 			<inventory id="5" />
 			<mapobject texture="indoorchest1.png" />
@@ -270,7 +280,7 @@
 		<entity enabled="true" name="chest">
 			<id name="chest" />
 			<ai state="stay" />
-			<dialogue id="7" />
+			<dialogue id="0" />
 			<hitbox collides="true" type="npc" />
 			<inventory id="5" />
 			<mapobject texture="indoorchest1.png" />
@@ -284,7 +294,7 @@
 		<entity enabled="true" name="chest">
 			<id name="chest" />
 			<ai state="stay" />
-			<dialogue id="7" />
+			<dialogue id="0" />
 			<hitbox collides="true" type="npc" />
 			<inventory id="5" />
 			<mapobject texture="indoorchest1.png" />
@@ -294,7 +304,7 @@
 		<entity enabled="true" name="chest">
 			<id name="chest" />
 			<ai state="stay" />
-			<dialogue id="7" />
+			<dialogue id="0" />
 			<hitbox collides="true" type="npc" />
 			<inventory id="5" />
 			<mapobject texture="indoorchest1.png" />
@@ -306,9 +316,9 @@
 	</area>
 	<area id="14">
 		<entity enabled="true" name="spawner">
-			<id name="spawn1" />
+			<id name="spawner" />
 			<position x="5" y="9" />
-			<spawn entity="robber1" />
+			<spawn entity="robber1" time="8" />
 		</entity>
 		<entity enabled="false" name="robber1">
 			<id name="robber1" />

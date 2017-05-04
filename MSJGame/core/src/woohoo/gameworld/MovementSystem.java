@@ -22,7 +22,8 @@ public class MovementSystem extends IteratingSystem
 	
 	public void initialize()
 	{
-		for (Entity entity : getEntities())
+		// Family definition instead of getEntities() to initialize pos/hitbox entities without a movement component
+		for (Entity entity : getEngine().getEntitiesFor(Family.all(PositionComponent.class, HitboxComponent.class).get()))
 		{
 			initialize(entity);
 		}
@@ -30,6 +31,7 @@ public class MovementSystem extends IteratingSystem
 	
 	public void initialize(Entity entity)
 	{
+		// Set the hitbox's position to the positioncomponent's initial position
 		Mappers.hitboxes.get(entity).mass.setTransform(Mappers.positions.get(entity).position.cpy().add(0.5f, 0.5f), 0);
 	}
 

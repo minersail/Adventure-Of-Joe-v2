@@ -32,7 +32,7 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 
 			Color oldColor = batch.getColor();
 			batch.setColor(obj.getColor());
-			batch.draw(obj.getAnimation(obj.animString).getKeyFrame(obj.animationTime), obj.getX(), obj.getY(), obj.size.x, obj.size.y);
+			batch.draw(obj.getAnimation(obj.animString).getKeyFrame(obj.animationTime), obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
 			batch.setColor(oldColor);
 		}
 		else if (object instanceof MapObjectComponent)
@@ -41,7 +41,7 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 			
 			Color oldColor = batch.getColor();
 			batch.setColor(obj.getColor());
-			batch.draw(obj.getTextureRegion(), obj.getX(), obj.getY(), obj.size.x, obj.size.y);
+			batch.draw(obj.getTextureRegion(), obj.getX(), obj.getY(), obj.getSize().x, obj.getSize().y);
 			batch.setColor(oldColor);
 		}		
         else if (object instanceof HealthBarComponent)

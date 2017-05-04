@@ -5,8 +5,8 @@ import com.badlogic.ashley.core.Family;
 import woohoo.framework.DialogueManager;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.PositionComponent;
-import woohoo.gameworld.AnimationSystem;
 import woohoo.gameworld.GameEngine;
+import woohoo.gameworld.RenderSystem;
 
 public class NPCTalkCommand implements InputCommand
 {
@@ -27,7 +27,7 @@ public class NPCTalkCommand implements InputCommand
 			PositionComponent playerPos = player.getComponent(PositionComponent.class);
 			PositionComponent npcPos = npc.getComponent(PositionComponent.class);
 			
-			if (engine.getSystem(AnimationSystem.class).isFacing(player, npc) && playerPos.position.dst(npcPos.position) < 1.5f)
+			if (engine.getSystem(RenderSystem.class).isFacing(player, npc) && playerPos.position.dst(npcPos.position) < 1.5f)
 			{
 				manager.startDialogue(npc);
 			}

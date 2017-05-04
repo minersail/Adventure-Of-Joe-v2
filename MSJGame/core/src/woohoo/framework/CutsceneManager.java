@@ -177,14 +177,19 @@ public class CutsceneManager
     {
         private MovementComponent movement;
 		private AIComponent brain;
+		
         private Vector2 targetPosition;
+		private Entity entity; // Reference to entity (maybe fix later)
+		
 		private float oldSpeed; // original speed;
 		private float tempSpeed; // temporary speed; allows entities to move faster during cutscenes
         
         public MovementAction(String characterName, float targetX, float targetY, float speed)
         {
-			movement = Mappers.movements.get(screen.getEngine().getEntity(characterName));
-			brain = Mappers.ai.get(screen.getEngine().getEntity(characterName));
+			entity = screen.getEngine().getEntity(characterName);
+			
+			movement = Mappers.movements.get(entity);
+			brain = Mappers.ai.get(entity);
             targetPosition = new Vector2(targetX, targetY);
 			oldSpeed = movement.speed;
 			tempSpeed = speed;
@@ -196,6 +201,13 @@ public class CutsceneManager
 			brain.timeStep = 0.05f;
 			brain.setState(new MoveToState(targetPosition));
 			movement.speed = tempSpeed;
+			
+			// Refresh the pathfinding grid
+			if (Mappers.hitboxes.has(entity))
+			{
+				Mappers.hitboxes.get(entity).mass.setType(BodyDef.BodyType.DynamicBody); // Hacky solution; fix later
+			}
+			screen.getEngine().getSystem(AIStateSystem.class).initialize(entity, screen.currentArea);
         }
         
         @Override

@@ -45,24 +45,20 @@
 			<metadata sell="2" buy="5" count="1"/>
 		</item>
 	</inventory>
-	<inventory id="5">
-		<item id="9">
-			<metadata sell="0" buy="-5" count="1"/>
-		</item>
-	</inventory>
+	<inventory id="5"/>
 	<inventory id="6">
 		<item id="9">
-			<metadata sell="0" buy="-3" count="1"/>
+			<metadata sell="0" buy="-3" type="money" count="1"/>
 		</item>
 	</inventory>
 	<inventory id="7">
 		<item id="9">
-			<metadata sell="0" buy="-2" count="1"/>
+			<metadata sell="0" buy="-2" type="money" count="1"/>
 		</item>
 	</inventory>
 	<inventory id="8">
 		<item id="9">
-			<metadata sell="0" buy="-5" count="1"/>
+			<metadata sell="0" buy="-5" type="money" count="1"/>
 		</item>
 	</inventory>
 </inventories>

@@ -80,6 +80,7 @@ public class ContactSystem extends IteratingSystem
 	protected void processEntity(Entity entity, float deltaTime) 
 	{
 		ContactComponent contact = Mappers.contacts.get(entity);
+		// Currently not used
 	}
 	
 	public void clearContacts()

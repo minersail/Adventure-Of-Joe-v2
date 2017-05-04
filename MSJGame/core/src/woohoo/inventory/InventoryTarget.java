@@ -78,7 +78,7 @@ public class InventoryTarget extends Target implements SlotListener
             if (Mappers.items.get(item).type == ItemType.Money)
             {
                 actions.add(new DeselectAction());
-                targetSlot.empty();
+                sourceSlot.empty();
                 return; // Money just disappears; no need to swap anything
             }
 		}
