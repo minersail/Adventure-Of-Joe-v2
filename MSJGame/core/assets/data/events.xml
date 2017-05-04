@@ -91,6 +91,10 @@
 	<area id="6">
 	</area>
 	<area id="7">
+		<eventlistener id="0" owner="system" system="dialogue" state="enabled">
+			<trigger type="dialogue" triggerid="0" />
+			<event type="cutscene" id="6" />
+		</eventlistener>
 	</area>
 	<area id="8">
 	</area>

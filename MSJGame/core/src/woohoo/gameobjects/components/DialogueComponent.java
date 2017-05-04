@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
@@ -30,8 +31,8 @@ public class DialogueComponent implements Component
         Element dialogue = root.getChild(id);
         
         for (Element e : dialogue.getChildrenByName("line"))
-        {
-            sequence.add(new DialogueLine(e.get("name"), e.get("text"), e.getInt("character"), e.getInt("choices", -1)));
+        {            
+            sequence.add(new DialogueLine(e.getAttributes()));
         }
 		
 		// -1 represents the beginning state
@@ -85,7 +86,7 @@ public class DialogueComponent implements Component
 		{
 			if (sequence.get(i).id() == -1 && sequence.get(i).text.equals("BREAK"))
 			{
-				index = i + 1;
+				index = i;
 				foundLoop = true;
 			}
 		}
@@ -99,9 +100,9 @@ public class DialogueComponent implements Component
 	 */
 	public Array<String> getChoices()
 	{
-		if (sequence.get(index).choices == -1)
+		if (sequence.get(index).getInt("choices") == -1)
 		{
-			Gdx.app.log("ERROR", "Dialogue index is not at a choice start");
+			Gdx.app.error("ERROR", "Dialogue index is not at a choice start");
 			return null;
 		}
 		
@@ -122,23 +123,32 @@ public class DialogueComponent implements Component
 	}
 	
 	public class DialogueLine
-	{
+    {        
 		private String name;
 		private String text;
 		private int id;
-		private int choices;
-		
-		public DialogueLine(String name, String text, int id, int choices)
+        
+        private ObjectMap extraData;
+        
+        public DialogueLine(ObjectMap map)
 		{
-			this.name = name;
-			this.text = text;
-			this.id = id;
-			this.choices = choices;
+			name = (String)map.remove("name");
+            text = (String)map.remove("text");
+            id = Integer.parseInt((String)map.remove("character"));
+            
+            extraData = map;
 		}
 		
 		public String name() { return name; }
 		public String text() { return text; }
 		public int id() { return id; }
-		public int choices() { return choices; }
+		public int getInt(String identifier) 
+        { 
+            if (extraData.containsKey(identifier))
+                return Integer.parseInt((String)extraData.get(identifier));
+            
+            Gdx.app.error("ERROR", "Identifier " + identifier + " not found in dialogue line.");
+            return -1;
+        }
 	}
 }

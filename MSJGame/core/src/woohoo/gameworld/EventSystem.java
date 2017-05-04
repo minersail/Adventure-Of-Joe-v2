@@ -54,6 +54,9 @@ public class EventSystem extends IteratingSystem
 				case "cutscene":
 					trigger = new CutsceneTrigger();
 					break;
+				case "dialogue":
+					trigger = new DialogueTrigger(triggerEl.getInt("triggerid"));
+					break;
 				default:
 					trigger = null;
 					break;
@@ -118,6 +121,9 @@ public class EventSystem extends IteratingSystem
 				{
 					case "cutscene":
 						screen.getCutsceneManager().getListeners().addListener(EL);
+						break;
+					case "dialogue":
+						screen.getDialogueManager().getListeners().addListener(EL);
 						break;
 				}					
 			}

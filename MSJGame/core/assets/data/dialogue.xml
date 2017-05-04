@@ -80,6 +80,7 @@
 		<line character="-1" name="Command" text="CHOICE" choices="2" />
 		<line character="-1" name="Choice" text="Yes" />
 		<line character="0" name="Joe" text="Yeah, I'm ready." />
+		<line character="-1" name="Command" text="TRIGGER" triggerid="0" />
 		<line character="-1" name="Choice" text="No" />
 		<line character="0" name="Joe" text="Uh, on second thought, let me get some stuff first." />
 		<line character="7" name="Haystack guy" text="I'll be waiting here." />

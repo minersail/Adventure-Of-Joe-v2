@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import woohoo.framework.events.EventListeners;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameworld.Mappers;
 import woohoo.gameworld.gamestates.CutsceneState;
@@ -19,7 +20,7 @@ import woohoo.gameworld.gamestates.GameState;
 import woohoo.gameworld.gamestates.PlayingState;
 import woohoo.screens.PlayingScreen;
 
-public class DialogueManager
+public class DialogueManager implements ListenerActivator
 {
 	private PlayingScreen screen;
 	private Skin skin;
@@ -29,6 +30,8 @@ public class DialogueManager
 	private Label message;
 	private Label name;
 	private Array<TextButton> choices;
+    
+    private EventListeners<DialogueManager> listeners;
 	
 	private final int MARGIN = 100;
 	private final int NAMEWIDTH = 100;
@@ -59,6 +62,7 @@ public class DialogueManager
 		face.setAlign(Align.center);
 		
 		choices = new Array<>();
+        listeners = new EventListeners<>();
     }
     
 	/*
@@ -129,6 +133,10 @@ public class DialogueManager
 						screen.getInventoryManager().showInventory(Mappers.inventories.get(dialogueEntity));
 					toggleUI(false);
 					return;
+                case "TRIGGER":
+                    listeners.notifyAll(this);
+                    advanceDialogue();
+                    return;
 				default:
 					break;
 			}
@@ -145,10 +153,10 @@ public class DialogueManager
 	
 	private void startChoices()
 	{
-		int choiceNum = currentDialogue.getCurrentLine().choices();
+		int choiceNum = currentDialogue.getCurrentLine().getInt("choices");
 		Array<String> choiceStrings = currentDialogue.getChoices();
 		
-		for (int i = 0; i < currentDialogue.getCurrentLine().choices(); i++)
+		for (int i = 0; i < currentDialogue.getCurrentLine().getInt("choices"); i++)
 		{
 			final TextButton choice = new TextButton("", skin);
 			choice.setSize(message.getWidth() / choiceNum, message.getHeight());
@@ -219,4 +227,10 @@ public class DialogueManager
 	{
 		return currentDialogue;
 	}
+
+    @Override
+    public EventListeners getListeners() 
+    {
+        return listeners;
+    }
 }

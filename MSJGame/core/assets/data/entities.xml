@@ -225,7 +225,7 @@
 			<id name="farmer" />
 			<ai state="stay" />
 			<anim atlas="woman1.pack" />
-			<dialogue id="6" />
+			<dialogue id="7" />
 			<hitbox collides="true" type="npc" />
 			<inventory id="2" />
 			<movement speed="1" />
@@ -235,7 +235,7 @@
 			<id name="blacksmith" />
 			<ai state="stay" />
 			<anim atlas="woman1.pack" />
-			<dialogue id="6" />
+			<dialogue id="8" />
 			<hitbox collides="true" type="npc" />
 			<inventory id="3" />
 			<movement speed="1" />
@@ -245,7 +245,7 @@
 			<id name="armorer" />
 			<ai state="stay" />
 			<anim atlas="woman1.pack" />
-			<dialogue id="6" />
+			<dialogue id="9" />
 			<hitbox collides="true" type="npc" />
 			<inventory id="4" />
 			<movement speed="1" />
@@ -255,11 +255,11 @@
 			<id name="haystackguy" />
 			<ai state="stay" />
 			<anim atlas="haystackguy.pack" />
-			<dialogue id="6" />
+			<dialogue id="10" />
 			<hitbox collides="true" type="npc" />
 			<inventory id="2" />
 			<movement speed="1" />
-			<position x="10" y="20" />
+			<position x="26" y="14" />
 		</entity>
 	</area>
 	<area id="8">

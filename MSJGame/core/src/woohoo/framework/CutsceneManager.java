@@ -29,14 +29,14 @@ import woohoo.gameworld.gamestates.CutsceneState;
 import woohoo.gameworld.gamestates.PlayingState;
 import woohoo.screens.PlayingScreen;
 
-public class CutsceneManager
+public class CutsceneManager implements ListenerActivator
 {
     private PlayingScreen screen;
     
     private ArrayList<Entity> cutsceneEntities;
     private ArrayList<CutsceneAction> cutsceneActions;
 	
-	private EventListeners listeners;
+	private EventListeners<CutsceneManager> listeners;
     
     private CutsceneAction currentAction;
     
@@ -100,7 +100,7 @@ public class CutsceneManager
 			switch (e.get("type"))
 			{
 				case "move":
-					action = new MovementAction(e.get("name"), e.getFloat("locX"), e.getFloat("locY"), e.getFloat("speed"));
+					action = new MovementAction(e.get("name"), e.getFloat("locX"), e.getFloat("locY"), e.getFloat("speed", 1.0f));
 					cutsceneActions.add(action);
 					break;
 				case "dialogue":
@@ -146,6 +146,7 @@ public class CutsceneManager
         screen.setState(new PlayingState());
     }
 	
+    @Override
 	public EventListeners getListeners()
 	{
 		return listeners;
