@@ -34,6 +34,7 @@ public class AIComponent implements Component
 	
 	public AIComponent()
 	{		
+		currentDirection = Direction.None;
 		timeStep = DEFAULT_TIMESTEP;
 		heuristic = new AIHeuristic();
 		cache = null;

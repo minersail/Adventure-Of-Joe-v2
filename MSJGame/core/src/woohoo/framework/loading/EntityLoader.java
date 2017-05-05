@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -17,6 +18,7 @@ import java.security.InvalidParameterException;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.*;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameworld.AIStateSystem;
 import woohoo.gameworld.Mappers;
 import woohoo.gameworld.RenderSystem;
 import woohoo.screens.PlayingScreen;
@@ -33,13 +35,14 @@ public class EntityLoader
 		screen.getEngine().addEntityListener(Family.one(MapObjectComponent.class, AnimMapObjectComponent.class, HealthBarComponent.class).get(), new MapObjectListener());
 		screen.getEngine().addEntityListener(Family.all(ChaseComponent.class).get(), new ChaseListener());
 		screen.getEngine().addEntityListener(Family.all(InventoryComponent.class).get(), new InventoryListener());
+		screen.getEngine().addEntityListener(Family.all(AIComponent.class).get(), new AIListener());
 	}	
 	
 	public void loadPlayer()
 	{
 		Entity player = new Entity();
 		AnimMapObjectComponent mapObject = new AnimMapObjectComponent(screen.getAssets().get("images/entities/youngjoe.pack", TextureAtlas.class));
-		PositionComponent position = new PositionComponent(1, 5);
+		PositionComponent position = new PositionComponent(25, 12);
 		IDComponent id = new IDComponent("player");
 		InventoryComponent inventory = new InventoryComponent(0);
 		EventListenerComponent eventListener = new EventListenerComponent();
@@ -248,7 +251,6 @@ public class EntityLoader
 //			System.out.println(Mappers.mapObjects.has(entity));
 //			if (Mappers.mapObjects.has(entity))
 //			{
-//				System.out.println("bye");
 //				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get(getLayerString(entity)).getObjects().remove(Mappers.mapObjects.get(entity));
 //			}
 //			else if (Mappers.animMapObjects.has(entity))
@@ -271,10 +273,7 @@ public class EntityLoader
 		@Override
 		public void entityAdded(Entity entity) 
 		{
-			if (Mappers.chasers.has(entity))
-			{
-				screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get("Entities").getObjects().add(Mappers.chasers.get(entity));
-			}
+			screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap().getLayers().get("Entities").getObjects().add(Mappers.chasers.get(entity));
 		}
 
 		@Override
@@ -288,16 +287,29 @@ public class EntityLoader
 		@Override
 		public void entityAdded(Entity entity)
 		{
-			if (Mappers.inventories.has(entity))
-			{
-				screen.getInventoryManager().loadFromXML(Mappers.inventories.get(entity));
-			}
+			screen.getInventoryManager().loadFromXML(Mappers.inventories.get(entity));
 		}
 		
 		@Override
 		public void entityRemoved(Entity entity)
 		{
 			
+		}
+	}
+	
+	public class AIListener implements EntityListener
+	{
+		@Override
+		public void entityAdded(Entity entity)
+		{
+			screen.getEngine().getSystem(AIStateSystem.class).initialize(entity, screen.currentArea);
+		}
+		
+		@Override
+		public void entityRemoved(Entity entity)
+		{
+			if (Mappers.movements.has(entity))
+				Mappers.movements.get(entity).direction = MovementComponent.Direction.None;
 		}
 	}
 }

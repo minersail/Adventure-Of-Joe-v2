@@ -173,7 +173,6 @@ public class PlayingScreen implements Screen, Fadeable
     {    
 		entityLoader.loadEntities(gameArea);
 		engine.getSystem(GateSystem.class).initialize(gameArea);
-		engine.getSystem(AIStateSystem.class).initialize(gameArea);
 		engine.getSystem(EventSystem.class).initialize(gameArea);
 		engine.getSystem(SpawnSystem.class).initialize(gameArea);
 		engine.getSystem(MovementSystem.class).initialize();

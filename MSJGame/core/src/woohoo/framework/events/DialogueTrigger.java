@@ -14,6 +14,10 @@ public class DialogueTrigger implements EventTrigger<DialogueManager>
     @Override
     public boolean check(DialogueManager dialogueManager)
     {
-        return dialogueManager.getCurrentDialogue().getCurrentLine().getInt("triggerid") == triggerID;
+        for (int id : dialogueManager.getTriggerIDs())
+		{
+			if (id == triggerID) return true;
+		}
+		return false;
     }
 }

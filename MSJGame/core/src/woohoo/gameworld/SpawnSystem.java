@@ -85,10 +85,6 @@ public class SpawnSystem extends IteratingSystem
 			
 			// Automate later
 			// Initializes the entity in its respective systems
-			if (Mappers.ai.has(loaded))
-			{
-				screen.getEngine().getSystem(AIStateSystem.class).initialize(loaded, screen.currentArea);
-			}
 			if (Mappers.spawns.has(loaded))
 			{
 				screen.getEngine().getSystem(SpawnSystem.class).initialize(loaded, screen.currentArea);

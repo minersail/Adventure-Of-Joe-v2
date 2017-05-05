@@ -77,7 +77,6 @@ public class CutsceneManager implements ListenerActivator
         // Add AIComponent to Player to control him during cutscenes
         AIComponent cutsceneController = new AIComponent("stay");
         screen.getEngine().getPlayer().add(cutsceneController);
-        screen.getEngine().getSystem(AIStateSystem.class).initialize(screen.getEngine().getPlayer(), screen.currentArea);
         
         FileHandle handle = Gdx.files.local("data/cutscenes.xml");
         
@@ -136,7 +135,6 @@ public class CutsceneManager implements ListenerActivator
 			if (Mappers.players.has(entity)) // This is the player
 			{
 				entity.remove(AIComponent.class);
-				Mappers.movements.get(entity).direction = Direction.None;
 				Mappers.hitboxes.get(entity).mass.setType(BodyDef.BodyType.DynamicBody);
 			}
 		}

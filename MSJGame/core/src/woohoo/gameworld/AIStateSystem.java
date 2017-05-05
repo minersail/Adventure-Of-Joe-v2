@@ -25,26 +25,7 @@ public class AIStateSystem extends IteratingSystem
 		
 		screen = scr;
 	}
-	
-	/**
-	 * Initializes pathfinding grid for all entities in current game area
-	 * @param area
-	 */
-	public void initialize(int area)
-	{
-		FileHandle handle = Gdx.files.local("data/pathfinding.xml");
-        
-        XmlReader xml = new XmlReader();
-        Element root = xml.parse(handle.readString());    
-		Element data = root.getChild(area);
-		
-		for (Entity entity : getEntities())
-		{
-			AIComponent brain = Mappers.ai.get(entity);
-			brain.initializePathfinding(screen.getEngine().getSystem(RenderSystem.class).getRenderer().getMap(), screen.getWorld(), data);
-		}
-	}
-    
+	    
 	/**
 	 * Initializes pathfinding grid for a single entity. <br>
 	 * Useful when AIComponents are added to an entity after the global initialization

@@ -76,5 +76,6 @@
 	</dialogue>
 	<dialogue id="6">
 		<line character="7" name="Haystack guy" text="Let's go." />
+		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
 </dialogues>

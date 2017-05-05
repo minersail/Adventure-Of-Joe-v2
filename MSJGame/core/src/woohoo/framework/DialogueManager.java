@@ -23,13 +23,17 @@ import woohoo.screens.PlayingScreen;
 public class DialogueManager implements ListenerActivator
 {
 	private PlayingScreen screen;
+	
 	private Skin skin;
 	private Entity dialogueEntity;
     private DialogueComponent currentDialogue;
+	
     private Image face;
 	private Label message;
 	private Label name;
+	
 	private Array<TextButton> choices;
+	private Array<Integer> triggerIDs; // List of triggerids triggered
     
     private EventListeners<DialogueManager> listeners;
 	
@@ -62,6 +66,7 @@ public class DialogueManager implements ListenerActivator
 		face.setAlign(Align.center);
 		
 		choices = new Array<>();
+		triggerIDs = new Array<>();
         listeners = new EventListeners<>();
     }
     
@@ -134,7 +139,7 @@ public class DialogueManager implements ListenerActivator
 					toggleUI(false);
 					return;
                 case "TRIGGER":
-                    listeners.notifyAll(this);
+					triggerIDs.add(currentDialogue.getCurrentLine().getInt("triggerid"));
                     advanceDialogue();
                     return;
 				default:
@@ -209,6 +214,9 @@ public class DialogueManager implements ListenerActivator
 		
 		screen.setState(newState);
 		dialogueEntity = null;
+		
+        listeners.notifyAll(this); // Listeners will use the triggerIDs array to process events
+		triggerIDs.clear();
 	}
 	
 	/**
@@ -226,6 +234,11 @@ public class DialogueManager implements ListenerActivator
 	public DialogueComponent getCurrentDialogue()
 	{
 		return currentDialogue;
+	}
+	
+	public Array<Integer> getTriggerIDs()
+	{
+		return triggerIDs;
 	}
 
     @Override
