@@ -28,19 +28,21 @@ public class EnemyHitByPlayerContact extends ContactCommand
 		
 		if (!weapon.isActive) return;
 		
+		float forceMult = 5000;
+		
 		switch(Mappers.weapons.get(contactA.owner).weaponDirection)
 		{
 			case North:			
-				hitbox.mass.applyForceToCenter(new Vector2(0, -weapon.knockback * 10000), true);
+				hitbox.mass.applyForceToCenter(new Vector2(0, -weapon.knockback * forceMult), true);
 				break;
 			case South:			
-				hitbox.mass.applyForceToCenter(new Vector2(0, weapon.knockback * 10000), true);
+				hitbox.mass.applyForceToCenter(new Vector2(0, weapon.knockback * forceMult), true);
 				break;
 			case West:			
-				hitbox.mass.applyForceToCenter(new Vector2(-weapon.knockback * 10000, 0), true);
+				hitbox.mass.applyForceToCenter(new Vector2(-weapon.knockback * forceMult, 0), true);
 				break;
 			case East:			
-				hitbox.mass.applyForceToCenter(new Vector2(weapon.knockback * 10000, 0), true);
+				hitbox.mass.applyForceToCenter(new Vector2(weapon.knockback * forceMult, 0), true);
 				break;
 		}		
 		

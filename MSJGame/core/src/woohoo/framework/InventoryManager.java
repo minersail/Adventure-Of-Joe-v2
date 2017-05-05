@@ -448,7 +448,7 @@ public class InventoryManager
 
 				// Create position/mapObject components to go along with the item
 				PositionComponent position = new PositionComponent(Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy());
-				MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(Integer.parseInt((String)Mappers.items.get(item).metaData.get("id"))).getItemTexture());
+				MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(Mappers.items.get(item).id).getItemTexture());
 
 				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, ContactType.Item);
 				hitbox.mass.setTransform(position.position.cpy().add(0.5f, 0.5f), 0);

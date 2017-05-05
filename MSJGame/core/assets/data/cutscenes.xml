@@ -64,4 +64,8 @@
 		<action type="dialogue" />
 		<action type="move" name="haystackguy" locX="28" locY="14" />
 	</cutscene>
+	<cutscene id="7">
+		<entity name="player" />
+		<action type="dialogue" />
+	</cutscene>
 </cutscenes>

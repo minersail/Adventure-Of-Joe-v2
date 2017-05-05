@@ -315,9 +315,36 @@
 	<area id="13">
 	</area>
 	<area id="14">
+		<entity enabled="true" name="wheelbarrow1">
+			<id name="wheelbarrow1" />
+			<ai state="moveto" targetX="28" targetY="5" />
+			<hitbox collides="true" type="npc" />
+			<mapobject texture="wheelbarrow.png" />
+			<movement speed="1" />
+			<position x="1" y="5" />
+		</entity>	
+		<entity enabled="true" name="wheelbarrow2">
+			<id name="wheelbarrow2" />
+			<ai state="moveto" targetX="28" targetY="5" />
+			<hitbox collides="true" type="npc" />
+			<mapobject texture="wheelbarrow.png" />
+			<movement speed="1" />
+			<position x="2" y="5" />
+		</entity>	
+		<entity enabled="true" name="haystackguy">
+			<id name="haystackguy" />
+			<ai state="moveto" targetX="28" targetY="5" />
+			<anim atlas="haystackguy.pack" />
+			<dialogue id="0" />
+			<hitbox collides="true" type="npc" />
+			<inventory id="5" />
+			<movement speed="1" />
+			<position x="2" y="6" />
+		</entity>	
 		<entity enabled="true" name="spawner">
 			<id name="spawner" />
-			<position x="5" y="9" />
+			<hitbox collides="true" type="npc" />
+			<position x="10" y="11.5" />
 			<spawn entity="robber1" time="8" />
 		</entity>
 		<entity enabled="false" name="robber1">
@@ -325,8 +352,26 @@
 			<ai state="follow" target="player" />
 			<anim atlas="robber.pack" />
 			<hitbox collides="true" type="enemy" />
+			<health max="10" />
+			<healthbar />
 			<movement speed="1" />
-			<position x="5" y="8" />
+			<position x="10" y="10.5" />
+		</entity>
+		<entity enabled="true" name="spawner2">
+			<id name="spawner2" />
+			<hitbox collides="true" type="npc" />
+			<position x="20" y="-0.5" />
+			<spawn entity="robber2" time="8" />
+		</entity>
+		<entity enabled="false" name="robber2">
+			<id name="robber2" />
+			<ai state="follow" target="player" />
+			<anim atlas="robber.pack" />
+			<hitbox collides="true" type="enemy" />
+			<health max="10" />
+			<healthbar />
+			<movement speed="1" />
+			<position x="20" y="0.5" />
 		</entity>
 	</area>
 	<area id="15">

@@ -120,7 +120,6 @@ public class DialogueManager implements ListenerActivator
 					endDialogue(new PlayingState());
 					break;
 				case "BREAK":
-					currentDialogue.advance();
 					endDialogue(new PlayingState());
 					break;
 				case "CUTSCENE":

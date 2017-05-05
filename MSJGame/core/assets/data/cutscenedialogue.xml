@@ -78,4 +78,8 @@
 		<line character="7" name="Haystack guy" text="Let's go." />
 		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
+	<dialogue id="7">
+		<line character="0" name="Joe" text="Test dialogue" />
+		<line character="-1" name="Command" text="CUTSCENE" />
+	</dialogue>
 </dialogues>

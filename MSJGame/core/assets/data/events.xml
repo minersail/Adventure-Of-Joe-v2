@@ -109,6 +109,10 @@
 	<area id="13">
 	</area>
 	<area id="14">
+		<eventlistener id="0" owner="entity" entity="player" state="enabled">
+			<trigger type="move" locX="1" locY="6" dist="1" />
+			<event type="cutscene" id="7" />
+		</eventlistener>
 	</area>
 	<area id="15">
 	</area>
