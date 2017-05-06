@@ -24,7 +24,7 @@ public class EnemyTouchPlayerContact extends ContactCommand
 				
 		HitboxComponent hitbox = Mappers.hitboxes.get(contactB.owner);
 		
-		float force = 100000;
+		float force = 30000;
 		
 		switch(Mappers.positions.get(contactA.owner).orientation)
 		{

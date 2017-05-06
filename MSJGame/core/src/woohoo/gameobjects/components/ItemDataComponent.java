@@ -9,6 +9,7 @@ public class ItemDataComponent implements Component
     {
         Item("item"),
 		Weapon("weapon"),
+		Armor("armor"),
 		Money("money");
 		
 		private String text;

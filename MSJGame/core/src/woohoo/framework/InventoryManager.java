@@ -3,24 +3,16 @@ package woohoo.framework;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
-import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
-import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
-import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -35,8 +27,8 @@ import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.ItemDataComponent;
-import woohoo.gameobjects.components.ItemDataComponent.ItemType;
 import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameobjects.components.PlayerComponent;
 import woohoo.gameobjects.components.PositionComponent;
 import woohoo.gameobjects.components.WeaponComponent;
 import woohoo.gameworld.InputSystem;
@@ -44,13 +36,8 @@ import woohoo.gameworld.Mappers;
 import woohoo.gameworld.RenderSystem;
 import woohoo.gameworld.WeaponSystem;
 import woohoo.gameworld.gamestates.InventoryState;
-import woohoo.inventory.InventorySlot;
+import woohoo.inventory.*;
 import woohoo.inventory.InventorySlot.SlotType;
-import woohoo.inventory.InventorySource;
-import woohoo.inventory.InventoryTarget;
-import woohoo.inventory.SlotListener;
-import woohoo.inventory.WeaponSource;
-import woohoo.inventory.WeaponTarget;
 import woohoo.inventory.inventoryactions.InventoryAction;
 import woohoo.screens.PlayingScreen;
 
@@ -87,6 +74,8 @@ public class InventoryManager
 	private TextButton closeButton;
 	private Label moneyLabel;
 	private InventorySlot weaponSlot;
+	private InventorySlot armorSlot;
+	private InventorySlot sellSlot;
 	
 	private Array<SlotListener> listeners;
 
@@ -109,9 +98,14 @@ public class InventoryManager
         closeButton = new TextButton("x", skin);
         weaponSlot = new InventorySlot(slotBackground, blankItem, skin, screen.getUI());
 		weaponSlot.setType(SlotType.Weapon);
+        armorSlot = new InventorySlot(slotBackground, blankItem, skin, screen.getUI());
+		armorSlot.setType(SlotType.Armor);
+		
         table.add(closeButton).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);   
         table.add(weaponSlot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
+        table.add(armorSlot).prefSize(ITEMX + ITEMBORDERX, ITEMY + ITEMBORDERY);
 		table.addActor(weaponSlot.getToolTip());
+		table.addActor(armorSlot.getToolTip());
         table.row();
         
         closeButton.addListener(new ClickListener()
@@ -135,6 +129,16 @@ public class InventoryManager
 		
 		listeners.add(weaponSource);
 		listeners.add(weaponTarget);
+		
+		// Initialize armor slot
+		ArmorSource armorSource = new ArmorSource(armorSlot);
+		ArmorTarget armorTarget = new ArmorTarget(armorSlot);
+		
+		dnd.addSource(armorSource);
+        dnd.addTarget(armorTarget);
+		
+		listeners.add(armorSource);
+		listeners.add(armorTarget);
         
 		// Drag settings
         dnd.setDragActorPosition(DRAG_OFFSET_X, DRAG_OFFSET_Y);
@@ -353,9 +357,9 @@ public class InventoryManager
 		
 		for (int i = 0; i < table.getCells().size; i++)
 		{		
-			// If table item is not invetory slot (x button, gold display) or is a Weapon slot
+			// If table item is not invetory slot (x button, gold display) or is a Weapon/Armor/Sell slot
 			if (!(table.getCells().get(i).getActor() instanceof InventorySlot) || 
-				((InventorySlot)table.getCells().get(i).getActor()).getType() == SlotType.Weapon) continue;
+				((InventorySlot)table.getCells().get(i).getActor()).getType() != SlotType.Player) continue;
 			
 			if (!iterator.hasNext()) return; // Finished loading player inventory
 			Entity item = iterator.next();
@@ -450,7 +454,7 @@ public class InventoryManager
 				PositionComponent position = new PositionComponent(Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy());
 				MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(Mappers.items.get(item).id).getItemTexture());
 
-				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, ContactType.Item);
+				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, true, ContactType.Item);
 				hitbox.mass.setTransform(position.position.cpy().add(0.5f, 0.5f), 0);
 				item.add(hitbox);
 				item.add(position);
@@ -465,6 +469,11 @@ public class InventoryManager
 	public InventorySlot getWeaponSlot()
 	{
 		return weaponSlot;
+	}
+	
+	public InventorySlot getArmorSlot()
+	{
+		return armorSlot;
 	}
 	
 	public void equipWeapon(Entity item)
@@ -483,6 +492,19 @@ public class InventoryManager
 	public void unequipWeapon()
 	{
 		screen.getEngine().getSystem(WeaponSystem.class).unequip(screen.getEngine().getPlayer());
+	}
+	
+	public void equipArmor(Entity item)
+	{		
+		ItemDataComponent itemData = Mappers.items.get(item);
+		PlayerComponent playerData = Mappers.players.get(screen.getEngine().getPlayer());
+		
+		playerData.armor = Float.parseFloat((String)itemData.metaData.get("armor", "0"));
+	}
+	
+	public void unequipArmor()
+	{
+		Mappers.players.get(screen.getEngine().getPlayer()).armor = 0;
 	}
 	
 	public void sellItem(Entity item)

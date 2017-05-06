@@ -9,5 +9,6 @@ public class DeselectAction implements InventoryAction
 	public void run(InventoryManager im)
 	{
 		im.getWeaponSlot().setColor(Color.WHITE);
+		im.getArmorSlot().setColor(Color.WHITE);
 	}
 }

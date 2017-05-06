@@ -343,7 +343,7 @@
 		</entity>	
 		<entity enabled="true" name="spawner">
 			<id name="spawner" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="npc" static="true" />
 			<position x="10" y="11.5" />
 			<spawn entity="robber1" time="8" />
 		</entity>
@@ -359,7 +359,7 @@
 		</entity>
 		<entity enabled="true" name="spawner2">
 			<id name="spawner2" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="npc" static="true" />
 			<position x="20" y="-0.5" />
 			<spawn entity="robber2" time="8" />
 		</entity>

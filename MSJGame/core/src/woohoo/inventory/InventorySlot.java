@@ -21,7 +21,7 @@ public class InventorySlot extends Image
 {
 	public enum SlotType
 	{
-		Player, Other, Weapon
+		Player, Other, Weapon, Armor, Sell
 	};
 	
 	private TextureRegion background; // Reference to background

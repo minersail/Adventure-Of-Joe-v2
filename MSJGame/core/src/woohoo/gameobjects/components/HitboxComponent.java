@@ -16,13 +16,20 @@ public class HitboxComponent implements Component
 	public Fixture fixture;	
 	public ContactType hitboxType;
 	
-	public HitboxComponent(World world, boolean enableCollision, ContactType type)
+	/**
+	 * Circular hitbox collision mesh
+	 * @param world reference to global world
+	 * @param enableCollision Whether this hitbox will have collision
+	 * @param startsStatic Whether or not this hitbox will start immovable (with no AI this setting is permanent)
+	 * @param type ContactType for this hitbox (extracted later, automatically to add ContactData to this hitbox's mass)
+	 */
+	public HitboxComponent(World world, boolean enableCollision, boolean startsStatic, ContactType type)
 	{		
 		hitboxType = type;
 		
         BodyDef bodyDef = new BodyDef();
 		mass = world.createBody(bodyDef);
-        mass.setType(BodyDef.BodyType.DynamicBody);
+        mass.setType(startsStatic ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody);
 		
 		CircleShape shape = new CircleShape();		
 		shape.setRadius(0.49f);

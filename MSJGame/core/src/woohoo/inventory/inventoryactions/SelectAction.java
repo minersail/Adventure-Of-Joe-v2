@@ -24,5 +24,10 @@ public class SelectAction implements InventoryAction
 		{
 			im.getWeaponSlot().setColor(Color.DARK_GRAY);
 		}
+		
+		if (Mappers.items.get(selected.getItem()).type != ItemDataComponent.ItemType.Armor)// Grey out boxes this item can't be placed in
+		{
+			im.getArmorSlot().setColor(Color.DARK_GRAY);
+		}
 	}
 }
