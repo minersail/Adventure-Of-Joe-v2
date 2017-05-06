@@ -7,6 +7,7 @@ public class Mappers
 {
 	public static ComponentMapper<EventListenerComponent> eventListeners = ComponentMapper.getFor(EventListenerComponent.class);
 	public static ComponentMapper<AnimMapObjectComponent> animMapObjects = ComponentMapper.getFor(AnimMapObjectComponent.class);
+	public static ComponentMapper<ProjectileComponent> projectiles = ComponentMapper.getFor(ProjectileComponent.class);
 	public static ComponentMapper<InventoryComponent> inventories = ComponentMapper.getFor(InventoryComponent.class);
 	public static ComponentMapper<MapObjectComponent> mapObjects = ComponentMapper.getFor(MapObjectComponent.class);
 	public static ComponentMapper<HealthBarComponent> healthBars = ComponentMapper.getFor(HealthBarComponent.class);

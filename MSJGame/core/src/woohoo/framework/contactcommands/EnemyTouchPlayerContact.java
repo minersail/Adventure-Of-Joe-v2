@@ -24,23 +24,8 @@ public class EnemyTouchPlayerContact extends ContactCommand
 				
 		HitboxComponent hitbox = Mappers.hitboxes.get(contactB.owner);
 		
-		float force = 30000;
-		
-		switch(Mappers.positions.get(contactA.owner).orientation)
-		{
-			case North:			
-				hitbox.mass.applyForceToCenter(new Vector2(0, -force), true);
-				break;
-			case South:			
-				hitbox.mass.applyForceToCenter(new Vector2(0, force), true);
-				break;
-			case West:			
-				hitbox.mass.applyForceToCenter(new Vector2(-force, 0), true);
-				break;
-			case East:			
-				hitbox.mass.applyForceToCenter(new Vector2(force, 0), true);
-				break;
-		}
+		float force = 30000;				
+		hitbox.mass.applyForceToCenter(Mappers.positions.get(contactA.owner).orientation.getVector().scl(force), true);
 		
 		Mappers.lives.get(contactB.owner).damage(1);		
 	}	

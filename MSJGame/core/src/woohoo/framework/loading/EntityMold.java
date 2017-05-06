@@ -15,8 +15,8 @@ public class EntityMold
 	
 	public EntityMold(Element entityData)
 	{
-		name = entityData.get("name");
-		enabled = entityData.getBoolean("enabled");
+		name = entityData.get("name", entityData.getChildByName("id").get("name", ""));
+		enabled = entityData.getBoolean("enabled", true);
 		loadData = new Array<>();
 		
 		for (int i = 0; i < entityData.getChildCount(); i++)

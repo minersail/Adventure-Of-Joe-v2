@@ -2,7 +2,7 @@
 <inventories>
 	<inventory id="0">
 		<item id="0">
-			<metadata count="1" type="weapon" damage="0.25" knockback="1" />
+			<metadata count="1" type="weapon" projectileid="0" cooldown="1" />
 		</item>
 	</inventory>
 	<inventory id="1">

@@ -41,12 +41,26 @@ public class GameEngine extends Engine
 	{
 		super.addEntity(entity);
 	}
+	
+	@Override
+	public void removeEntity(Entity entity)
+	{
+		if (Mappers.hitboxes.has(entity))
+			screen.getWorld().destroyBody(Mappers.hitboxes.get(entity).mass);
+		
+		super.removeEntity(entity);
+	}
 	    
     public Entity getPlayer()
     {
         return getEntity("player");
     }
 	
+	/**
+	 * Finds an entity with the given name; Names may or may not be unique
+	 * @param name to find entity with
+	 * @return an entity with the given name
+	 */
 	public Entity getEntity(String name)
 	{
 		for (Entity entity : getEntities())
@@ -57,6 +71,17 @@ public class GameEngine extends Engine
 		
         Gdx.app.log("ERROR", "Entity " + name + " does not exist in GameWorld");
         return null;
+	}
+	
+	public int getEntityCount(String name)
+	{
+		int count = 0;
+		for (Entity entity : getEntities())
+        {
+			if (Mappers.ids.has(entity) && Mappers.ids.get(entity).name.equals(name))
+				count++;
+        }
+		return count;
 	}
 	
 	/*

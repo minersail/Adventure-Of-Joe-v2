@@ -8,7 +8,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.loading.EntityMold;
-import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.SpawnComponent;
 import woohoo.screens.PlayingScreen;
 
@@ -88,10 +87,6 @@ public class SpawnSystem extends IteratingSystem
 			if (Mappers.spawns.has(loaded))
 			{
 				screen.getEngine().getSystem(SpawnSystem.class).initialize(loaded, screen.currentArea);
-			}
-			if (Mappers.movements.has(loaded))
-			{
-				screen.getEngine().getSystem(MovementSystem.class).initialize(loaded);
 			}
 			
 			spawn.timer = 0;

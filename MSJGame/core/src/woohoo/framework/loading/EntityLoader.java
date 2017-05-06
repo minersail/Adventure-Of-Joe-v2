@@ -30,11 +30,12 @@ public class EntityLoader
 	{
 		screen = scr;
 		
-		screen.getEngine().addEntityListener(Family.one(HitboxComponent.class, LOSComponent.class, WeaponComponent.class).get(), new ContactDataListener());
+		screen.getEngine().addEntityListener(Family.one(HitboxComponent.class, LOSComponent.class).get(), new ContactDataListener());
 		screen.getEngine().addEntityListener(Family.one(MapObjectComponent.class, AnimMapObjectComponent.class, HealthBarComponent.class).get(), new MapObjectListener());
 		screen.getEngine().addEntityListener(Family.all(ChaseComponent.class).get(), new ChaseListener());
 		screen.getEngine().addEntityListener(Family.all(InventoryComponent.class).get(), new InventoryListener());
 		screen.getEngine().addEntityListener(Family.all(AIComponent.class).get(), new AIListener());
+		screen.getEngine().addEntityListener(Family.all(PositionComponent.class, HitboxComponent.class).get(), new PositionListener());
 	}	
 	
 	public void loadPlayer()
@@ -84,6 +85,11 @@ public class EntityLoader
 		}	
 	}
 	
+	/**
+	 * Loads an entity from a mold and adds it to the game engine
+	 * @param mold the entity mold to create the entity from
+	 * @return the entity created
+	 */
 	public Entity loadEntity(EntityMold mold)
 	{
 		Entity entity = new Entity();
@@ -178,11 +184,14 @@ public class EntityLoader
 			case "position":
 				base = new PositionComponent(component.getFloat("x"), component.getFloat("y"));
 				break;
+			case "projectile":
+				base = new ProjectileComponent(component.getFloat("damage"), component.getFloat("knockback", 1), component.getFloat("lifetime", 1));
+				break;
 			case "spawn":
 				base = new SpawnComponent(component.get("entity"), component.getFloat("time", 1.0f));
 				break;
 			case "weapon":
-				base = new WeaponComponent(screen.getWorld());
+				base = new WeaponComponent(component.getInt("projectileid"), component.getFloat("cooldown"));
 				break;
 			default:
 				throw new InvalidParameterException("No component with name " + component.getName() + " found.");
@@ -204,11 +213,6 @@ public class EntityLoader
 			if (Mappers.sightLines.has(entity))
 			{
 				Mappers.sightLines.get(entity).mass.setUserData(new ContactData(ContactType.SightLine, entity));
-			}
-
-			if (Mappers.weapons.has(entity))
-			{
-				Mappers.weapons.get(entity).mass.setUserData(new ContactData(ContactType.Weapon, entity));
 			}
 		}
 
@@ -310,5 +314,19 @@ public class EntityLoader
 			if (Mappers.movements.has(entity))
 				Mappers.movements.get(entity).direction = MovementComponent.Direction.None;
 		}
+	}
+	
+	public class PositionListener implements EntityListener
+	{
+		@Override
+		public void entityAdded(Entity entity)
+		{			
+			Mappers.hitboxes.get(entity).mass.setTransform(Mappers.positions.get(entity).position.cpy().add(0.5f, 0.5f), 0);
+		}
+
+		@Override
+		public void entityRemoved(Entity entity)
+		{
+		}		
 	}
 }

@@ -3,7 +3,7 @@ package woohoo.framework.contactcommands;
 import com.badlogic.gdx.math.Vector2;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.HitboxComponent;
-import woohoo.gameobjects.components.WeaponComponent;
+import woohoo.gameobjects.components.ProjectileComponent;
 import woohoo.gameworld.Mappers;
 
 public class EnemyHitByPlayerContact extends ContactCommand
@@ -24,29 +24,13 @@ public class EnemyHitByPlayerContact extends ContactCommand
 		}
 		
 		HitboxComponent hitbox = Mappers.hitboxes.get(contactB.owner);
-		WeaponComponent weapon = Mappers.weapons.get(contactA.owner);
-		
-		if (!weapon.isActive) return;
-		
+		ProjectileComponent projectile = Mappers.projectiles.get(contactA.owner);
+				
 		float forceMult = 5000;
 		
-		switch(Mappers.weapons.get(contactA.owner).weaponDirection)
-		{
-			case North:			
-				hitbox.mass.applyForceToCenter(new Vector2(0, -weapon.knockback * forceMult), true);
-				break;
-			case South:			
-				hitbox.mass.applyForceToCenter(new Vector2(0, weapon.knockback * forceMult), true);
-				break;
-			case West:			
-				hitbox.mass.applyForceToCenter(new Vector2(-weapon.knockback * forceMult, 0), true);
-				break;
-			case East:			
-				hitbox.mass.applyForceToCenter(new Vector2(weapon.knockback * forceMult, 0), true);
-				break;
-		}		
+		hitbox.mass.applyForceToCenter(Mappers.positions.get(contactA.owner).orientation.getVector().scl(projectile.knockback * forceMult), true);
 		
 		if (Mappers.lives.has(contactB.owner))
-			Mappers.lives.get(contactB.owner).damage(1);		
+			Mappers.lives.get(contactB.owner).damage(projectile.damage);		
 	}
 }

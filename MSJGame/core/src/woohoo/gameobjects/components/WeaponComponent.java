@@ -1,54 +1,54 @@
 package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-import woohoo.gameobjects.components.PositionComponent.Orientation;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.XmlReader.Element;
+import woohoo.framework.loading.EntityMold;
 
 /**
- * Class containing the box2D components of a weapon
+ * Class allowing an entity to spawn projectiles
+ * Melee weapons are just long projectiles with a short range
  */
 public class WeaponComponent implements Component
 {    
-	public Body mass;
-	public Fixture fixture;
+	private EntityMold projectile;
+	private final int projectileID;
 	
-	public float weaponAngle; // Radians
-	public Orientation weaponDirection;
-	public boolean isActive;
+	public float cooldown;
+	public float cooldownTimer;
 	
-	public float damage;
-	public float knockback;
-    
-    public WeaponComponent(World world) 
-    {        
-        BodyDef bodyDef = new BodyDef();
-		mass = world.createBody(bodyDef);
-        mass.setType(BodyDef.BodyType.DynamicBody);
+	public boolean projectileSpawned;
 		
-		PolygonShape shape = new PolygonShape();	
-		shape.setAsBox(0.5f, 0.125f, new Vector2(0.375f, 0), 0);
-
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = shape;
-		
-        fixture = mass.createFixture(fixtureDef);
-		fixture.setSensor(true);
-        fixture.setDensity(0.001f);
-		
-		isActive = false;
-    }    
-	
-	public void swing()
+	public WeaponComponent(int projID, float CD)
 	{
-		isActive = true;
-		mass.setFixedRotation(false);
-		mass.setTransform(mass.getTransform().getPosition(), weaponAngle);
-		mass.setAngularVelocity(50);
+		FileHandle handle = Gdx.files.local("data/projectiles.xml");
+        
+        XmlReader xml = new XmlReader();
+        Element root = xml.parse(handle.readString());
+		Element proj = root.getChild(projID);
+        
+		projectile = new EntityMold(proj);
+		projectileID = projID;
+		cooldown = CD;
+		cooldownTimer = 0;
+		projectileSpawned = false;
+	}
+	
+	public EntityMold getProjectile()
+	{
+		return projectile;
+	}
+	
+	public void spawnProjectile()
+	{
+		if (cooldownTimer == 0) // Spawn projectile if it weapon is off cooldown
+			projectileSpawned = true;
+	}
+	
+	public int getID()
+	{
+		return projectileID;
 	}
 }

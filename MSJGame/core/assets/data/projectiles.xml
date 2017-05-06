@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<projectiles>
+	<!--template>
+		<projectile>
+			<id name="" />
+			<ai />
+			<anim atlas="" />
+			<contact />
+			<dialogue id="" />
+			<eventlistener />
+			<healthbar />
+			<health max="" />
+			<hitbox collides="" type=""/>
+			<input />
+			<inventory id="" />
+			<itemdata id="">
+				<metadata />
+			</itemdata>
+			<lineofsight />
+			<mapobject texture="" />
+			<movement speed="" />
+			<opacity />
+			<position x="" y="" />
+			<spawn entity="" time="" />
+			<weapon />
+		</entity>
+	</projectile-->
+	<projectile id="0">		
+		<id name="bollin" />
+		<anim atlas="oldman.pack" />
+		<health max="1" />
+		<hitbox collides="true" type="weapon" />
+		<movement speed="5" />
+		<position x="4" y="4" />
+		<projectile damage="1" knockback="1" lifetime="5" />
+	</projectile>
+</projectiles>

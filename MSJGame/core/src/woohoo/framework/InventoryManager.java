@@ -480,18 +480,13 @@ public class InventoryManager
 	{		
 		ItemDataComponent itemData = Mappers.items.get(item);
 		
-		WeaponComponent weapon = new WeaponComponent(screen.getWorld());
-		weapon.damage = Float.parseFloat((String)itemData.metaData.get("damage", "0.25f"));
-		weapon.knockback = Float.parseFloat((String)itemData.metaData.get("knockback", "1"));
-
-		weapon.mass.setUserData(new ContactData(ContactComponent.ContactType.Weapon, screen.getEngine().getPlayer()));
+		WeaponComponent weapon = new WeaponComponent(Integer.parseInt((String)itemData.metaData.get("projectileid")), Float.parseFloat((String)itemData.metaData.get("cooldown", "1")));
 		screen.getEngine().getPlayer().add(weapon);
-		screen.getEngine().getSystem(WeaponSystem.class).equip(screen.getEngine().getPlayer(), weapon);
 	}
 	
 	public void unequipWeapon()
 	{
-		screen.getEngine().getSystem(WeaponSystem.class).unequip(screen.getEngine().getPlayer());
+		screen.getEngine().getPlayer().remove(WeaponComponent.class);
 	}
 	
 	public void equipArmor(Entity item)

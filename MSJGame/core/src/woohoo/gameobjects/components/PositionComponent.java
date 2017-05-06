@@ -35,6 +35,22 @@ public class PositionComponent implements Component
 			}
 			throw new IllegalArgumentException("No Orientation with text " + str + " found.");
 		}
+		
+		public Vector2 getVector()
+		{
+			switch(text)
+			{
+				case "up":
+					return new Vector2(0, -1);
+				case "down":
+					return new Vector2(0, 1);
+				case "left":
+					return new Vector2(-1, 0);
+				case "right":
+					return new Vector2(1, 0);
+			}
+			return new Vector2(0, 0);
+		}
 	}
 	
 	public Vector2 position;

@@ -130,24 +130,26 @@ public class PlayingScreen implements Screen, Fadeable
 		LineOfSightSystem losSystem = new LineOfSightSystem(this);
 		MovementSystem movementSystem = new MovementSystem(this);
 		PlayerSystem playerSystem = new PlayerSystem(this);
+		ProjectileSystem projectileSystem = new ProjectileSystem(this);
 		RenderSystem renderSystem = new RenderSystem(map, 1.0f / WORLD_WIDTH);
 		SpawnSystem spawnSystem = new SpawnSystem(this);
-		WeaponSystem weaponSystem = new WeaponSystem();
+		WeaponSystem weaponSystem = new WeaponSystem(this);
 		
-		inputSystem.priority	 = 0;
-		eventSystem.priority	 = 1;
-		spawnSystem.priority	 = 2;
-		aiSystem.priority		 = 3;
-		weaponSystem.priority	 = 4;
-		damageSystem.priority	 = 5;
-		losSystem.priority       = 6;
-		playerSystem.priority    = 7;
-		contactSystem.priority   = 8;
-		itemSystem.priority      = 9;
-		movementSystem.priority  = 10;
-		gateSystem.priority      = 11;
-		animationSystem.priority = 12;
-		renderSystem.priority	 = 13;
+		inputSystem.priority	  = 0;
+		eventSystem.priority	  = 1;
+		spawnSystem.priority	  = 2;
+		aiSystem.priority		  = 3;
+		weaponSystem.priority	  = 4;
+		projectileSystem.priority = 5;
+		damageSystem.priority	  = 6;
+		losSystem.priority        = 7;
+		playerSystem.priority     = 8;
+		contactSystem.priority    = 9;
+		itemSystem.priority       = 10;
+		movementSystem.priority   = 11;
+		gateSystem.priority       = 12;
+		animationSystem.priority  = 13;
+		renderSystem.priority	  = 14;
 		
 		engine.addSystem(aiSystem);
 		engine.addSystem(animationSystem);
@@ -160,6 +162,7 @@ public class PlayingScreen implements Screen, Fadeable
 		engine.addSystem(losSystem);
 		engine.addSystem(movementSystem);
 		engine.addSystem(playerSystem);
+		engine.addSystem(projectileSystem);
 		engine.addSystem(renderSystem);
 		engine.addSystem(spawnSystem);
 		engine.addSystem(weaponSystem);
@@ -174,8 +177,7 @@ public class PlayingScreen implements Screen, Fadeable
 		entityLoader.loadEntities(gameArea);
 		engine.getSystem(GateSystem.class).initialize(gameArea);
 		engine.getSystem(EventSystem.class).initialize(gameArea);
-		engine.getSystem(SpawnSystem.class).initialize(gameArea);
-		engine.getSystem(MovementSystem.class).initialize();
+		engine.getSystem(SpawnSystem.class).initialize(gameArea); // Find way to get rid of later
     }
 
     @Override
