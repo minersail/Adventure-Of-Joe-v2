@@ -108,7 +108,7 @@ public class GateSystem extends IteratingSystem
 		// Clear all bodies, except for player
 		for (Body body : bodies)
 		{
-            if (((ContactData)body.getUserData()).owner != screen.getEngine().getPlayer())
+            if (((ContactData)body.getUserData()).type == ContactType.Gate || ((ContactData)body.getUserData()).type == ContactType.Wall)
                 screen.getWorld().destroyBody(body);
 		}
 		
@@ -133,6 +133,7 @@ public class GateSystem extends IteratingSystem
         
 		// Move the player to the entrance of the new map based on where he exited previous map (Took forever to figure out)
         Mappers.positions.get(screen.getEngine().getPlayer()).position.set(triggeredGate.playerPos);
+		Mappers.hitboxes.get(screen.getEngine().getPlayer()).mass.setTransform(Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy().add(0.5f, 0.5f), 0);
 		
 		// Load all entities, gates, events, pathfinding, etc. for new game area
         screen.setArea(triggeredGate.destArea);

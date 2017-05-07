@@ -17,7 +17,7 @@ public class ContactComponent implements Component
 		Gate("gate"),
 		Item("item"),
 		NPC("npc"),
-		Weapon("weapon"),
+		Projectile("projectile"),
 		Enemy("enemy"),
 		Chaser("chaser"),
 		SightLine("sightline");

@@ -1,7 +1,9 @@
 package woohoo.gameworld;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
@@ -70,5 +72,13 @@ public class GameRenderer extends OrthogonalTiledMapRenderer
 	public void skipFrame()
 	{
 		skipNextFrame = true;
+	}
+	
+	public void remove(TextureMapObject obj)
+	{
+		for (MapLayer layer : getMap().getLayers())
+		{
+			layer.getObjects().remove(obj);
+		}
 	}
 }

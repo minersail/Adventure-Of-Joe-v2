@@ -48,7 +48,7 @@ public class EntityLoader
 		EventListenerComponent eventListener = new EventListenerComponent();
 		HealthComponent life = new HealthComponent(100);
 		HealthBarComponent healthBar = new HealthBarComponent(screen.getAssets().get("ui/healthbar.pack", TextureAtlas.class));
-		HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), true, false, ContactType.Player);
+		HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), true, false, ContactType.Player, "circle");
 		InputComponent input = new InputComponent();
 		MovementComponent movement = new MovementComponent(2);
 		PlayerComponent playerComp = new PlayerComponent();
@@ -151,7 +151,8 @@ public class EntityLoader
 				base = new HealthComponent(component.getInt("max"));
 				break;
 			case "hitbox":
-				base = new HitboxComponent(screen.getWorld(), component.getBoolean("collides"), component.getBoolean("static", false), ContactType.fromString(component.get("type")));
+				base = new HitboxComponent(screen.getWorld(), component.getBoolean("collides"), component.getBoolean("static", false), 
+											ContactType.fromString(component.get("type")), component.get("shape", "circle"));
 				break;
 			case "id":
 				base = new IDComponent(component.get("name"));

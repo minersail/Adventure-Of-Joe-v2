@@ -26,8 +26,7 @@ public class ProjectileSystem extends IteratingSystem
 		
 		if (projectile.currentTime > projectile.lifespan)
 		{
-			//screen.getWorld().destroyBody(Mappers.hitboxes.get(entity).mass);
-			//screen.getEngine().removeEntity(entity);
+			screen.getEngine().removeEntity(entity);
 		}
 	}
 }

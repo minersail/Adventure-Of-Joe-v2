@@ -1,7 +1,7 @@
 <inventories>
 	<inventory id="0">
 		<item id="0">
-			<metadata sell="0" projectileid="0" buy="0" type="weapon" cooldown="1" count="1"/>
+			<metadata sell="0" projectileid="0" buy="0" type="weapon" cooldown="0.5" count="1"/>
 		</item>
 	</inventory>
 	<inventory id="1">

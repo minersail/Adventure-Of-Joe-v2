@@ -51,6 +51,27 @@ public class PositionComponent implements Component
 			}
 			return new Vector2(0, 0);
 		}
+		
+		public float getAngle(boolean radians)
+		{
+			float angle = 0;
+			switch(text)
+			{
+				case "up":
+					angle = 90;
+					break;
+				case "down":
+					angle = 270;
+					break;
+				case "left":
+					angle = 0;
+					break;
+				case "right":
+					angle = 180;
+					break;
+			}
+			return radians ? angle / 180 * (float)Math.PI : angle;
+		}
 	}
 	
 	public Vector2 position;

@@ -1,6 +1,5 @@
 package woohoo.framework.contactcommands;
 
-import com.badlogic.gdx.math.Vector2;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.ProjectileComponent;
@@ -10,7 +9,7 @@ public class EnemyHitByPlayerContact extends ContactCommand
 {
 	public EnemyHitByPlayerContact()
 	{
-		super(ContactType.Weapon, ContactType.Enemy);
+		super(ContactType.Projectile, ContactType.Enemy);
 	}
 
 	@Override
@@ -31,6 +30,8 @@ public class EnemyHitByPlayerContact extends ContactCommand
 		hitbox.mass.applyForceToCenter(Mappers.positions.get(contactA.owner).orientation.getVector().scl(projectile.knockback * forceMult), true);
 		
 		if (Mappers.lives.has(contactB.owner))
-			Mappers.lives.get(contactB.owner).damage(projectile.damage);		
+			Mappers.lives.get(contactB.owner).damage(projectile.damage);
+		
+		projectile.currentTime = projectile.lifespan; // destroy projectile
 	}
 }

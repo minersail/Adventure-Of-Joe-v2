@@ -53,6 +53,7 @@ public class MovementSystem extends IteratingSystem
 		}
 			
 		hitbox.mass.setLinearVelocity(movement.velocity);
+		hitbox.mass.setTransform(hitbox.mass.getTransform().getPosition(), position.orientation.getAngle(true));
 		
 		position.position = hitbox.mass.getPosition().cpy().sub(0.5f, 0.5f); // Center vs top-left
 	}

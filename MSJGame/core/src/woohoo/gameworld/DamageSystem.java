@@ -3,6 +3,7 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.graphics.Color;
 import woohoo.framework.animation.DeathAnimState;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
@@ -26,7 +27,16 @@ public class DamageSystem extends IteratingSystem
 	{
 		HealthComponent life = Mappers.lives.get(entity);
 		
-		life.damageCooldown = Math.max(0, life.damageCooldown - deltaTime);		
+		life.damageCooldown = Math.max(0, life.damageCooldown - deltaTime);
+		
+		if (Mappers.animMapObjects.has(entity))
+		{
+			Mappers.animMapObjects.get(entity).setColor(life.damageCooldown > 0 ? Color.FIREBRICK : Color.WHITE);
+		}
+		if (Mappers.mapObjects.has(entity))
+		{
+			Mappers.mapObjects.get(entity).setColor(life.damageCooldown > 0 ? Color.FIREBRICK : Color.WHITE);
+		}
 		
 		life.currentHealth = Math.max(0, life.currentHealth - life.getIncomingDamage());
 		life.resetDamage();
