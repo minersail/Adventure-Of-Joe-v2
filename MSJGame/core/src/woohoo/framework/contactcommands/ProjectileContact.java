@@ -1,25 +1,36 @@
 package woohoo.framework.contactcommands;
 
 import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameobjects.components.ContactComponent.Faction;
 import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.ProjectileComponent;
 import woohoo.gameworld.Mappers;
 
-public class EnemyHitByPlayerContact extends ContactCommand
+public class ProjectileContact extends ContactCommand
 {
-	public EnemyHitByPlayerContact()
+	ContactType other; // Should only be ContactType.Player or ContactType.Character
+	
+	public ProjectileContact(ContactType otherContact)
 	{
-		super(ContactType.Projectile, ContactType.Enemy);
+		super(ContactType.Projectile, otherContact);
+		other = otherContact;
 	}
 
 	@Override
 	public void activate(ContactData contactA, ContactData contactB)
 	{
-		if (contactA.type == ContactType.Enemy) // Switch; Parameters can come in either order but code requires Enemy to be A
+		if (contactA.type == other) // Switch; Parameters can come in either order but code requires Projectile to be A
 		{
 			ContactData temp = contactA;
 			contactA = contactB;
 			contactB = temp;
+		}
+		
+		// No friendly fire
+		if (contactA.faction == Faction.Ally && contactB.faction == Faction.Ally ||
+			contactA.faction == Faction.Enemy && contactB.faction == Faction.Enemy)
+		{
+			return;
 		}
 		
 		HitboxComponent hitbox = Mappers.hitboxes.get(contactB.owner);

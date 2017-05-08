@@ -29,7 +29,7 @@
 		<id name="bollin" />
 		<anim atlas="oldman.pack" />
 		<health max="1" />
-		<hitbox collides="false" type="projectile" shape="melee" />
+		<hitbox collides="false" type="projectile" shape="melee" faction="ally" />
 		<movement speed="5" />
 		<position x="0" y="0" />
 		<projectile damage="1" knockback="1" lifetime="0.25f" />

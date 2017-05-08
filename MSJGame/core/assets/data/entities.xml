@@ -34,7 +34,7 @@
 			<anim atlas="mother.pack" />
 			<dialogue id="1" />
 			<health max="1" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1" />
 			<position x="7" y="6" />
 		</entity>
@@ -44,7 +44,7 @@
 			<anim atlas="robert.pack" />
 			<dialogue id="2" />
 			<health max="1" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1" />
 			<position x="8" y="6" />
 		</entity>
@@ -56,7 +56,7 @@
 			<anim atlas="mother.pack" />
 			<dialogue id="1" />
 			<health max="1" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1" />
 			<position x="-2" y="2" />
 		</entity>
@@ -66,7 +66,7 @@
 			<anim atlas="robert.pack" />
 			<dialogue id="2" />
 			<health max="1" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1" />
 			<position x="-3" y="2" />
 		</entity>
@@ -76,7 +76,7 @@
 			<anim atlas="robber.pack" />
 			<dialogue id="3" />
 			<health max="1" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1.25" />
 			<position x="1" y="5" />
 		</entity>
@@ -86,7 +86,7 @@
 			<anim atlas="robber.pack" />
 			<dialogue id="4" />
 			<health max="10" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1.25" />
 			<position x="3" y="5" />
 		</entity>
@@ -100,7 +100,7 @@
 			<anim atlas="oldman.pack" />
 			<dialogue id="5" />
 			<inventory id="1" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<lineofsight />
 			<movement speed="1.25" />
 			<position x="18" y="8" />
@@ -113,7 +113,7 @@
 			<anim atlas="oldman.pack" />
 			<dialogue id="4" />
 			<health max="1" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1" />
 			<position x="3" y="11" />
 		</entity>
@@ -123,7 +123,7 @@
 			<anim atlas="guard.pack" />
 			<dialogue id="4" />
 			<health max="1" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1" />
 			<position x="3" y="10" />
 		</entity>
@@ -134,7 +134,7 @@
 			<ai state="stay" />
 			<anim atlas="oldman.pack" />
 			<health max="1" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1" />
 			<position x="19" y="7" />
 		</entity>
@@ -143,7 +143,7 @@
 			<ai state="stay" />
 			<anim atlas="guard.pack" />
 			<health max="1" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1.8" />
 			<position x="19" y="8" />
 		</entity>
@@ -151,7 +151,7 @@
 			<id name="guard1" />
 			<ai state="stay" />
 			<anim atlas="guard.pack" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1.5" />
 			<position x="18" y="9" />
 		</entity>
@@ -159,7 +159,7 @@
 			<id name="guard2" />
 			<ai state="stay" />
 			<anim atlas="guard.pack" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1.5" />
 			<position x="20" y="9" />
 		</entity>
@@ -207,7 +207,7 @@
 			<ai state="random" />
 			<anim atlas="woman1.pack" />
 			<dialogue id="5" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<movement speed="1" />
 			<position x="10" y="4" />
 		</entity>
@@ -216,7 +216,7 @@
 			<ai state="stay" />
 			<anim atlas="woman1.pack" />
 			<dialogue id="6" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<inventory id="1" />
 			<movement speed="1" />
 			<position x="10" y="13" />
@@ -226,7 +226,7 @@
 			<ai state="stay" />
 			<anim atlas="woman1.pack" />
 			<dialogue id="7" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<inventory id="2" />
 			<movement speed="1" />
 			<position x="10" y="20" />
@@ -236,7 +236,7 @@
 			<ai state="stay" />
 			<anim atlas="woman1.pack" />
 			<dialogue id="8" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<inventory id="3" />
 			<movement speed="1" />
 			<position x="18" y="13" />
@@ -246,7 +246,7 @@
 			<ai state="stay" />
 			<anim atlas="woman1.pack" />
 			<dialogue id="9" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<inventory id="4" />
 			<movement speed="1" />
 			<position x="16" y="18" />
@@ -256,7 +256,7 @@
 			<ai state="stay" />
 			<anim atlas="haystackguy.pack" />
 			<dialogue id="10" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<inventory id="2" />
 			<movement speed="1" />
 			<position x="26" y="14" />
@@ -269,7 +269,7 @@
 			<id name="chest" />
 			<ai state="stay" />
 			<dialogue id="0" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<inventory id="5" />
 			<mapobject texture="indoorchest1.png" />
 			<movement speed="1" />
@@ -281,7 +281,7 @@
 			<id name="chest" />
 			<ai state="stay" />
 			<dialogue id="0" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<inventory id="5" />
 			<mapobject texture="indoorchest1.png" />
 			<movement speed="1" />
@@ -295,7 +295,7 @@
 			<id name="chest" />
 			<ai state="stay" />
 			<dialogue id="0" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<inventory id="5" />
 			<mapobject texture="indoorchest1.png" />
 			<movement speed="1" />
@@ -305,7 +305,7 @@
 			<id name="chest" />
 			<ai state="stay" />
 			<dialogue id="0" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<inventory id="5" />
 			<mapobject texture="indoorchest1.png" />
 			<movement speed="1" />
@@ -318,7 +318,7 @@
 		<entity enabled="true" name="wheelbarrow1">
 			<id name="wheelbarrow1" />
 			<ai state="moveto" targetX="28" targetY="5" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<mapobject texture="wheelbarrow.png" />
 			<movement speed="1" />
 			<position x="1" y="5" />
@@ -326,7 +326,7 @@
 		<entity enabled="true" name="wheelbarrow2">
 			<id name="wheelbarrow2" />
 			<ai state="moveto" targetX="28" targetY="5" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<mapobject texture="wheelbarrow.png" />
 			<movement speed="1" />
 			<position x="2" y="5" />
@@ -336,14 +336,14 @@
 			<ai state="moveto" targetX="28" targetY="5" />
 			<anim atlas="haystackguy.pack" />
 			<dialogue id="0" />
-			<hitbox collides="true" type="npc" />
+			<hitbox collides="true" type="character" />
 			<inventory id="5" />
 			<movement speed="1" />
 			<position x="2" y="6" />
 		</entity>	
 		<entity enabled="true" name="spawner">
 			<id name="spawner" />
-			<hitbox collides="true" type="npc" static="true" />
+			<hitbox collides="true" type="character" static="true" />
 			<position x="10" y="12.5" />
 			<spawn entity="robber1" time="8" />
 		</entity>
@@ -351,7 +351,7 @@
 			<id name="robber1" />
 			<ai state="follow" target="player" />
 			<anim atlas="robber.pack" />
-			<hitbox collides="true" type="enemy" />
+			<hitbox collides="true" type="character" faction="enemy" />
 			<health max="10" />
 			<healthbar />
 			<movement speed="1" />
@@ -359,7 +359,7 @@
 		</entity>
 		<entity enabled="true" name="spawner2">
 			<id name="spawner2" />
-			<hitbox collides="true" type="npc" static="true" />
+			<hitbox collides="true" type="character" static="true" />
 			<position x="20" y="-1.5" />
 			<spawn entity="robber2" time="8" />
 		</entity>
@@ -367,7 +367,7 @@
 			<id name="robber2" />
 			<ai state="follow" target="player" />
 			<anim atlas="robber.pack" />
-			<hitbox collides="true" type="enemy" />
+			<hitbox collides="true" type="character" faction="enemy" />
 			<health max="10" />
 			<healthbar />
 			<movement speed="1" />

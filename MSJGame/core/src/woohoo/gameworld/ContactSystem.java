@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Objects;
 import woohoo.framework.contactcommands.*;
 import woohoo.gameobjects.components.ContactComponent;
+import woohoo.gameobjects.components.ContactComponent.ContactType;
 
 public class ContactSystem extends IteratingSystem
 {
@@ -25,8 +26,8 @@ public class ContactSystem extends IteratingSystem
 		collisions = new Array<>();
 		commands = new Array<>();
         commands.add(new GateContact());
-        commands.add(new EnemyHitByPlayerContact());
-        commands.add(new EnemyTouchPlayerContact());
+        commands.add(new ProjectileContact(ContactType.Player));
+        commands.add(new ProjectileContact(ContactType.Character));
         commands.add(new ItemContact());
         commands.add(new ChaseContact());
 		commands.add(new PlayerSightedContact());

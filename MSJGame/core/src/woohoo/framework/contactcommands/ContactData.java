@@ -2,6 +2,7 @@ package woohoo.framework.contactcommands;
 
 import com.badlogic.ashley.core.Entity;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameobjects.components.ContactComponent.Faction;
 
 /**
  * ContactData is attached to bodies through getUserData()
@@ -13,11 +14,13 @@ import woohoo.gameobjects.components.ContactComponent.ContactType;
 public class ContactData
 {
 	public ContactType type;
+	public Faction faction;
 	public Entity owner;
 	
-	public ContactData(ContactType contactType, Entity owningEntity)
+	public ContactData(ContactType contactType, Faction fac, Entity owningEntity)
 	{
 		type = contactType;
 		owner = owningEntity;
+		faction = fac;
 	}
 }

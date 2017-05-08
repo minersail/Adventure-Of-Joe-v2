@@ -17,7 +17,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.contactcommands.ContactData;
+import woohoo.gameobjects.components.ContactComponent;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameobjects.components.ContactComponent.Faction;
 import woohoo.screens.PlayingScreen;
 
 public class HexMapLoader
@@ -102,7 +104,7 @@ public class HexMapLoader
 					
 					Entity wall = new Entity();
 					screen.getEngine().addEntity(wall);
-					body.setUserData(new ContactData(ContactType.Wall, wall));
+					body.setUserData(new ContactData(ContactType.Wall, Faction.Neutral, wall));
 				}
 					
 				Cell cell = new Cell();

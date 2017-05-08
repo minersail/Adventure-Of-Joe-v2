@@ -3,21 +3,21 @@ robber.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-down_walk
+death
   rotate: false
   xy: 1, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-down_walk
+death
   rotate: false
   xy: 35, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-down_walk
+death
   rotate: false
   xy: 69, 1
   size: 32, 32
@@ -45,21 +45,21 @@ down_idle
   orig: 32, 32
   offset: 0, 0
   index: 3
-left_walk
+down_walk
   rotate: false
   xy: 205, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-left_walk
+down_walk
   rotate: false
   xy: 239, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-left_walk
+down_walk
   rotate: false
   xy: 273, 1
   size: 32, 32
@@ -87,21 +87,21 @@ left_idle
   orig: 32, 32
   offset: 0, 0
   index: 3
-right_walk
+left_walk
   rotate: false
   xy: 409, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-right_walk
+left_walk
   rotate: false
   xy: 443, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-right_walk
+left_walk
   rotate: false
   xy: 477, 1
   size: 32, 32
@@ -129,21 +129,21 @@ right_idle
   orig: 32, 32
   offset: 0, 0
   index: 3
-up_walk
+right_walk
   rotate: false
   xy: 613, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 1
-up_walk
+right_walk
   rotate: false
   xy: 647, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: 2
-up_walk
+right_walk
   rotate: false
   xy: 681, 1
   size: 32, 32
@@ -167,6 +167,27 @@ up_idle
 up_idle
   rotate: false
   xy: 783, 1
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 3
+up_walk
+  rotate: false
+  xy: 817, 1
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 1
+up_walk
+  rotate: false
+  xy: 851, 1
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: 2
+up_walk
+  rotate: false
+  xy: 885, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

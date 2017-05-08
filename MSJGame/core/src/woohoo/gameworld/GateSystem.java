@@ -17,7 +17,9 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
 import woohoo.gameobjects.components.ChaseComponent;
+import woohoo.gameobjects.components.ContactComponent;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameobjects.components.ContactComponent.Faction;
 import woohoo.gameobjects.components.GateComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.PositionComponent;
@@ -76,7 +78,7 @@ public class GateSystem extends IteratingSystem
             entity.add(gate);
 			entity.add(position);
 
-            body.setUserData(new ContactData(ContactType.Gate, entity));
+            body.setUserData(new ContactData(ContactType.Gate, Faction.Neutral, entity));
             
             screen.getEngine().addEntity(entity);
         }

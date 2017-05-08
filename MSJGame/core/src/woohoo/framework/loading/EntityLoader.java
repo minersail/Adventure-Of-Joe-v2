@@ -17,6 +17,7 @@ import java.security.InvalidParameterException;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.*;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameobjects.components.ContactComponent.Faction;
 import woohoo.gameworld.AIStateSystem;
 import woohoo.gameworld.Mappers;
 import woohoo.gameworld.RenderSystem;
@@ -48,7 +49,7 @@ public class EntityLoader
 		EventListenerComponent eventListener = new EventListenerComponent();
 		HealthComponent life = new HealthComponent(100);
 		HealthBarComponent healthBar = new HealthBarComponent(screen.getAssets().get("ui/healthbar.pack", TextureAtlas.class));
-		HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), true, false, ContactType.Player, "circle");
+		HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), new HitboxMold(true, false, ContactType.Player, Faction.Ally, "circle"));
 		InputComponent input = new InputComponent();
 		MovementComponent movement = new MovementComponent(2);
 		PlayerComponent playerComp = new PlayerComponent();
@@ -151,8 +152,7 @@ public class EntityLoader
 				base = new HealthComponent(component.getInt("max"));
 				break;
 			case "hitbox":
-				base = new HitboxComponent(screen.getWorld(), component.getBoolean("collides"), component.getBoolean("static", false), 
-											ContactType.fromString(component.get("type")), component.get("shape", "circle"));
+				base = new HitboxComponent(screen.getWorld(), new HitboxMold(component));
 				break;
 			case "id":
 				base = new IDComponent(component.get("name"));
@@ -208,12 +208,14 @@ public class EntityLoader
 		{
 			if (Mappers.hitboxes.has(entity))
 			{
-				Mappers.hitboxes.get(entity).mass.setUserData(new ContactData(Mappers.hitboxes.get(entity).hitboxType, entity));
+				HitboxComponent hitbox = Mappers.hitboxes.get(entity);
+				hitbox.mass.setUserData(new ContactData(hitbox.hitboxType, hitbox.faction, entity));
 			}
 
 			if (Mappers.sightLines.has(entity))
 			{
-				Mappers.sightLines.get(entity).mass.setUserData(new ContactData(ContactType.SightLine, entity));
+				LOSComponent los = Mappers.sightLines.get(entity);
+				los.mass.setUserData(new ContactData(ContactType.SightLine, Faction.Neutral, entity));
 			}
 		}
 

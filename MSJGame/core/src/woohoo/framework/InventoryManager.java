@@ -21,7 +21,10 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.Iterator;
 import woohoo.framework.IDManager.ItemData;
 import woohoo.framework.input.InventoryCloseCommand;
+import woohoo.framework.loading.HitboxMold;
+import woohoo.gameobjects.components.ContactComponent;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameobjects.components.ContactComponent.Faction;
 import woohoo.gameobjects.components.HitboxComponent;
 import woohoo.gameobjects.components.InventoryComponent;
 import woohoo.gameobjects.components.ItemDataComponent;
@@ -451,7 +454,7 @@ public class InventoryManager
 				PositionComponent position = new PositionComponent(Mappers.positions.get(screen.getEngine().getPlayer()).position.cpy());
 				MapObjectComponent mapObject = new MapObjectComponent(screen.getIDManager().getItem(Mappers.items.get(item).id).getItemTexture());
 
-				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), false, true, ContactType.Item, "circle");
+				HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), new HitboxMold(false, true, ContactType.Item, Faction.Neutral, "circle"));
 				hitbox.mass.setTransform(position.position.cpy().add(0.5f, 0.5f), 0);
 				item.add(hitbox);
 				item.add(position);

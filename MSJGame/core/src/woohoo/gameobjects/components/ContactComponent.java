@@ -16,9 +16,8 @@ public class ContactComponent implements Component
 		Wall("wall"),
 		Gate("gate"),
 		Item("item"),
-		NPC("npc"),
+		Character("character"),
 		Projectile("projectile"),
-		Enemy("enemy"),
 		Chaser("chaser"),
 		SightLine("sightline");
 		
@@ -43,7 +42,7 @@ public class ContactComponent implements Component
 					return b;
 				}
 			}
-			throw new IllegalArgumentException("No Orientation with text " + str + " found.");
+			throw new IllegalArgumentException("No ContactType with text " + str + " found.");
 		}
 		
 		public int bits()
@@ -59,6 +58,37 @@ public class ContactComponent implements Component
 //				return 
 //			}
 			return 0;
+		}
+	}
+	
+	public enum Faction
+	{
+		Ally("ally"),
+		Neutral("neutral"),
+		Enemy("enemy");
+		
+		private String text;
+		
+		Faction(String str)
+		{
+			text = str;
+		}
+		
+		public String text()
+		{
+			return text;
+		}
+		
+		public static Faction fromString(String str) 
+		{
+			for (Faction b : Faction.values()) 
+			{
+				if (b.text.equalsIgnoreCase(str))
+				{
+					return b;
+				}
+			}
+			throw new IllegalArgumentException("No Faction with text " + str + " found.");
 		}
 	}
 }
