@@ -113,12 +113,16 @@ public class EntityLoader
 			case "ai":
 				if (component.get("state").equals("stay"))
 					base = new AIComponent("stay");
-				else if (component.get("state").equals("random"))
-					base = new AIComponent("random");
-				else if (component.get("state").equals("follow"))
-					base = new AIComponent(Mappers.positions.get(screen.getEngine().getEntity(component.get("target"))));
+				else if (component.get("state").equals("wander"))
+					base = new AIComponent("wander");
+				else if (component.get("state").equals("attackchase"))
+					base = new AIComponent("attackchase", component.get("target"));
+				else if (component.get("state").equals("chase"))
+					base = new AIComponent("chase", component.get("target"));
 				else if (component.get("state").equals("moveto"))
 					base = new AIComponent(new Vector2(component.getFloat("targetX"), component.getFloat("targetY")));
+				else if (component.get("state").equals("push"))
+					base = new AIComponent(component.get("pushed"), new Vector2(component.getFloat("targetX"), component.getFloat("targetY")));
 				else if (component.get("state").equals("sentry"))
 				{
 					Array<Vector2> patrol = new Array<>();

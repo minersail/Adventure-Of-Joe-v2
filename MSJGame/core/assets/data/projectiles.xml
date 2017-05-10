@@ -26,11 +26,20 @@
 		</entity>
 	</projectile-->
 	<projectile id="0">		
-		<id name="bollin" />
-		<anim atlas="oldman.pack" />
+		<id name="projectile1ally" />
+		<anim atlas="projectilemelee1.pack" />
 		<health max="1" />
 		<hitbox collides="false" type="projectile" shape="melee" faction="ally" />
-		<movement speed="5" />
+		<movement speed="1" />
+		<position x="0" y="0" />
+		<projectile damage="1" knockback="1" lifetime="0.25f" />
+	</projectile>
+	<projectile id="1">		
+		<id name="projectile1enemy" />
+		<anim atlas="projectilemelee1.pack" />
+		<health max="1" />
+		<hitbox collides="false" type="projectile" shape="melee" faction="enemy" />
+		<movement speed="1" />
 		<position x="0" y="0" />
 		<projectile damage="1" knockback="1" lifetime="0.25f" />
 	</projectile>

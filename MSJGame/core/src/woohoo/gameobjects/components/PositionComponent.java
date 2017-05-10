@@ -36,6 +36,26 @@ public class PositionComponent implements Component
 			throw new IllegalArgumentException("No Orientation with text " + str + " found.");
 		}
 		
+		// Returns the direction pos1 needs to face pos2
+		public static Orientation fromVectors(Vector2 pos1, Vector2 pos2)
+		{		
+			Vector2 diff = pos1.cpy().sub(pos2);
+			if (Math.abs(diff.x) > Math.abs(diff.y))
+			{
+				if (diff.x > 0)
+					return Orientation.West;
+				else
+					return Orientation.East;
+			}
+			else
+			{
+				if (diff.y > 0)
+					return Orientation.North;
+				else
+					return Orientation.South;
+			}
+		}
+		
 		public Vector2 getVector()
 		{
 			switch(text)

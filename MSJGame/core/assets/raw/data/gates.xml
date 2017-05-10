@@ -34,7 +34,7 @@
 		<gate locX="1" locY="-1" sizeX="5" sizeY="1" destArea="5" destX="1" destY="19" />
 		<gate locX="19" locY="-1" sizeX="1" sizeY="1" destArea="5" destX="19" destY="19" />
 		<gate locX="21" locY="-1" sizeX="1" sizeY="1" destArea="6" destX="1" destY="19" />
-		<gate locX="27" locY="12" sizeX="1" sizeY="3" destArea="14" destX="1" destY="4" narration="1" />
+		<gate locX="27" locY="14" sizeX="1" sizeY="1" destArea="14" destX="1" destY="4" narration="1" />
 		<gate locX="7" locY="6" sizeX="1" sizeY="1" destArea="9" destX="2.5" destY="7" />
 		<gate locX="12" locY="6" sizeX="1" sizeY="1" destArea="10" destX="2.5" destY="7" />
 		<gate locX="17" locY="6" sizeX="1" sizeY="1" destArea="11" destX="3.5" destY="7" />
@@ -63,5 +63,21 @@
 	</area>
 	<area id="15">
 		<gate locX="-1" locY="4" sizeX="1" sizeY="4" destArea="14" destX="28" destY="4" />
+		<gate locX="29" locY="4" sizeX="1" sizeY="4" destArea="16" destX="1" destY="5" />
+	</area>
+	<area id="16">
+		<gate locX="-1" locY="6" sizeX="1" sizeY="2" destArea="15" destX="28" destY="4" />
+		<gate locX="11" locY="21" sizeX="2" sizeY="1" destArea="17" destX="11" destY="0" />
+	</area>
+	<area id="17">
+		<gate locX="11" locY="-1" sizeX="2" sizeY="1" destArea="16" destX="11" destY="20" />
+		<gate locX="39" locY="12" sizeX="1" sizeY="4" destArea="18" destX="0" destY="4" />
+	</area>
+	<area id="18">
+		<gate locX="-1" locY="4" sizeX="1" sizeY="4" destArea="17" destX="38" destY="12" />
+		<gate locX="12" locY="17" sizeX="3" sizeY="1" destArea="19" destX="13" destY="0" />
+	</area>
+	<area id="19">
+		<gate locX="13" locY="-1" sizeX="3" sizeY="1" destArea="18" destX="12" destY="16" />
 	</area>
 </gates>

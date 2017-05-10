@@ -58,7 +58,7 @@ public class DialogueManager implements ListenerActivator
 		name.setPosition(MARGIN, 0);
 		name.setAlignment(Align.bottom);
 		name.setWrap(true);	
-		name.setFontScale(0.4f);
+		name.setFontScale(0.3f);
 		
 		face = new Image();
 		face.setSize(64, 64);

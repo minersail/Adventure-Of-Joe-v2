@@ -76,6 +76,12 @@ public class HitboxMold
 				s.set(vertices);
 				return s;
 			}
+			case "square":
+			{				
+				PolygonShape s = new PolygonShape();
+				s.setAsBox(0.49f, 0.49f);
+				return s;
+			}
 			case "circle":
 			default:
 			{

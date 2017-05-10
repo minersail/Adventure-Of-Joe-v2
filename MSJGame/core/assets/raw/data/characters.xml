@@ -10,4 +10,6 @@
 	<character id="5" texture="guard.png" name="Guard" />
 	<character id="6" texture="woman1.png" name="Woman" />
 	<character id="7" texture="haystackguy.png" name="Haystack guy" />
+	<character id="8" texture="blacksmith.png" name="Blacksmith" />
+	<character id="9" texture="sign.png" name="Sign" />
 </characters>

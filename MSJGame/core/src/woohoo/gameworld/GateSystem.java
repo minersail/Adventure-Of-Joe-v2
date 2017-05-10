@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
 import woohoo.gameobjects.components.ChaseComponent;
-import woohoo.gameobjects.components.ContactComponent;
 import woohoo.gameobjects.components.ContactComponent.ContactType;
 import woohoo.gameobjects.components.ContactComponent.Faction;
 import woohoo.gameobjects.components.GateComponent;

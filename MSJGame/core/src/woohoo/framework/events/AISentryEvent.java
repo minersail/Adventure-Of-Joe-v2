@@ -3,7 +3,7 @@ package woohoo.framework.events;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import woohoo.ai.aistates.SentryState;
+import woohoo.ai.aipatterns.ChaseSentryPattern;
 import woohoo.gameobjects.components.AIComponent;
 
 public class AISentryEvent implements Event<Entity>
@@ -20,6 +20,6 @@ public class AISentryEvent implements Event<Entity>
 	@Override
 	public void activate()
 	{
-		aiChar.setState(new SentryState(patrol));
+		aiChar.setPattern(new ChaseSentryPattern(patrol));
 	}	
 }

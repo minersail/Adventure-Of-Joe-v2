@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
 import woohoo.framework.animation.DeathAnimState;
+import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.DialogueComponent;
 import woohoo.gameobjects.components.HealthBarComponent;
 import woohoo.gameobjects.components.HealthComponent;
@@ -66,6 +67,9 @@ public class DamageSystem extends IteratingSystem
 		}
 		
 		entity.remove(DialogueComponent.class);
+		entity.remove(AIComponent.class);
+		screen.getRenderer().remove(Mappers.healthBars.get(entity));
+		entity.remove(HealthBarComponent.class);
 		Mappers.lives.get(entity).dead = true;
 		
 		if (Mappers.players.has(entity))

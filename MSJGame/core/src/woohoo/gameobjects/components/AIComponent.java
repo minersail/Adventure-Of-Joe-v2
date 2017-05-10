@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import woohoo.ai.AIHeuristic;
 import woohoo.ai.AIMap;
 import woohoo.ai.Node;
-import woohoo.ai.aistates.*;
+import woohoo.ai.aipatterns.*;
 import woohoo.gameobjects.components.MovementComponent.Direction;
 
 public class AIComponent implements Component
@@ -24,52 +24,65 @@ public class AIComponent implements Component
 	
 	public Direction currentDirection;
     public boolean lockDirection;
+	
+	// I don't think the timestep stuff is currently being used
 	public float timer;    // Internal timer to keep track of time
 	public float timeStep; // How often the AI should switch directions
 	
 	public final float DEFAULT_TIMESTEP = 0.5f;
 	
-	private AIState cache; // Previous state
-	private AIState state; // Current state
+	private AIPattern pattern;
 	
 	public AIComponent()
 	{		
 		currentDirection = Direction.None;
 		timeStep = DEFAULT_TIMESTEP;
 		heuristic = new AIHeuristic();
-		cache = null;
+		pattern = null;
 	}
 	
 	public AIComponent(String str)
 	{
 		this();
-		if (str.equals("random"))
+		if (str.equals("wander"))
 		{
-			state = new RandomState();
-			timeStep = 1.5f;
+			pattern = new WanderPattern();
 		}
 		else if (str.equals("stay"))
 		{
-			state = new StayState();
+			pattern = new StayPattern();
 		}
+	}
+	
+	public AIComponent(String pushed, Vector2 target)
+	{
+		this();
+		pattern = new PushPattern(pushed, target);
 	}
 	
 	public AIComponent(Vector2 target)
 	{
 		this();
-		state = new MoveToState(target);
+		pattern = new MovePattern(target);
 	}
 	
-	public AIComponent(PositionComponent target)
+	public AIComponent(String str, String target)
 	{
-		this();
-		state = new FollowState(target);
+		this();		
+		if (str.equals("attackchase"))
+		{
+			pattern = new AttackChasePattern(target);
+		}
+		else if (str.equals("chase"))
+		{
+			pattern = new ChasePattern(target);			
+		}
 	}
 	
 	public AIComponent(Array<Vector2> patrol)
 	{
 		this();
-		state = new SentryState(patrol);
+		pattern = new ChaseSentryPattern(patrol);
 	}
 	
 	/*
@@ -96,22 +109,6 @@ public class AIComponent implements Component
 		nodes = new AIMap(map, world, extraNodes, topRow, botRow, leftCol, rightCol);
 		pathFinder = new IndexedAStarPathFinder(nodes);
 		path = new DefaultGraphPath();
-	}
-	
-	public void setState(AIState newState)
-	{
-		cache = state;
-		state = newState;
-	}
-	
-	public AIState getState()
-	{
-		return state;
-	}
-	
-	public AIState getCachedState()
-	{
-		return cache;
 	}
 	
 	/*
@@ -160,5 +157,15 @@ public class AIComponent implements Component
 	public AIMap getAIMap()
 	{
 		return nodes;
+	}
+	
+	public AIPattern getPattern()
+	{
+		return pattern;
+	}
+	
+	public void setPattern(AIPattern newPattern)
+	{
+		pattern = newPattern;
 	}
 }

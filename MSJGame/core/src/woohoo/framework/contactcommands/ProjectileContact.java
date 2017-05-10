@@ -38,7 +38,8 @@ public class ProjectileContact extends ContactCommand
 				
 		float forceMult = 5000;
 		
-		hitbox.mass.applyForceToCenter(Mappers.positions.get(contactA.owner).orientation.getVector().scl(projectile.knockback * forceMult), true);
+		if (hitbox.mass != null)
+			hitbox.mass.applyForceToCenter(Mappers.positions.get(contactA.owner).orientation.getVector().scl(projectile.knockback * forceMult), true);
 		
 		if (Mappers.lives.has(contactB.owner))
 			Mappers.lives.get(contactB.owner).damage(projectile.damage);

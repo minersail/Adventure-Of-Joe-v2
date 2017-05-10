@@ -13,8 +13,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import java.util.ArrayList;
-import woohoo.ai.aistates.MoveToState;
-import woohoo.ai.aistates.StayState;
+import woohoo.ai.aicommands.AIIdleCommand;
+import woohoo.ai.aipatterns.MovePattern;
 import woohoo.framework.events.EventListeners;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
@@ -198,7 +198,7 @@ public class CutsceneManager implements ListenerActivator
         public void start()
         {
 			brain.timeStep = 0.05f;
-			brain.setState(new MoveToState(targetPosition));
+			brain.setPattern(new MovePattern(targetPosition));
 			movement.speed = tempSpeed;
 			
 			// Refresh the pathfinding grid
@@ -212,7 +212,7 @@ public class CutsceneManager implements ListenerActivator
         @Override
         public boolean isDone(float delta) 
         {
-			if (brain.getState() instanceof StayState)
+			if (brain.getPattern().getCommand() instanceof AIIdleCommand)
 			{
 				movement.speed = oldSpeed;
 				brain.resetTimeStep();

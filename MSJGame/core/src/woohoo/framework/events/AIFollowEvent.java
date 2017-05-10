@@ -1,7 +1,7 @@
 package woohoo.framework.events;
 
 import com.badlogic.ashley.core.Entity;
-import woohoo.ai.aistates.FollowState;
+import woohoo.ai.aipatterns.ChasePattern;
 import woohoo.gameobjects.components.AIComponent;
 import woohoo.gameobjects.components.PositionComponent;
 
@@ -19,6 +19,6 @@ public class AIFollowEvent implements Event<Entity>
 	@Override
 	public void activate()
 	{
-		aiChar.setState(new FollowState(followChar));
+		aiChar.setPattern(new ChasePattern(followChar));
 	}	
 }

@@ -1,6 +1,7 @@
 package woohoo.gameobjects.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -14,7 +15,9 @@ public class LOSComponent implements Component
 {
 	public Body mass;
 	public Fixture fixture;
-	public float playerNotSeenTime; // Time since player was last spotted
+	
+	public boolean entitySeen; // Right now this would only be the player; CHANGE LATER TO ARRAY
+	public Entity sightedEntity;
 	
     public LOSComponent(World world) 
     {
@@ -49,6 +52,7 @@ public class LOSComponent implements Component
         fixture.setRestitution(0);
     }
 	
+	// Maybe deprecate later in favor of Orientation.getAngle()
 	public void rotate(Orientation direction)
 	{
 		switch(direction)

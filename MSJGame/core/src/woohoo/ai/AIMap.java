@@ -5,7 +5,6 @@ import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
@@ -86,6 +85,8 @@ public class AIMap implements IndexedGraph<Node>
 	
 	final public void generateConnections(Node node)
 	{
+		node.getConnections().clear();
+		
 		int x = node.x;
 		int y = node.y;
 		
@@ -162,6 +163,52 @@ public class AIMap implements IndexedGraph<Node>
 	public boolean contains(int index)
 	{
 		return nodes.containsKey(index);
+	}
+	
+	/**
+	 * Removes a node from the grid after initialization
+	 * @param x coordinate
+	 * @param y coordinate
+	 * @return the removed node 
+	 */
+	public Node removeNode(int x, int y)
+	{
+		Node removed = nodes.remove(index(x, y));		
+		
+		// Refresh connections
+		for (Node node : nodes.values())
+		{
+			generateConnections(node);
+		}
+		return removed;
+	}
+	
+	/**
+	 * Adds a node to the grid after initialization
+	 * @param x coordinate
+	 * @param y coordinate
+	 */
+	public void addNode(int x, int y)
+	{
+		Node newNode = new Node(x, y);
+		nodes.put(index(x, y), newNode);
+		
+		// Refresh connections
+		for (Node node : nodes.values())
+		{
+			generateConnections(node);
+		}
+	}
+	
+	public void addNode(Node newNode)
+	{
+		nodes.put(index(newNode.x, newNode.y), newNode);
+		
+		// Refresh connections
+		for (Node node : nodes.values())
+		{
+			generateConnections(node);
+		}
 	}
 	
 	@Override

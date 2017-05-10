@@ -47,6 +47,8 @@ public class GameEngine extends Engine
 	{
 		if (Mappers.hitboxes.has(entity))
 			screen.getWorld().destroyBody(Mappers.hitboxes.get(entity).mass);
+		if (Mappers.sightLines.has(entity))
+			screen.getWorld().destroyBody(Mappers.sightLines.get(entity).mass);
 		
 		if (Mappers.mapObjects.has(entity))
 			screen.getRenderer().remove(Mappers.mapObjects.get(entity));

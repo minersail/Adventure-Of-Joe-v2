@@ -48,8 +48,15 @@ public class PlayerSightedContact extends ContactCommand
 		
 		if (data.fixture == Mappers.hitboxes.get(contactA.owner).fixture)
 		{
-			Mappers.sightLines.get(contactB.owner).playerNotSeenTime = 0;
+			Mappers.sightLines.get(contactB.owner).entitySeen = true;
+			Mappers.sightLines.get(contactB.owner).sightedEntity = ((ContactData)data.fixture.getBody().getUserData()).owner;
 		}
+		else
+		{
+			Mappers.sightLines.get(contactB.owner).entitySeen = false;
+			Mappers.sightLines.get(contactB.owner).sightedEntity = null;
+		}
+		//Mappers.animMapObjects.get(contactA.owner).setColor(Mappers.sightLines.get(contactB.owner).entitySeen ? Color.ROYAL : Color.WHITE);
 	}
 	
 	private class RaycastData 

@@ -52,9 +52,9 @@
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 	<dialogue id="8">
-		<line character="6" name="Blacksmith" text="Welcome to my shop!" />
+		<line character="8" name="Blacksmith" text="Welcome to my shop!" />
 		<line character="-1" name="Command" text="INVENTORY" />
-		<line character="6" name="Blacksmith" text="Goodbye!" />
+		<line character="8" name="Blacksmith" text="Goodbye!" />
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
 	<dialogue id="9">
@@ -87,4 +87,17 @@
 		<line character="-1" name="Command" text="ENDCHOICE" />
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue>
+	<dialogue id="11">
+		<line character="9" name="Sign" text="Welcome to Carrigum!" />
+		<line character="0" name="Joe" text="I like this town already." />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue />
+	<dialogue id="12">
+		<line character="9" name="Sign" text="To the muerto forest --->" />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue />
+	<dialogue id="13">
+		<line character="9" name="Sign" text="To Carrigum residential" />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue />
 </dialogues>

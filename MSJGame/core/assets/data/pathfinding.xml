@@ -61,9 +61,23 @@
 		<settings />
 	</area>
 	<area id="14">
-		<settings />
+		<settings rightCol="2" />
+		<node x="29" y="5" />
+		<node x="30" y="5" />
 	</area>
 	<area id="15">
+		<settings />
+	</area>
+	<area id="16">
+		<settings />
+	</area>
+	<area id="17">
+		<settings />
+	</area>
+	<area id="18">
+		<settings />
+	</area>
+	<area id="19">
 		<settings />
 	</area>
 </pathfinding>

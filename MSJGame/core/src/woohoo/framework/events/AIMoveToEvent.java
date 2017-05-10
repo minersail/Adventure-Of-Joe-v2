@@ -2,7 +2,7 @@ package woohoo.framework.events;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
-import woohoo.ai.aistates.MoveToState;
+import woohoo.ai.aipatterns.MovePattern;
 import woohoo.gameobjects.components.AIComponent;
 
 public class AIMoveToEvent implements Event<Entity>
@@ -19,6 +19,6 @@ public class AIMoveToEvent implements Event<Entity>
 	@Override
 	public void activate()
 	{
-		aiChar.setState(new MoveToState(target));
+		aiChar.setPattern(new MovePattern(target));
 	}	
 }
