@@ -1,10 +1,13 @@
 <inventories>
 	<inventory id="0">
-		<item id="16">
-			<metadata sell="0" projectileid="6" buy="0" type="weapon" cooldown="0.5" count="1"/>
+		<item id="17">
+			<metadata sell="0" projectileid="7" buy="0" type="weapon" cooldown="0.25" count="1"/>
 		</item>
 		<item id="0">
 			<metadata sell="0" projectileid="0" buy="0" type="weapon" cooldown="0.5" count="1"/>
+		</item>
+		<item id="16">
+			<metadata sell="0" projectileid="6" buy="0" type="weapon" cooldown="0.5" count="1"/>
 		</item>
 	</inventory>
 	<inventory id="1">

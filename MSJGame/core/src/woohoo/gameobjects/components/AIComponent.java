@@ -52,6 +52,10 @@ public class AIComponent implements Component
 		{
 			pattern = new StayPattern();
 		}
+		else if (str.equals("boss"))
+		{
+			pattern = new BossPattern();
+		}
 	}
 	
 	public AIComponent(String pushed, Vector2 target)

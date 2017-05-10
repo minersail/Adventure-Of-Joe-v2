@@ -7,6 +7,9 @@
 		<item id="16">
 			<metadata count="1" type="weapon" projectileid="6" cooldown="0.5" />
 		</item>
+		<item id="17">
+			<metadata count="1" type="weapon" projectileid="7" cooldown="0.25" />
+		</item>
 	</inventory>
 	<inventory id="1">
 		<item id="10">

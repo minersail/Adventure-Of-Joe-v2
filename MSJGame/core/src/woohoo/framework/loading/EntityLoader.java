@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
@@ -41,33 +42,14 @@ public class EntityLoader
 	
 	public void loadPlayer()
 	{
-		Entity player = new Entity();
-		AnimMapObjectComponent mapObject = new AnimMapObjectComponent(screen.getAssets().get("images/entities/joe.pack", TextureAtlas.class));
-		PositionComponent position = new PositionComponent(2, 6);
-		IDComponent id = new IDComponent("player");
-		InventoryComponent inventory = new InventoryComponent(0);
-		EventListenerComponent eventListener = new EventListenerComponent();
-		HealthComponent life = new HealthComponent(100);
-		HealthBarComponent healthBar = new HealthBarComponent(screen.getAssets().get("ui/healthbar.pack", TextureAtlas.class));
-		HitboxComponent hitbox = new HitboxComponent(screen.getWorld(), new HitboxMold(true, false, ContactType.Player, Faction.Ally, "circle"));
-		InputComponent input = new InputComponent();
-		MovementComponent movement = new MovementComponent(2);
-		PlayerComponent playerComp = new PlayerComponent();
+		FileHandle handle = Gdx.files.local("data/player.xml");
+        
+        XmlReader xml = new XmlReader();
+        Element playerEl = xml.parse(handle.readString());   
 		
-		player.add(mapObject);
-		player.add(position);
-		player.add(id);
-		player.add(inventory);
-		player.add(eventListener);
-		player.add(life);
-		player.add(healthBar);
-		player.add(hitbox);
-		player.add(input);
-		player.add(movement);
-		player.add(playerComp);
+		Entity player = loadEntity(new EntityMold(playerEl));
 		
-		screen.getEngine().addEntity(player);
-		screen.getInventoryManager().fillPlayerInventory(inventory);
+		screen.getInventoryManager().fillPlayerInventory(Mappers.inventories.get(player));
 	}
 	
 	public void loadEntities(int area)
@@ -115,6 +97,8 @@ public class EntityLoader
 					base = new AIComponent("stay");
 				else if (component.get("state").equals("wander"))
 					base = new AIComponent("wander");
+				else if (component.get("state").equals("boss"))
+					base = new AIComponent("boss");
 				else if (component.get("state").equals("attackchase"))
 					base = new AIComponent("attackchase", component.get("target"));
 				else if (component.get("state").equals("chase"))

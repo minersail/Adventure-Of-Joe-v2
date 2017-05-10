@@ -104,9 +104,4 @@
 		<line character="7" name="Haystack guy" text="Hey, you made it!" />
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue />
-	<dialogue id="14">
-		<line character="7" name="Kenny" text="URHGHGHGHGGHGH" />
-		<line character="7" name="Kenny" text="DURRRRRR" />
-		<line character="-1" name="Command" text="LOOP" />
-	</dialogue />
 </dialogues>

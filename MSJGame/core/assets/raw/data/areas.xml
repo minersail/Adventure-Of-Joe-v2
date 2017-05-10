@@ -25,4 +25,6 @@
 	<area id="17" tileset="1" d_tileset="1" />
 	<area id="18" tileset="1" d_tileset="1" />
 	<area id="19" tileset="1" d_tileset="1" />
+	<!-- Muerto Forest -->
+	<area id="20" tileset="1" d_tileset="1" />
 </areas>

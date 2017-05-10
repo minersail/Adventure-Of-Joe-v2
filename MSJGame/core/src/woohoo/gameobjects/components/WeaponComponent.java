@@ -14,7 +14,7 @@ import woohoo.framework.loading.EntityMold;
 public class WeaponComponent implements Component
 {    
 	private EntityMold projectile;
-	private final int projectileID;
+	private final int projectileID; // New weapon must be created if weapon functionality changes
 	
 	public float cooldown;
 	public float cooldownTimer;

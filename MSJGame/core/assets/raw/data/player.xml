@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<player startArea="7">
+	<id name="player" />
+	<anim atlas="youngjoe.pack" />
+	<eventlistener />
+	<hitbox collides="true" type="player" faction="ally" />
+	<inventory id="0" />
+	<health max="100" />
+	<healthbar />
+	<input />
+	<movement speed="2" />
+	<position x="1" y="5" />
+	<player />
+</player>

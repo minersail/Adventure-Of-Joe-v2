@@ -129,15 +129,6 @@
 		</entity>
 	</area>
 	<area id="4">
-		<entity enabled="true" name="bollin">
-			<id name="bollin" />
-			<ai state="stay" />
-			<anim atlas="oldman.pack" />
-			<health max="1" />
-			<hitbox collides="true" type="character" />
-			<movement speed="1" />
-			<position x="19" y="7" />
-		</entity>
 		<entity enabled="true" name="captain">
 			<id name="captain" />
 			<ai state="stay" />
@@ -439,17 +430,22 @@
 		</entity>
 	</area>
 	<area id="17">
-		<entity enabled="true" name="kenny">
-			<id name="kenny" />
-			<anim atlas="kenny.pack" />
-			<dialogue id="15" />
-			<hitbox collides="true" type="character" />
-			<movement speed="1" />
-			<position x="5" y="17" />
-		</entity>
 	</area>
 	<area id="18">
 	</area>
 	<area id="19">
+	</area>
+	<area id="20">
+		<entity enabled="true" name="kenny">
+			<id name="kenny" />
+			<ai state="boss" />
+			<anim atlas="kenny.pack" />
+			<hitbox collides="true" type="character" faction="enemy" />
+			<health max="200" />
+			<healthbar />
+			<movement speed="3" />
+			<position x="21" y="10" />
+			<weapon projectileid="8" cooldown="0" />
+		</entity>
 	</area>
 </entities>

@@ -55,6 +55,14 @@ public class PositionComponent implements Component
 					return Orientation.South;
 			}
 		}
+
+		// Random orientation
+		public static Orientation getRandom()
+		{		
+			int randomNum = (int)Math.floor(Math.random() * 4);
+			
+			return Orientation.values()[randomNum];
+		}
 		
 		public Vector2 getVector()
 		{

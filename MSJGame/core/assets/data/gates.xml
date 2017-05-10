@@ -68,6 +68,7 @@
 	<area id="16">
 		<gate locX="-1" locY="6" sizeX="1" sizeY="2" destArea="15" destX="28" destY="4" />
 		<gate locX="11" locY="21" sizeX="2" sizeY="1" destArea="17" destX="11" destY="0" />
+		<gate locX="28" locY="17" sizeX="1" sizeY="2" destArea="20" destX="0" destY="15" />
 	</area>
 	<area id="17">
 		<gate locX="11" locY="-1" sizeX="2" sizeY="1" destArea="16" destX="11" destY="20" />
@@ -79,5 +80,7 @@
 	</area>
 	<area id="19">
 		<gate locX="13" locY="-1" sizeX="3" sizeY="1" destArea="18" destX="12" destY="16" />
+	</area>
+	<area id="20">
 	</area>
 </gates>

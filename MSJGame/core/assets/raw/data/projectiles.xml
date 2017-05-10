@@ -28,16 +28,14 @@
 	<projectile id="0">		
 		<id name="stick" />
 		<anim atlas="projectilemelee1.pack" />
-		<health max="1" />
 		<hitbox collides="false" type="projectile" shape="melee" faction="ally" />
 		<movement speed="1" />
 		<position x="0" y="0" />
 		<projectile damage="1" knockback="1" lifetime="0.25f" />
 	</projectile>
 	<projectile id="1">		
-		<id name="stickenemy" />
+		<id name="enemystick" />
 		<anim atlas="projectilemelee1.pack" />
-		<health max="1" />
 		<hitbox collides="false" type="projectile" shape="melee" faction="enemy" />
 		<movement speed="1" />
 		<position x="0" y="0" />
@@ -46,7 +44,6 @@
 	<projectile id="2">		
 		<id name="woodsword" />
 		<anim atlas="projectilemelee1.pack" />
-		<health max="1" />
 		<hitbox collides="false" type="projectile" shape="melee" faction="ally" />
 		<movement speed="1" />
 		<position x="0" y="0" />
@@ -55,7 +52,6 @@
 	<projectile id="3">		
 		<id name="rustysword" />
 		<anim atlas="projectilemelee1.pack" />
-		<health max="1" />
 		<hitbox collides="false" type="projectile" shape="melee" faction="ally" />
 		<movement speed="1" />
 		<position x="0" y="0" />
@@ -64,7 +60,6 @@
 	<projectile id="4">		
 		<id name="steelsword" />
 		<anim atlas="projectilemelee1.pack" />
-		<health max="1" />
 		<hitbox collides="false" type="projectile" shape="melee" faction="ally" />
 		<movement speed="1" />
 		<position x="0" y="0" />
@@ -73,7 +68,6 @@
 	<projectile id="5">		
 		<id name="refinedsword" />
 		<anim atlas="projectilemelee1.pack" />
-		<health max="1" />
 		<hitbox collides="false" type="projectile" shape="melee" faction="ally" />
 		<movement speed="1" />
 		<position x="0" y="0" />
@@ -82,10 +76,33 @@
 	<projectile id="6">		
 		<id name="arrow" />
 		<anim atlas="arrow.pack" />
-		<health max="1" />
 		<hitbox collides="false" type="projectile" shape="arrow" faction="ally" />
-		<movement speed="4" />
+		<movement speed="6" />
 		<position x="0" y="0" />
-		<projectile damage="15" knockback="1" lifetime="3" />
+		<projectile damage="3" knockback="1" lifetime="3" />
+	</projectile>
+	<projectile id="7">		
+		<id name="fireball" />
+		<anim atlas="fireball.pack" />
+		<hitbox collides="false" type="projectile" shape="circle" faction="ally" />
+		<movement speed="3" />
+		<position x="0" y="0" />
+		<projectile damage="8" knockback="1" lifetime="4" />
+	</projectile>
+	<projectile id="8">		
+		<id name="enemyarrow" />
+		<anim atlas="arrow.pack" />
+		<hitbox collides="false" type="projectile" shape="arrow" faction="enemy" />
+		<movement speed="6" />
+		<position x="0" y="0" />
+		<projectile damage="3" knockback="1" lifetime="3" />
+	</projectile>
+	<projectile id="9">		
+		<id name="enemyfireball" />
+		<anim atlas="fireball.pack" />
+		<hitbox collides="false" type="projectile" shape="circle" faction="enemy" />
+		<movement speed="3" />
+		<position x="0" y="0" />
+		<projectile damage="8" knockback="1" lifetime="4" />
 	</projectile>
 </projectiles>

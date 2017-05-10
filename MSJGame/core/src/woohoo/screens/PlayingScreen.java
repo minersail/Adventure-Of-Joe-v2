@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import woohoo.ai.AIDebugger;
 import woohoo.framework.*;
@@ -60,12 +61,18 @@ public class PlayingScreen implements Screen, Fadeable
 	public int mapWidth;
 	public int mapHeight;
 	
-	public int currentArea = 17;
+	public int currentArea;
 	
     private float runTime;
 	
 	public PlayingScreen(MSJGame g)
-	{
+	{		
+		FileHandle handle = Gdx.files.local("data/player.xml");
+        
+        XmlReader xml = new XmlReader();
+        XmlReader.Element playerEl = xml.parse(handle.readString());   
+		currentArea = playerEl.getInt("startArea");
+		
 		game = g;
 		
 		// Set up camera
