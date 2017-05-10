@@ -113,6 +113,9 @@ public class EventSystem extends IteratingSystem
 			// Combine the event trigger and events and allocate them to the correct place
 			if (eventListener.get("owner").equals("entity"))
 			{
+                if (!Mappers.eventListeners.has(screen.getEngine().getEntity(eventListener.get("entity"))))
+                    screen.getEngine().getEntity(eventListener.get("entity")).add(new EventListenerComponent());
+                    
 				Mappers.eventListeners.get(screen.getEngine().getEntity(eventListener.get("entity"))).listeners.addListener(EL);
 			}
 			else if (eventListener.get("owner").equals("system"))

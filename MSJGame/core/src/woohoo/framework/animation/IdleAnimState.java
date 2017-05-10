@@ -18,7 +18,7 @@ public class IdleAnimState implements AnimationState
 		
 		animation.addTime(delta);
 		
-		if (!Mappers.movements.get(entity).isStopped(0.25f))
+		if (Mappers.movements.has(entity) && !Mappers.movements.get(entity).isStopped(0.25f))
 		{
 			animation.setAnimationState(new WalkAnimState());
 		}

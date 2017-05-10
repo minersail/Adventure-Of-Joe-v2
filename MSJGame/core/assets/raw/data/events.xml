@@ -110,8 +110,12 @@
 	</area>
 	<area id="14">
 		<eventlistener id="0" owner="entity" entity="player" state="enabled">
-			<trigger type="move" locX="1" locY="6" dist="1" />
+			<trigger type="move" locX="1" locY="4" dist="2" />
 			<event type="cutscene" id="7" />
+		</eventlistener>
+		<eventlistener id="1" owner="entity" entity="wheelbarrow2" state="enabled">
+			<trigger type="move" locX="29" locY="6" dist="1.5" />
+			<event type="cutscene" id="8" />
 		</eventlistener>
 	</area>
 	<area id="15">

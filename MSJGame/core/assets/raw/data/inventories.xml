@@ -4,6 +4,9 @@
 		<item id="0">
 			<metadata count="1" type="weapon" projectileid="0" cooldown="0.5" />
 		</item>
+		<item id="16">
+			<metadata count="1" type="weapon" projectileid="6" cooldown="0.5" />
+		</item>
 	</inventory>
 	<inventory id="1">
 		<item id="10">
@@ -32,10 +35,10 @@
 	</inventory>
 	<inventory id="3">
 		<item id="1">
-			<metadata count="1" buy="500" sell="2" />
+			<metadata count="1" buy="500" sell="2" type="weapon" projectileid="2" cooldown="0.5" />
 		</item>
 		<item id="2">
-			<metadata count="1" buy="1000" sell="2" />
+			<metadata count="1" buy="1000" sell="2" type="weapon" projectileid="3" cooldown="0.5" />
 		</item>
 	</inventory>
 	<inventory id="4">

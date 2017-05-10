@@ -60,7 +60,7 @@ public class PlayingScreen implements Screen, Fadeable
 	public int mapWidth;
 	public int mapHeight;
 	
-	public int currentArea = 7;
+	public int currentArea = 17;
 	
     private float runTime;
 	
@@ -191,7 +191,7 @@ public class PlayingScreen implements Screen, Fadeable
 		state.update(this, delta);
 		ui.act();
 		alerts.act(delta);
-		//debugRenderer.render(world, cam.combined);
+		debugRenderer.render(world, cam.combined);
 		ui.draw();
     }
 	

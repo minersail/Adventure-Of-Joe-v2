@@ -320,17 +320,15 @@
 			<hitbox collides="true" type="character" />
 			<mapobject texture="wheelbarrow.png" />
 			<movement speed="1" />
-			<position x="2" y="5" />
+			<position x="2" y="7" />
 		</entity>	
 		<entity enabled="true" name="haystackguy">
 			<id name="haystackguy" />
 			<ai state="push" pushed="wheelbarrow1" targetX="28" targetY="5" />
 			<anim atlas="haystackguy.pack" />
-			<dialogue id="0" />
 			<hitbox collides="true" type="character" />
-			<inventory id="5" />
 			<movement speed="1" />
-			<position x="1" y="5" />
+			<position x="1" y="7" />
 		</entity>	
 		<entity enabled="true" name="wheelbarrow2">
 			<id name="wheelbarrow2" />
@@ -375,8 +373,49 @@
 		</entity>
 	</area>
 	<area id="15">
+		<entity enabled="false" name="spawner">
+			<id name="spawner" />
+			<hitbox collides="true" type="character" static="true" />
+			<position x="10" y="12.5" />
+			<spawn entity="robber1" time="4" />
+		</entity>
+		<entity enabled="true" name="robber1">
+			<id name="robber1" />
+			<ai state="attackchase" target="player" />
+			<anim atlas="robber.pack" />
+			<hitbox collides="true" type="character" faction="enemy" />
+			<health max="10" />
+			<healthbar />
+			<movement speed="1" />
+			<position x="10" y="11.5" />
+			<weapon projectileid="1" cooldown="1" />
+		</entity>
+		<entity enabled="true" name="spawner2">
+			<id name="spawner2" />
+			<hitbox collides="true" type="character" static="true" />
+			<position x="20" y="-1.5" />
+			<spawn entity="robber2" time="4" />
+		</entity>
+		<entity enabled="false" name="robber2">
+			<id name="robber2" />
+			<ai state="attackchase" target="player" />
+			<anim atlas="robber.pack" />
+			<hitbox collides="true" type="character" faction="enemy" />
+			<health max="10" />
+			<healthbar />
+			<movement speed="1" />
+			<position x="20" y="-0.5" />
+			<weapon projectileid="1" cooldown="1" />
+		</entity>
 	</area>
 	<area id="16">
+		<entity enabled="true" name="haystackguy">
+			<id name="haystackguy" />
+			<anim atlas="haystackguy.pack" />
+			<dialogue id="14" />
+			<hitbox collides="true" type="character" static="true" />
+			<position x="15" y="6" />
+		</entity>
 		<entity enabled="true" name="sign1">
 			<id name="sign1" />
 			<dialogue id="11" />
@@ -384,15 +423,15 @@
 			<mapobject texture="sign.png" />
 			<position x="3" y="5" />
 		</entity>
-		<entity enabled="true" name="sign3">
-			<id name="sign3" />
+		<entity enabled="true" name="sign2">
+			<id name="sign2" />
 			<dialogue id="12" />
 			<hitbox collides="true" static="true" type="character" shape="square" />
 			<mapobject texture="sign.png" />
 			<position x="25" y="16" />
 		</entity>
-		<entity enabled="true" name="sign2">
-			<id name="sign2" />
+		<entity enabled="true" name="sign3">
+			<id name="sign3" />
 			<dialogue id="13" />
 			<hitbox collides="true" static="true" type="character" shape="square" />
 			<mapobject texture="sign.png" />
@@ -400,6 +439,14 @@
 		</entity>
 	</area>
 	<area id="17">
+		<entity enabled="true" name="kenny">
+			<id name="kenny" />
+			<anim atlas="kenny.pack" />
+			<dialogue id="15" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="5" y="17" />
+		</entity>
 	</area>
 	<area id="18">
 	</area>

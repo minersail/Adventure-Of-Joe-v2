@@ -82,4 +82,8 @@
 		<line character="0" name="Joe" text="Test dialogue" />
 		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
+	<dialogue id="7">
+		<line character="0" name="Joe" text="DIALOGUE FOR GETTING HAYCART" />
+		<line character="-1" name="Command" text="CUTSCENE" />
+	</dialogue>
 </dialogues>

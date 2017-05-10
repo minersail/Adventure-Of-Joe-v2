@@ -76,10 +76,29 @@ public class HitboxMold
 				s.set(vertices);
 				return s;
 			}
+            case "arrow":
+			{
+				PolygonShape s = new PolygonShape(); // arrowhead shape
+				float x = 0.1f; // width of the arrowhead
+				float y = x / 2;
+				Vector2[] vertices =
+				{
+					new Vector2(0.5f - y, 0 + y), new Vector2(0.5f, 0), new Vector2(0.5f - y, 0 - y),
+                    new Vector2(-(0.5f - y), -(0 + y)), new Vector2(-0.5f, 0), new Vector2(-(0.5f - y), -(0 - y))
+				};
+				s.set(vertices);
+				return s;
+			}
 			case "square":
 			{				
 				PolygonShape s = new PolygonShape();
 				s.setAsBox(0.49f, 0.49f);
+				return s;
+			}
+			case "smallcircle":
+			{
+				CircleShape s = new CircleShape();
+				s.setRadius(0.25f);
 				return s;
 			}
 			case "circle":

@@ -16,4 +16,5 @@
 	<item id="13" texture="beer.png" name="Beer" description="" />
 	<item id="14" texture="apple.png" name="Apple" description="" />
 	<item id="15" texture="bread.png" name="Bread" description="" />
+	<item id="16" texture="stick.png" name="Arrow stick" description="" />
 </items>

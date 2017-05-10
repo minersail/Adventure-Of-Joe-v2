@@ -132,7 +132,10 @@ public class EntityLoader
 					base = new AIComponent(patrol);
 				}
 				else
+                {
 					base = new AIComponent();
+                    Gdx.app.error("ERROR", "AIComponent pattern incorrect.");
+                }
 				break;
 			case "anim":
 				base = new AnimMapObjectComponent(screen.getAssets().get("images/entities/" + component.get("atlas"), TextureAtlas.class));

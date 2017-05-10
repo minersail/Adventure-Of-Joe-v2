@@ -4,14 +4,13 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import woohoo.gameobjects.components.AnimMapObjectComponent;
-import woohoo.gameobjects.components.MovementComponent;
 import woohoo.gameobjects.components.PositionComponent;
 
 public class AnimationSystem extends IteratingSystem
 {
 	public AnimationSystem()
 	{
-		super(Family.all(AnimMapObjectComponent.class, MovementComponent.class, PositionComponent.class).get());
+		super(Family.all(AnimMapObjectComponent.class, PositionComponent.class).get());
 	}
 	
 	@Override
