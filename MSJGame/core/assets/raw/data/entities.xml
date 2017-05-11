@@ -90,21 +90,6 @@
 			<movement speed="1.25" />
 			<position x="3" y="5" />
 		</entity>
-		<entity enabled="true" name="test">
-			<id name="test" />
-			<ai state="sentry">
-				<patrol x="18" y="9" />
-				<patrol x="18" y="14" />
-				<patrol x="6" y="18" />
-			</ai>
-			<anim atlas="oldman.pack" />
-			<dialogue id="5" />
-			<inventory id="1" />
-			<hitbox collides="true" type="character" />
-			<lineofsight />
-			<movement speed="1.25" />
-			<position x="18" y="8" />
-		</entity>
 	</area>
 	<area id="3">
 		<entity enabled="true" name="bollin">
@@ -129,6 +114,15 @@
 		</entity>
 	</area>
 	<area id="4">
+		<entity enabled="true" name="bollin">
+			<id name="bollin" />
+			<ai state="stay" />
+			<anim atlas="oldman.pack" />
+			<health max="1" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="19" y="7" />
+		</entity>
 		<entity enabled="true" name="captain">
 			<id name="captain" />
 			<ai state="stay" />
@@ -308,7 +302,7 @@
 	<area id="14">
 		<entity enabled="true" name="wheelbarrow1">
 			<id name="wheelbarrow1" />
-			<hitbox collides="true" type="character" />
+			<hitbox collides="true" type="character" shape="square" />
 			<mapobject texture="wheelbarrow.png" />
 			<movement speed="1" />
 			<position x="2" y="7" />
@@ -323,7 +317,7 @@
 		</entity>	
 		<entity enabled="true" name="wheelbarrow2">
 			<id name="wheelbarrow2" />
-			<hitbox collides="true" type="character" />
+			<hitbox collides="true" type="character" shape="square" />
 			<mapobject texture="wheelbarrow.png" />
 			<movement speed="1" />
 			<position x="2" y="4" />
@@ -427,6 +421,13 @@
 			<hitbox collides="true" static="true" type="character" shape="square" />
 			<mapobject texture="sign.png" />
 			<position x="10" y="19" />
+		</entity>
+		<entity enabled="true" name="guard">
+			<id name="guard" />
+			<anim atlas="joe.pack" />
+			<dialogue id="15" />
+			<hitbox collides="true" type="character" static="true" />
+			<position x="27" y="18" />
 		</entity>
 	</area>
 	<area id="17">

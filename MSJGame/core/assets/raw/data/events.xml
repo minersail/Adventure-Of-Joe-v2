@@ -91,7 +91,7 @@
 	<area id="6">
 	</area>
 	<area id="7">
-		<eventlistener id="0" owner="system" system="dialogue" state="enabled">
+		<eventlistener id="0" owner="system" system="dialogue" state="autodisable">
 			<trigger type="dialogue" triggerid="0" />
 			<event type="cutscene" id="6" />
 		</eventlistener>
@@ -109,16 +109,21 @@
 	<area id="13">
 	</area>
 	<area id="14">
-		<eventlistener id="0" owner="entity" entity="player" state="enabled">
+		<eventlistener id="0" owner="entity" entity="player" state="autodisable">
 			<trigger type="move" locX="1" locY="4" dist="2" />
 			<event type="cutscene" id="7" />
+			<event type="quest" id="3" action="start" />
 		</eventlistener>
-		<eventlistener id="1" owner="entity" entity="wheelbarrow2" state="enabled">
-			<trigger type="move" locX="29" locY="6" dist="1.5" />
+		<eventlistener id="1" owner="entity" entity="wheelbarrow2" state="autodisable">
+			<trigger type="move" locX="29" locY="6" dist="2" />
 			<event type="cutscene" id="8" />
 		</eventlistener>
 	</area>
 	<area id="15">
+		<eventlistener id="0" owner="entity" entity="player" state="autodisable">
+			<trigger type="move" locX="1" locY="4" dist="4" />
+			<event type="cutscene" id="9" />
+		</eventlistener>
 	</area>
 	<area id="16">
 	</area>

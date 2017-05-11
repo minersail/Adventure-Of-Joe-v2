@@ -198,7 +198,7 @@ public class PlayingScreen implements Screen, Fadeable
 		state.update(this, delta);
 		ui.act();
 		alerts.act(delta);
-		debugRenderer.render(world, cam.combined);
+		//debugRenderer.render(world, cam.combined);
 		ui.draw();
     }
 	

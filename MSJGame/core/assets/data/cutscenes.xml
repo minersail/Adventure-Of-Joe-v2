@@ -72,4 +72,8 @@
 		<entity name="player" />
 		<action type="dialogue" />
 	</cutscene>
+	<cutscene id="9">
+		<entity name="player" />
+		<action type="dialogue" />
+	</cutscene>
 </cutscenes>

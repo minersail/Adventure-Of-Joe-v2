@@ -45,8 +45,8 @@
 		<line character="0" name="Joe" text="Ugh... Who are you?" />
 		<line character="-1" name="Command" text="CUTSCENE" />
 		<line character="0" name="Joe" text="You know, I was having a pretty nice dream." />
-		<line character="0" name="Joe" text="There was a gigantic hot dog and.." />
-		<line character="5" name="Captain Willy" text="I don't care about your hot dog. Where's your documentation?" />
+		<line character="0" name="Joe" text="I was living in a big castle up in a castle on a hill..." />
+		<line character="5" name="Captain Willy" text="I don't care about big castle. Where's your documentation?" />
 		<line character="-1" name="Command" text="CUTSCENE" />
 		<line character="4" name="Bollin" text="Can we arrest this street rat already?" />
 		<line character="5" name="Captain Willy" text="Is there a rush? I need to see his documentation." />
@@ -79,11 +79,21 @@
 		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
 	<dialogue id="7">
-		<line character="0" name="Joe" text="Test dialogue" />
+		<line character="7" name="Haystack guy" text="Be careful, there's robbers around these parts." />
+		<line character="0" name="Joe" text="Wait, what?" />
+		<line character="7" name="Haystack guy" text="Just focus on getting your haycart to the city." />
 		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
-	<dialogue id="7">
-		<line character="0" name="Joe" text="DIALOGUE FOR GETTING HAYCART" />
+	<dialogue id="8">
+		<line character="3" name="Robber" text="Give me your hay...and money." />
+		<line character="7" name="Haystack guy" text="Help!" />
+		<line character="7" name="Haystack guy" text="Can you get that robber with your stick?" />
+		<line character="7" name="Haystack guy" text="After you do, I got the hay carts." />
+		<line character="7" name="Haystack guy" text="Just clear a path for me up there." />
+		<line character="-1" name="Command" text="CUTSCENE" />
+	</dialogue>
+	<dialogue id="9">
+		<line character="7" name="Haystack guy" text="Don't worry about me, just get yourself out of here." />
 		<line character="-1" name="Command" text="CUTSCENE" />
 	</dialogue>
 </dialogues>

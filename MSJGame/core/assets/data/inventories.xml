@@ -1,74 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
 <inventories>
 	<inventory id="0">
-		<item id="17">
-			<metadata sell="0" projectileid="7" buy="0" type="weapon" cooldown="0.25" count="1"/>
-		</item>
 		<item id="0">
-			<metadata sell="0" projectileid="0" buy="0" type="weapon" cooldown="0.5" count="1"/>
+			<metadata count="1" type="weapon" projectileid="0" cooldown="0.5" />
 		</item>
 		<item id="16">
-			<metadata sell="0" projectileid="6" buy="0" type="weapon" cooldown="0.5" count="1"/>
+			<metadata count="1" type="weapon" projectileid="6" cooldown="0.5" />
+		</item>
+		<item id="17">
+			<metadata count="1" type="weapon" projectileid="7" cooldown="0.25" />
 		</item>
 	</inventory>
 	<inventory id="1">
 		<item id="10">
-			<metadata sell="2" buy="5" count="1"/>
+			<metadata count="1" buy="5" sell="2" />
 		</item>
 		<item id="11">
-			<metadata sell="2" buy="200" count="1"/>
+			<metadata count="1" buy="200" sell="2" />
 		</item>
 		<item id="12">
-			<metadata sell="2" buy="200" count="1"/>
+			<metadata count="1" buy="200" sell="2" />
 		</item>
 		<item id="13">
-			<metadata sell="2" buy="350" count="1"/>
+			<metadata count="1" buy="350" sell="2" />
 		</item>
 	</inventory>
 	<inventory id="2">
 		<item id="14">
-			<metadata sell="2" buy="50" count="1"/>
+			<metadata count="1" buy="50" sell="2" />
 		</item>
 		<item id="14">
-			<metadata sell="2" buy="50" count="1"/>
+			<metadata count="1" buy="50" sell="2" />
 		</item>
 		<item id="15">
-			<metadata sell="2" buy="90" count="1"/>
+			<metadata count="1" buy="90" sell="2" />
 		</item>
 	</inventory>
 	<inventory id="3">
 		<item id="1">
-			<metadata sell="2" projectileid="2" buy="500" type="weapon" cooldown="0.5" count="1"/>
+			<metadata count="1" buy="500" sell="2" type="weapon" projectileid="2" cooldown="0.5" />
 		</item>
 		<item id="2">
-			<metadata sell="2" projectileid="3" buy="1000" type="weapon" cooldown="0.5" count="1"/>
+			<metadata count="1" buy="1000" sell="2" type="weapon" projectileid="3" cooldown="0.5" />
 		</item>
 	</inventory>
 	<inventory id="4">
 		<item id="5">
-			<metadata sell="2" buy="400" count="1"/>
+			<metadata count="1" buy="400" sell="2" />
 		</item>
 		<item id="6">
-			<metadata sell="2" buy="750" count="1"/>
+			<metadata count="1" buy="750" sell="2" />
 		</item>
 	</inventory>
 	<inventory id="5">
 		<item id="9">
-			<metadata sell="0" buy="-50" type="money" count="1"/>
+			<metadata count="1" type="money" buy="-50" sell="0" />
 		</item>
 	</inventory>
 	<inventory id="6">
 		<item id="9">
-			<metadata sell="0" buy="-30" type="money" count="1"/>
+			<metadata count="1" type="money" buy="-30" sell="0" />
 		</item>
 	</inventory>
 	<inventory id="7">
 		<item id="9">
-			<metadata sell="0" buy="-20" type="money" count="1"/>
+			<metadata count="1" type="money" buy="-20" sell="0" />
 		</item>
 	</inventory>
 	<inventory id="8">
 		<item id="9">
-			<metadata sell="0" buy="-50" type="money" count="1"/>
+			<metadata count="1" type="money" buy="-50" sell="0" />
 		</item>
 	</inventory>
 </inventories>

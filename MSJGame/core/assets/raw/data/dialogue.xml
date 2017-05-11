@@ -104,4 +104,11 @@
 		<line character="7" name="Haystack guy" text="Hey, you made it!" />
 		<line character="-1" name="Command" text="LOOP" />
 	</dialogue />
+	<dialogue id="15">
+		<line character="7" name="Lance" text="I'm just warning you, there's a mad man up there." />
+		<line character="7" name="Lance" text="He destroyed half of the forest." />
+		<line character="0" name="Joe" text="Huh.. any reason why he's so mad?" />
+		<line character="7" name="Lance" text="Who knows why Kenny does anything he does." />
+		<line character="-1" name="Command" text="LOOP" />
+	</dialogue />
 </dialogues>
