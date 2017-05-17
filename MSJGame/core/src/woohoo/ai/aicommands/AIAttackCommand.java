@@ -2,8 +2,8 @@ package woohoo.ai.aicommands;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
-import woohoo.gameobjects.components.MovementComponent.Direction;
-import woohoo.gameobjects.components.PositionComponent.Orientation;
+import woohoo.gameworld.components.MovementComponent.Direction;
+import woohoo.gameworld.components.PositionComponent.Orientation;
 import woohoo.gameworld.Mappers;
 
 public class AIAttackCommand implements AICommand

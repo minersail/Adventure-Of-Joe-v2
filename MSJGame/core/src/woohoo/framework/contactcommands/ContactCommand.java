@@ -1,6 +1,6 @@
 package woohoo.framework.contactcommands;
 
-import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.ContactComponent.ContactType;
 
 /**
  * Class that takes two ContactData and uses their owner reference to manipulate two

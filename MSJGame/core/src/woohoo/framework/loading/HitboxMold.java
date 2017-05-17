@@ -5,8 +5,8 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import woohoo.gameobjects.components.ContactComponent.ContactType;
-import woohoo.gameobjects.components.ContactComponent.Faction;
+import woohoo.gameworld.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.ContactComponent.Faction;
 
 public class HitboxMold 
 {

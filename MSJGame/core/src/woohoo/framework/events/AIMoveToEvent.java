@@ -3,7 +3,7 @@ package woohoo.framework.events;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import woohoo.ai.aipatterns.MovePattern;
-import woohoo.gameobjects.components.AIComponent;
+import woohoo.gameworld.components.AIComponent;
 
 public class AIMoveToEvent implements Event<Entity>
 {

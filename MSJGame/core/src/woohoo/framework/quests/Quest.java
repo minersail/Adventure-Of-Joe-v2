@@ -3,9 +3,9 @@ package woohoo.framework.quests;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameobjects.components.OpacityComponent;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.MapObjectComponent;
+import woohoo.gameworld.components.OpacityComponent;
+import woohoo.gameworld.components.PositionComponent;
 
 public class Quest
 {

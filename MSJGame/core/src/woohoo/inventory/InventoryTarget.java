@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
 import com.badlogic.gdx.utils.Array;
-import woohoo.gameobjects.components.ItemDataComponent.ItemType;
+import woohoo.gameworld.components.ItemDataComponent.ItemType;
 import woohoo.gameworld.Mappers;
 import woohoo.inventory.InventorySlot.SlotType;
 import woohoo.inventory.inventoryactions.BuyAction;

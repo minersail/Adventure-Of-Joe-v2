@@ -2,8 +2,8 @@ package woohoo.ai.aicommands;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import woohoo.gameobjects.components.HitboxComponent;
-import woohoo.gameobjects.components.MovementComponent;
+import woohoo.gameworld.components.HitboxComponent;
+import woohoo.gameworld.components.MovementComponent;
 import woohoo.gameworld.Mappers;
 
 public class AIIdleCommand implements AICommand

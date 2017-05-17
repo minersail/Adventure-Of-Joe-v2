@@ -6,7 +6,7 @@
 package woohoo.framework.input;
 
 import com.badlogic.ashley.core.Entity;
-import woohoo.gameobjects.components.MovementComponent;
+import woohoo.gameworld.components.MovementComponent;
 import woohoo.gameworld.Mappers;
 
 /**

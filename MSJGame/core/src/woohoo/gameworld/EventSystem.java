@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.events.*;
-import woohoo.gameobjects.components.EventListenerComponent;
+import woohoo.gameworld.components.EventListenerComponent;
 import woohoo.screens.PlayingScreen;
 
 public class EventSystem extends IteratingSystem

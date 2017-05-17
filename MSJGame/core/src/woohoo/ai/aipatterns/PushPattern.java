@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 //import woohoo.ai.Node;
 import woohoo.ai.aicommands.AIIdleCommand;
 import woohoo.ai.aicommands.AIMoveCommand;
-import woohoo.gameobjects.components.PositionComponent;
-import woohoo.gameobjects.components.PositionComponent.Orientation;
+import woohoo.gameworld.components.PositionComponent;
+import woohoo.gameworld.components.PositionComponent.Orientation;
 import woohoo.gameworld.AIStateSystem;
 import woohoo.gameworld.Mappers;
 

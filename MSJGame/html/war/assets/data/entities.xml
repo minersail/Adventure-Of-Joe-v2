@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entities>
+	<!--template>
+		<entity>
+			<id name="" />
+			<ai />
+			<anim atlas="" />
+			<contact />
+			<dialogue id="" />
+			<eventlistener />
+			<healthbar />
+			<health max="" />
+			<hitbox collides="" type=""/>
+			<input />
+			<inventory id="" />
+			<itemdata id="">
+				<metadata />
+			</itemdata>
+			<lineofsight />
+			<mapobject texture="" />
+			<movement speed="" />
+			<opacity />
+			<position x="" y="" />
+			<spawn entity="" time="" />
+			<weapon />
+		</entity>
+	</template-->
+	<area id="0">
+	</area>
+	<area id="1">
+		<entity enabled="true" name="mother">
+			<id name="mother" />
+			<ai state="stay" />
+			<anim atlas="mother.pack" />
+			<dialogue id="1" />
+			<health max="1" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="7" y="6" />
+		</entity>
+		<entity enabled="true" name="robert">
+			<id name="robert" />
+			<ai state="stay" />
+			<anim atlas="robert.pack" />
+			<dialogue id="2" />
+			<health max="1" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="8" y="6" />
+		</entity>
+	</area>
+	<area id="2">
+		<entity enabled="true" name="mother">
+			<id name="mother" />
+			<ai state="stay" />
+			<anim atlas="mother.pack" />
+			<dialogue id="1" />
+			<health max="1" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="-2" y="2" />
+		</entity>
+		<entity enabled="true" name="robert">
+			<id name="robert" />
+			<ai state="stay" />
+			<anim atlas="robert.pack" />
+			<dialogue id="2" />
+			<health max="1" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="-3" y="2" />
+		</entity>
+		<entity enabled="true" name="robber1">
+			<id name="robber1" />
+			<ai state="stay" />
+			<anim atlas="robber.pack" />
+			<dialogue id="3" />
+			<health max="1" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1.25" />
+			<position x="1" y="5" />
+		</entity>
+		<entity enabled="true" name="robber2">
+			<id name="robber2" />
+			<ai state="stay" />
+			<anim atlas="robber.pack" />
+			<dialogue id="4" />
+			<health max="10" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1.25" />
+			<position x="3" y="5" />
+		</entity>
+	</area>
+	<area id="3">
+		<entity enabled="true" name="bollin">
+			<id name="bollin" />
+			<ai state="stay" />
+			<anim atlas="oldman.pack" />
+			<dialogue id="4" />
+			<health max="1" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="3" y="11" />
+		</entity>
+		<entity enabled="true" name="guard">
+			<id name="guard" />
+			<ai state="stay" />
+			<anim atlas="guard.pack" />
+			<dialogue id="4" />
+			<health max="1" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="3" y="10" />
+		</entity>
+	</area>
+	<area id="4">
+		<entity enabled="true" name="bollin">
+			<id name="bollin" />
+			<ai state="stay" />
+			<anim atlas="oldman.pack" />
+			<health max="1" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="19" y="7" />
+		</entity>
+		<entity enabled="true" name="captain">
+			<id name="captain" />
+			<ai state="stay" />
+			<anim atlas="guard.pack" />
+			<health max="1" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1.8" />
+			<position x="19" y="8" />
+		</entity>
+		<entity enabled="true" name="guard1">
+			<id name="guard1" />
+			<ai state="stay" />
+			<anim atlas="guard.pack" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1.5" />
+			<position x="18" y="9" />
+		</entity>
+		<entity enabled="true" name="guard2">
+			<id name="guard2" />
+			<ai state="stay" />
+			<anim atlas="guard.pack" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1.5" />
+			<position x="20" y="9" />
+		</entity>
+	</area>
+	<area id="5">
+		<entity enabled="true" name="guard1">
+			<id name="guard1" />
+			<ai state="stay" />
+			<anim atlas="guard.pack" />
+			<hitbox collides="true" type="chaser" />
+			<lineofsight />
+			<movement speed="2" />
+			<position x="3" y="-7" />
+		</entity>
+		<entity enabled="true" name="guard2">
+			<id name="guard2" />
+			<ai state="sentry">
+				<patrol x="3" y="14" />
+				<patrol x="3" y="18" />
+			</ai>
+			<anim atlas="guard.pack" />
+			<hitbox collides="true" type="chaser" />
+			<lineofsight />
+			<movement speed="1.5" />
+			<position x="3" y="18" />
+		</entity>
+		<entity enabled="true" name="guard3">
+			<id name="guard3" />
+			<ai state="sentry">
+				<patrol x="19" y="7" />
+				<patrol x="8" y="7" />
+			</ai>
+			<anim atlas="guard.pack" />
+			<hitbox collides="true" type="chaser" />
+			<lineofsight />
+			<movement speed="1.5" />
+			<position x="19" y="7" />
+		</entity>
+	</area>
+	<area id="6">
+	</area>
+	<area id="7">
+		<entity enabled="true" name="auna">
+			<id name="auna" />
+			<ai state="wander" />
+			<anim atlas="woman1.pack" />
+			<dialogue id="5" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="10" y="4" />
+		</entity>
+		<entity enabled="true" name="brewer">
+			<id name="brewer" />
+			<ai state="stay" />
+			<anim atlas="woman1.pack" />
+			<dialogue id="6" />
+			<hitbox collides="true" type="character" />
+			<inventory id="1" />
+			<movement speed="1" />
+			<position x="10" y="13" />
+		</entity>
+		<entity enabled="true" name="farmer">
+			<id name="farmer" />
+			<ai state="stay" />
+			<anim atlas="woman1.pack" />
+			<dialogue id="7" />
+			<hitbox collides="true" type="character" />
+			<inventory id="2" />
+			<movement speed="1" />
+			<position x="10" y="20" />
+		</entity>
+		<entity enabled="true" name="blacksmith">
+			<id name="blacksmith" />
+			<ai state="stay" />
+			<anim atlas="blacksmith.pack" />
+			<dialogue id="8" />
+			<hitbox collides="true" type="character" />
+			<inventory id="3" />
+			<movement speed="1" />
+			<position x="18" y="13" />
+		</entity>
+		<entity enabled="true" name="armorer">
+			<id name="armorer" />
+			<ai state="stay" />
+			<anim atlas="woman1.pack" />
+			<dialogue id="9" />
+			<hitbox collides="true" type="character" />
+			<inventory id="4" />
+			<movement speed="1" />
+			<position x="16" y="18" />
+		</entity>
+		<entity enabled="true" name="haystackguy">
+			<id name="haystackguy" />
+			<ai state="stay" />
+			<anim atlas="haystackguy.pack" />
+			<dialogue id="10" />
+			<hitbox collides="true" type="character" />
+			<inventory id="2" />
+			<movement speed="1" />
+			<position x="26" y="14" />
+		</entity>
+	</area>
+	<area id="8">
+	</area>
+	<area id="9">
+		<entity enabled="true" name="chest">
+			<id name="chest" />
+			<ai state="stay" />
+			<dialogue id="0" />
+			<hitbox collides="true" type="character" />
+			<inventory id="5" />
+			<mapobject texture="indoorchest1.png" />
+			<movement speed="1" />
+			<position x="1" y="5" />
+		</entity>	
+	</area>
+	<area id="10">
+		<entity enabled="true" name="chest">
+			<id name="chest" />
+			<ai state="stay" />
+			<dialogue id="0" />
+			<hitbox collides="true" type="character" />
+			<inventory id="5" />
+			<mapobject texture="indoorchest1.png" />
+			<movement speed="1" />
+			<position x="4" y="1" />
+		</entity>	
+	</area>
+	<area id="11">
+	</area>
+	<area id="12">
+		<entity enabled="true" name="chest">
+			<id name="chest" />
+			<ai state="stay" />
+			<dialogue id="0" />
+			<hitbox collides="true" type="character" />
+			<inventory id="5" />
+			<mapobject texture="indoorchest1.png" />
+			<movement speed="1" />
+			<position x="3" y="4" />
+		</entity>	
+		<entity enabled="true" name="chest">
+			<id name="chest" />
+			<ai state="stay" />
+			<dialogue id="0" />
+			<hitbox collides="true" type="character" />
+			<inventory id="5" />
+			<mapobject texture="indoorchest1.png" />
+			<movement speed="1" />
+			<position x="4" y="4" />
+		</entity>	
+	</area>
+	<area id="13">
+	</area>
+	<area id="14">
+		<entity enabled="true" name="wheelbarrow1">
+			<id name="wheelbarrow1" />
+			<hitbox collides="true" type="character" shape="square" />
+			<mapobject texture="wheelbarrow.png" />
+			<movement speed="1" />
+			<position x="2" y="7" />
+		</entity>	
+		<entity enabled="true" name="haystackguy">
+			<id name="haystackguy" />
+			<ai state="push" pushed="wheelbarrow1" targetX="28" targetY="5" />
+			<anim atlas="haystackguy.pack" />
+			<hitbox collides="true" type="character" />
+			<movement speed="1" />
+			<position x="1" y="7" />
+		</entity>	
+		<entity enabled="true" name="wheelbarrow2">
+			<id name="wheelbarrow2" />
+			<hitbox collides="true" type="character" shape="square" />
+			<mapobject texture="wheelbarrow.png" />
+			<movement speed="1" />
+			<position x="2" y="4" />
+		</entity>
+		<entity enabled="true" name="spawner">
+			<id name="spawner" />
+			<hitbox collides="true" type="character" static="true" />
+			<position x="10" y="12.5" />
+			<spawn entity="robber1" time="60" />
+		</entity>
+		<entity enabled="true" name="robber1">
+			<id name="robber1" />
+			<ai state="attackchase" target="player" />
+			<anim atlas="robber.pack" />
+			<hitbox collides="true" type="character" faction="enemy" />
+			<health max="10" />
+			<healthbar />
+			<movement speed="1" />
+			<position x="10" y="11.5" />
+			<weapon projectileid="1" cooldown="1" />
+		</entity>
+		<entity enabled="true" name="spawner2">
+			<id name="spawner2" />
+			<hitbox collides="true" type="character" static="true" />
+			<position x="20" y="-1.5" />
+			<spawn entity="robber2" time="60" />
+		</entity>
+		<entity enabled="false" name="robber2">
+			<id name="robber2" />
+			<ai state="attackchase" target="player" />
+			<anim atlas="robber.pack" />
+			<hitbox collides="true" type="character" faction="enemy" />
+			<health max="10" />
+			<healthbar />
+			<movement speed="1" />
+			<position x="20" y="-0.5" />
+			<weapon projectileid="1" cooldown="1" />
+		</entity>
+	</area>
+	<area id="15">
+		<entity enabled="false" name="spawner">
+			<id name="spawner" />
+			<hitbox collides="true" type="character" static="true" />
+			<position x="10" y="12.5" />
+			<spawn entity="robber1" time="4" />
+		</entity>
+		<entity enabled="true" name="robber1">
+			<id name="robber1" />
+			<ai state="attackchase" target="player" />
+			<anim atlas="robber.pack" />
+			<hitbox collides="true" type="character" faction="enemy" />
+			<health max="10" />
+			<healthbar />
+			<movement speed="1" />
+			<position x="10" y="11.5" />
+			<weapon projectileid="1" cooldown="1" />
+		</entity>
+		<entity enabled="true" name="spawner2">
+			<id name="spawner2" />
+			<hitbox collides="true" type="character" static="true" />
+			<position x="20" y="-1.5" />
+			<spawn entity="robber2" time="4" />
+		</entity>
+		<entity enabled="false" name="robber2">
+			<id name="robber2" />
+			<ai state="attackchase" target="player" />
+			<anim atlas="robber.pack" />
+			<hitbox collides="true" type="character" faction="enemy" />
+			<health max="10" />
+			<healthbar />
+			<movement speed="1" />
+			<position x="20" y="-0.5" />
+			<weapon projectileid="1" cooldown="1" />
+		</entity>
+	</area>
+	<area id="16">
+		<entity enabled="true" name="haystackguy">
+			<id name="haystackguy" />
+			<anim atlas="haystackguy.pack" />
+			<dialogue id="14" />
+			<hitbox collides="true" type="character" static="true" />
+			<position x="15" y="6" />
+		</entity>
+		<entity enabled="true" name="sign1">
+			<id name="sign1" />
+			<dialogue id="11" />
+			<hitbox collides="true" static="true" type="character" shape="square" />
+			<mapobject texture="sign.png" />
+			<position x="3" y="5" />
+		</entity>
+		<entity enabled="true" name="sign2">
+			<id name="sign2" />
+			<dialogue id="12" />
+			<hitbox collides="true" static="true" type="character" shape="square" />
+			<mapobject texture="sign.png" />
+			<position x="25" y="16" />
+		</entity>
+		<entity enabled="true" name="sign3">
+			<id name="sign3" />
+			<dialogue id="13" />
+			<hitbox collides="true" static="true" type="character" shape="square" />
+			<mapobject texture="sign.png" />
+			<position x="10" y="19" />
+		</entity>
+		<entity enabled="true" name="guard">
+			<id name="guard" />
+			<anim atlas="joe.pack" />
+			<dialogue id="15" />
+			<hitbox collides="true" type="character" static="true" />
+			<position x="27" y="18" />
+		</entity>
+	</area>
+	<area id="17">
+	</area>
+	<area id="18">
+	</area>
+	<area id="19">
+	</area>
+	<area id="20">
+		<entity enabled="true" name="kenny">
+			<id name="kenny" />
+			<ai state="boss" />
+			<anim atlas="kenny.pack" />
+			<hitbox collides="true" type="character" faction="enemy" />
+			<health max="200" />
+			<healthbar />
+			<movement speed="3" />
+			<position x="21" y="10" />
+			<weapon projectileid="8" cooldown="0" />
+		</entity>
+	</area>
+</entities>

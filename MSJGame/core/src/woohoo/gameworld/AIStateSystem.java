@@ -7,9 +7,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.MovementComponent;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.AIComponent;
+import woohoo.gameworld.components.MovementComponent;
+import woohoo.gameworld.components.PositionComponent;
 import woohoo.screens.PlayingScreen;
 
 public class AIStateSystem extends IteratingSystem

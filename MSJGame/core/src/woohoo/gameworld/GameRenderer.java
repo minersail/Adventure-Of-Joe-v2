@@ -6,10 +6,10 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import woohoo.gameobjects.components.AnimMapObjectComponent;
-import woohoo.gameobjects.components.ChaseComponent;
-import woohoo.gameobjects.components.HealthBarComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
+import woohoo.gameworld.components.AnimMapObjectComponent;
+import woohoo.gameworld.components.ChaseComponent;
+import woohoo.gameworld.components.HealthBarComponent;
+import woohoo.gameworld.components.MapObjectComponent;
 
 /*
 Anything that is drawn will be managed by this class

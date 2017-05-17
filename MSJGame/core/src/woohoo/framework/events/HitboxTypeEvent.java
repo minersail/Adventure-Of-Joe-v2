@@ -1,7 +1,7 @@
 package woohoo.framework.events;
 
-import woohoo.gameobjects.components.ContactComponent.ContactType;
-import woohoo.gameobjects.components.HitboxComponent;
+import woohoo.gameworld.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.HitboxComponent;
 
 public class HitboxTypeEvent implements Event 
 {

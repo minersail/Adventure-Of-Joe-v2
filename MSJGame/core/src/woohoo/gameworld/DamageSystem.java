@@ -5,11 +5,11 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
 import woohoo.framework.animation.DeathAnimState;
-import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.DialogueComponent;
-import woohoo.gameobjects.components.HealthBarComponent;
-import woohoo.gameobjects.components.HealthComponent;
-import woohoo.gameobjects.components.HitboxComponent;
+import woohoo.gameworld.components.AIComponent;
+import woohoo.gameworld.components.DialogueComponent;
+import woohoo.gameworld.components.HealthBarComponent;
+import woohoo.gameworld.components.HealthComponent;
+import woohoo.gameworld.components.HitboxComponent;
 import woohoo.screens.PlayingScreen;
 
 public class DamageSystem extends IteratingSystem

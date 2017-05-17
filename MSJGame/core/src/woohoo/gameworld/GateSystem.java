@@ -15,13 +15,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.contactcommands.ContactData;
-import woohoo.gameobjects.components.AnimMapObjectComponent;
-import woohoo.gameobjects.components.ChaseComponent;
-import woohoo.gameobjects.components.ContactComponent.ContactType;
-import woohoo.gameobjects.components.ContactComponent.Faction;
-import woohoo.gameobjects.components.GateComponent;
-import woohoo.gameobjects.components.HealthBarComponent;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.AnimMapObjectComponent;
+import woohoo.gameworld.components.ChaseComponent;
+import woohoo.gameworld.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.ContactComponent.Faction;
+import woohoo.gameworld.components.GateComponent;
+import woohoo.gameworld.components.HealthBarComponent;
+import woohoo.gameworld.components.PositionComponent;
 import woohoo.screens.PlayingScreen;
 
 public class GateSystem extends IteratingSystem

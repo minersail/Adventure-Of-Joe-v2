@@ -8,7 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.loading.EntityMold;
-import woohoo.gameobjects.components.SpawnComponent;
+import woohoo.gameworld.components.SpawnComponent;
 import woohoo.screens.PlayingScreen;
 
 public class SpawnSystem extends IteratingSystem

@@ -3,8 +3,8 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import woohoo.gameobjects.components.LOSComponent;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.LOSComponent;
+import woohoo.gameworld.components.PositionComponent;
 import woohoo.screens.PlayingScreen;
 
 public class LineOfSightSystem extends IteratingSystem

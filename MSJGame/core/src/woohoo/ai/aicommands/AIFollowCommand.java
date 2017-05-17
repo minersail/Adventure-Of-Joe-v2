@@ -2,9 +2,9 @@ package woohoo.ai.aicommands;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.MovementComponent;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.AIComponent;
+import woohoo.gameworld.components.MovementComponent;
+import woohoo.gameworld.components.PositionComponent;
 import woohoo.gameworld.Mappers;
 
 public class AIFollowCommand implements AICommand

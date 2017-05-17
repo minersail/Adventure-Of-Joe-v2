@@ -6,12 +6,12 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
-import woohoo.gameobjects.components.AnimMapObjectComponent;
-import woohoo.gameobjects.components.ChaseComponent;
-import woohoo.gameobjects.components.HealthBarComponent;
-import woohoo.gameobjects.components.MapObjectComponent;
-import woohoo.gameobjects.components.OpacityComponent;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.AnimMapObjectComponent;
+import woohoo.gameworld.components.ChaseComponent;
+import woohoo.gameworld.components.HealthBarComponent;
+import woohoo.gameworld.components.MapObjectComponent;
+import woohoo.gameworld.components.OpacityComponent;
+import woohoo.gameworld.components.PositionComponent;
 
 public class RenderSystem extends IteratingSystem
 {

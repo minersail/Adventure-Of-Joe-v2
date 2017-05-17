@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.AIComponent;
+import woohoo.gameworld.components.PositionComponent;
 
 public class AIDebugger
 {

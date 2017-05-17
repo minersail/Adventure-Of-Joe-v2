@@ -1,7 +1,7 @@
 package woohoo.framework.animation;
 
 import com.badlogic.ashley.core.Entity;
-import woohoo.gameobjects.components.AnimMapObjectComponent;
+import woohoo.gameworld.components.AnimMapObjectComponent;
 import woohoo.gameworld.Mappers;
 
 public class WalkAnimState implements AnimationState

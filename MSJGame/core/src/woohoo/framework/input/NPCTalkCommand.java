@@ -3,8 +3,8 @@ package woohoo.framework.input;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import woohoo.framework.DialogueManager;
-import woohoo.gameobjects.components.DialogueComponent;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.DialogueComponent;
+import woohoo.gameworld.components.PositionComponent;
 import woohoo.gameworld.GameEngine;
 import woohoo.gameworld.RenderSystem;
 

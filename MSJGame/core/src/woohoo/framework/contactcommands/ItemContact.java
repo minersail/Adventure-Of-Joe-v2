@@ -1,7 +1,7 @@
 package woohoo.framework.contactcommands;
 
-import woohoo.gameobjects.components.ContactComponent.ContactType;
-import woohoo.gameobjects.components.PlayerComponent;
+import woohoo.gameworld.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.PlayerComponent;
 import woohoo.gameworld.Mappers;
 
 public class ItemContact extends ContactCommand

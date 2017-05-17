@@ -2,7 +2,7 @@ package woohoo.inventory;
 
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Payload;
 import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Source;
-import woohoo.gameobjects.components.ItemDataComponent;
+import woohoo.gameworld.components.ItemDataComponent;
 import woohoo.gameworld.Mappers;
 import woohoo.inventory.inventoryactions.DeselectAction;
 import woohoo.inventory.inventoryactions.EquipArmorAction;

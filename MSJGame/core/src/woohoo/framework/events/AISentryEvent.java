@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import woohoo.ai.aipatterns.ChaseSentryPattern;
-import woohoo.gameobjects.components.AIComponent;
+import woohoo.gameworld.components.AIComponent;
 
 public class AISentryEvent implements Event<Entity>
 {

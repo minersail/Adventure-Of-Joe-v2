@@ -1,8 +1,8 @@
 package woohoo.framework.contactcommands;
 
-import woohoo.gameobjects.components.GateComponent;
-import woohoo.gameobjects.components.ContactComponent.ContactType;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.GateComponent;
+import woohoo.gameworld.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.PositionComponent;
 import woohoo.gameworld.Mappers;
 
 /**

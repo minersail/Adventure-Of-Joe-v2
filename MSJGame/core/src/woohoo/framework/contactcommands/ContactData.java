@@ -1,8 +1,8 @@
 package woohoo.framework.contactcommands;
 
 import com.badlogic.ashley.core.Entity;
-import woohoo.gameobjects.components.ContactComponent.ContactType;
-import woohoo.gameobjects.components.ContactComponent.Faction;
+import woohoo.gameworld.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.ContactComponent.Faction;
 
 /**
  * ContactData is attached to bodies through getUserData()

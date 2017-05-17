@@ -3,8 +3,8 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import woohoo.gameobjects.components.AnimMapObjectComponent;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.AnimMapObjectComponent;
+import woohoo.gameworld.components.PositionComponent;
 
 public class AnimationSystem extends IteratingSystem
 {

@@ -2,7 +2,7 @@ package woohoo.ai.aipatterns;
 
 import com.badlogic.ashley.core.Entity;
 import woohoo.ai.aicommands.AIFollowCommand;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.PositionComponent;
 import woohoo.gameworld.AIStateSystem;
 import woohoo.gameworld.Mappers;
 

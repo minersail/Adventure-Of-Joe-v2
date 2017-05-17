@@ -8,7 +8,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import java.util.Iterator;
 import woohoo.framework.input.*;
-import woohoo.gameobjects.components.InputComponent;
+import woohoo.gameworld.components.InputComponent;
 import woohoo.gameworld.gamestates.*;
 import woohoo.screens.PlayingScreen;
 

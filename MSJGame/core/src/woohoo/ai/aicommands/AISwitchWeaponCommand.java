@@ -1,7 +1,7 @@
 package woohoo.ai.aicommands;
 
 import com.badlogic.ashley.core.Entity;
-import woohoo.gameobjects.components.WeaponComponent;
+import woohoo.gameworld.components.WeaponComponent;
 
 public class AISwitchWeaponCommand implements AICommand
 {

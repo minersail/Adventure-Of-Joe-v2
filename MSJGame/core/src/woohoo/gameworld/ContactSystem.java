@@ -11,8 +11,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import java.util.Objects;
 import woohoo.framework.contactcommands.*;
-import woohoo.gameobjects.components.ContactComponent;
-import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.ContactComponent;
+import woohoo.gameworld.components.ContactComponent.ContactType;
 
 public class ContactSystem extends IteratingSystem
 {

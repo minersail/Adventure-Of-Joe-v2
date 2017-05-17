@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import woohoo.framework.events.EventListeners;
-import woohoo.gameobjects.components.DialogueComponent;
+import woohoo.gameworld.components.DialogueComponent;
 import woohoo.gameworld.Mappers;
 import woohoo.gameworld.gamestates.CutsceneState;
 import woohoo.gameworld.gamestates.DialogueState;

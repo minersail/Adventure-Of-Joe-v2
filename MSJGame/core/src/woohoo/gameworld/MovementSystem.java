@@ -3,9 +3,9 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import woohoo.gameobjects.components.HitboxComponent;
-import woohoo.gameobjects.components.MovementComponent;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.HitboxComponent;
+import woohoo.gameworld.components.MovementComponent;
+import woohoo.gameworld.components.PositionComponent;
 import woohoo.gameworld.gamestates.PlayingState;
 import woohoo.screens.PlayingScreen;
 

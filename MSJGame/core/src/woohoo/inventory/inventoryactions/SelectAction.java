@@ -2,7 +2,7 @@ package woohoo.inventory.inventoryactions;
 
 import com.badlogic.gdx.graphics.Color;
 import woohoo.framework.InventoryManager;
-import woohoo.gameobjects.components.ItemDataComponent;
+import woohoo.gameworld.components.ItemDataComponent;
 import woohoo.gameworld.Mappers;
 import woohoo.inventory.InventorySlot;
 

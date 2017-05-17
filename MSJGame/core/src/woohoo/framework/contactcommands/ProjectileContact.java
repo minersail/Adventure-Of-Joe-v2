@@ -1,9 +1,9 @@
 package woohoo.framework.contactcommands;
 
-import woohoo.gameobjects.components.ContactComponent.ContactType;
-import woohoo.gameobjects.components.ContactComponent.Faction;
-import woohoo.gameobjects.components.HitboxComponent;
-import woohoo.gameobjects.components.ProjectileComponent;
+import woohoo.gameworld.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.ContactComponent.Faction;
+import woohoo.gameworld.components.HitboxComponent;
+import woohoo.gameworld.components.ProjectileComponent;
 import woohoo.gameworld.Mappers;
 
 public class ProjectileContact extends ContactCommand

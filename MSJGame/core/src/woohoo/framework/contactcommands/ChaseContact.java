@@ -1,7 +1,7 @@
 package woohoo.framework.contactcommands;
 
-import woohoo.gameobjects.components.ChaseComponent;
-import woohoo.gameobjects.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.ChaseComponent;
+import woohoo.gameworld.components.ContactComponent.ContactType;
 import woohoo.gameworld.Mappers;
 
 public class ChaseContact extends ContactCommand

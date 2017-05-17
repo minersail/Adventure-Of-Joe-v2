@@ -17,8 +17,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
 import woohoo.framework.contactcommands.ContactData;
-import woohoo.gameobjects.components.ContactComponent.ContactType;
-import woohoo.gameobjects.components.ContactComponent.Faction;
+import woohoo.gameworld.components.ContactComponent.ContactType;
+import woohoo.gameworld.components.ContactComponent.Faction;
 import woohoo.screens.PlayingScreen;
 
 public class HexMapLoader

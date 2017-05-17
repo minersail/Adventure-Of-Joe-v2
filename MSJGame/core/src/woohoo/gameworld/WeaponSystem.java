@@ -3,9 +3,9 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import woohoo.gameobjects.components.MovementComponent.Direction;
-import woohoo.gameobjects.components.PositionComponent;
-import woohoo.gameobjects.components.WeaponComponent;
+import woohoo.gameworld.components.MovementComponent.Direction;
+import woohoo.gameworld.components.PositionComponent;
+import woohoo.gameworld.components.WeaponComponent;
 import woohoo.screens.PlayingScreen;
 
 public class WeaponSystem extends IteratingSystem

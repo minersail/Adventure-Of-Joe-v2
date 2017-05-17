@@ -3,7 +3,7 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import woohoo.gameobjects.components.ProjectileComponent;
+import woohoo.gameworld.components.ProjectileComponent;
 import woohoo.screens.PlayingScreen;
 
 public class ProjectileSystem extends IteratingSystem

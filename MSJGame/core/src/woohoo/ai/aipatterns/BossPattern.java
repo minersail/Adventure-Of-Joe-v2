@@ -6,8 +6,8 @@ import woohoo.ai.Node;
 import woohoo.ai.aicommands.AIAttackCommand;
 import woohoo.ai.aicommands.AIMoveCommand;
 import woohoo.ai.aicommands.AISwitchWeaponCommand;
-import woohoo.gameobjects.components.AIComponent;
-import woohoo.gameobjects.components.PositionComponent.Orientation;
+import woohoo.gameworld.components.AIComponent;
+import woohoo.gameworld.components.PositionComponent.Orientation;
 import woohoo.gameworld.Mappers;
 
 public class BossPattern extends AIPattern

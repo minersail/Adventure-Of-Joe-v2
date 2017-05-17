@@ -2,7 +2,7 @@ package woohoo.framework.events;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
-import woohoo.gameobjects.components.PositionComponent;
+import woohoo.gameworld.components.PositionComponent;
 
 public class MoveEvent implements Event<Entity>
 {

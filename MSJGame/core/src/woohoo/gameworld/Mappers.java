@@ -1,7 +1,29 @@
 package woohoo.gameworld;
 
+import woohoo.gameworld.components.InputComponent;
+import woohoo.gameworld.components.AnimMapObjectComponent;
+import woohoo.gameworld.components.InventoryComponent;
+import woohoo.gameworld.components.OpacityComponent;
+import woohoo.gameworld.components.DialogueComponent;
+import woohoo.gameworld.components.HealthBarComponent;
+import woohoo.gameworld.components.IDComponent;
+import woohoo.gameworld.components.SpawnComponent;
+import woohoo.gameworld.components.HealthComponent;
+import woohoo.gameworld.components.HitboxComponent;
+import woohoo.gameworld.components.EventListenerComponent;
+import woohoo.gameworld.components.MapObjectComponent;
+import woohoo.gameworld.components.LOSComponent;
+import woohoo.gameworld.components.MovementComponent;
+import woohoo.gameworld.components.GateComponent;
+import woohoo.gameworld.components.ContactComponent;
+import woohoo.gameworld.components.AIComponent;
+import woohoo.gameworld.components.WeaponComponent;
+import woohoo.gameworld.components.PlayerComponent;
+import woohoo.gameworld.components.ChaseComponent;
+import woohoo.gameworld.components.PositionComponent;
+import woohoo.gameworld.components.ProjectileComponent;
+import woohoo.gameworld.components.ItemDataComponent;
 import com.badlogic.ashley.core.ComponentMapper;
-import woohoo.gameobjects.components.*;
 
 public class Mappers 
 {

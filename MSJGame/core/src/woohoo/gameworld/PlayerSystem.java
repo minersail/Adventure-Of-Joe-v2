@@ -3,7 +3,7 @@ package woohoo.gameworld;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import woohoo.gameobjects.components.PlayerComponent;
+import woohoo.gameworld.components.PlayerComponent;
 import woohoo.screens.PlayingScreen;
 
 public class PlayerSystem extends IteratingSystem

@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import woohoo.ai.aicommands.AIFollowCommand;
 import woohoo.ai.aicommands.AIMoveCommand;
-import woohoo.gameobjects.components.LOSComponent;
+import woohoo.gameworld.components.LOSComponent;
 import woohoo.gameworld.Mappers;
 
 public class ChaseSentryPattern extends AIPattern
