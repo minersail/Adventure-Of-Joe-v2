@@ -32,11 +32,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.XmlReader.Element;
-import java.security.InvalidParameterException;
 import woohoo.framework.contactcommands.ContactData;
 import woohoo.gameworld.components.ContactComponent.ContactType;
 import woohoo.gameworld.components.ContactComponent.Faction;
@@ -207,7 +205,7 @@ public class EntityLoader
 				base = new WeaponComponent(component.getInt("projectileid"), component.getFloat("cooldown"));
 				break;
 			default:
-				throw new InvalidParameterException("No component with name " + component.getName() + " found.");
+				throw new IllegalArgumentException("No component with name " + component.getName() + " found.");
 		}
 		
 		entity.add(base);

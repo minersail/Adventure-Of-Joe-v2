@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.XmlReader;
@@ -82,6 +83,7 @@ public class HexMapLoader
 				StaticTiledMapTile t = new StaticTiledMapTile(texture);
 				t.setId(Integer.parseInt(tile.substring(4, 8), 16));
 				t.getProperties().put("isWall", funcID >= 4 && funcID <= 7); // funcIDs between 4 and 7 represent walls
+				t.getProperties().put("isBlind", funcID >= 8 && funcID <= 11); // funcIDs between 4 and 7 represent walls
                 				
 				if (t.getProperties().get("isWall", Boolean.class))
 				{					
@@ -98,6 +100,29 @@ public class HexMapLoader
 					fixtureDef.shape = shape;
 					fixtureDef.density = 1f;
 					fixtureDef.friction = 0f;
+
+					body.createFixture(fixtureDef);
+					
+					Entity wall = new Entity();
+					screen.getEngine().addEntity(wall);
+					body.setUserData(new ContactData(ContactType.Wall, Faction.Neutral, wall));
+				}
+				else if (t.getProperties().get("isBlind", Boolean.class))
+				{					
+					BodyDef bodyDef = new BodyDef();
+					bodyDef.type = BodyDef.BodyType.StaticBody;
+					bodyDef.position.set(i + 0.5f, j + 0.5f);
+
+					Body body = screen.getWorld().createBody(bodyDef);
+
+					CircleShape shape = new CircleShape();
+					shape.setRadius(0.75f);
+
+					FixtureDef fixtureDef = new FixtureDef();
+					fixtureDef.shape = shape;
+					fixtureDef.density = 1f;
+					fixtureDef.friction = 0f;
+					fixtureDef.isSensor = true;
 
 					body.createFixture(fixtureDef);
 					
